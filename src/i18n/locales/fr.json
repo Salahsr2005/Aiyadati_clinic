@@ -1,0 +1,109 @@
+{
+  "app": { "name": "Portail Médecin Iyadati", "tagline": "Gérez votre cabinet, vos horaires et vos rendez-vous." },
+  "nav": {
+    "dashboard": "Tableau de bord",
+    "appointments": "Rendez-vous",
+    "schedule": "Planning & Créneaux",
+    "patients": "Mes Patients",
+    "reviews": "Avis & Notes",
+    "wallet": "Revenus & Portefeuille",
+    "clinics": "Cliniques affiliées",
+    "profile": "Mon Profil",
+    "settings": "Paramètres"
+  },
+  "auth": {
+    "signIn": "Connexion Espace Médecin",
+    "signInSubtitle": "Accédez à votre espace praticien Iyadati",
+    "email": "Adresse e-mail",
+    "password": "Mot de passe",
+    "rememberMe": "Se souvenir de moi",
+    "submit": "Se connecter",
+    "signingIn": "Connexion…",
+    "invalid": "E-mail ou mot de passe invalide",
+    "throttled": "Trop de tentatives. Veuillez réessayer plus tard.",
+    "expired": "Votre session a expiré. Veuillez vous reconnecter.",
+    "logout": "Déconnexion"
+  },
+  "common": {
+    "search": "Rechercher…",
+    "loading": "Chargement…",
+    "error": "Une erreur est survenue",
+    "retry": "Réessayer",
+    "empty": "Aucune donnée",
+    "cancel": "Annuler",
+    "save": "Enregistrer",
+    "confirm": "Confirmer",
+    "close": "Fermer",
+    "collapseSidebar": "Réduire la barre latérale",
+    "toggleTheme": "Changer de thème",
+    "language": "Langue",
+    "notifications": "Notifications",
+    "signedInAs": "Connecté en tant que"
+  },
+  "overview": {
+    "title": "Tableau de bord",
+    "subtitle": "Votre activité en un coup d'œil",
+    "kpi": {
+      "appointments": "Rendez-vous",
+      "completionRate": "Taux de complétion",
+      "revenue": "Revenus",
+      "rating": "Note"
+    }
+  },
+  "status": {
+    "ACTIVE": "Actif", "INACTIVE": "Inactif",
+    "VERIFIED": "Vérifié", "UNVERIFIED": "Non vérifié", "SUSPENDED": "Suspendu",
+    "PENDING": "En attente", "APPROVED": "Approuvé", "REJECTED": "Rejeté",
+    "CONFIRMED": "Confirmé", "IN_PROGRESS": "En cours", "COMPLETED": "Terminé",
+    "CANCELLED": "Annulé", "NO_SHOW": "Absence", "PAID": "Payé",
+    "WAITING": "En attente", "IN_REVIEW": "En revue", "FAILED": "Échoué",
+    "DRAFT": "Brouillon", "ARCHIVED": "Archivé", "BANNED": "Banni"
+  },
+  "type": { "IN_PERSON": "En personne", "VIDEO": "Téléconsultation", "HOME_VISIT": "Visite à domicile" },
+  "payment": { "ON_SITE": "Sur place", "CREDIT": "Crédit", "CARD": "Carte", "CASH": "Espèces" },
+  "filters": {
+    "open": "Filtres", "apply": "Appliquer", "reset": "Réinitialiser", "clear": "Tout effacer",
+    "active": "{{count}} actif(s)",
+    "status": "Statut", "wilaya": "Wilaya", "specialty": "Spécialité",
+    "practiceType": "Type d'exercice", "verification": "Vérification",
+    "type": "Type", "paymentMethod": "Mode de paiement",
+    "date": "Période", "rating": "Note min."
+  },
+  "views": { "grid": "Grille", "table": "Tableau", "kanban": "Kanban", "map": "Carte", "heatmap": "Carte thermique" },
+  "appt": {
+    "slot": "Créneau", "notes": "Notes", "cancelReason": "Motif d'annulation",
+    "cancelledAt": "Annulé le", "createdBy": "Créé par",
+    "noClinic": "Réservation directe (sans clinique)", "noPatient": "Aucune info patient",
+    "type": "Type", "payment": "Paiement",
+    "kanban": { "empty": "Aucun rendez-vous dans cette colonne" }
+  },
+  "table": {
+    "search": "Rechercher",
+    "showing": "Affichage",
+    "of": "sur",
+    "all": "Tous",
+    "actions": "Actions",
+    "view": "Voir",
+    "edit": "Modifier",
+    "delete": "Supprimer",
+    "create": "Nouveau",
+    "refresh": "Actualiser"
+  },
+  "doctorPortal": {
+    "welcome": "Bienvenue",
+    "todaySchedule": "Programme d'aujourd'hui",
+    "pendingRequests": "Demandes en attente",
+    "actionRequired": "Action requise",
+    "revenueTrend": "Tendance des revenus et volume",
+    "bookingDistribution": "Mode de réservation des patients",
+    "recentAppointments": "Rendez-vous récents",
+    "weeklyAvailability": "Disponibilité hebdomadaire",
+    "slotSettings": "Paramètres des créneaux",
+    "timeOff": "Congés & Pauses",
+    "bookableSlots": "Créneaux réservables",
+    "completeness": "Complétion du profil",
+    "professionalDetails": "Informations professionnelles",
+    "practiceLocation": "Localisation du cabinet",
+    "verificationDocs": "Documents de vérification"
+  }
+}

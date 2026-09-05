@@ -1,0 +1,16 @@
+{
+  "theme": {
+    "menu": "Appearance",
+    "mode": "Mode",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System",
+    "palette": "Color theme",
+    "palettes": {
+      "indigo": "Indigo",
+      "emerald": "Emerald",
+      "sunset": "Sunset",
+      "ocean": "Ocean"
+    }
+  }
+}

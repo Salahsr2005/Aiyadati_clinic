@@ -1,0 +1,366 @@
+{
+  "patients": {
+    "title": "Mes patients",
+    "subtitle_one": "{{count}} patient unique enregistré dans votre historique de consultations",
+    "subtitle_other": "{{count}} patients uniques enregistrés dans votre historique de consultations",
+    "search": { "placeholder": "Rechercher nom, téléphone, email, wilaya..." },
+    "table": {
+      "name": "Nom du patient",
+      "noEmail": "Aucune adresse email",
+      "contact": "Contact / Localisation",
+      "visitsStatus": "Visites et statut",
+      "visit_one": "visite",
+      "visit_other": "visites",
+      "completedCount": "({{count}} terminées)",
+      "revenue": "Revenu est.",
+      "lastVisit": "Dernière visite",
+      "never": "Jamais"
+    },
+    "badge": { "suspended": "Suspendu" },
+    "filters": {
+      "category": "Catégorie :",
+      "reset": "Réinitialiser les filtres",
+      "visitFrom": "Visite du :",
+      "visitTo": "Visite au :",
+      "wilaya": "Wilaya :",
+      "allWilayas": "Toutes les wilayas",
+      "tierStatus": "Niveau / Statut :",
+      "sortBy": "Trier par :",
+      "categories": {
+        "all": "Tous les patients",
+        "frequent": "Fréquents (3+)",
+        "completed": "Terminés",
+        "has_notes": "Avec notes",
+        "has_docs": "Avec documents",
+        "suspended": "Suspendus"
+      },
+      "tiers": {
+        "all": "Tous les niveaux",
+        "VIP": "VIP (5+ visites)",
+        "Frequent": "Fréquent (3-4 visites)",
+        "Returning": "Fidèle (2 visites)",
+        "New": "Nouveau (1 visite)"
+      },
+      "sort": {
+        "recent": "Visite la plus récente",
+        "visits": "Plus de visites",
+        "revenue": "Revenu le plus élevé",
+        "name": "Alphabétique (A-Z)"
+      }
+    },
+    "empty": {
+      "title": "Aucun patient trouvé",
+      "description": "Les patients apparaîtront automatiquement ici dès qu'ils termineront ou planifieront des consultations avec vous.",
+      "noMatch": "Aucun patient ne correspond à vos critères de filtrage"
+    },
+    "tier": { "VIP": "VIP", "Frequent": "Fréquent", "Returning": "Fidèle", "New": "Nouveau" },
+    "drawer": {
+      "callPatient": "Appeler le patient",
+      "sendEmail": "Envoyer un email",
+      "trustLevel": "Niveau de confiance :",
+      "suspendedAccount": "Compte suspendu",
+      "activePatient": "Patient actif",
+      "totalVisits": "Total des visites",
+      "completed": "Terminées",
+      "cancelled": "Annulées",
+      "estDzd": "DZD est.",
+      "na": "N/A",
+      "tabs": {
+        "overview": "Aperçu",
+        "notes": "Notes cliniques",
+        "documents": "Documents médicaux ({{count}})",
+        "history": "Historique ({{count}})"
+      },
+      "summary": {
+        "title": "Résumé du patient",
+        "fullName": "Nom complet",
+        "phone": "Numéro de téléphone",
+        "email": "Email",
+        "lastVisitDate": "Date de dernière visite"
+      },
+      "noteHighlight": "Note clinique récente",
+      "editNote": "Modifier la note"
+    },
+    "notes": {
+      "title": "Notes cliniques privées du médecin",
+      "clear": "Effacer",
+      "save": "Enregistrer la note",
+      "placeholder": "Enregistrez les observations cliniques privées, l'historique médical, les allergies, les maladies chroniques, les prescriptions ou les rappels de suivi pour ce patient...",
+      "disclaimer": "* Remarque : les notes enregistrées ici sont liées à cet identifiant patient et conservées dans votre espace de travail local.",
+      "savedToast": "Note clinique enregistrée avec succès !",
+      "saveErrorToast": "Échec de l'enregistrement local de la note.",
+      "clearedToast": "Note clinique effacée",
+      "clearErrorToast": "Échec de l'effacement de la note."
+    },
+    "documents": {
+      "title": "Documents envoyés par le patient ({{count}})",
+      "empty": {
+        "title": "Aucun document médical",
+        "description": "Ce patient n'a partagé ou téléversé aucun fichier médical ou ordonnance pour le moment."
+      },
+      "previewTitle": "Aperçu du fichier",
+      "preview": "Aperçu",
+      "downloadTitle": "Télécharger le document",
+      "uploaded": "Téléversé le {{date}}",
+      "notAvailable": "Aperçu non disponible pour ce format de fichier ({{type}})",
+      "openOrDownload": "Ouvrir ou télécharger le fichier",
+      "download": "Télécharger"
+    },
+    "history": {
+      "title": "Historique des rendez-vous ({{count}})",
+      "at": "à {{time}}",
+      "type": "Type :",
+      "consultationDefault": "Consultation",
+      "paymentMethod": "Moyen de paiement :",
+      "onSiteDefault": "Sur place"
+    },
+    "trust": {
+      "0": "Peu fiable",
+      "1": "Nouveau patient",
+      "2": "Fiable",
+      "3": "Patient VIP",
+      "points": "({{points}} pts)"
+    }
+  },
+  "clinics": {
+    "meta": { "locationNA": "Localisation N/A" },
+    "title": "Affiliations aux cliniques et salles de consultation",
+    "subtitle": "Gérez vos partenariats actifs avec les cliniques, répondez aux invitations ou demandez l'accès à de nouveaux établissements à travers l'Algérie.",
+    "exploreMarketplace": "Explorer la place de marché",
+    "metrics": {
+      "activeAffiliations": "Affiliations actives",
+      "activeAffiliationsDesc": "Établissements où vous exercez",
+      "pendingInvitations": "Invitations en attente",
+      "pendingInvitationsDesc": "En attente de votre réponse",
+      "outgoingRequests": "Demandes envoyées",
+      "outgoingRequestsDesc": "En cours d'examen par les cliniques",
+      "availableMarketplace": "Marché disponible",
+      "availableMarketplaceDesc": "Cliniques ouvertes aux médecins"
+    },
+    "tabs": {
+      "all": "Vue d'ensemble",
+      "affiliated": "Mes cliniques ({{count}})",
+      "invitations": "Invitations ({{count}})",
+      "pending_requests": "Demandes envoyées ({{count}})",
+      "marketplace": "Explorer la place de marché"
+    },
+    "reset": "Réinitialiser",
+    "search": { "placeholder": "Rechercher nom de clinique, wilaya..." },
+    "wilayaFilter": { "all": "Toutes les wilayas", "placeholder": "Filtrer par wilaya" },
+    "sort": { "recent": "Trier par : Par défaut / Récent", "name": "Trier par : Nom (A-Z)" },
+    "affiliations": {
+      "sectionTitle": "Affiliations actives aux cliniques",
+      "sectionDesc": "Établissements où votre profil est actif, permettant les rendez-vous et l'allocation de salles.",
+      "activeCount": "{{count}} actives",
+      "empty": {
+        "title": "Aucune affiliation active",
+        "description": "Vous n'avez encore rejoint aucune clinique. Acceptez une invitation ci-dessous ou demandez à rejoindre un centre médical depuis la place de marché."
+      },
+      "phoneContact": "Contact téléphonique",
+      "phoneNA": "N/A",
+      "affiliatedSince": "Affilié depuis",
+      "recent": "Récent",
+      "viewFacility": "Voir l'établissement et le planning"
+    },
+    "invitations": {
+      "sectionTitle": "Invitations de cliniques reçues",
+      "sectionDesc": "Cliniques qui vous ont invité à rejoindre leur équipe médicale et à exercer dans leurs salles.",
+      "pendingCount": "{{count}} en attente",
+      "empty": { "title": "Aucune invitation en attente", "description": "Vous n'avez actuellement aucune invitation active de la part de cliniques." },
+      "accept": "Accepter l'invitation",
+      "decline": "Refuser",
+      "acceptedToast": "Invitation acceptée avec succès !",
+      "declinedToast": "Invitation refusée",
+      "joinedToastTitle": "Vous avez rejoint la clinique",
+      "joinedToastDescription": "Elle apparaît maintenant dans Mes cliniques.",
+      "viewInMyClinics": "Voir dans Mes cliniques"
+    },
+    "pendingRequests": {
+      "sectionTitle": "Demandes que vous avez envoyées",
+      "sectionDesc": "Demandes d'adhésion envoyées aux cliniques, en attente d'approbation du gestionnaire.",
+      "sentCount": "{{count}} envoyées",
+      "empty": { "title": "Aucune demande envoyée", "description": "Vous n'avez demandé à rejoindre aucune clinique récemment." },
+      "sent": "Envoyée",
+      "underReview": "En cours d'examen",
+      "acceptedDeclined": "Acceptée / Refusée",
+      "cancel": "Annuler la demande",
+      "cancelledToast": "Demande annulée"
+    },
+    "marketplace": {
+      "sectionTitle": "Place de marché des cliniques",
+      "sectionDesc": "Parcourez les établissements médicaux à travers l'Algérie et demandez un espace de consultation.",
+      "showingCount": "Affichage de {{count}} cliniques",
+      "empty": { "title": "Aucune clinique ne correspond à votre recherche", "description": "Essayez d'ajuster votre mot-clé ou le filtre de wilaya pour trouver des cliniques disponibles." },
+      "activeProfile": "Profil actif",
+      "incompleteProfile": "Profil incomplet",
+      "details": "Détails",
+      "affiliated": "Affilié",
+      "requested": "Demande envoyée",
+      "requestToJoin": "Demander à rejoindre",
+      "mapEmptyLabel": "Aucune donnée de localisation de clinique disponible",
+      "requestSentToast": "Demande d'adhésion envoyée à la direction de la clinique"
+    },
+    "requestModal": {
+      "title": "Demande d'affiliation avec {{name}}",
+      "defaultClinicName": "Clinique",
+      "description": "Rédigez une brève présentation ou précisez vos jours de travail préférés à la direction de la clinique.",
+      "cancel": "Annuler",
+      "send": "Envoyer la demande",
+      "messageLabel": "Message / Demande d'horaire de pratique (conservé localement, pour vos propres notes) :",
+      "messagePlaceholder": "Je souhaite effectuer des consultations générales dans votre clinique en semaine le matin (par exemple, dimanche et mardi, 09h00 - 13h00)...",
+      "disclaimer": "* Remarque : les administrateurs de la clinique examineront votre profil et vos qualifications avant approbation."
+    }
+  },
+  "profile": {
+    "title": "Mon profil",
+    "subtitle": "Votre profil public tel que les patients le voient",
+    "saving": "Enregistrement…",
+    "saveChanges": "Enregistrer les modifications",
+    "photoAlt": "Portrait du Dr {{name}}",
+    "drTitle": "Dr {{name}}",
+    "verified": "Vérifié",
+    "pendingVerification": "Vérification en attente",
+    "changeNameHint": "Pour modifier votre nom ou numéro de téléphone enregistré, veuillez contacter le support.",
+    "verificationFeedback": "Commentaire de vérification : {{reason}}",
+    "changePhoto": "Changer la photo",
+    "completeness": "Complétude du profil : {{score}}/{{total}} ({{percentage}}%)",
+    "info": {
+      "nameAr": "Nom (AR)",
+      "phone": "Téléphone",
+      "email": "Email",
+      "rating": "Note",
+      "wilayaBaladya": "Wilaya / Baladya",
+      "memberSince": "Membre depuis",
+      "lastUpdated": "Dernière mise à jour",
+      "registrationStatus": "Statut d'inscription",
+      "notAvailable": "—",
+      "completed": "Complété",
+      "registered": "Enregistré",
+      "incomplete": "Incomplet",
+      "suspended": " · Suspendu"
+    },
+    "professional": {
+      "title": "Détails professionnels",
+      "yearsOfExperience": "Années d'expérience",
+      "specialty": "Spécialité",
+      "specialtyPlaceholder": "Sélectionner une spécialité",
+      "practiceType": "Type de pratique",
+      "bioFr": "Biographie (FR)",
+      "bioAr": "Biographie (AR)"
+    },
+    "practiceTypes": {
+      "INDEPENDENT": "Indépendant",
+      "CLINIC_BASED": "En clinique",
+      "BOTH": "Les deux"
+    },
+    "location": {
+      "title": "Lieu de pratique",
+      "subtitle": "Localisation de la commune et point de repère sur la carte pour la recherche des patients",
+      "wilaya": "Wilaya (Province)",
+      "wilayaPlaceholder": "Sélectionner une wilaya",
+      "baladya": "Baladya (Commune)",
+      "baladyaPlaceholder": "Sélectionner une baladya",
+      "baladyaPlaceholderNoWilaya": "Sélectionnez d'abord une wilaya",
+      "pinpoint": "Localiser le lieu de pratique sur la carte",
+      "selectedCoordinates": "Coordonnées sélectionnées : {{lat}}, {{lng}}",
+      "preview": "Aperçu du lieu de pratique"
+    },
+    "documents": {
+      "title": "Documents de vérification",
+      "subtitle": "Téléversez votre licence médicale, diplôme et pièce d'identité pour la vérification de votre compte.",
+      "typePlaceholder": "Type",
+      "upload": "Téléverser",
+      "empty": { "title": "Aucun document téléversé", "description": "Téléversez votre licence pour compléter la vérification." },
+      "deleteAria": "supprimer le document",
+      "deleteTitle": "Supprimer ce document ?",
+      "deleteDescription": "Vous devrez le téléverser à nouveau pour la vérification.",
+      "deleteConfirm": "Supprimer",
+      "defaultName": "Document",
+      "otherType": "autre",
+      "uploadedToast": "Document téléversé",
+      "removedToast": "Document supprimé",
+      "profileUpdatedToast": "Profil mis à jour"
+    },
+    "docTypes": {
+      "degree": "Diplôme",
+      "license": "Licence médicale",
+      "id_card": "Carte d'identité",
+      "cv": "CV",
+      "certificate": "Certificat",
+      "other": "Autre"
+    }
+  },
+  "reviews": {
+    "title": "Avis et retours des patients",
+    "subtitle": "Scores de satisfaction des patients, commentaires détaillés et paramètres de visibilité des avis",
+    "visibilityMode": "Mode de visibilité :",
+    "visibilityOptions": {
+      "BOTH": "Note et avis (public)",
+      "RATING_ONLY": "Note uniquement",
+      "REVIEW_ONLY": "Avis textuel uniquement",
+      "NONE": "Masqué (privé)"
+    },
+    "visibilityUpdatedToast": "Visibilité des avis mise à jour",
+    "basedOn_one": "Basé sur {{count}} avis patient",
+    "basedOn_other": "Basé sur {{count}} avis patients",
+    "distribution": {
+      "title": "Répartition des notes"
+    },
+    "list": {
+      "title": "Liste des avis patients ({{count}})",
+      "filter": "Filtrer :",
+      "all": "Tous",
+      "sortNewest": "Plus récents",
+      "sortHighest": "Mieux notés",
+      "sortLowest": "Moins bien notés",
+      "verifiedVisit": "Visite vérifiée",
+      "verifiedPatient": "Patient vérifié",
+      "patientId": "ID patient : {{id}}",
+      "noComment": "Aucun commentaire écrit laissé (note uniquement).",
+      "clinicId": "ID clinique : {{id}}",
+      "reviewId": "ID avis : {{id}}",
+      "updated": "Mis à jour : {{date}}",
+      "empty": {
+        "title": "Aucun avis patient trouvé",
+        "descriptionAll": "Les avis laissés par les patients après leur consultation s'afficheront ici avec tous les détails.",
+        "descriptionFiltered": "Aucun avis avec une note de {{rating}}★ pour le moment. Essayez un autre filtre."
+      }
+    }
+  },
+  "earnings": {
+    "title": "Revenus",
+    "subtitle": "Revenus de consultation à travers votre pratique",
+    "periods": {
+      "last7days": "7 jours",
+      "last30days": "30 jours",
+      "last90days": "90 jours",
+      "thisMonth": "Ce mois-ci",
+      "lastMonth": "Le mois dernier"
+    },
+    "kpi": {
+      "totalRevenue": "Revenu total",
+      "averagePerVisit": "Moyenne par visite",
+      "completedVisits": "Visites terminées",
+      "totalVisits": "{{count}} au total",
+      "uniquePatients": "Patients uniques",
+      "returningPatients": "{{count}} fidèles"
+    },
+    "chart": {
+      "revenueTrend": "Tendance des revenus",
+      "emptyTitle": "Aucune donnée de revenu pour le moment",
+      "emptyDescription": "Votre graphique de revenus mensuels apparaîtra après vos premières consultations terminées et payées."
+    },
+    "byMethod": {
+      "title": "Revenus par moyen de paiement",
+      "emptyTitle": "Aucune répartition des paiements",
+      "emptyDescription": "Rien n'a été enregistré pour cette période."
+    },
+    "outcomes": {
+      "title": "Résultats des visites",
+      "completionRate": "Taux de complétion",
+      "cancellationRate": "Taux d'annulation",
+      "noShowRate": "Taux d'absence",
+      "retentionRate": "Taux de fidélisation"
+    }
+  }
+}

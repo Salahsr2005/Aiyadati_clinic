@@ -1,0 +1,69 @@
+{
+  "dayOfWeek": {
+    "MONDAY": "الاثنين",
+    "TUESDAY": "الثلاثاء",
+    "WEDNESDAY": "الأربعاء",
+    "THURSDAY": "الخميس",
+    "FRIDAY": "الجمعة",
+    "SATURDAY": "السبت",
+    "SUNDAY": "الأحد"
+  },
+  "dayOfWeekShort": {
+    "MONDAY": "إث",
+    "TUESDAY": "ثل",
+    "WEDNESDAY": "أر",
+    "THURSDAY": "خم",
+    "FRIDAY": "جم",
+    "SATURDAY": "سب",
+    "SUNDAY": "أح"
+  },
+  "practiceType": {
+    "SOLO": "عيادة خاصة",
+    "CLINIC": "ضمن عيادة",
+    "HOSPITAL": "مستشفى",
+    "BOTH": "خاصة وعيادة",
+    "GROUP": "عيادة جماعية"
+  },
+  "reviewVisibility": {
+    "PUBLIC": "عام",
+    "PRIVATE": "خاص",
+    "HIDDEN": "مخفي",
+    "ANONYMOUS": "مجهول"
+  },
+  "inviteStatus": {
+    "PENDING": "قيد الانتظار",
+    "ACCEPTED": "مقبولة",
+    "REJECTED": "مرفوضة",
+    "CANCELLED": "ملغاة",
+    "EXPIRED": "منتهية"
+  },
+  "facilityType": {
+    "CLINIC": "عيادة",
+    "HOSPITAL": "مستشفى",
+    "CABINET": "مكتب طبي",
+    "LABORATORY": "مخبر",
+    "IMAGING_CENTER": "مركز تصوير",
+    "PHARMACY": "صيدلية",
+    "POLYCLINIC": "عيادة متعددة التخصصات"
+  },
+  "docType": {
+    "DEGREE": "شهادة جامعية",
+    "LICENSE": "رخصة الممارسة",
+    "ID_CARD": "بطاقة الهوية",
+    "CV": "السيرة الذاتية",
+    "CERTIFICATE": "شهادة",
+    "OTHER": "وثيقة أخرى"
+  },
+  "cancelledByRole": {
+    "DOCTOR": "أنت (الطبيب)",
+    "PATIENT": "المريض",
+    "CLINIC": "العيادة",
+    "ADMIN": "الإدارة"
+  },
+  "cancelledByShort": {
+    "DOCTOR": "من طرفك",
+    "PATIENT": "من طرف المريض",
+    "CLINIC": "من طرف العيادة",
+    "ADMIN": "من طرف الإدارة"
+  }
+}

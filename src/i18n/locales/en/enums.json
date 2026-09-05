@@ -1,0 +1,69 @@
+{
+  "dayOfWeek": {
+    "MONDAY": "Monday",
+    "TUESDAY": "Tuesday",
+    "WEDNESDAY": "Wednesday",
+    "THURSDAY": "Thursday",
+    "FRIDAY": "Friday",
+    "SATURDAY": "Saturday",
+    "SUNDAY": "Sunday"
+  },
+  "dayOfWeekShort": {
+    "MONDAY": "Mon",
+    "TUESDAY": "Tue",
+    "WEDNESDAY": "Wed",
+    "THURSDAY": "Thu",
+    "FRIDAY": "Fri",
+    "SATURDAY": "Sat",
+    "SUNDAY": "Sun"
+  },
+  "practiceType": {
+    "SOLO": "Solo practice",
+    "CLINIC": "Clinic-based",
+    "HOSPITAL": "Hospital",
+    "BOTH": "Solo & clinic",
+    "GROUP": "Group practice"
+  },
+  "reviewVisibility": {
+    "PUBLIC": "Public",
+    "PRIVATE": "Private",
+    "HIDDEN": "Hidden",
+    "ANONYMOUS": "Anonymous"
+  },
+  "inviteStatus": {
+    "PENDING": "Pending",
+    "ACCEPTED": "Accepted",
+    "REJECTED": "Declined",
+    "CANCELLED": "Cancelled",
+    "EXPIRED": "Expired"
+  },
+  "facilityType": {
+    "CLINIC": "Clinic",
+    "HOSPITAL": "Hospital",
+    "CABINET": "Medical cabinet",
+    "LABORATORY": "Laboratory",
+    "IMAGING_CENTER": "Imaging centre",
+    "PHARMACY": "Pharmacy",
+    "POLYCLINIC": "Polyclinic"
+  },
+  "docType": {
+    "DEGREE": "Degree",
+    "LICENSE": "Medical licence",
+    "ID_CARD": "ID card",
+    "CV": "Curriculum vitae",
+    "CERTIFICATE": "Certificate",
+    "OTHER": "Other document"
+  },
+  "cancelledByRole": {
+    "DOCTOR": "You (doctor)",
+    "PATIENT": "Patient",
+    "CLINIC": "Clinic",
+    "ADMIN": "Administrator"
+  },
+  "cancelledByShort": {
+    "DOCTOR": "by you",
+    "PATIENT": "by patient",
+    "CLINIC": "by clinic",
+    "ADMIN": "by admin"
+  }
+}

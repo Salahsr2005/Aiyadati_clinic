@@ -1,0 +1,69 @@
+{
+  "dayOfWeek": {
+    "MONDAY": "Lundi",
+    "TUESDAY": "Mardi",
+    "WEDNESDAY": "Mercredi",
+    "THURSDAY": "Jeudi",
+    "FRIDAY": "Vendredi",
+    "SATURDAY": "Samedi",
+    "SUNDAY": "Dimanche"
+  },
+  "dayOfWeekShort": {
+    "MONDAY": "Lun",
+    "TUESDAY": "Mar",
+    "WEDNESDAY": "Mer",
+    "THURSDAY": "Jeu",
+    "FRIDAY": "Ven",
+    "SATURDAY": "Sam",
+    "SUNDAY": "Dim"
+  },
+  "practiceType": {
+    "SOLO": "Cabinet individuel",
+    "CLINIC": "En clinique",
+    "HOSPITAL": "Hôpital",
+    "BOTH": "Cabinet et clinique",
+    "GROUP": "Cabinet de groupe"
+  },
+  "reviewVisibility": {
+    "PUBLIC": "Public",
+    "PRIVATE": "Privé",
+    "HIDDEN": "Masqué",
+    "ANONYMOUS": "Anonyme"
+  },
+  "inviteStatus": {
+    "PENDING": "En attente",
+    "ACCEPTED": "Acceptée",
+    "REJECTED": "Refusée",
+    "CANCELLED": "Annulée",
+    "EXPIRED": "Expirée"
+  },
+  "facilityType": {
+    "CLINIC": "Clinique",
+    "HOSPITAL": "Hôpital",
+    "CABINET": "Cabinet médical",
+    "LABORATORY": "Laboratoire",
+    "IMAGING_CENTER": "Centre d'imagerie",
+    "PHARMACY": "Pharmacie",
+    "POLYCLINIC": "Polyclinique"
+  },
+  "docType": {
+    "DEGREE": "Diplôme",
+    "LICENSE": "Licence médicale",
+    "ID_CARD": "Pièce d'identité",
+    "CV": "Curriculum vitae",
+    "CERTIFICATE": "Certificat",
+    "OTHER": "Autre document"
+  },
+  "cancelledByRole": {
+    "DOCTOR": "Vous (médecin)",
+    "PATIENT": "Patient",
+    "CLINIC": "Clinique",
+    "ADMIN": "Administrateur"
+  },
+  "cancelledByShort": {
+    "DOCTOR": "par vous",
+    "PATIENT": "par le patient",
+    "CLINIC": "par la clinique",
+    "ADMIN": "par l'admin"
+  }
+}

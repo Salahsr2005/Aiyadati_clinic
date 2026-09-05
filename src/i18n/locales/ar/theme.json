@@ -1,0 +1,16 @@
+{
+  "theme": {
+    "menu": "المظهر",
+    "mode": "الوضع",
+    "light": "فاتح",
+    "dark": "داكن",
+    "system": "النظام",
+    "palette": "لون السمة",
+    "palettes": {
+      "indigo": "نيلي",
+      "emerald": "زمردي",
+      "sunset": "غروب",
+      "ocean": "محيطي"
+    }
+  }
+}

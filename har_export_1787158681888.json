@@ -1,0 +1,3682 @@
+[
+  {
+    "success": true,
+    "message": "Clinic doctors retrieved successfully",
+    "data": [
+      {
+        "id": "a6c85580-61d5-4f07-b599-1f8b19862cc7",
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "doctorId": "f6384758-baab-4152-8f8f-c7f224726b4b",
+        "status": "ACCEPTED",
+        "invitedBy": "clinic",
+        "isActive": true,
+        "joinedAt": "2026-08-12T22:03:35.752Z",
+        "doctor": {
+          "id": "f6384758-baab-4152-8f8f-c7f224726b4b",
+          "email": "dr.fatima.mokhtari3@iyadati.dz",
+          "firstNameFr": "Fatima",
+          "firstNameAr": "Fatima",
+          "lastNameFr": "Mokhtari",
+          "lastNameAr": "Mokhtari",
+          "phone": "066607463",
+          "photoUrl": "https://api.serirsalah.me/uploads/public/logos/8c216ff3-75ac-4afc-984e-beb8897b32d9.jpg",
+          "specialties": [
+            {
+              "id": "42093771-bbf2-4341-a5a8-fe9062c963c0",
+              "nameFr": "ORL",
+              "nameAr": "أنف أذن حنجرة"
+            },
+            {
+              "id": "70d7e02c-6823-49bc-b0cd-a49d1ab6a895",
+              "nameFr": "Psychiatrie",
+              "nameAr": "الطب النفسي"
+            }
+          ],
+          "yearsOfExp": 27
+        }
+      },
+      {
+        "id": "ee3545bd-eec8-4e2e-b08c-aa4cd545ec70",
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "doctorId": "c050c946-1636-4e68-8df8-5092924ad2e3",
+        "status": "ACCEPTED",
+        "invitedBy": "clinic",
+        "isActive": true,
+        "joinedAt": "2026-08-12T22:03:35.748Z",
+        "doctor": {
+          "id": "c050c946-1636-4e68-8df8-5092924ad2e3",
+          "email": "dr.lamia.slimani2@iyadati.dz",
+          "firstNameFr": "Lamia",
+          "firstNameAr": "Lamia",
+          "lastNameFr": "Slimani",
+          "lastNameAr": "Slimani",
+          "phone": "066841032",
+          "photoUrl": "https://api.serirsalah.me/uploads/public/logos/fe22bbc0-b001-4053-87ad-107a0928ee08.jpg",
+          "specialties": [
+            {
+              "id": "3ba9955f-5999-4cf1-b5f8-02b5e59899b2",
+              "nameFr": "Orthopédie",
+              "nameAr": "جراحة العظام"
+            }
+          ],
+          "yearsOfExp": 27
+        }
+      },
+      {
+        "id": "80d72782-41f2-4908-9e94-387f631ec04c",
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "doctorId": "5f8a8909-4b0c-412e-a5b9-b09b87155e8d",
+        "status": "ACCEPTED",
+        "invitedBy": "doctor",
+        "isActive": true,
+        "joinedAt": "2026-08-12T22:03:35.745Z",
+        "doctor": {
+          "id": "5f8a8909-4b0c-412e-a5b9-b09b87155e8d",
+          "email": "dr.bilal.chikhi1@iyadati.dz",
+          "firstNameFr": "Bilal",
+          "firstNameAr": "Bilal",
+          "lastNameFr": "Chikhi",
+          "lastNameAr": "Chikhi",
+          "phone": "0661921054",
+          "photoUrl": "https://api.serirsalah.me/uploads/7f26f6fe-23a8-4c2f-8532-4b411deaf7bf.jpeg",
+          "specialties": [
+            {
+              "id": "f83f8947-dc52-4993-9d56-96e9b1547244",
+              "nameFr": "Endocrinologie",
+              "nameAr": "الغدد الصماء"
+            }
+          ],
+          "yearsOfExp": 26
+        }
+      }
+    ],
+    "meta": {
+      "timestamp": "2026-08-19T16:41:34.685Z"
+    }
+  },
+  {
+    "success": true,
+    "message": "Clinic profile retrieved successfully",
+    "data": {
+      "id": "206fa053-94b0-4396-84af-0fad086556ab",
+      "nameFr": "Clinique Ibn Sina",
+      "nameAr": "عيادة ابن سينا",
+      "descriptionAr": "عيادة ابن سينا - مؤسسة طبية حديثة في الشلف.",
+      "descriptionFr": "Clinique Ibn Sina - Établissement médical moderne à Chlef.",
+      "wilayaId": "35379082-1bcb-4d14-a5a1-ad20d37988f0",
+      "wilaya": {
+        "id": "35379082-1bcb-4d14-a5a1-ad20d37988f0",
+        "code": 2
+      },
+      "baladyaId": null,
+      "baladya": null,
+      "latitude": 39.3704922663339,
+      "longitude": 4.362399813642298,
+      "phone": "055898325",
+      "email": "contact4@cliniqueibnsina.dz",
+      "logoPath": "public/logos/495b7edf-cb3f-417a-bd22-5e403311bd7e.png",
+      "logoUrl": "https://api.serirsalah.me/uploads/public/logos/495b7edf-cb3f-417a-bd22-5e403311bd7e.png",
+      "facilityType": "HOSPITAL",
+      "isVerified": true,
+      "isSuspended": false,
+      "isCompleted": true,
+      "createdAt": "2026-08-12T22:03:35.298Z",
+      "updatedAt": "2026-08-12T22:03:37.539Z"
+    },
+    "meta": {
+      "timestamp": "2026-08-19T16:41:34.693Z"
+    }
+  },
+  {
+    "success": true,
+    "message": "Rooms retrieved successfully",
+    "data": [
+      {
+        "id": "662bbe97-19bb-4bec-be14-ed409e16115d",
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "name": "Consultation 1",
+        "specialtyId": null,
+        "isActive": true,
+        "createdAt": "2026-08-12T22:03:35.324Z",
+        "updatedAt": "2026-08-12T22:03:35.324Z"
+      },
+      {
+        "id": "35a90da3-89ee-42d3-9e42-ffafd6757538",
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "name": "Examen 2",
+        "specialtyId": null,
+        "isActive": true,
+        "createdAt": "2026-08-12T22:03:35.326Z",
+        "updatedAt": "2026-08-12T22:03:35.326Z"
+      },
+      {
+        "id": "101508d5-8dc2-491e-9fc9-d7647b435df9",
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "name": "Opération 4",
+        "specialtyId": null,
+        "isActive": true,
+        "createdAt": "2026-08-12T22:03:35.333Z",
+        "updatedAt": "2026-08-12T22:03:35.333Z"
+      },
+      {
+        "id": "7a135fea-15f3-41ca-ad89-ce7487563578",
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "name": "Traitement 3",
+        "specialtyId": null,
+        "isActive": true,
+        "createdAt": "2026-08-12T22:03:35.329Z",
+        "updatedAt": "2026-08-12T22:03:35.329Z"
+      },
+      {
+        "id": "d25506c0-f7a3-4b25-9721-3ccfab4a84c8",
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "name": "Urgence 5",
+        "specialtyId": null,
+        "isActive": true,
+        "createdAt": "2026-08-12T22:03:35.336Z",
+        "updatedAt": "2026-08-12T22:03:35.336Z"
+      }
+    ],
+    "meta": {
+      "timestamp": "2026-08-19T16:41:34.959Z"
+    }
+  },
+  {
+    "success": true,
+    "message": "Appointments retrieved",
+    "data": [
+      {
+        "id": "ff7fcd53-4448-425e-b8f9-4c41c87a337e",
+        "slotId": "e77c1479-0127-46ee-8fec-00aed74e90d9",
+        "slot": {
+          "id": "e77c1479-0127-46ee-8fec-00aed74e90d9",
+          "doctorId": "5f8a8909-4b0c-412e-a5b9-b09b87155e8d",
+          "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+          "roomId": "101508d5-8dc2-491e-9fc9-d7647b435df9",
+          "date": "2026-08-22",
+          "startTime": "09:20",
+          "endTime": "09:50",
+          "status": "available",
+          "maxPatients": 3,
+          "currentPatients": 0
+        },
+        "doctorId": "5f8a8909-4b0c-412e-a5b9-b09b87155e8d",
+        "doctor": {
+          "id": "5f8a8909-4b0c-412e-a5b9-b09b87155e8d",
+          "firstNameFr": "Bilal",
+          "lastNameFr": "Chikhi",
+          "photoUrl": "https://api.serirsalah.me/uploads/7f26f6fe-23a8-4c2f-8532-4b411deaf7bf.jpeg"
+        },
+        "patientId": "026714bc-3c7d-4884-8187-115ff691b9ec",
+        "patient": {
+          "id": "026714bc-3c7d-4884-8187-115ff691b9ec",
+          "firstName": "Salah",
+          "lastName": "Serir",
+          "phone": "0558761845",
+          "isGuest": false
+        },
+        "guestPatientId": null,
+        "guestPatient": null,
+        "patientType": "REGISTERED",
+        "contactUserId": null,
+        "contactUser": null,
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "clinic": null,
+        "type": "IN_PERSON",
+        "paymentMethod": "CREDIT",
+        "status": "CANCELLED",
+        "notes": null,
+        "createdBy": "026714bc-3c7d-4884-8187-115ff691b9ec",
+        "createdByType": "user",
+        "confirmedAt": "2026-08-17T00:12:09.595Z",
+        "confirmedBy": "5f8a8909-4b0c-412e-a5b9-b09b87155e8d",
+        "cancelledAt": "2026-08-17T00:26:53.362Z",
+        "cancelledBy": "5f8a8909-4b0c-412e-a5b9-b09b87155e8d",
+        "cancelReason": null,
+        "createdAt": "2026-08-17T00:10:47.654Z",
+        "updatedAt": "2026-08-17T00:26:53.363Z"
+      },
+      {
+        "id": "839d9292-b244-426f-9490-68c05b5d957c",
+        "slotId": "aac1191b-c954-4afc-af4a-2ebfed83de7b",
+        "slot": {
+          "id": "aac1191b-c954-4afc-af4a-2ebfed83de7b",
+          "doctorId": "f6384758-baab-4152-8f8f-c7f224726b4b",
+          "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+          "roomId": "d25506c0-f7a3-4b25-9721-3ccfab4a84c8",
+          "date": "2026-08-23",
+          "startTime": "08:00",
+          "endTime": "08:20",
+          "status": "available",
+          "maxPatients": 3,
+          "currentPatients": 0
+        },
+        "doctorId": "f6384758-baab-4152-8f8f-c7f224726b4b",
+        "doctor": {
+          "id": "f6384758-baab-4152-8f8f-c7f224726b4b",
+          "firstNameFr": "Fatima",
+          "lastNameFr": "Mokhtari",
+          "photoUrl": "https://api.serirsalah.me/uploads/public/logos/8c216ff3-75ac-4afc-984e-beb8897b32d9.jpg"
+        },
+        "patientId": "026714bc-3c7d-4884-8187-115ff691b9ec",
+        "patient": {
+          "id": "026714bc-3c7d-4884-8187-115ff691b9ec",
+          "firstName": "Salah",
+          "lastName": "Serir",
+          "phone": "0558761845",
+          "isGuest": false
+        },
+        "guestPatientId": null,
+        "guestPatient": null,
+        "patientType": "REGISTERED",
+        "contactUserId": null,
+        "contactUser": null,
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "clinic": null,
+        "type": "IN_PERSON",
+        "paymentMethod": "CREDIT",
+        "status": "PENDING",
+        "notes": null,
+        "createdBy": "026714bc-3c7d-4884-8187-115ff691b9ec",
+        "createdByType": "user",
+        "confirmedAt": null,
+        "confirmedBy": null,
+        "cancelledAt": null,
+        "cancelledBy": null,
+        "cancelReason": null,
+        "createdAt": "2026-08-16T17:28:58.421Z",
+        "updatedAt": "2026-08-16T17:28:58.421Z"
+      },
+      {
+        "id": "0a2a68d8-c548-4a26-9f19-353eea11ec1c",
+        "slotId": "5fba2fc4-c033-4e49-89f8-daccbcb589e4",
+        "slot": {
+          "id": "5fba2fc4-c033-4e49-89f8-daccbcb589e4",
+          "doctorId": "f6384758-baab-4152-8f8f-c7f224726b4b",
+          "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+          "roomId": "101508d5-8dc2-491e-9fc9-d7647b435df9",
+          "date": "2026-08-14",
+          "startTime": "08:35",
+          "endTime": "08:55",
+          "status": "expired",
+          "maxPatients": 3,
+          "currentPatients": 0
+        },
+        "doctorId": "f6384758-baab-4152-8f8f-c7f224726b4b",
+        "doctor": {
+          "id": "f6384758-baab-4152-8f8f-c7f224726b4b",
+          "firstNameFr": "Fatima",
+          "lastNameFr": "Mokhtari",
+          "photoUrl": "https://api.serirsalah.me/uploads/public/logos/8c216ff3-75ac-4afc-984e-beb8897b32d9.jpg"
+        },
+        "patientId": "fcfb838a-09a2-4c45-926c-94533e21599e",
+        "patient": {
+          "id": "fcfb838a-09a2-4c45-926c-94533e21599e",
+          "firstName": "Warda",
+          "lastName": "Boumediene",
+          "phone": "0562525920",
+          "isGuest": false
+        },
+        "guestPatientId": null,
+        "guestPatient": null,
+        "patientType": "REGISTERED",
+        "contactUserId": null,
+        "contactUser": null,
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "clinic": null,
+        "type": "HOME_VISIT",
+        "paymentMethod": "CREDIT",
+        "status": "PENDING",
+        "notes": "Consultation de routine",
+        "createdBy": "fcfb838a-09a2-4c45-926c-94533e21599e",
+        "createdByType": "patient",
+        "confirmedAt": null,
+        "confirmedBy": null,
+        "cancelledAt": null,
+        "cancelledBy": null,
+        "cancelReason": null,
+        "createdAt": "2026-08-12T22:03:37.294Z",
+        "updatedAt": "2026-08-12T22:03:37.294Z"
+      },
+      {
+        "id": "507d349a-094c-4f5e-b8ca-29229942fdce",
+        "slotId": "fef4f93a-cf2d-41e4-a1ba-2bd4f915cbbc",
+        "slot": {
+          "id": "fef4f93a-cf2d-41e4-a1ba-2bd4f915cbbc",
+          "doctorId": "5f8a8909-4b0c-412e-a5b9-b09b87155e8d",
+          "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+          "roomId": "101508d5-8dc2-491e-9fc9-d7647b435df9",
+          "date": "2026-08-12",
+          "startTime": "09:20",
+          "endTime": "09:50",
+          "status": "expired",
+          "maxPatients": 3,
+          "currentPatients": 0
+        },
+        "doctorId": "5f8a8909-4b0c-412e-a5b9-b09b87155e8d",
+        "doctor": {
+          "id": "5f8a8909-4b0c-412e-a5b9-b09b87155e8d",
+          "firstNameFr": "Bilal",
+          "lastNameFr": "Chikhi",
+          "photoUrl": "https://api.serirsalah.me/uploads/7f26f6fe-23a8-4c2f-8532-4b411deaf7bf.jpeg"
+        },
+        "patientId": "9fce275f-bb10-4587-a647-d85455b2d17c",
+        "patient": {
+          "id": "9fce275f-bb10-4587-a647-d85455b2d17c",
+          "firstName": "Youssef",
+          "lastName": "Amara",
+          "phone": "0569689874",
+          "isGuest": false
+        },
+        "guestPatientId": null,
+        "guestPatient": null,
+        "patientType": "REGISTERED",
+        "contactUserId": null,
+        "contactUser": null,
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "clinic": null,
+        "type": "HOME_VISIT",
+        "paymentMethod": "ON_SITE",
+        "status": "CANCELLED",
+        "notes": "Annulation demandée",
+        "createdBy": "9fce275f-bb10-4587-a647-d85455b2d17c",
+        "createdByType": "patient",
+        "confirmedAt": "2026-08-02T16:47:07.655Z",
+        "confirmedBy": "clinic",
+        "cancelledAt": "2026-08-12T22:03:37.242Z",
+        "cancelledBy": "patient",
+        "cancelReason": "Conflit d'horaire",
+        "createdAt": "2026-08-12T22:03:37.243Z",
+        "updatedAt": "2026-08-12T22:03:37.243Z"
+      },
+      {
+        "id": "c1eccadd-1a4e-4017-8e1b-0897aec11484",
+        "slotId": "131cd8cc-2773-4f12-b5c1-ec3abed61c4f",
+        "slot": {
+          "id": "131cd8cc-2773-4f12-b5c1-ec3abed61c4f",
+          "doctorId": "5f8a8909-4b0c-412e-a5b9-b09b87155e8d",
+          "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+          "roomId": "101508d5-8dc2-491e-9fc9-d7647b435df9",
+          "date": "2026-08-16",
+          "startTime": "08:00",
+          "endTime": "08:30",
+          "status": "cancelled",
+          "maxPatients": 3,
+          "currentPatients": 0
+        },
+        "doctorId": "5f8a8909-4b0c-412e-a5b9-b09b87155e8d",
+        "doctor": {
+          "id": "5f8a8909-4b0c-412e-a5b9-b09b87155e8d",
+          "firstNameFr": "Bilal",
+          "lastNameFr": "Chikhi",
+          "photoUrl": "https://api.serirsalah.me/uploads/7f26f6fe-23a8-4c2f-8532-4b411deaf7bf.jpeg"
+        },
+        "patientId": "aa5e8aa5-f40d-4439-9f23-7e0475710436",
+        "patient": {
+          "id": "aa5e8aa5-f40d-4439-9f23-7e0475710436",
+          "firstName": "Nacer",
+          "lastName": "Zerrouk",
+          "phone": "0595178048",
+          "isGuest": false
+        },
+        "guestPatientId": null,
+        "guestPatient": null,
+        "patientType": "REGISTERED",
+        "contactUserId": null,
+        "contactUser": null,
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "clinic": null,
+        "type": "HOME_VISIT",
+        "paymentMethod": "ON_SITE",
+        "status": "CANCELLED",
+        "notes": "Consultation de routine",
+        "createdBy": "aa5e8aa5-f40d-4439-9f23-7e0475710436",
+        "createdByType": "patient",
+        "confirmedAt": "2025-06-13T07:20:14.675Z",
+        "confirmedBy": "clinic",
+        "cancelledAt": "2026-08-16T16:06:37.247Z",
+        "cancelledBy": "5f8a8909-4b0c-412e-a5b9-b09b87155e8d",
+        "cancelReason": "Slot cancelled by provider",
+        "createdAt": "2026-08-12T22:03:37.088Z",
+        "updatedAt": "2026-08-16T16:06:37.248Z"
+      },
+      {
+        "id": "7288d453-e9f9-477f-b0c8-33c2d0b35628",
+        "slotId": "486703c6-88ab-4a77-bb46-dfb70752ceda",
+        "slot": {
+          "id": "486703c6-88ab-4a77-bb46-dfb70752ceda",
+          "doctorId": "f6384758-baab-4152-8f8f-c7f224726b4b",
+          "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+          "roomId": "662bbe97-19bb-4bec-be14-ed409e16115d",
+          "date": "2026-08-16",
+          "startTime": "08:35",
+          "endTime": "08:55",
+          "status": "expired",
+          "maxPatients": 3,
+          "currentPatients": 0
+        },
+        "doctorId": "f6384758-baab-4152-8f8f-c7f224726b4b",
+        "doctor": {
+          "id": "f6384758-baab-4152-8f8f-c7f224726b4b",
+          "firstNameFr": "Fatima",
+          "lastNameFr": "Mokhtari",
+          "photoUrl": "https://api.serirsalah.me/uploads/public/logos/8c216ff3-75ac-4afc-984e-beb8897b32d9.jpg"
+        },
+        "patientId": "d00b2724-b5f3-4951-84bd-a54cb8e2d887",
+        "patient": {
+          "id": "d00b2724-b5f3-4951-84bd-a54cb8e2d887",
+          "firstName": "Yasmine",
+          "lastName": "Ait Ouarab",
+          "phone": "0591993070",
+          "isGuest": false
+        },
+        "guestPatientId": null,
+        "guestPatient": null,
+        "patientType": "REGISTERED",
+        "contactUserId": null,
+        "contactUser": null,
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "clinic": null,
+        "type": "HOME_VISIT",
+        "paymentMethod": "ON_SITE",
+        "status": "IN_PROGRESS",
+        "notes": "Consultation de routine",
+        "createdBy": "d00b2724-b5f3-4951-84bd-a54cb8e2d887",
+        "createdByType": "patient",
+        "confirmedAt": "2026-01-03T15:35:47.596Z",
+        "confirmedBy": "system",
+        "cancelledAt": null,
+        "cancelledBy": null,
+        "cancelReason": null,
+        "createdAt": "2026-08-12T22:03:36.905Z",
+        "updatedAt": "2026-08-12T22:03:36.905Z"
+      },
+      {
+        "id": "03f4bf09-b3cd-4bc6-bce3-e9723cd21e06",
+        "slotId": "2abe10fb-547b-4eca-a851-a6084a09623e",
+        "slot": {
+          "id": "2abe10fb-547b-4eca-a851-a6084a09623e",
+          "doctorId": "c050c946-1636-4e68-8df8-5092924ad2e3",
+          "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+          "roomId": "35a90da3-89ee-42d3-9e42-ffafd6757538",
+          "date": "2026-08-23",
+          "startTime": "08:35",
+          "endTime": "09:05",
+          "status": "full",
+          "maxPatients": 1,
+          "currentPatients": 0
+        },
+        "doctorId": "c050c946-1636-4e68-8df8-5092924ad2e3",
+        "doctor": {
+          "id": "c050c946-1636-4e68-8df8-5092924ad2e3",
+          "firstNameFr": "Lamia",
+          "lastNameFr": "Slimani",
+          "photoUrl": "https://api.serirsalah.me/uploads/public/logos/fe22bbc0-b001-4053-87ad-107a0928ee08.jpg"
+        },
+        "patientId": "7ff9b162-64e6-4690-84cd-73bed9e83e54",
+        "patient": {
+          "id": "7ff9b162-64e6-4690-84cd-73bed9e83e54",
+          "firstName": "Mohamed",
+          "lastName": "Brahimi",
+          "phone": "0544491898",
+          "isGuest": false
+        },
+        "guestPatientId": null,
+        "guestPatient": null,
+        "patientType": "REGISTERED",
+        "contactUserId": null,
+        "contactUser": null,
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "clinic": null,
+        "type": "VIDEO",
+        "paymentMethod": "CREDIT",
+        "status": "IN_PROGRESS",
+        "notes": "Consultation de routine",
+        "createdBy": "7ff9b162-64e6-4690-84cd-73bed9e83e54",
+        "createdByType": "patient",
+        "confirmedAt": "2025-05-23T04:32:43.923Z",
+        "confirmedBy": "system",
+        "cancelledAt": null,
+        "cancelledBy": null,
+        "cancelReason": null,
+        "createdAt": "2026-08-12T22:03:36.847Z",
+        "updatedAt": "2026-08-12T22:03:36.847Z"
+      },
+      {
+        "id": "0c2ce11e-8426-4950-bc3b-f8e283799639",
+        "slotId": "2965c7fa-9853-4863-aa09-7cacb50229d5",
+        "slot": {
+          "id": "2965c7fa-9853-4863-aa09-7cacb50229d5",
+          "doctorId": "f6384758-baab-4152-8f8f-c7f224726b4b",
+          "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+          "roomId": "7a135fea-15f3-41ca-ad89-ce7487563578",
+          "date": "2026-08-24",
+          "startTime": "09:10",
+          "endTime": "09:30",
+          "status": "full",
+          "maxPatients": 3,
+          "currentPatients": 0
+        },
+        "doctorId": "f6384758-baab-4152-8f8f-c7f224726b4b",
+        "doctor": {
+          "id": "f6384758-baab-4152-8f8f-c7f224726b4b",
+          "firstNameFr": "Fatima",
+          "lastNameFr": "Mokhtari",
+          "photoUrl": "https://api.serirsalah.me/uploads/public/logos/8c216ff3-75ac-4afc-984e-beb8897b32d9.jpg"
+        },
+        "patientId": "0a6dc16b-d668-4630-8a82-886ab2722796",
+        "patient": {
+          "id": "0a6dc16b-d668-4630-8a82-886ab2722796",
+          "firstName": "Mehdi",
+          "lastName": "Said",
+          "phone": "0599786056",
+          "isGuest": false
+        },
+        "guestPatientId": null,
+        "guestPatient": null,
+        "patientType": "REGISTERED",
+        "contactUserId": null,
+        "contactUser": null,
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "clinic": null,
+        "type": "HOME_VISIT",
+        "paymentMethod": "ON_SITE",
+        "status": "CANCELLED",
+        "notes": "Annulation demandée",
+        "createdBy": "0a6dc16b-d668-4630-8a82-886ab2722796",
+        "createdByType": "patient",
+        "confirmedAt": "2024-02-10T04:12:47.122Z",
+        "confirmedBy": "clinic",
+        "cancelledAt": "2026-08-12T22:03:36.827Z",
+        "cancelledBy": "patient",
+        "cancelReason": "Conflit d'horaire",
+        "createdAt": "2026-08-12T22:03:36.828Z",
+        "updatedAt": "2026-08-12T22:03:36.828Z"
+      },
+      {
+        "id": "16e8fe7c-a4af-4408-82eb-fd8e0fa79cbb",
+        "slotId": "83906f6f-e32a-465e-bad2-d417119f18b9",
+        "slot": {
+          "id": "83906f6f-e32a-465e-bad2-d417119f18b9",
+          "doctorId": "f6384758-baab-4152-8f8f-c7f224726b4b",
+          "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+          "roomId": "d25506c0-f7a3-4b25-9721-3ccfab4a84c8",
+          "date": "2026-08-14",
+          "startTime": "09:10",
+          "endTime": "09:30",
+          "status": "expired",
+          "maxPatients": 3,
+          "currentPatients": 0
+        },
+        "doctorId": "f6384758-baab-4152-8f8f-c7f224726b4b",
+        "doctor": {
+          "id": "f6384758-baab-4152-8f8f-c7f224726b4b",
+          "firstNameFr": "Fatima",
+          "lastNameFr": "Mokhtari",
+          "photoUrl": "https://api.serirsalah.me/uploads/public/logos/8c216ff3-75ac-4afc-984e-beb8897b32d9.jpg"
+        },
+        "patientId": "ac49364f-818d-4769-85c1-5939db572990",
+        "patient": {
+          "id": "ac49364f-818d-4769-85c1-5939db572990",
+          "firstName": "Rachid",
+          "lastName": "Mansouri",
+          "phone": "0549387902",
+          "isGuest": false
+        },
+        "guestPatientId": null,
+        "guestPatient": null,
+        "patientType": "REGISTERED",
+        "contactUserId": null,
+        "contactUser": null,
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "clinic": null,
+        "type": "HOME_VISIT",
+        "paymentMethod": "ON_SITE",
+        "status": "CONFIRMED",
+        "notes": "Consultation de routine",
+        "createdBy": "ac49364f-818d-4769-85c1-5939db572990",
+        "createdByType": "patient",
+        "confirmedAt": "2025-08-15T13:42:35.926Z",
+        "confirmedBy": "system",
+        "cancelledAt": null,
+        "cancelledBy": null,
+        "cancelReason": null,
+        "createdAt": "2026-08-12T22:03:36.820Z",
+        "updatedAt": "2026-08-12T22:03:36.820Z"
+      },
+      {
+        "id": "f37b339b-c041-451d-8118-e84917ff6e8d",
+        "slotId": "f0acfcb0-7fe0-426f-80ab-3541c05cdeff",
+        "slot": {
+          "id": "f0acfcb0-7fe0-426f-80ab-3541c05cdeff",
+          "doctorId": "5f8a8909-4b0c-412e-a5b9-b09b87155e8d",
+          "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+          "roomId": "101508d5-8dc2-491e-9fc9-d7647b435df9",
+          "date": "2026-08-22",
+          "startTime": "08:00",
+          "endTime": "08:30",
+          "status": "available",
+          "maxPatients": 3,
+          "currentPatients": 0
+        },
+        "doctorId": "5f8a8909-4b0c-412e-a5b9-b09b87155e8d",
+        "doctor": {
+          "id": "5f8a8909-4b0c-412e-a5b9-b09b87155e8d",
+          "firstNameFr": "Bilal",
+          "lastNameFr": "Chikhi",
+          "photoUrl": "https://api.serirsalah.me/uploads/7f26f6fe-23a8-4c2f-8532-4b411deaf7bf.jpeg"
+        },
+        "patientId": "27cac796-1141-48c7-b9fe-d3042c156e7b",
+        "patient": {
+          "id": "27cac796-1141-48c7-b9fe-d3042c156e7b",
+          "firstName": "Omar",
+          "lastName": "Kaci",
+          "phone": "0517944552",
+          "isGuest": false
+        },
+        "guestPatientId": null,
+        "guestPatient": null,
+        "patientType": "REGISTERED",
+        "contactUserId": null,
+        "contactUser": null,
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "clinic": null,
+        "type": "IN_PERSON",
+        "paymentMethod": "ON_SITE",
+        "status": "COMPLETED",
+        "notes": "Consultation de routine",
+        "createdBy": "27cac796-1141-48c7-b9fe-d3042c156e7b",
+        "createdByType": "patient",
+        "confirmedAt": "2026-07-14T17:24:42.048Z",
+        "confirmedBy": "doctor",
+        "cancelledAt": null,
+        "cancelledBy": null,
+        "cancelReason": null,
+        "createdAt": "2026-08-12T22:03:36.788Z",
+        "updatedAt": "2026-08-12T22:03:36.788Z"
+      }
+    ],
+    "meta": {
+      "page": 1,
+      "limit": 10,
+      "total": 14,
+      "totalPages": 2,
+      "hasNextPage": true,
+      "hasPreviousPage": false,
+      "timestamp": "2026-08-19T16:41:35.002Z"
+    }
+  },
+  {
+    "success": true,
+    "message": "Clinic doctors retrieved successfully",
+    "data": [
+      {
+        "id": "a6c85580-61d5-4f07-b599-1f8b19862cc7",
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "doctorId": "f6384758-baab-4152-8f8f-c7f224726b4b",
+        "status": "ACCEPTED",
+        "invitedBy": "clinic",
+        "isActive": true,
+        "joinedAt": "2026-08-12T22:03:35.752Z",
+        "doctor": {
+          "id": "f6384758-baab-4152-8f8f-c7f224726b4b",
+          "email": "dr.fatima.mokhtari3@iyadati.dz",
+          "firstNameFr": "Fatima",
+          "firstNameAr": "Fatima",
+          "lastNameFr": "Mokhtari",
+          "lastNameAr": "Mokhtari",
+          "phone": "066607463",
+          "photoUrl": "https://api.serirsalah.me/uploads/public/logos/8c216ff3-75ac-4afc-984e-beb8897b32d9.jpg",
+          "specialties": [
+            {
+              "id": "42093771-bbf2-4341-a5a8-fe9062c963c0",
+              "nameFr": "ORL",
+              "nameAr": "أنف أذن حنجرة"
+            },
+            {
+              "id": "70d7e02c-6823-49bc-b0cd-a49d1ab6a895",
+              "nameFr": "Psychiatrie",
+              "nameAr": "الطب النفسي"
+            }
+          ],
+          "yearsOfExp": 27
+        }
+      },
+      {
+        "id": "ee3545bd-eec8-4e2e-b08c-aa4cd545ec70",
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "doctorId": "c050c946-1636-4e68-8df8-5092924ad2e3",
+        "status": "ACCEPTED",
+        "invitedBy": "clinic",
+        "isActive": true,
+        "joinedAt": "2026-08-12T22:03:35.748Z",
+        "doctor": {
+          "id": "c050c946-1636-4e68-8df8-5092924ad2e3",
+          "email": "dr.lamia.slimani2@iyadati.dz",
+          "firstNameFr": "Lamia",
+          "firstNameAr": "Lamia",
+          "lastNameFr": "Slimani",
+          "lastNameAr": "Slimani",
+          "phone": "066841032",
+          "photoUrl": "https://api.serirsalah.me/uploads/public/logos/fe22bbc0-b001-4053-87ad-107a0928ee08.jpg",
+          "specialties": [
+            {
+              "id": "3ba9955f-5999-4cf1-b5f8-02b5e59899b2",
+              "nameFr": "Orthopédie",
+              "nameAr": "جراحة العظام"
+            }
+          ],
+          "yearsOfExp": 27
+        }
+      },
+      {
+        "id": "80d72782-41f2-4908-9e94-387f631ec04c",
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "doctorId": "5f8a8909-4b0c-412e-a5b9-b09b87155e8d",
+        "status": "ACCEPTED",
+        "invitedBy": "doctor",
+        "isActive": true,
+        "joinedAt": "2026-08-12T22:03:35.745Z",
+        "doctor": {
+          "id": "5f8a8909-4b0c-412e-a5b9-b09b87155e8d",
+          "email": "dr.bilal.chikhi1@iyadati.dz",
+          "firstNameFr": "Bilal",
+          "firstNameAr": "Bilal",
+          "lastNameFr": "Chikhi",
+          "lastNameAr": "Chikhi",
+          "phone": "0661921054",
+          "photoUrl": "https://api.serirsalah.me/uploads/7f26f6fe-23a8-4c2f-8532-4b411deaf7bf.jpeg",
+          "specialties": [
+            {
+              "id": "f83f8947-dc52-4993-9d56-96e9b1547244",
+              "nameFr": "Endocrinologie",
+              "nameAr": "الغدد الصماء"
+            }
+          ],
+          "yearsOfExp": 26
+        }
+      }
+    ],
+    "meta": {
+      "timestamp": "2026-08-19T16:42:49.011Z"
+    }
+  },
+  {
+    "success": true,
+    "message": "Appointments retrieved",
+    "data": [
+      {
+        "id": "ff7fcd53-4448-425e-b8f9-4c41c87a337e",
+        "slotId": "e77c1479-0127-46ee-8fec-00aed74e90d9",
+        "slot": {
+          "id": "e77c1479-0127-46ee-8fec-00aed74e90d9",
+          "doctorId": "5f8a8909-4b0c-412e-a5b9-b09b87155e8d",
+          "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+          "roomId": "101508d5-8dc2-491e-9fc9-d7647b435df9",
+          "date": "2026-08-22",
+          "startTime": "09:20",
+          "endTime": "09:50",
+          "status": "available",
+          "maxPatients": 3,
+          "currentPatients": 0
+        },
+        "doctorId": "5f8a8909-4b0c-412e-a5b9-b09b87155e8d",
+        "doctor": {
+          "id": "5f8a8909-4b0c-412e-a5b9-b09b87155e8d",
+          "firstNameFr": "Bilal",
+          "lastNameFr": "Chikhi",
+          "photoUrl": "https://api.serirsalah.me/uploads/7f26f6fe-23a8-4c2f-8532-4b411deaf7bf.jpeg"
+        },
+        "patientId": "026714bc-3c7d-4884-8187-115ff691b9ec",
+        "patient": {
+          "id": "026714bc-3c7d-4884-8187-115ff691b9ec",
+          "firstName": "Salah",
+          "lastName": "Serir",
+          "phone": "0558761845",
+          "isGuest": false
+        },
+        "guestPatientId": null,
+        "guestPatient": null,
+        "patientType": "REGISTERED",
+        "contactUserId": null,
+        "contactUser": null,
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "clinic": null,
+        "type": "IN_PERSON",
+        "paymentMethod": "CREDIT",
+        "status": "CANCELLED",
+        "notes": null,
+        "createdBy": "026714bc-3c7d-4884-8187-115ff691b9ec",
+        "createdByType": "user",
+        "confirmedAt": "2026-08-17T00:12:09.595Z",
+        "confirmedBy": "5f8a8909-4b0c-412e-a5b9-b09b87155e8d",
+        "cancelledAt": "2026-08-17T00:26:53.362Z",
+        "cancelledBy": "5f8a8909-4b0c-412e-a5b9-b09b87155e8d",
+        "cancelReason": null,
+        "createdAt": "2026-08-17T00:10:47.654Z",
+        "updatedAt": "2026-08-17T00:26:53.363Z"
+      },
+      {
+        "id": "839d9292-b244-426f-9490-68c05b5d957c",
+        "slotId": "aac1191b-c954-4afc-af4a-2ebfed83de7b",
+        "slot": {
+          "id": "aac1191b-c954-4afc-af4a-2ebfed83de7b",
+          "doctorId": "f6384758-baab-4152-8f8f-c7f224726b4b",
+          "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+          "roomId": "d25506c0-f7a3-4b25-9721-3ccfab4a84c8",
+          "date": "2026-08-23",
+          "startTime": "08:00",
+          "endTime": "08:20",
+          "status": "available",
+          "maxPatients": 3,
+          "currentPatients": 0
+        },
+        "doctorId": "f6384758-baab-4152-8f8f-c7f224726b4b",
+        "doctor": {
+          "id": "f6384758-baab-4152-8f8f-c7f224726b4b",
+          "firstNameFr": "Fatima",
+          "lastNameFr": "Mokhtari",
+          "photoUrl": "https://api.serirsalah.me/uploads/public/logos/8c216ff3-75ac-4afc-984e-beb8897b32d9.jpg"
+        },
+        "patientId": "026714bc-3c7d-4884-8187-115ff691b9ec",
+        "patient": {
+          "id": "026714bc-3c7d-4884-8187-115ff691b9ec",
+          "firstName": "Salah",
+          "lastName": "Serir",
+          "phone": "0558761845",
+          "isGuest": false
+        },
+        "guestPatientId": null,
+        "guestPatient": null,
+        "patientType": "REGISTERED",
+        "contactUserId": null,
+        "contactUser": null,
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "clinic": null,
+        "type": "IN_PERSON",
+        "paymentMethod": "CREDIT",
+        "status": "PENDING",
+        "notes": null,
+        "createdBy": "026714bc-3c7d-4884-8187-115ff691b9ec",
+        "createdByType": "user",
+        "confirmedAt": null,
+        "confirmedBy": null,
+        "cancelledAt": null,
+        "cancelledBy": null,
+        "cancelReason": null,
+        "createdAt": "2026-08-16T17:28:58.421Z",
+        "updatedAt": "2026-08-16T17:28:58.421Z"
+      },
+      {
+        "id": "0a2a68d8-c548-4a26-9f19-353eea11ec1c",
+        "slotId": "5fba2fc4-c033-4e49-89f8-daccbcb589e4",
+        "slot": {
+          "id": "5fba2fc4-c033-4e49-89f8-daccbcb589e4",
+          "doctorId": "f6384758-baab-4152-8f8f-c7f224726b4b",
+          "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+          "roomId": "101508d5-8dc2-491e-9fc9-d7647b435df9",
+          "date": "2026-08-14",
+          "startTime": "08:35",
+          "endTime": "08:55",
+          "status": "expired",
+          "maxPatients": 3,
+          "currentPatients": 0
+        },
+        "doctorId": "f6384758-baab-4152-8f8f-c7f224726b4b",
+        "doctor": {
+          "id": "f6384758-baab-4152-8f8f-c7f224726b4b",
+          "firstNameFr": "Fatima",
+          "lastNameFr": "Mokhtari",
+          "photoUrl": "https://api.serirsalah.me/uploads/public/logos/8c216ff3-75ac-4afc-984e-beb8897b32d9.jpg"
+        },
+        "patientId": "fcfb838a-09a2-4c45-926c-94533e21599e",
+        "patient": {
+          "id": "fcfb838a-09a2-4c45-926c-94533e21599e",
+          "firstName": "Warda",
+          "lastName": "Boumediene",
+          "phone": "0562525920",
+          "isGuest": false
+        },
+        "guestPatientId": null,
+        "guestPatient": null,
+        "patientType": "REGISTERED",
+        "contactUserId": null,
+        "contactUser": null,
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "clinic": null,
+        "type": "HOME_VISIT",
+        "paymentMethod": "CREDIT",
+        "status": "PENDING",
+        "notes": "Consultation de routine",
+        "createdBy": "fcfb838a-09a2-4c45-926c-94533e21599e",
+        "createdByType": "patient",
+        "confirmedAt": null,
+        "confirmedBy": null,
+        "cancelledAt": null,
+        "cancelledBy": null,
+        "cancelReason": null,
+        "createdAt": "2026-08-12T22:03:37.294Z",
+        "updatedAt": "2026-08-12T22:03:37.294Z"
+      },
+      {
+        "id": "507d349a-094c-4f5e-b8ca-29229942fdce",
+        "slotId": "fef4f93a-cf2d-41e4-a1ba-2bd4f915cbbc",
+        "slot": {
+          "id": "fef4f93a-cf2d-41e4-a1ba-2bd4f915cbbc",
+          "doctorId": "5f8a8909-4b0c-412e-a5b9-b09b87155e8d",
+          "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+          "roomId": "101508d5-8dc2-491e-9fc9-d7647b435df9",
+          "date": "2026-08-12",
+          "startTime": "09:20",
+          "endTime": "09:50",
+          "status": "expired",
+          "maxPatients": 3,
+          "currentPatients": 0
+        },
+        "doctorId": "5f8a8909-4b0c-412e-a5b9-b09b87155e8d",
+        "doctor": {
+          "id": "5f8a8909-4b0c-412e-a5b9-b09b87155e8d",
+          "firstNameFr": "Bilal",
+          "lastNameFr": "Chikhi",
+          "photoUrl": "https://api.serirsalah.me/uploads/7f26f6fe-23a8-4c2f-8532-4b411deaf7bf.jpeg"
+        },
+        "patientId": "9fce275f-bb10-4587-a647-d85455b2d17c",
+        "patient": {
+          "id": "9fce275f-bb10-4587-a647-d85455b2d17c",
+          "firstName": "Youssef",
+          "lastName": "Amara",
+          "phone": "0569689874",
+          "isGuest": false
+        },
+        "guestPatientId": null,
+        "guestPatient": null,
+        "patientType": "REGISTERED",
+        "contactUserId": null,
+        "contactUser": null,
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "clinic": null,
+        "type": "HOME_VISIT",
+        "paymentMethod": "ON_SITE",
+        "status": "CANCELLED",
+        "notes": "Annulation demandée",
+        "createdBy": "9fce275f-bb10-4587-a647-d85455b2d17c",
+        "createdByType": "patient",
+        "confirmedAt": "2026-08-02T16:47:07.655Z",
+        "confirmedBy": "clinic",
+        "cancelledAt": "2026-08-12T22:03:37.242Z",
+        "cancelledBy": "patient",
+        "cancelReason": "Conflit d'horaire",
+        "createdAt": "2026-08-12T22:03:37.243Z",
+        "updatedAt": "2026-08-12T22:03:37.243Z"
+      },
+      {
+        "id": "c1eccadd-1a4e-4017-8e1b-0897aec11484",
+        "slotId": "131cd8cc-2773-4f12-b5c1-ec3abed61c4f",
+        "slot": {
+          "id": "131cd8cc-2773-4f12-b5c1-ec3abed61c4f",
+          "doctorId": "5f8a8909-4b0c-412e-a5b9-b09b87155e8d",
+          "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+          "roomId": "101508d5-8dc2-491e-9fc9-d7647b435df9",
+          "date": "2026-08-16",
+          "startTime": "08:00",
+          "endTime": "08:30",
+          "status": "cancelled",
+          "maxPatients": 3,
+          "currentPatients": 0
+        },
+        "doctorId": "5f8a8909-4b0c-412e-a5b9-b09b87155e8d",
+        "doctor": {
+          "id": "5f8a8909-4b0c-412e-a5b9-b09b87155e8d",
+          "firstNameFr": "Bilal",
+          "lastNameFr": "Chikhi",
+          "photoUrl": "https://api.serirsalah.me/uploads/7f26f6fe-23a8-4c2f-8532-4b411deaf7bf.jpeg"
+        },
+        "patientId": "aa5e8aa5-f40d-4439-9f23-7e0475710436",
+        "patient": {
+          "id": "aa5e8aa5-f40d-4439-9f23-7e0475710436",
+          "firstName": "Nacer",
+          "lastName": "Zerrouk",
+          "phone": "0595178048",
+          "isGuest": false
+        },
+        "guestPatientId": null,
+        "guestPatient": null,
+        "patientType": "REGISTERED",
+        "contactUserId": null,
+        "contactUser": null,
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "clinic": null,
+        "type": "HOME_VISIT",
+        "paymentMethod": "ON_SITE",
+        "status": "CANCELLED",
+        "notes": "Consultation de routine",
+        "createdBy": "aa5e8aa5-f40d-4439-9f23-7e0475710436",
+        "createdByType": "patient",
+        "confirmedAt": "2025-06-13T07:20:14.675Z",
+        "confirmedBy": "clinic",
+        "cancelledAt": "2026-08-16T16:06:37.247Z",
+        "cancelledBy": "5f8a8909-4b0c-412e-a5b9-b09b87155e8d",
+        "cancelReason": "Slot cancelled by provider",
+        "createdAt": "2026-08-12T22:03:37.088Z",
+        "updatedAt": "2026-08-16T16:06:37.248Z"
+      },
+      {
+        "id": "7288d453-e9f9-477f-b0c8-33c2d0b35628",
+        "slotId": "486703c6-88ab-4a77-bb46-dfb70752ceda",
+        "slot": {
+          "id": "486703c6-88ab-4a77-bb46-dfb70752ceda",
+          "doctorId": "f6384758-baab-4152-8f8f-c7f224726b4b",
+          "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+          "roomId": "662bbe97-19bb-4bec-be14-ed409e16115d",
+          "date": "2026-08-16",
+          "startTime": "08:35",
+          "endTime": "08:55",
+          "status": "expired",
+          "maxPatients": 3,
+          "currentPatients": 0
+        },
+        "doctorId": "f6384758-baab-4152-8f8f-c7f224726b4b",
+        "doctor": {
+          "id": "f6384758-baab-4152-8f8f-c7f224726b4b",
+          "firstNameFr": "Fatima",
+          "lastNameFr": "Mokhtari",
+          "photoUrl": "https://api.serirsalah.me/uploads/public/logos/8c216ff3-75ac-4afc-984e-beb8897b32d9.jpg"
+        },
+        "patientId": "d00b2724-b5f3-4951-84bd-a54cb8e2d887",
+        "patient": {
+          "id": "d00b2724-b5f3-4951-84bd-a54cb8e2d887",
+          "firstName": "Yasmine",
+          "lastName": "Ait Ouarab",
+          "phone": "0591993070",
+          "isGuest": false
+        },
+        "guestPatientId": null,
+        "guestPatient": null,
+        "patientType": "REGISTERED",
+        "contactUserId": null,
+        "contactUser": null,
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "clinic": null,
+        "type": "HOME_VISIT",
+        "paymentMethod": "ON_SITE",
+        "status": "IN_PROGRESS",
+        "notes": "Consultation de routine",
+        "createdBy": "d00b2724-b5f3-4951-84bd-a54cb8e2d887",
+        "createdByType": "patient",
+        "confirmedAt": "2026-01-03T15:35:47.596Z",
+        "confirmedBy": "system",
+        "cancelledAt": null,
+        "cancelledBy": null,
+        "cancelReason": null,
+        "createdAt": "2026-08-12T22:03:36.905Z",
+        "updatedAt": "2026-08-12T22:03:36.905Z"
+      },
+      {
+        "id": "03f4bf09-b3cd-4bc6-bce3-e9723cd21e06",
+        "slotId": "2abe10fb-547b-4eca-a851-a6084a09623e",
+        "slot": {
+          "id": "2abe10fb-547b-4eca-a851-a6084a09623e",
+          "doctorId": "c050c946-1636-4e68-8df8-5092924ad2e3",
+          "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+          "roomId": "35a90da3-89ee-42d3-9e42-ffafd6757538",
+          "date": "2026-08-23",
+          "startTime": "08:35",
+          "endTime": "09:05",
+          "status": "full",
+          "maxPatients": 1,
+          "currentPatients": 0
+        },
+        "doctorId": "c050c946-1636-4e68-8df8-5092924ad2e3",
+        "doctor": {
+          "id": "c050c946-1636-4e68-8df8-5092924ad2e3",
+          "firstNameFr": "Lamia",
+          "lastNameFr": "Slimani",
+          "photoUrl": "https://api.serirsalah.me/uploads/public/logos/fe22bbc0-b001-4053-87ad-107a0928ee08.jpg"
+        },
+        "patientId": "7ff9b162-64e6-4690-84cd-73bed9e83e54",
+        "patient": {
+          "id": "7ff9b162-64e6-4690-84cd-73bed9e83e54",
+          "firstName": "Mohamed",
+          "lastName": "Brahimi",
+          "phone": "0544491898",
+          "isGuest": false
+        },
+        "guestPatientId": null,
+        "guestPatient": null,
+        "patientType": "REGISTERED",
+        "contactUserId": null,
+        "contactUser": null,
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "clinic": null,
+        "type": "VIDEO",
+        "paymentMethod": "CREDIT",
+        "status": "IN_PROGRESS",
+        "notes": "Consultation de routine",
+        "createdBy": "7ff9b162-64e6-4690-84cd-73bed9e83e54",
+        "createdByType": "patient",
+        "confirmedAt": "2025-05-23T04:32:43.923Z",
+        "confirmedBy": "system",
+        "cancelledAt": null,
+        "cancelledBy": null,
+        "cancelReason": null,
+        "createdAt": "2026-08-12T22:03:36.847Z",
+        "updatedAt": "2026-08-12T22:03:36.847Z"
+      },
+      {
+        "id": "0c2ce11e-8426-4950-bc3b-f8e283799639",
+        "slotId": "2965c7fa-9853-4863-aa09-7cacb50229d5",
+        "slot": {
+          "id": "2965c7fa-9853-4863-aa09-7cacb50229d5",
+          "doctorId": "f6384758-baab-4152-8f8f-c7f224726b4b",
+          "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+          "roomId": "7a135fea-15f3-41ca-ad89-ce7487563578",
+          "date": "2026-08-24",
+          "startTime": "09:10",
+          "endTime": "09:30",
+          "status": "full",
+          "maxPatients": 3,
+          "currentPatients": 0
+        },
+        "doctorId": "f6384758-baab-4152-8f8f-c7f224726b4b",
+        "doctor": {
+          "id": "f6384758-baab-4152-8f8f-c7f224726b4b",
+          "firstNameFr": "Fatima",
+          "lastNameFr": "Mokhtari",
+          "photoUrl": "https://api.serirsalah.me/uploads/public/logos/8c216ff3-75ac-4afc-984e-beb8897b32d9.jpg"
+        },
+        "patientId": "0a6dc16b-d668-4630-8a82-886ab2722796",
+        "patient": {
+          "id": "0a6dc16b-d668-4630-8a82-886ab2722796",
+          "firstName": "Mehdi",
+          "lastName": "Said",
+          "phone": "0599786056",
+          "isGuest": false
+        },
+        "guestPatientId": null,
+        "guestPatient": null,
+        "patientType": "REGISTERED",
+        "contactUserId": null,
+        "contactUser": null,
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "clinic": null,
+        "type": "HOME_VISIT",
+        "paymentMethod": "ON_SITE",
+        "status": "CANCELLED",
+        "notes": "Annulation demandée",
+        "createdBy": "0a6dc16b-d668-4630-8a82-886ab2722796",
+        "createdByType": "patient",
+        "confirmedAt": "2024-02-10T04:12:47.122Z",
+        "confirmedBy": "clinic",
+        "cancelledAt": "2026-08-12T22:03:36.827Z",
+        "cancelledBy": "patient",
+        "cancelReason": "Conflit d'horaire",
+        "createdAt": "2026-08-12T22:03:36.828Z",
+        "updatedAt": "2026-08-12T22:03:36.828Z"
+      },
+      {
+        "id": "16e8fe7c-a4af-4408-82eb-fd8e0fa79cbb",
+        "slotId": "83906f6f-e32a-465e-bad2-d417119f18b9",
+        "slot": {
+          "id": "83906f6f-e32a-465e-bad2-d417119f18b9",
+          "doctorId": "f6384758-baab-4152-8f8f-c7f224726b4b",
+          "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+          "roomId": "d25506c0-f7a3-4b25-9721-3ccfab4a84c8",
+          "date": "2026-08-14",
+          "startTime": "09:10",
+          "endTime": "09:30",
+          "status": "expired",
+          "maxPatients": 3,
+          "currentPatients": 0
+        },
+        "doctorId": "f6384758-baab-4152-8f8f-c7f224726b4b",
+        "doctor": {
+          "id": "f6384758-baab-4152-8f8f-c7f224726b4b",
+          "firstNameFr": "Fatima",
+          "lastNameFr": "Mokhtari",
+          "photoUrl": "https://api.serirsalah.me/uploads/public/logos/8c216ff3-75ac-4afc-984e-beb8897b32d9.jpg"
+        },
+        "patientId": "ac49364f-818d-4769-85c1-5939db572990",
+        "patient": {
+          "id": "ac49364f-818d-4769-85c1-5939db572990",
+          "firstName": "Rachid",
+          "lastName": "Mansouri",
+          "phone": "0549387902",
+          "isGuest": false
+        },
+        "guestPatientId": null,
+        "guestPatient": null,
+        "patientType": "REGISTERED",
+        "contactUserId": null,
+        "contactUser": null,
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "clinic": null,
+        "type": "HOME_VISIT",
+        "paymentMethod": "ON_SITE",
+        "status": "CONFIRMED",
+        "notes": "Consultation de routine",
+        "createdBy": "ac49364f-818d-4769-85c1-5939db572990",
+        "createdByType": "patient",
+        "confirmedAt": "2025-08-15T13:42:35.926Z",
+        "confirmedBy": "system",
+        "cancelledAt": null,
+        "cancelledBy": null,
+        "cancelReason": null,
+        "createdAt": "2026-08-12T22:03:36.820Z",
+        "updatedAt": "2026-08-12T22:03:36.820Z"
+      },
+      {
+        "id": "f37b339b-c041-451d-8118-e84917ff6e8d",
+        "slotId": "f0acfcb0-7fe0-426f-80ab-3541c05cdeff",
+        "slot": {
+          "id": "f0acfcb0-7fe0-426f-80ab-3541c05cdeff",
+          "doctorId": "5f8a8909-4b0c-412e-a5b9-b09b87155e8d",
+          "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+          "roomId": "101508d5-8dc2-491e-9fc9-d7647b435df9",
+          "date": "2026-08-22",
+          "startTime": "08:00",
+          "endTime": "08:30",
+          "status": "available",
+          "maxPatients": 3,
+          "currentPatients": 0
+        },
+        "doctorId": "5f8a8909-4b0c-412e-a5b9-b09b87155e8d",
+        "doctor": {
+          "id": "5f8a8909-4b0c-412e-a5b9-b09b87155e8d",
+          "firstNameFr": "Bilal",
+          "lastNameFr": "Chikhi",
+          "photoUrl": "https://api.serirsalah.me/uploads/7f26f6fe-23a8-4c2f-8532-4b411deaf7bf.jpeg"
+        },
+        "patientId": "27cac796-1141-48c7-b9fe-d3042c156e7b",
+        "patient": {
+          "id": "27cac796-1141-48c7-b9fe-d3042c156e7b",
+          "firstName": "Omar",
+          "lastName": "Kaci",
+          "phone": "0517944552",
+          "isGuest": false
+        },
+        "guestPatientId": null,
+        "guestPatient": null,
+        "patientType": "REGISTERED",
+        "contactUserId": null,
+        "contactUser": null,
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "clinic": null,
+        "type": "IN_PERSON",
+        "paymentMethod": "ON_SITE",
+        "status": "COMPLETED",
+        "notes": "Consultation de routine",
+        "createdBy": "27cac796-1141-48c7-b9fe-d3042c156e7b",
+        "createdByType": "patient",
+        "confirmedAt": "2026-07-14T17:24:42.048Z",
+        "confirmedBy": "doctor",
+        "cancelledAt": null,
+        "cancelledBy": null,
+        "cancelReason": null,
+        "createdAt": "2026-08-12T22:03:36.788Z",
+        "updatedAt": "2026-08-12T22:03:36.788Z"
+      },
+      {
+        "id": "60b65cb8-8795-4e76-9f8e-3a70ff71c2bf",
+        "slotId": "aac1191b-c954-4afc-af4a-2ebfed83de7b",
+        "slot": {
+          "id": "aac1191b-c954-4afc-af4a-2ebfed83de7b",
+          "doctorId": "f6384758-baab-4152-8f8f-c7f224726b4b",
+          "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+          "roomId": "d25506c0-f7a3-4b25-9721-3ccfab4a84c8",
+          "date": "2026-08-23",
+          "startTime": "08:00",
+          "endTime": "08:20",
+          "status": "available",
+          "maxPatients": 3,
+          "currentPatients": 0
+        },
+        "doctorId": "f6384758-baab-4152-8f8f-c7f224726b4b",
+        "doctor": {
+          "id": "f6384758-baab-4152-8f8f-c7f224726b4b",
+          "firstNameFr": "Fatima",
+          "lastNameFr": "Mokhtari",
+          "photoUrl": "https://api.serirsalah.me/uploads/public/logos/8c216ff3-75ac-4afc-984e-beb8897b32d9.jpg"
+        },
+        "patientId": "1abf4c55-a88e-418f-9635-5022efb8e299",
+        "patient": {
+          "id": "1abf4c55-a88e-418f-9635-5022efb8e299",
+          "firstName": "Fatima",
+          "lastName": "Kaci",
+          "phone": "0546176217",
+          "isGuest": false
+        },
+        "guestPatientId": null,
+        "guestPatient": null,
+        "patientType": "REGISTERED",
+        "contactUserId": null,
+        "contactUser": null,
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "clinic": null,
+        "type": "VIDEO",
+        "paymentMethod": "CREDIT",
+        "status": "IN_PROGRESS",
+        "notes": "Consultation de routine",
+        "createdBy": "1abf4c55-a88e-418f-9635-5022efb8e299",
+        "createdByType": "patient",
+        "confirmedAt": "2025-11-15T19:31:24.162Z",
+        "confirmedBy": "doctor",
+        "cancelledAt": null,
+        "cancelledBy": null,
+        "cancelReason": null,
+        "createdAt": "2026-08-12T22:03:36.738Z",
+        "updatedAt": "2026-08-12T22:03:36.738Z"
+      },
+      {
+        "id": "66c65e45-b35a-4a61-a7df-f680f61f7cf5",
+        "slotId": "a733d0f5-e786-4d34-9ffd-11e653a6e4e5",
+        "slot": {
+          "id": "a733d0f5-e786-4d34-9ffd-11e653a6e4e5",
+          "doctorId": "c050c946-1636-4e68-8df8-5092924ad2e3",
+          "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+          "roomId": "35a90da3-89ee-42d3-9e42-ffafd6757538",
+          "date": "2026-08-16",
+          "startTime": "08:00",
+          "endTime": "08:30",
+          "status": "expired",
+          "maxPatients": 1,
+          "currentPatients": 0
+        },
+        "doctorId": "c050c946-1636-4e68-8df8-5092924ad2e3",
+        "doctor": {
+          "id": "c050c946-1636-4e68-8df8-5092924ad2e3",
+          "firstNameFr": "Lamia",
+          "lastNameFr": "Slimani",
+          "photoUrl": "https://api.serirsalah.me/uploads/public/logos/fe22bbc0-b001-4053-87ad-107a0928ee08.jpg"
+        },
+        "patientId": "28ba7847-e7fc-43c2-91fd-e63e3a1dbb53",
+        "patient": {
+          "id": "28ba7847-e7fc-43c2-91fd-e63e3a1dbb53",
+          "firstName": "Kenza",
+          "lastName": "Bouaziz",
+          "phone": "0594862792",
+          "isGuest": false
+        },
+        "guestPatientId": null,
+        "guestPatient": null,
+        "patientType": "REGISTERED",
+        "contactUserId": null,
+        "contactUser": null,
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "clinic": null,
+        "type": "HOME_VISIT",
+        "paymentMethod": "ON_SITE",
+        "status": "PENDING",
+        "notes": "Consultation de routine",
+        "createdBy": "28ba7847-e7fc-43c2-91fd-e63e3a1dbb53",
+        "createdByType": "patient",
+        "confirmedAt": null,
+        "confirmedBy": null,
+        "cancelledAt": null,
+        "cancelledBy": null,
+        "cancelReason": null,
+        "createdAt": "2026-08-12T22:03:36.727Z",
+        "updatedAt": "2026-08-12T22:03:36.727Z"
+      },
+      {
+        "id": "8ef860c0-171d-475c-ac21-5317f6753ae7",
+        "slotId": "7e8e565c-7d1a-4c77-acd5-7caec7c332cd",
+        "slot": {
+          "id": "7e8e565c-7d1a-4c77-acd5-7caec7c332cd",
+          "doctorId": "5f8a8909-4b0c-412e-a5b9-b09b87155e8d",
+          "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+          "roomId": "101508d5-8dc2-491e-9fc9-d7647b435df9",
+          "date": "2026-08-15",
+          "startTime": "08:00",
+          "endTime": "08:30",
+          "status": "expired",
+          "maxPatients": 3,
+          "currentPatients": 0
+        },
+        "doctorId": "5f8a8909-4b0c-412e-a5b9-b09b87155e8d",
+        "doctor": {
+          "id": "5f8a8909-4b0c-412e-a5b9-b09b87155e8d",
+          "firstNameFr": "Bilal",
+          "lastNameFr": "Chikhi",
+          "photoUrl": "https://api.serirsalah.me/uploads/7f26f6fe-23a8-4c2f-8532-4b411deaf7bf.jpeg"
+        },
+        "patientId": "a6d7ebdc-d2cc-4a71-8dbc-0ab0b1107a70",
+        "patient": {
+          "id": "a6d7ebdc-d2cc-4a71-8dbc-0ab0b1107a70",
+          "firstName": "Fatima",
+          "lastName": "Mokhtari",
+          "phone": "0543928863",
+          "isGuest": false
+        },
+        "guestPatientId": null,
+        "guestPatient": null,
+        "patientType": "REGISTERED",
+        "contactUserId": null,
+        "contactUser": null,
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "clinic": null,
+        "type": "IN_PERSON",
+        "paymentMethod": "ON_SITE",
+        "status": "COMPLETED",
+        "notes": "Consultation de routine",
+        "createdBy": "a6d7ebdc-d2cc-4a71-8dbc-0ab0b1107a70",
+        "createdByType": "patient",
+        "confirmedAt": "2025-06-03T11:07:53.874Z",
+        "confirmedBy": "clinic",
+        "cancelledAt": null,
+        "cancelledBy": null,
+        "cancelReason": null,
+        "createdAt": "2026-08-12T22:03:36.714Z",
+        "updatedAt": "2026-08-12T22:03:36.714Z"
+      },
+      {
+        "id": "535a6e19-9b9b-4dac-a34e-570f86e204b2",
+        "slotId": "70388523-444c-4d61-b48c-8f6b3c4c9373",
+        "slot": {
+          "id": "70388523-444c-4d61-b48c-8f6b3c4c9373",
+          "doctorId": "c050c946-1636-4e68-8df8-5092924ad2e3",
+          "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+          "roomId": "662bbe97-19bb-4bec-be14-ed409e16115d",
+          "date": "2026-08-12",
+          "startTime": "08:00",
+          "endTime": "08:30",
+          "status": "expired",
+          "maxPatients": 1,
+          "currentPatients": 0
+        },
+        "doctorId": "c050c946-1636-4e68-8df8-5092924ad2e3",
+        "doctor": {
+          "id": "c050c946-1636-4e68-8df8-5092924ad2e3",
+          "firstNameFr": "Lamia",
+          "lastNameFr": "Slimani",
+          "photoUrl": "https://api.serirsalah.me/uploads/public/logos/fe22bbc0-b001-4053-87ad-107a0928ee08.jpg"
+        },
+        "patientId": "6773f173-0ade-4fd4-a77c-35e080973532",
+        "patient": {
+          "id": "6773f173-0ade-4fd4-a77c-35e080973532",
+          "firstName": "Djamel",
+          "lastName": "Bensalem",
+          "phone": "0579528767",
+          "isGuest": false
+        },
+        "guestPatientId": null,
+        "guestPatient": null,
+        "patientType": "REGISTERED",
+        "contactUserId": null,
+        "contactUser": null,
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "clinic": null,
+        "type": "IN_PERSON",
+        "paymentMethod": "CREDIT",
+        "status": "COMPLETED",
+        "notes": "Consultation de routine",
+        "createdBy": "6773f173-0ade-4fd4-a77c-35e080973532",
+        "createdByType": "patient",
+        "confirmedAt": "2026-01-04T23:25:40.440Z",
+        "confirmedBy": "system",
+        "cancelledAt": null,
+        "cancelledBy": null,
+        "cancelReason": null,
+        "createdAt": "2026-08-12T22:03:36.520Z",
+        "updatedAt": "2026-08-12T22:03:36.520Z"
+      }
+    ],
+    "meta": {
+      "page": 1,
+      "limit": 15,
+      "total": 14,
+      "totalPages": 1,
+      "hasNextPage": false,
+      "hasPreviousPage": false,
+      "timestamp": "2026-08-19T16:42:49.022Z"
+    }
+  },
+  {
+    "success": true,
+    "message": "Slots retrieved",
+    "data": [
+      {
+        "id": "2f4db313-6a27-4fe6-b3d0-1027bca3c88b",
+        "doctorId": "c050c946-1636-4e68-8df8-5092924ad2e3",
+        "clinicId": "c593676f-c62b-4c8a-9d7b-de1be29efca3",
+        "roomId": "90b3dc5e-9b58-402c-bdb3-867cd3ff5fa8",
+        "date": "2026-08-19",
+        "startTime": "08:00",
+        "endTime": "08:30",
+        "status": "expired",
+        "maxPatients": 1,
+        "currentPatients": 0
+      },
+      {
+        "id": "52ee1281-f4b5-4c7f-8ad4-1525da44045d",
+        "doctorId": "c050c946-1636-4e68-8df8-5092924ad2e3",
+        "clinicId": "4e64633f-0d6a-4bb7-ad80-42c47affd1b6",
+        "roomId": "e52f093b-3229-4049-983a-f69c1eb14618",
+        "date": "2026-08-19",
+        "startTime": "08:35",
+        "endTime": "09:05",
+        "status": "expired",
+        "maxPatients": 1,
+        "currentPatients": 0
+      },
+      {
+        "id": "e72b2cd5-08fd-40e4-ac77-40cd27cf7225",
+        "doctorId": "c050c946-1636-4e68-8df8-5092924ad2e3",
+        "clinicId": "4e64633f-0d6a-4bb7-ad80-42c47affd1b6",
+        "roomId": "e52f093b-3229-4049-983a-f69c1eb14618",
+        "date": "2026-08-19",
+        "startTime": "09:10",
+        "endTime": "09:40",
+        "status": "expired",
+        "maxPatients": 1,
+        "currentPatients": 1
+      }
+    ],
+    "meta": {
+      "timestamp": "2026-08-19T16:43:19.331Z"
+    }
+  },
+  {
+    "success": false,
+    "message": "Validation failed",
+    "error": "Validation failed",
+    "errors": [
+      {
+        "field": "guestPatient.phone",
+        "message": "Phone number must be 10-15 digits"
+      }
+    ],
+    "meta": {
+      "timestamp": "2026-08-19T16:43:25.896Z"
+    }
+  },
+  {
+    "success": true,
+    "message": "Clinic doctors retrieved successfully",
+    "data": [
+      {
+        "id": "a6c85580-61d5-4f07-b599-1f8b19862cc7",
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "doctorId": "f6384758-baab-4152-8f8f-c7f224726b4b",
+        "status": "ACCEPTED",
+        "invitedBy": "clinic",
+        "isActive": true,
+        "joinedAt": "2026-08-12T22:03:35.752Z",
+        "doctor": {
+          "id": "f6384758-baab-4152-8f8f-c7f224726b4b",
+          "email": "dr.fatima.mokhtari3@iyadati.dz",
+          "firstNameFr": "Fatima",
+          "firstNameAr": "Fatima",
+          "lastNameFr": "Mokhtari",
+          "lastNameAr": "Mokhtari",
+          "phone": "066607463",
+          "photoUrl": "https://api.serirsalah.me/uploads/public/logos/8c216ff3-75ac-4afc-984e-beb8897b32d9.jpg",
+          "specialties": [
+            {
+              "id": "42093771-bbf2-4341-a5a8-fe9062c963c0",
+              "nameFr": "ORL",
+              "nameAr": "أنف أذن حنجرة"
+            },
+            {
+              "id": "70d7e02c-6823-49bc-b0cd-a49d1ab6a895",
+              "nameFr": "Psychiatrie",
+              "nameAr": "الطب النفسي"
+            }
+          ],
+          "yearsOfExp": 27
+        }
+      },
+      {
+        "id": "ee3545bd-eec8-4e2e-b08c-aa4cd545ec70",
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "doctorId": "c050c946-1636-4e68-8df8-5092924ad2e3",
+        "status": "ACCEPTED",
+        "invitedBy": "clinic",
+        "isActive": true,
+        "joinedAt": "2026-08-12T22:03:35.748Z",
+        "doctor": {
+          "id": "c050c946-1636-4e68-8df8-5092924ad2e3",
+          "email": "dr.lamia.slimani2@iyadati.dz",
+          "firstNameFr": "Lamia",
+          "firstNameAr": "Lamia",
+          "lastNameFr": "Slimani",
+          "lastNameAr": "Slimani",
+          "phone": "066841032",
+          "photoUrl": "https://api.serirsalah.me/uploads/public/logos/fe22bbc0-b001-4053-87ad-107a0928ee08.jpg",
+          "specialties": [
+            {
+              "id": "3ba9955f-5999-4cf1-b5f8-02b5e59899b2",
+              "nameFr": "Orthopédie",
+              "nameAr": "جراحة العظام"
+            }
+          ],
+          "yearsOfExp": 27
+        }
+      },
+      {
+        "id": "80d72782-41f2-4908-9e94-387f631ec04c",
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "doctorId": "5f8a8909-4b0c-412e-a5b9-b09b87155e8d",
+        "status": "ACCEPTED",
+        "invitedBy": "doctor",
+        "isActive": true,
+        "joinedAt": "2026-08-12T22:03:35.745Z",
+        "doctor": {
+          "id": "5f8a8909-4b0c-412e-a5b9-b09b87155e8d",
+          "email": "dr.bilal.chikhi1@iyadati.dz",
+          "firstNameFr": "Bilal",
+          "firstNameAr": "Bilal",
+          "lastNameFr": "Chikhi",
+          "lastNameAr": "Chikhi",
+          "phone": "0661921054",
+          "photoUrl": "https://api.serirsalah.me/uploads/7f26f6fe-23a8-4c2f-8532-4b411deaf7bf.jpeg",
+          "specialties": [
+            {
+              "id": "f83f8947-dc52-4993-9d56-96e9b1547244",
+              "nameFr": "Endocrinologie",
+              "nameAr": "الغدد الصماء"
+            }
+          ],
+          "yearsOfExp": 26
+        }
+      }
+    ],
+    "meta": {
+      "timestamp": "2026-08-19T16:43:31.201Z"
+    }
+  },
+  {
+    "success": true,
+    "message": "Rooms retrieved successfully",
+    "data": [
+      {
+        "id": "662bbe97-19bb-4bec-be14-ed409e16115d",
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "name": "Consultation 1",
+        "specialtyId": null,
+        "isActive": true,
+        "createdAt": "2026-08-12T22:03:35.324Z",
+        "updatedAt": "2026-08-12T22:03:35.324Z"
+      },
+      {
+        "id": "35a90da3-89ee-42d3-9e42-ffafd6757538",
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "name": "Examen 2",
+        "specialtyId": null,
+        "isActive": true,
+        "createdAt": "2026-08-12T22:03:35.326Z",
+        "updatedAt": "2026-08-12T22:03:35.326Z"
+      },
+      {
+        "id": "101508d5-8dc2-491e-9fc9-d7647b435df9",
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "name": "Opération 4",
+        "specialtyId": null,
+        "isActive": true,
+        "createdAt": "2026-08-12T22:03:35.333Z",
+        "updatedAt": "2026-08-12T22:03:35.333Z"
+      },
+      {
+        "id": "7a135fea-15f3-41ca-ad89-ce7487563578",
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "name": "Traitement 3",
+        "specialtyId": null,
+        "isActive": true,
+        "createdAt": "2026-08-12T22:03:35.329Z",
+        "updatedAt": "2026-08-12T22:03:35.329Z"
+      },
+      {
+        "id": "d25506c0-f7a3-4b25-9721-3ccfab4a84c8",
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "name": "Urgence 5",
+        "specialtyId": null,
+        "isActive": true,
+        "createdAt": "2026-08-12T22:03:35.336Z",
+        "updatedAt": "2026-08-12T22:03:35.336Z"
+      }
+    ],
+    "meta": {
+      "timestamp": "2026-08-19T16:43:31.264Z"
+    }
+  },
+  {
+    "success": true,
+    "message": "Slots retrieved",
+    "data": [],
+    "meta": {
+      "timestamp": "2026-08-19T16:43:31.303Z"
+    }
+  },
+  {
+    "success": true,
+    "message": "Slots generated",
+    "data": [],
+    "meta": {
+      "timestamp": "2026-08-19T16:43:39.503Z"
+    }
+  },
+  {
+    "success": true,
+    "message": "Clinic doctors retrieved successfully",
+    "data": [
+      {
+        "id": "a6c85580-61d5-4f07-b599-1f8b19862cc7",
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "doctorId": "f6384758-baab-4152-8f8f-c7f224726b4b",
+        "status": "ACCEPTED",
+        "invitedBy": "clinic",
+        "isActive": true,
+        "joinedAt": "2026-08-12T22:03:35.752Z",
+        "doctor": {
+          "id": "f6384758-baab-4152-8f8f-c7f224726b4b",
+          "email": "dr.fatima.mokhtari3@iyadati.dz",
+          "firstNameFr": "Fatima",
+          "firstNameAr": "Fatima",
+          "lastNameFr": "Mokhtari",
+          "lastNameAr": "Mokhtari",
+          "phone": "066607463",
+          "photoUrl": "https://api.serirsalah.me/uploads/public/logos/8c216ff3-75ac-4afc-984e-beb8897b32d9.jpg",
+          "specialties": [
+            {
+              "id": "42093771-bbf2-4341-a5a8-fe9062c963c0",
+              "nameFr": "ORL",
+              "nameAr": "أنف أذن حنجرة"
+            },
+            {
+              "id": "70d7e02c-6823-49bc-b0cd-a49d1ab6a895",
+              "nameFr": "Psychiatrie",
+              "nameAr": "الطب النفسي"
+            }
+          ],
+          "yearsOfExp": 27
+        }
+      },
+      {
+        "id": "ee3545bd-eec8-4e2e-b08c-aa4cd545ec70",
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "doctorId": "c050c946-1636-4e68-8df8-5092924ad2e3",
+        "status": "ACCEPTED",
+        "invitedBy": "clinic",
+        "isActive": true,
+        "joinedAt": "2026-08-12T22:03:35.748Z",
+        "doctor": {
+          "id": "c050c946-1636-4e68-8df8-5092924ad2e3",
+          "email": "dr.lamia.slimani2@iyadati.dz",
+          "firstNameFr": "Lamia",
+          "firstNameAr": "Lamia",
+          "lastNameFr": "Slimani",
+          "lastNameAr": "Slimani",
+          "phone": "066841032",
+          "photoUrl": "https://api.serirsalah.me/uploads/public/logos/fe22bbc0-b001-4053-87ad-107a0928ee08.jpg",
+          "specialties": [
+            {
+              "id": "3ba9955f-5999-4cf1-b5f8-02b5e59899b2",
+              "nameFr": "Orthopédie",
+              "nameAr": "جراحة العظام"
+            }
+          ],
+          "yearsOfExp": 27
+        }
+      },
+      {
+        "id": "80d72782-41f2-4908-9e94-387f631ec04c",
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "doctorId": "5f8a8909-4b0c-412e-a5b9-b09b87155e8d",
+        "status": "ACCEPTED",
+        "invitedBy": "doctor",
+        "isActive": true,
+        "joinedAt": "2026-08-12T22:03:35.745Z",
+        "doctor": {
+          "id": "5f8a8909-4b0c-412e-a5b9-b09b87155e8d",
+          "email": "dr.bilal.chikhi1@iyadati.dz",
+          "firstNameFr": "Bilal",
+          "firstNameAr": "Bilal",
+          "lastNameFr": "Chikhi",
+          "lastNameAr": "Chikhi",
+          "phone": "0661921054",
+          "photoUrl": "https://api.serirsalah.me/uploads/7f26f6fe-23a8-4c2f-8532-4b411deaf7bf.jpeg",
+          "specialties": [
+            {
+              "id": "f83f8947-dc52-4993-9d56-96e9b1547244",
+              "nameFr": "Endocrinologie",
+              "nameAr": "الغدد الصماء"
+            }
+          ],
+          "yearsOfExp": 26
+        }
+      }
+    ],
+    "meta": {
+      "timestamp": "2026-08-19T16:43:39.850Z"
+    }
+  },
+  {
+    "success": true,
+    "message": "Clinic profile retrieved successfully",
+    "data": {
+      "id": "206fa053-94b0-4396-84af-0fad086556ab",
+      "nameFr": "Clinique Ibn Sina",
+      "nameAr": "عيادة ابن سينا",
+      "descriptionAr": "عيادة ابن سينا - مؤسسة طبية حديثة في الشلف.",
+      "descriptionFr": "Clinique Ibn Sina - Établissement médical moderne à Chlef.",
+      "wilayaId": "35379082-1bcb-4d14-a5a1-ad20d37988f0",
+      "wilaya": {
+        "id": "35379082-1bcb-4d14-a5a1-ad20d37988f0",
+        "code": 2
+      },
+      "baladyaId": null,
+      "baladya": null,
+      "latitude": 39.3704922663339,
+      "longitude": 4.362399813642298,
+      "phone": "055898325",
+      "email": "contact4@cliniqueibnsina.dz",
+      "logoPath": "public/logos/495b7edf-cb3f-417a-bd22-5e403311bd7e.png",
+      "logoUrl": "https://api.serirsalah.me/uploads/public/logos/495b7edf-cb3f-417a-bd22-5e403311bd7e.png",
+      "facilityType": "HOSPITAL",
+      "isVerified": true,
+      "isSuspended": false,
+      "isCompleted": true,
+      "createdAt": "2026-08-12T22:03:35.298Z",
+      "updatedAt": "2026-08-12T22:03:37.539Z"
+    },
+    "meta": {
+      "timestamp": "2026-08-19T16:43:39.843Z"
+    }
+  },
+  {
+    "success": true,
+    "message": "Rooms retrieved successfully",
+    "data": [
+      {
+        "id": "662bbe97-19bb-4bec-be14-ed409e16115d",
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "name": "Consultation 1",
+        "specialtyId": null,
+        "isActive": true,
+        "createdAt": "2026-08-12T22:03:35.324Z",
+        "updatedAt": "2026-08-12T22:03:35.324Z"
+      },
+      {
+        "id": "35a90da3-89ee-42d3-9e42-ffafd6757538",
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "name": "Examen 2",
+        "specialtyId": null,
+        "isActive": true,
+        "createdAt": "2026-08-12T22:03:35.326Z",
+        "updatedAt": "2026-08-12T22:03:35.326Z"
+      },
+      {
+        "id": "101508d5-8dc2-491e-9fc9-d7647b435df9",
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "name": "Opération 4",
+        "specialtyId": null,
+        "isActive": true,
+        "createdAt": "2026-08-12T22:03:35.333Z",
+        "updatedAt": "2026-08-12T22:03:35.333Z"
+      },
+      {
+        "id": "7a135fea-15f3-41ca-ad89-ce7487563578",
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "name": "Traitement 3",
+        "specialtyId": null,
+        "isActive": true,
+        "createdAt": "2026-08-12T22:03:35.329Z",
+        "updatedAt": "2026-08-12T22:03:35.329Z"
+      },
+      {
+        "id": "d25506c0-f7a3-4b25-9721-3ccfab4a84c8",
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "name": "Urgence 5",
+        "specialtyId": null,
+        "isActive": true,
+        "createdAt": "2026-08-12T22:03:35.336Z",
+        "updatedAt": "2026-08-12T22:03:35.336Z"
+      }
+    ],
+    "meta": {
+      "timestamp": "2026-08-19T16:43:39.845Z"
+    }
+  },
+  {
+    "success": true,
+    "message": "Slots retrieved",
+    "data": [],
+    "meta": {
+      "timestamp": "2026-08-19T16:43:39.855Z"
+    }
+  },
+  {
+    "success": false,
+    "message": "Cannot create a slot in the past",
+    "error": "Cannot create a slot in the past",
+    "meta": {
+      "timestamp": "2026-08-19T16:43:48.176Z"
+    }
+  },
+  {
+    "success": false,
+    "message": "Slot time is outside doctor's availability hours for this day",
+    "error": "Slot time is outside doctor's availability hours for this day",
+    "meta": {
+      "timestamp": "2026-08-19T16:43:54.234Z"
+    }
+  },
+  {
+    "success": false,
+    "message": "Slot time is outside doctor's availability hours for this day",
+    "error": "Slot time is outside doctor's availability hours for this day",
+    "meta": {
+      "timestamp": "2026-08-19T16:44:10.819Z"
+    }
+  },
+  {
+    "success": true,
+    "message": "Quick slot added successfully",
+    "data": {
+      "id": "c58fdf75-e779-4333-9031-284bce04ac3e",
+      "doctorId": "f6384758-baab-4152-8f8f-c7f224726b4b",
+      "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+      "roomId": "35a90da3-89ee-42d3-9e42-ffafd6757538",
+      "date": "2026-08-21",
+      "startTime": "13:00",
+      "endTime": "14:35",
+      "status": "available",
+      "maxPatients": 1,
+      "currentPatients": 0
+    },
+    "meta": {
+      "timestamp": "2026-08-19T16:44:23.014Z"
+    }
+  },
+  {
+    "success": true,
+    "message": "Clinic doctors retrieved successfully",
+    "data": [
+      {
+        "id": "a6c85580-61d5-4f07-b599-1f8b19862cc7",
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "doctorId": "f6384758-baab-4152-8f8f-c7f224726b4b",
+        "status": "ACCEPTED",
+        "invitedBy": "clinic",
+        "isActive": true,
+        "joinedAt": "2026-08-12T22:03:35.752Z",
+        "doctor": {
+          "id": "f6384758-baab-4152-8f8f-c7f224726b4b",
+          "email": "dr.fatima.mokhtari3@iyadati.dz",
+          "firstNameFr": "Fatima",
+          "firstNameAr": "Fatima",
+          "lastNameFr": "Mokhtari",
+          "lastNameAr": "Mokhtari",
+          "phone": "066607463",
+          "photoUrl": "https://api.serirsalah.me/uploads/public/logos/8c216ff3-75ac-4afc-984e-beb8897b32d9.jpg",
+          "specialties": [
+            {
+              "id": "42093771-bbf2-4341-a5a8-fe9062c963c0",
+              "nameFr": "ORL",
+              "nameAr": "أنف أذن حنجرة"
+            },
+            {
+              "id": "70d7e02c-6823-49bc-b0cd-a49d1ab6a895",
+              "nameFr": "Psychiatrie",
+              "nameAr": "الطب النفسي"
+            }
+          ],
+          "yearsOfExp": 27
+        }
+      },
+      {
+        "id": "ee3545bd-eec8-4e2e-b08c-aa4cd545ec70",
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "doctorId": "c050c946-1636-4e68-8df8-5092924ad2e3",
+        "status": "ACCEPTED",
+        "invitedBy": "clinic",
+        "isActive": true,
+        "joinedAt": "2026-08-12T22:03:35.748Z",
+        "doctor": {
+          "id": "c050c946-1636-4e68-8df8-5092924ad2e3",
+          "email": "dr.lamia.slimani2@iyadati.dz",
+          "firstNameFr": "Lamia",
+          "firstNameAr": "Lamia",
+          "lastNameFr": "Slimani",
+          "lastNameAr": "Slimani",
+          "phone": "066841032",
+          "photoUrl": "https://api.serirsalah.me/uploads/public/logos/fe22bbc0-b001-4053-87ad-107a0928ee08.jpg",
+          "specialties": [
+            {
+              "id": "3ba9955f-5999-4cf1-b5f8-02b5e59899b2",
+              "nameFr": "Orthopédie",
+              "nameAr": "جراحة العظام"
+            }
+          ],
+          "yearsOfExp": 27
+        }
+      },
+      {
+        "id": "80d72782-41f2-4908-9e94-387f631ec04c",
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "doctorId": "5f8a8909-4b0c-412e-a5b9-b09b87155e8d",
+        "status": "ACCEPTED",
+        "invitedBy": "doctor",
+        "isActive": true,
+        "joinedAt": "2026-08-12T22:03:35.745Z",
+        "doctor": {
+          "id": "5f8a8909-4b0c-412e-a5b9-b09b87155e8d",
+          "email": "dr.bilal.chikhi1@iyadati.dz",
+          "firstNameFr": "Bilal",
+          "firstNameAr": "Bilal",
+          "lastNameFr": "Chikhi",
+          "lastNameAr": "Chikhi",
+          "phone": "0661921054",
+          "photoUrl": "https://api.serirsalah.me/uploads/7f26f6fe-23a8-4c2f-8532-4b411deaf7bf.jpeg",
+          "specialties": [
+            {
+              "id": "f83f8947-dc52-4993-9d56-96e9b1547244",
+              "nameFr": "Endocrinologie",
+              "nameAr": "الغدد الصماء"
+            }
+          ],
+          "yearsOfExp": 26
+        }
+      }
+    ],
+    "meta": {
+      "timestamp": "2026-08-19T16:44:23.332Z"
+    }
+  },
+  {
+    "success": true,
+    "message": "Clinic profile retrieved successfully",
+    "data": {
+      "id": "206fa053-94b0-4396-84af-0fad086556ab",
+      "nameFr": "Clinique Ibn Sina",
+      "nameAr": "عيادة ابن سينا",
+      "descriptionAr": "عيادة ابن سينا - مؤسسة طبية حديثة في الشلف.",
+      "descriptionFr": "Clinique Ibn Sina - Établissement médical moderne à Chlef.",
+      "wilayaId": "35379082-1bcb-4d14-a5a1-ad20d37988f0",
+      "wilaya": {
+        "id": "35379082-1bcb-4d14-a5a1-ad20d37988f0",
+        "code": 2
+      },
+      "baladyaId": null,
+      "baladya": null,
+      "latitude": 39.3704922663339,
+      "longitude": 4.362399813642298,
+      "phone": "055898325",
+      "email": "contact4@cliniqueibnsina.dz",
+      "logoPath": "public/logos/495b7edf-cb3f-417a-bd22-5e403311bd7e.png",
+      "logoUrl": "https://api.serirsalah.me/uploads/public/logos/495b7edf-cb3f-417a-bd22-5e403311bd7e.png",
+      "facilityType": "HOSPITAL",
+      "isVerified": true,
+      "isSuspended": false,
+      "isCompleted": true,
+      "createdAt": "2026-08-12T22:03:35.298Z",
+      "updatedAt": "2026-08-12T22:03:37.539Z"
+    },
+    "meta": {
+      "timestamp": "2026-08-19T16:44:23.311Z"
+    }
+  },
+  {
+    "success": true,
+    "message": "Rooms retrieved successfully",
+    "data": [
+      {
+        "id": "662bbe97-19bb-4bec-be14-ed409e16115d",
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "name": "Consultation 1",
+        "specialtyId": null,
+        "isActive": true,
+        "createdAt": "2026-08-12T22:03:35.324Z",
+        "updatedAt": "2026-08-12T22:03:35.324Z"
+      },
+      {
+        "id": "35a90da3-89ee-42d3-9e42-ffafd6757538",
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "name": "Examen 2",
+        "specialtyId": null,
+        "isActive": true,
+        "createdAt": "2026-08-12T22:03:35.326Z",
+        "updatedAt": "2026-08-12T22:03:35.326Z"
+      },
+      {
+        "id": "101508d5-8dc2-491e-9fc9-d7647b435df9",
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "name": "Opération 4",
+        "specialtyId": null,
+        "isActive": true,
+        "createdAt": "2026-08-12T22:03:35.333Z",
+        "updatedAt": "2026-08-12T22:03:35.333Z"
+      },
+      {
+        "id": "7a135fea-15f3-41ca-ad89-ce7487563578",
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "name": "Traitement 3",
+        "specialtyId": null,
+        "isActive": true,
+        "createdAt": "2026-08-12T22:03:35.329Z",
+        "updatedAt": "2026-08-12T22:03:35.329Z"
+      },
+      {
+        "id": "d25506c0-f7a3-4b25-9721-3ccfab4a84c8",
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "name": "Urgence 5",
+        "specialtyId": null,
+        "isActive": true,
+        "createdAt": "2026-08-12T22:03:35.336Z",
+        "updatedAt": "2026-08-12T22:03:35.336Z"
+      }
+    ],
+    "meta": {
+      "timestamp": "2026-08-19T16:44:23.322Z"
+    }
+  },
+  {
+    "success": true,
+    "message": "Slots retrieved",
+    "data": [],
+    "meta": {
+      "timestamp": "2026-08-19T16:44:23.317Z"
+    }
+  },
+  {
+    "success": true,
+    "message": "Clinic doctors retrieved successfully",
+    "data": [
+      {
+        "id": "a6c85580-61d5-4f07-b599-1f8b19862cc7",
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "doctorId": "f6384758-baab-4152-8f8f-c7f224726b4b",
+        "status": "ACCEPTED",
+        "invitedBy": "clinic",
+        "isActive": true,
+        "joinedAt": "2026-08-12T22:03:35.752Z",
+        "doctor": {
+          "id": "f6384758-baab-4152-8f8f-c7f224726b4b",
+          "email": "dr.fatima.mokhtari3@iyadati.dz",
+          "firstNameFr": "Fatima",
+          "firstNameAr": "Fatima",
+          "lastNameFr": "Mokhtari",
+          "lastNameAr": "Mokhtari",
+          "phone": "066607463",
+          "photoUrl": "https://api.serirsalah.me/uploads/public/logos/8c216ff3-75ac-4afc-984e-beb8897b32d9.jpg",
+          "specialties": [
+            {
+              "id": "42093771-bbf2-4341-a5a8-fe9062c963c0",
+              "nameFr": "ORL",
+              "nameAr": "أنف أذن حنجرة"
+            },
+            {
+              "id": "70d7e02c-6823-49bc-b0cd-a49d1ab6a895",
+              "nameFr": "Psychiatrie",
+              "nameAr": "الطب النفسي"
+            }
+          ],
+          "yearsOfExp": 27
+        }
+      },
+      {
+        "id": "ee3545bd-eec8-4e2e-b08c-aa4cd545ec70",
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "doctorId": "c050c946-1636-4e68-8df8-5092924ad2e3",
+        "status": "ACCEPTED",
+        "invitedBy": "clinic",
+        "isActive": true,
+        "joinedAt": "2026-08-12T22:03:35.748Z",
+        "doctor": {
+          "id": "c050c946-1636-4e68-8df8-5092924ad2e3",
+          "email": "dr.lamia.slimani2@iyadati.dz",
+          "firstNameFr": "Lamia",
+          "firstNameAr": "Lamia",
+          "lastNameFr": "Slimani",
+          "lastNameAr": "Slimani",
+          "phone": "066841032",
+          "photoUrl": "https://api.serirsalah.me/uploads/public/logos/fe22bbc0-b001-4053-87ad-107a0928ee08.jpg",
+          "specialties": [
+            {
+              "id": "3ba9955f-5999-4cf1-b5f8-02b5e59899b2",
+              "nameFr": "Orthopédie",
+              "nameAr": "جراحة العظام"
+            }
+          ],
+          "yearsOfExp": 27
+        }
+      },
+      {
+        "id": "80d72782-41f2-4908-9e94-387f631ec04c",
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "doctorId": "5f8a8909-4b0c-412e-a5b9-b09b87155e8d",
+        "status": "ACCEPTED",
+        "invitedBy": "doctor",
+        "isActive": true,
+        "joinedAt": "2026-08-12T22:03:35.745Z",
+        "doctor": {
+          "id": "5f8a8909-4b0c-412e-a5b9-b09b87155e8d",
+          "email": "dr.bilal.chikhi1@iyadati.dz",
+          "firstNameFr": "Bilal",
+          "firstNameAr": "Bilal",
+          "lastNameFr": "Chikhi",
+          "lastNameAr": "Chikhi",
+          "phone": "0661921054",
+          "photoUrl": "https://api.serirsalah.me/uploads/7f26f6fe-23a8-4c2f-8532-4b411deaf7bf.jpeg",
+          "specialties": [
+            {
+              "id": "f83f8947-dc52-4993-9d56-96e9b1547244",
+              "nameFr": "Endocrinologie",
+              "nameAr": "الغدد الصماء"
+            }
+          ],
+          "yearsOfExp": 26
+        }
+      }
+    ],
+    "meta": {
+      "timestamp": "2026-08-19T16:46:41.547Z"
+    }
+  },
+  {
+    "success": true,
+    "message": "Clinic profile retrieved successfully",
+    "data": {
+      "id": "206fa053-94b0-4396-84af-0fad086556ab",
+      "nameFr": "Clinique Ibn Sina",
+      "nameAr": "عيادة ابن سينا",
+      "descriptionAr": "عيادة ابن سينا - مؤسسة طبية حديثة في الشلف.",
+      "descriptionFr": "Clinique Ibn Sina - Établissement médical moderne à Chlef.",
+      "wilayaId": "35379082-1bcb-4d14-a5a1-ad20d37988f0",
+      "wilaya": {
+        "id": "35379082-1bcb-4d14-a5a1-ad20d37988f0",
+        "code": 2
+      },
+      "baladyaId": null,
+      "baladya": null,
+      "latitude": 39.3704922663339,
+      "longitude": 4.362399813642298,
+      "phone": "055898325",
+      "email": "contact4@cliniqueibnsina.dz",
+      "logoPath": "public/logos/495b7edf-cb3f-417a-bd22-5e403311bd7e.png",
+      "logoUrl": "https://api.serirsalah.me/uploads/public/logos/495b7edf-cb3f-417a-bd22-5e403311bd7e.png",
+      "facilityType": "HOSPITAL",
+      "isVerified": true,
+      "isSuspended": false,
+      "isCompleted": true,
+      "createdAt": "2026-08-12T22:03:35.298Z",
+      "updatedAt": "2026-08-12T22:03:37.539Z"
+    },
+    "meta": {
+      "timestamp": "2026-08-19T16:46:41.589Z"
+    }
+  },
+  {
+    "success": true,
+    "message": "Rooms retrieved successfully",
+    "data": [
+      {
+        "id": "662bbe97-19bb-4bec-be14-ed409e16115d",
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "name": "Consultation 1",
+        "specialtyId": null,
+        "isActive": true,
+        "createdAt": "2026-08-12T22:03:35.324Z",
+        "updatedAt": "2026-08-12T22:03:35.324Z"
+      },
+      {
+        "id": "35a90da3-89ee-42d3-9e42-ffafd6757538",
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "name": "Examen 2",
+        "specialtyId": null,
+        "isActive": true,
+        "createdAt": "2026-08-12T22:03:35.326Z",
+        "updatedAt": "2026-08-12T22:03:35.326Z"
+      },
+      {
+        "id": "101508d5-8dc2-491e-9fc9-d7647b435df9",
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "name": "Opération 4",
+        "specialtyId": null,
+        "isActive": true,
+        "createdAt": "2026-08-12T22:03:35.333Z",
+        "updatedAt": "2026-08-12T22:03:35.333Z"
+      },
+      {
+        "id": "7a135fea-15f3-41ca-ad89-ce7487563578",
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "name": "Traitement 3",
+        "specialtyId": null,
+        "isActive": true,
+        "createdAt": "2026-08-12T22:03:35.329Z",
+        "updatedAt": "2026-08-12T22:03:35.329Z"
+      },
+      {
+        "id": "d25506c0-f7a3-4b25-9721-3ccfab4a84c8",
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "name": "Urgence 5",
+        "specialtyId": null,
+        "isActive": true,
+        "createdAt": "2026-08-12T22:03:35.336Z",
+        "updatedAt": "2026-08-12T22:03:35.336Z"
+      }
+    ],
+    "meta": {
+      "timestamp": "2026-08-19T16:46:41.592Z"
+    }
+  },
+  {
+    "success": true,
+    "message": "Slots retrieved",
+    "data": [],
+    "meta": {
+      "timestamp": "2026-08-19T16:46:41.591Z"
+    }
+  },
+  {
+    "success": true,
+    "message": "Services retrieved successfully",
+    "data": [
+      {
+        "id": "cc90eff3-8d59-4d85-b360-67bb4d490abf",
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "nameFr": "Dentisterie Esthétique",
+        "nameAr": "طب الأسنان التجميلي",
+        "descriptionFr": "Dentisterie Esthétique - Service professionnel",
+        "descriptionAr": "طب الأسنان التجميلي - خدمة احترافية",
+        "isActive": true,
+        "sortOrder": 0,
+        "gallery": [
+          {
+            "id": "67ee7bb5-54a9-4c2a-b7f1-4ab652353650",
+            "serviceId": "cc90eff3-8d59-4d85-b360-67bb4d490abf",
+            "imagePath": "public/service-images/1db707f7-f7e2-4394-94a4-3c9fd373961b.jpg",
+            "imageUrl": "https://api.serirsalah.me/api/v1/files/public/2df7d921-563c-4d34-bf19-87901cc9ebdb",
+            "captionFr": "Dentisterie Esthétique - Image 1",
+            "captionAr": "طب الأسنان التجميلي - صورة 1",
+            "sortOrder": 0,
+            "isActive": true,
+            "createdAt": "2026-08-12T22:03:35.648Z"
+          }
+        ],
+        "doctors": [],
+        "createdAt": "2026-08-12T22:03:35.644Z",
+        "updatedAt": "2026-08-12T22:03:35.644Z"
+      },
+      {
+        "id": "dc707f14-129a-48da-9eb9-eb8da43248b9",
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "nameFr": "Imagerie Médicale",
+        "nameAr": "التصوير الطبي",
+        "descriptionFr": "Imagerie Médicale - Service professionnel",
+        "descriptionAr": "التصوير الطبي - خدمة احترافية",
+        "isActive": true,
+        "sortOrder": 1,
+        "gallery": [
+          {
+            "id": "69f0705a-27f9-4533-91f2-51fc2f8c0c9b",
+            "serviceId": "dc707f14-129a-48da-9eb9-eb8da43248b9",
+            "imagePath": "public/service-images/344df708-0eda-4cd7-b57e-a5754aedb1f3.jpg",
+            "imageUrl": "https://api.serirsalah.me/api/v1/files/public/4877aa3d-9703-4c6a-a90d-b3a047b326b8",
+            "captionFr": "Imagerie Médicale - Image 1",
+            "captionAr": "التصوير الطبي - صورة 1",
+            "sortOrder": 0,
+            "isActive": true,
+            "createdAt": "2026-08-12T22:03:35.660Z"
+          },
+          {
+            "id": "4192daaa-754d-4850-b791-635352d94a55",
+            "serviceId": "dc707f14-129a-48da-9eb9-eb8da43248b9",
+            "imagePath": "public/service-images/c95dbe4a-112b-4432-8260-ad8e679d27d4.jpg",
+            "imageUrl": "https://api.serirsalah.me/api/v1/files/public/713a1045-56ec-43da-8a14-7499b900ad3a",
+            "captionFr": "Imagerie Médicale - Image 2",
+            "captionAr": "التصوير الطبي - صورة 2",
+            "sortOrder": 1,
+            "isActive": true,
+            "createdAt": "2026-08-12T22:03:35.671Z"
+          }
+        ],
+        "doctors": [],
+        "createdAt": "2026-08-12T22:03:35.656Z",
+        "updatedAt": "2026-08-12T22:03:35.656Z"
+      },
+      {
+        "id": "a3f93254-4c20-4393-a4e4-e0d4481450e9",
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "nameFr": "Cardiologie Interventionnelle",
+        "nameAr": "طب القلب التداخلي",
+        "descriptionFr": "Cardiologie Interventionnelle - Service professionnel",
+        "descriptionAr": "طب القلب التداخلي - خدمة احترافية",
+        "isActive": true,
+        "sortOrder": 2,
+        "gallery": [
+          {
+            "id": "50a00275-b07e-42f7-906b-506c946c2105",
+            "serviceId": "a3f93254-4c20-4393-a4e4-e0d4481450e9",
+            "imagePath": "public/service-images/4340acf2-a299-4a25-91aa-c569ac2cfa9f.jpg",
+            "imageUrl": "https://api.serirsalah.me/api/v1/files/public/659def19-9ba3-4dd6-88a6-4b91a04a1521",
+            "captionFr": "Cardiologie Interventionnelle - Image 1",
+            "captionAr": "طب القلب التداخلي - صورة 1",
+            "sortOrder": 0,
+            "isActive": true,
+            "createdAt": "2026-08-12T22:03:35.684Z"
+          }
+        ],
+        "doctors": [],
+        "createdAt": "2026-08-12T22:03:35.677Z",
+        "updatedAt": "2026-08-12T22:03:35.677Z"
+      }
+    ],
+    "meta": {
+      "timestamp": "2026-08-19T16:46:43.984Z"
+    }
+  },
+  {
+    "success": false,
+    "message": "Validation failed",
+    "error": "Validation failed",
+    "errors": [
+      {
+        "field": "durationMinutes",
+        "message": "\"durationMinutes\" is not allowed"
+      },
+      {
+        "field": "price",
+        "message": "\"price\" is not allowed"
+      },
+      {
+        "field": "isActive",
+        "message": "\"isActive\" is not allowed"
+      }
+    ],
+    "meta": {
+      "timestamp": "2026-08-19T16:54:02.827Z"
+    }
+  },
+  {
+    "success": true,
+    "message": "Rooms retrieved successfully",
+    "data": [
+      {
+        "id": "662bbe97-19bb-4bec-be14-ed409e16115d",
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "name": "Consultation 1",
+        "specialtyId": null,
+        "isActive": true,
+        "createdAt": "2026-08-12T22:03:35.324Z",
+        "updatedAt": "2026-08-12T22:03:35.324Z"
+      },
+      {
+        "id": "35a90da3-89ee-42d3-9e42-ffafd6757538",
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "name": "Examen 2",
+        "specialtyId": null,
+        "isActive": true,
+        "createdAt": "2026-08-12T22:03:35.326Z",
+        "updatedAt": "2026-08-12T22:03:35.326Z"
+      },
+      {
+        "id": "101508d5-8dc2-491e-9fc9-d7647b435df9",
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "name": "Opération 4",
+        "specialtyId": null,
+        "isActive": true,
+        "createdAt": "2026-08-12T22:03:35.333Z",
+        "updatedAt": "2026-08-12T22:03:35.333Z"
+      },
+      {
+        "id": "7a135fea-15f3-41ca-ad89-ce7487563578",
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "name": "Traitement 3",
+        "specialtyId": null,
+        "isActive": true,
+        "createdAt": "2026-08-12T22:03:35.329Z",
+        "updatedAt": "2026-08-12T22:03:35.329Z"
+      },
+      {
+        "id": "d25506c0-f7a3-4b25-9721-3ccfab4a84c8",
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "name": "Urgence 5",
+        "specialtyId": null,
+        "isActive": true,
+        "createdAt": "2026-08-12T22:03:35.336Z",
+        "updatedAt": "2026-08-12T22:03:35.336Z"
+      }
+    ],
+    "meta": {
+      "timestamp": "2026-08-19T16:54:07.890Z"
+    }
+  },
+  {
+    "success": true,
+    "message": "Specialties retrieved successfully",
+    "data": [
+      {
+        "id": "9009f741-aed9-4b03-9c29-beb44e44b569",
+        "nameFr": "Medecine Interne",
+        "nameAr": "الطب الباطني",
+        "descriptionFr": null,
+        "descriptionAr": null,
+        "imagePath": null,
+        "imageUrl": null,
+        "isActive": true,
+        "createdAt": "2026-08-15T21:11:37.376Z",
+        "updatedAt": "2026-08-15T21:11:37.376Z"
+      },
+      {
+        "id": "af88ec71-d5ba-4ff3-bd25-71cc918dc7e1",
+        "nameFr": "Chirurgie dentaire",
+        "nameAr": "جراحة الاسنان",
+        "descriptionFr": null,
+        "descriptionAr": null,
+        "imagePath": "e85c9bb1-5d86-4587-ae37-eebb4fdf506a.webp",
+        "imageUrl": "https://api.serirsalah.me/api/v1/files/public/e85c9bb1-5d86-4587-ae37-eebb4fdf506a",
+        "isActive": true,
+        "createdAt": "2026-08-13T15:48:41.994Z",
+        "updatedAt": "2026-08-19T14:17:53.978Z"
+      },
+      {
+        "id": "64b4221d-f92f-4c8e-b634-f6e7407512ba",
+        "nameFr": "Pneumologie",
+        "nameAr": "طب الرئة",
+        "descriptionFr": null,
+        "descriptionAr": null,
+        "imagePath": null,
+        "imageUrl": null,
+        "isActive": true,
+        "createdAt": "2026-08-12T22:03:29.787Z",
+        "updatedAt": "2026-08-12T22:03:29.787Z"
+      },
+      {
+        "id": "aa660e1b-b001-4ab7-9d00-2af1c082095c",
+        "nameFr": "Gastro-entérologie",
+        "nameAr": "الجهاز الهضمي",
+        "descriptionFr": null,
+        "descriptionAr": null,
+        "imagePath": null,
+        "imageUrl": null,
+        "isActive": true,
+        "createdAt": "2026-08-12T22:03:29.786Z",
+        "updatedAt": "2026-08-12T22:03:29.786Z"
+      },
+      {
+        "id": "edc1cc25-d6a0-4de8-92f2-0efa583d28ed",
+        "nameFr": "Urologie",
+        "nameAr": "طب المسالك البولية",
+        "descriptionFr": null,
+        "descriptionAr": null,
+        "imagePath": null,
+        "imageUrl": null,
+        "isActive": true,
+        "createdAt": "2026-08-12T22:03:29.784Z",
+        "updatedAt": "2026-08-12T22:03:29.784Z"
+      },
+      {
+        "id": "17853b96-9b42-44ab-8a75-7d3badf71693",
+        "nameFr": "Rhumatologie",
+        "nameAr": "طب الروماتيزم",
+        "descriptionFr": null,
+        "descriptionAr": null,
+        "imagePath": null,
+        "imageUrl": null,
+        "isActive": true,
+        "createdAt": "2026-08-12T22:03:29.782Z",
+        "updatedAt": "2026-08-12T22:03:29.782Z"
+      },
+      {
+        "id": "f83f8947-dc52-4993-9d56-96e9b1547244",
+        "nameFr": "Endocrinologie",
+        "nameAr": "الغدد الصماء",
+        "descriptionFr": null,
+        "descriptionAr": null,
+        "imagePath": null,
+        "imageUrl": null,
+        "isActive": true,
+        "createdAt": "2026-08-12T22:03:29.780Z",
+        "updatedAt": "2026-08-12T22:03:29.780Z"
+      },
+      {
+        "id": "42093771-bbf2-4341-a5a8-fe9062c963c0",
+        "nameFr": "ORL",
+        "nameAr": "أنف أذن حنجرة",
+        "descriptionFr": null,
+        "descriptionAr": null,
+        "imagePath": null,
+        "imageUrl": null,
+        "isActive": true,
+        "createdAt": "2026-08-12T22:03:29.778Z",
+        "updatedAt": "2026-08-12T22:03:29.778Z"
+      },
+      {
+        "id": "70d7e02c-6823-49bc-b0cd-a49d1ab6a895",
+        "nameFr": "Psychiatrie",
+        "nameAr": "الطب النفسي",
+        "descriptionFr": null,
+        "descriptionAr": null,
+        "imagePath": null,
+        "imageUrl": null,
+        "isActive": true,
+        "createdAt": "2026-08-12T22:03:29.776Z",
+        "updatedAt": "2026-08-12T22:03:29.776Z"
+      },
+      {
+        "id": "bc2f696f-36bf-4d73-8305-ee28fa579ea3",
+        "nameFr": "Neurologie",
+        "nameAr": "طب الأعصاب",
+        "descriptionFr": null,
+        "descriptionAr": null,
+        "imagePath": null,
+        "imageUrl": null,
+        "isActive": true,
+        "createdAt": "2026-08-12T22:03:29.774Z",
+        "updatedAt": "2026-08-12T22:03:29.774Z"
+      }
+    ],
+    "meta": {
+      "page": 1,
+      "limit": 10,
+      "total": 17,
+      "totalPages": 2,
+      "hasNextPage": true,
+      "hasPreviousPage": false,
+      "timestamp": "2026-08-19T16:54:07.893Z"
+    }
+  },
+  {
+    "success": false,
+    "message": "Validation failed",
+    "error": "Validation failed",
+    "errors": [
+      {
+        "field": "specialtyId",
+        "message": "\"specialtyId\" is not allowed to be empty"
+      }
+    ],
+    "meta": {
+      "timestamp": "2026-08-19T16:54:14.122Z"
+    }
+  },
+  {
+    "success": true,
+    "message": "Room created successfully",
+    "data": {
+      "id": "9df180d1-d515-4258-8e72-09aa87df04a3",
+      "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+      "name": "Parabex",
+      "specialtyId": "64b4221d-f92f-4c8e-b634-f6e7407512ba",
+      "isActive": true,
+      "createdAt": "2026-08-19T16:54:17.425Z",
+      "updatedAt": "2026-08-19T16:54:17.425Z"
+    },
+    "meta": {
+      "timestamp": "2026-08-19T16:54:17.432Z"
+    }
+  },
+  {
+    "success": true,
+    "message": "Rooms retrieved successfully",
+    "data": [
+      {
+        "id": "662bbe97-19bb-4bec-be14-ed409e16115d",
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "name": "Consultation 1",
+        "specialtyId": null,
+        "isActive": true,
+        "createdAt": "2026-08-12T22:03:35.324Z",
+        "updatedAt": "2026-08-12T22:03:35.324Z"
+      },
+      {
+        "id": "35a90da3-89ee-42d3-9e42-ffafd6757538",
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "name": "Examen 2",
+        "specialtyId": null,
+        "isActive": true,
+        "createdAt": "2026-08-12T22:03:35.326Z",
+        "updatedAt": "2026-08-12T22:03:35.326Z"
+      },
+      {
+        "id": "101508d5-8dc2-491e-9fc9-d7647b435df9",
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "name": "Opération 4",
+        "specialtyId": null,
+        "isActive": true,
+        "createdAt": "2026-08-12T22:03:35.333Z",
+        "updatedAt": "2026-08-12T22:03:35.333Z"
+      },
+      {
+        "id": "9df180d1-d515-4258-8e72-09aa87df04a3",
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "name": "Parabex",
+        "specialtyId": "64b4221d-f92f-4c8e-b634-f6e7407512ba",
+        "isActive": true,
+        "createdAt": "2026-08-19T16:54:17.425Z",
+        "updatedAt": "2026-08-19T16:54:17.425Z"
+      },
+      {
+        "id": "7a135fea-15f3-41ca-ad89-ce7487563578",
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "name": "Traitement 3",
+        "specialtyId": null,
+        "isActive": true,
+        "createdAt": "2026-08-12T22:03:35.329Z",
+        "updatedAt": "2026-08-12T22:03:35.329Z"
+      },
+      {
+        "id": "d25506c0-f7a3-4b25-9721-3ccfab4a84c8",
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "name": "Urgence 5",
+        "specialtyId": null,
+        "isActive": true,
+        "createdAt": "2026-08-12T22:03:35.336Z",
+        "updatedAt": "2026-08-12T22:03:35.336Z"
+      }
+    ],
+    "meta": {
+      "timestamp": "2026-08-19T16:54:17.550Z"
+    }
+  },
+  {
+    "success": true,
+    "message": "Guest patients retrieved",
+    "data": [],
+    "meta": {
+      "page": 1,
+      "limit": 50,
+      "total": 0,
+      "totalPages": 0,
+      "hasNextPage": false,
+      "hasPreviousPage": false,
+      "timestamp": "2026-08-19T16:54:22.120Z"
+    }
+  },
+  {
+    "success": true,
+    "message": "Guest patient created",
+    "data": {
+      "id": "ba3ca618-cab1-413d-93c6-82192ee49835",
+      "firstName": "Salah",
+      "lastName": "Serir",
+      "phone": "0696828778",
+      "email": "serirsalah21@gmail.com",
+      "dateOfBirth": "2005-08-12T00:00:00.000Z",
+      "wilayaId": null,
+      "createdBy": "206fa053-94b0-4396-84af-0fad086556ab",
+      "createdByType": "CLINIC",
+      "convertedToUserId": null,
+      "convertedAt": null,
+      "notes": "",
+      "createdAt": "2026-08-19T16:54:41.210Z",
+      "updatedAt": "2026-08-19T16:54:41.210Z"
+    },
+    "meta": {
+      "timestamp": "2026-08-19T16:54:41.218Z"
+    }
+  },
+  {
+    "success": true,
+    "message": "Guest patients retrieved",
+    "data": [
+      {
+        "id": "ba3ca618-cab1-413d-93c6-82192ee49835",
+        "firstName": "Salah",
+        "lastName": "Serir",
+        "phone": "0696828778",
+        "email": "serirsalah21@gmail.com",
+        "dateOfBirth": "2005-08-12T00:00:00.000Z",
+        "wilayaId": null,
+        "createdBy": "206fa053-94b0-4396-84af-0fad086556ab",
+        "createdByType": "CLINIC",
+        "convertedToUserId": null,
+        "convertedAt": null,
+        "notes": "",
+        "createdAt": "2026-08-19T16:54:41.210Z",
+        "updatedAt": "2026-08-19T16:54:41.210Z",
+        "wilaya": null
+      }
+    ],
+    "meta": {
+      "page": 1,
+      "limit": 50,
+      "total": 1,
+      "totalPages": 1,
+      "hasNextPage": false,
+      "hasPreviousPage": false,
+      "timestamp": "2026-08-19T16:54:41.474Z"
+    }
+  },
+  {
+    "success": true,
+    "message": "Gallery retrieved successfully",
+    "data": [
+      {
+        "id": "c7560d23-1c94-45db-ba9b-30e0ea7452ed",
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "imagePath": "public/gallery/4ef2c2d3-4912-4838-9f72-194b37ddefc3.jpg",
+        "imageUrl": "https://api.serirsalah.me/api/v1/files/public/59afa939-ded0-4ce1-b2e0-f9b47ee647bb",
+        "captionFr": "Clinique Ibn Sina - Photo 1",
+        "captionAr": "عيادة ابن سينا - صورة 1",
+        "sortOrder": 0,
+        "isActive": true,
+        "createdAt": "2026-08-12T22:03:35.344Z"
+      },
+      {
+        "id": "2bbd4c99-d4a9-49a2-98d4-8b7bba561600",
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "imagePath": "public/gallery/7de82637-52d2-4dd5-9113-5afdf24d2ee6.jpg",
+        "imageUrl": "https://api.serirsalah.me/api/v1/files/public/bb8dd414-7d26-4dd2-9f8c-c8bceadcc18d",
+        "captionFr": "Clinique Ibn Sina - Photo 2",
+        "captionAr": "عيادة ابن سينا - صورة 2",
+        "sortOrder": 1,
+        "isActive": true,
+        "createdAt": "2026-08-12T22:03:35.354Z"
+      },
+      {
+        "id": "e02c6a71-a44f-4978-8b73-40d68f07c65a",
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "imagePath": "public/gallery/ca37ae5b-be78-4bb1-a30f-6f860105393e.jpg",
+        "imageUrl": "https://api.serirsalah.me/api/v1/files/public/52433c38-f5b7-4350-ba28-7520dc685d37",
+        "captionFr": "Clinique Ibn Sina - Photo 3",
+        "captionAr": "عيادة ابن سينا - صورة 3",
+        "sortOrder": 2,
+        "isActive": true,
+        "createdAt": "2026-08-12T22:03:35.362Z"
+      },
+      {
+        "id": "5bd8fb98-ac8d-40e1-af5a-9b9560aba072",
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "imagePath": "public/gallery/174c4de3-5981-42c5-9926-2f41b607b22f.jpg",
+        "imageUrl": "https://api.serirsalah.me/api/v1/files/public/ad72adaa-dfea-4f1b-9474-463818e15cca",
+        "captionFr": "Clinique Ibn Sina - Photo 4",
+        "captionAr": "عيادة ابن سينا - صورة 4",
+        "sortOrder": 3,
+        "isActive": true,
+        "createdAt": "2026-08-12T22:03:35.369Z"
+      },
+      {
+        "id": "f536de0c-adec-425b-b4ba-5646d7706d8a",
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "imagePath": "public/gallery/edda77ae-fc0f-49d7-85c1-bd69ce70930c.jpg",
+        "imageUrl": "https://api.serirsalah.me/api/v1/files/public/afda5dfa-caee-495e-bdda-840e0678fcd5",
+        "captionFr": "Clinique Ibn Sina - Photo 5",
+        "captionAr": "عيادة ابن سينا - صورة 5",
+        "sortOrder": 4,
+        "isActive": true,
+        "createdAt": "2026-08-12T22:03:35.379Z"
+      }
+    ],
+    "meta": {
+      "timestamp": "2026-08-19T16:54:43.955Z"
+    }
+  },
+  {
+    "success": true,
+    "message": "Clinic profile retrieved successfully",
+    "data": {
+      "id": "206fa053-94b0-4396-84af-0fad086556ab",
+      "nameFr": "Clinique Ibn Sina",
+      "nameAr": "عيادة ابن سينا",
+      "descriptionAr": "عيادة ابن سينا - مؤسسة طبية حديثة في الشلف.",
+      "descriptionFr": "Clinique Ibn Sina - Établissement médical moderne à Chlef.",
+      "wilayaId": "35379082-1bcb-4d14-a5a1-ad20d37988f0",
+      "wilaya": {
+        "id": "35379082-1bcb-4d14-a5a1-ad20d37988f0",
+        "code": 2
+      },
+      "baladyaId": null,
+      "baladya": null,
+      "latitude": 39.3704922663339,
+      "longitude": 4.362399813642298,
+      "phone": "055898325",
+      "email": "contact4@cliniqueibnsina.dz",
+      "logoPath": "public/logos/495b7edf-cb3f-417a-bd22-5e403311bd7e.png",
+      "logoUrl": "https://api.serirsalah.me/uploads/public/logos/495b7edf-cb3f-417a-bd22-5e403311bd7e.png",
+      "facilityType": "HOSPITAL",
+      "isVerified": true,
+      "isSuspended": false,
+      "isCompleted": true,
+      "createdAt": "2026-08-12T22:03:35.298Z",
+      "updatedAt": "2026-08-12T22:03:37.539Z"
+    },
+    "meta": {
+      "timestamp": "2026-08-19T16:54:45.872Z"
+    }
+  },
+  {
+    "success": true,
+    "message": "Clinic profile retrieved successfully",
+    "data": {
+      "id": "206fa053-94b0-4396-84af-0fad086556ab",
+      "nameFr": "Clinique Ibn Sina",
+      "nameAr": "عيادة ابن سينا",
+      "descriptionAr": "عيادة ابن سينا - مؤسسة طبية حديثة في الشلف.",
+      "descriptionFr": "Clinique Ibn Sina - Établissement médical moderne à Chlef.",
+      "wilayaId": "35379082-1bcb-4d14-a5a1-ad20d37988f0",
+      "wilaya": {
+        "id": "35379082-1bcb-4d14-a5a1-ad20d37988f0",
+        "code": 2
+      },
+      "baladyaId": null,
+      "baladya": null,
+      "latitude": 39.3704922663339,
+      "longitude": 4.362399813642298,
+      "phone": "055898325",
+      "email": "contact4@cliniqueibnsina.dz",
+      "logoPath": "public/logos/495b7edf-cb3f-417a-bd22-5e403311bd7e.png",
+      "logoUrl": "https://api.serirsalah.me/uploads/public/logos/495b7edf-cb3f-417a-bd22-5e403311bd7e.png",
+      "facilityType": "HOSPITAL",
+      "isVerified": true,
+      "isSuspended": false,
+      "isCompleted": true,
+      "createdAt": "2026-08-12T22:03:35.298Z",
+      "updatedAt": "2026-08-12T22:03:37.539Z"
+    },
+    "meta": {
+      "timestamp": "2026-08-19T16:54:47.653Z"
+    }
+  },
+  {
+    "success": true,
+    "message": "Working hours retrieved successfully",
+    "data": [
+      {
+        "id": "08dca6fc-5c14-4c9c-9132-0678159520b2",
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "dayOfWeek": "SUNDAY",
+        "openTime": "09:00",
+        "closeTime": "19:00",
+        "isOpen": true
+      },
+      {
+        "id": "9e38eccc-6aff-47e0-8dfe-e537d0f79d35",
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "dayOfWeek": "MONDAY",
+        "openTime": "07:00",
+        "closeTime": "19:00",
+        "isOpen": true
+      },
+      {
+        "id": "58353237-16c4-4c54-acdf-d1e7ac5f8606",
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "dayOfWeek": "TUESDAY",
+        "openTime": "09:00",
+        "closeTime": "20:00",
+        "isOpen": true
+      },
+      {
+        "id": "0c2cc7cf-0f40-4658-92d4-d98d6102b230",
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "dayOfWeek": "WEDNESDAY",
+        "openTime": "09:00",
+        "closeTime": "21:00",
+        "isOpen": true
+      },
+      {
+        "id": "48de9b49-0a1e-467f-890e-a0765d5faa15",
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "dayOfWeek": "THURSDAY",
+        "openTime": "09:00",
+        "closeTime": "19:00",
+        "isOpen": true
+      },
+      {
+        "id": "59dcfed1-b48b-48dd-8adb-798f86da4c91",
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "dayOfWeek": "FRIDAY",
+        "openTime": "08:00",
+        "closeTime": "12:00",
+        "isOpen": false
+      },
+      {
+        "id": "280fec30-665a-499b-ac81-00f601c17fe1",
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "dayOfWeek": "SATURDAY",
+        "openTime": "09:00",
+        "closeTime": "18:00",
+        "isOpen": true
+      }
+    ],
+    "meta": {
+      "timestamp": "2026-08-19T16:54:47.830Z"
+    }
+  },
+  {
+    "success": true,
+    "message": "Documents retrieved successfully",
+    "data": [
+      {
+        "id": "658edfcd-fe56-45ef-b335-7b0c9237b3b2",
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "fileName": "tax_Clinique Ibn Sina.pdf",
+        "fileType": "application/pdf",
+        "fileSize": 13264,
+        "accessUrl": "https://api.serirsalah.me/api/v1/files/private/e056774a-9166-4ec6-b216-9e0eca7ca790?expires=1787160287823&signature=b045ebb4be43d72d4c218fcc98a9e98f879d4109d7ee0342157015fcd11ec1d3",
+        "createdAt": "2026-08-12T22:03:35.412Z"
+      },
+      {
+        "id": "4da53c8b-996e-4d97-9165-46558c7643cf",
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "fileName": "insurance_Clinique Ibn Sina.pdf",
+        "fileType": "application/pdf",
+        "fileSize": 13264,
+        "accessUrl": "https://api.serirsalah.me/api/v1/files/private/146c2398-4b41-4bec-9e9a-7d27f7c40f0d?expires=1787160287824&signature=b6a667d996e989381b8c48c4fe5b4ae442da4b5a156bf19aae34ac1910cc6145",
+        "createdAt": "2026-08-12T22:03:35.404Z"
+      },
+      {
+        "id": "57302437-959e-4353-9875-bc6b2e584973",
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "fileName": "license_Clinique Ibn Sina.pdf",
+        "fileType": "application/pdf",
+        "fileSize": 13264,
+        "accessUrl": "https://api.serirsalah.me/api/v1/files/private/cc104ae5-770e-4954-8db7-0d88fd5b918a?expires=1787160287824&signature=f191abcbef51eeb9119ea9dbd07a51c9f556cfc83ce1b094af84f6b91ee914e5",
+        "createdAt": "2026-08-12T22:03:35.396Z"
+      },
+      {
+        "id": "f1b08bb4-3371-4190-a0a4-cb15a22c214d",
+        "clinicId": "206fa053-94b0-4396-84af-0fad086556ab",
+        "fileName": "license_Clinique Ibn Sina.pdf",
+        "fileType": "application/pdf",
+        "fileSize": 13264,
+        "accessUrl": "https://api.serirsalah.me/api/v1/files/private/e93d9bb9-5f3d-488a-958a-03e3ec74d27c?expires=1787160287824&signature=774239e803715de9d8d018484f6db1fea7fc5e150550b8323405d24ce34dab72",
+        "createdAt": "2026-08-12T22:03:35.388Z"
+      }
+    ],
+    "meta": {
+      "timestamp": "2026-08-19T16:54:47.824Z"
+    }
+  },
+  {
+    "success": true,
+    "message": "Wilayas retrieved successfully",
+    "data": [
+      {
+        "id": "98ad245c-b767-49e1-a890-23701e5d8da0",
+        "code": 1,
+        "name": "Adrar",
+        "nameFr": "Adrar",
+        "nameAr": "أدرار",
+        "baladyatCount": 0
+      },
+      {
+        "id": "35379082-1bcb-4d14-a5a1-ad20d37988f0",
+        "code": 2,
+        "name": "Chlef",
+        "nameFr": "Chlef",
+        "nameAr": "الشلف",
+        "baladyatCount": 0
+      },
+      {
+        "id": "8ef4b4e6-3beb-4c35-8c8c-2c45456e8070",
+        "code": 3,
+        "name": "Laghouat",
+        "nameFr": "Laghouat",
+        "nameAr": "الأغواط",
+        "baladyatCount": 0
+      },
+      {
+        "id": "4cf365bc-9a70-42b8-8dd7-fbf0a3169ec3",
+        "code": 4,
+        "name": "Oum El Bouaghi",
+        "nameFr": "Oum El Bouaghi",
+        "nameAr": "أم البواقي",
+        "baladyatCount": 0
+      },
+      {
+        "id": "538ab724-cdc3-4779-9d68-5b7ba8cda245",
+        "code": 5,
+        "name": "Batna",
+        "nameFr": "Batna",
+        "nameAr": "باتنة",
+        "baladyatCount": 0
+      },
+      {
+        "id": "9d5084b2-8cf2-406e-b8c6-017ac60e53d8",
+        "code": 6,
+        "name": "Béjaïa",
+        "nameFr": "Béjaïa",
+        "nameAr": "بجاية",
+        "baladyatCount": 0
+      },
+      {
+        "id": "f5d11570-7a31-4b81-ac6f-3018c53ce352",
+        "code": 7,
+        "name": "Biskra",
+        "nameFr": "Biskra",
+        "nameAr": "بسكرة",
+        "baladyatCount": 0
+      },
+      {
+        "id": "50201090-a83d-45d5-ae60-4f756a41c533",
+        "code": 8,
+        "name": "Béchar",
+        "nameFr": "Béchar",
+        "nameAr": "بشار",
+        "baladyatCount": 0
+      },
+      {
+        "id": "290361e0-16a9-4f83-a646-50312172b356",
+        "code": 9,
+        "name": "Blida",
+        "nameFr": "Blida",
+        "nameAr": "البليدة",
+        "baladyatCount": 0
+      },
+      {
+        "id": "113f5a44-e6e9-4317-8f1a-742437e62154",
+        "code": 10,
+        "name": "Bouïra",
+        "nameFr": "Bouïra",
+        "nameAr": "البويرة",
+        "baladyatCount": 0
+      },
+      {
+        "id": "b905ed93-f559-46aa-8c00-223263273979",
+        "code": 11,
+        "name": "Tamanrasset",
+        "nameFr": "Tamanrasset",
+        "nameAr": "تمنراست",
+        "baladyatCount": 0
+      },
+      {
+        "id": "71822a2b-6720-431b-bb80-0351b3b033e3",
+        "code": 12,
+        "name": "Tébessa",
+        "nameFr": "Tébessa",
+        "nameAr": "تبسة",
+        "baladyatCount": 0
+      },
+      {
+        "id": "b7ccab60-4812-4a62-90b8-11c94922b8f6",
+        "code": 13,
+        "name": "Tlemcen",
+        "nameFr": "Tlemcen",
+        "nameAr": "تلمسان",
+        "baladyatCount": 0
+      },
+      {
+        "id": "8f12403a-3ed1-411b-9e69-61d130335501",
+        "code": 14,
+        "name": "Tiaret",
+        "nameFr": "Tiaret",
+        "nameAr": "تيارت",
+        "baladyatCount": 0
+      },
+      {
+        "id": "b7e52b25-2b91-4329-9350-e9fbab355213",
+        "code": 15,
+        "name": "Tizi Ouzou",
+        "nameFr": "Tizi Ouzou",
+        "nameAr": "تيزي وزو",
+        "baladyatCount": 0
+      },
+      {
+        "id": "7c4ebc2e-d4fc-483e-8e02-ae737cc69c14",
+        "code": 16,
+        "name": "Alger",
+        "nameFr": "Alger",
+        "nameAr": "الجزائر",
+        "baladyatCount": 0
+      },
+      {
+        "id": "fe11a353-1e62-495d-ab1c-0fbb55f672a7",
+        "code": 17,
+        "name": "Djelfa",
+        "nameFr": "Djelfa",
+        "nameAr": "الجلفة",
+        "baladyatCount": 0
+      },
+      {
+        "id": "d1848eba-ec02-461f-9388-c50513737d76",
+        "code": 18,
+        "name": "Jijel",
+        "nameFr": "Jijel",
+        "nameAr": "جيجل",
+        "baladyatCount": 0
+      },
+      {
+        "id": "7aa7260e-bda1-4151-853e-c69ceb98bb71",
+        "code": 19,
+        "name": "Sétif",
+        "nameFr": "Sétif",
+        "nameAr": "سطيف",
+        "baladyatCount": 0
+      },
+      {
+        "id": "a1759824-08b5-44b7-8d13-0585888e5f56",
+        "code": 20,
+        "name": "Saïda",
+        "nameFr": "Saïda",
+        "nameAr": "سعيدة",
+        "baladyatCount": 0
+      },
+      {
+        "id": "73ab099a-0db1-4a47-92e1-a61088b0e41a",
+        "code": 21,
+        "name": "Skikda",
+        "nameFr": "Skikda",
+        "nameAr": "سكيكدة",
+        "baladyatCount": 0
+      },
+      {
+        "id": "d9d8c3d0-3bed-485e-a283-c8015a24c908",
+        "code": 22,
+        "name": "Sidi Bel Abbès",
+        "nameFr": "Sidi Bel Abbès",
+        "nameAr": "سيدي بلعباس",
+        "baladyatCount": 0
+      },
+      {
+        "id": "39b93c43-948c-49b9-8940-ee53ceaedebc",
+        "code": 23,
+        "name": "Annaba",
+        "nameFr": "Annaba",
+        "nameAr": "عنابة",
+        "baladyatCount": 0
+      },
+      {
+        "id": "9533cc06-3cfd-429c-9d80-21ed29d0fe50",
+        "code": 24,
+        "name": "Guelma",
+        "nameFr": "Guelma",
+        "nameAr": "قالمة",
+        "baladyatCount": 0
+      },
+      {
+        "id": "090bc646-b426-403f-ad83-f5731c555cf4",
+        "code": 25,
+        "name": "Constantine",
+        "nameFr": "Constantine",
+        "nameAr": "قسنطينة",
+        "baladyatCount": 0
+      },
+      {
+        "id": "02c37792-65d2-4091-87db-d951177b95f9",
+        "code": 26,
+        "name": "Médéa",
+        "nameFr": "Médéa",
+        "nameAr": "المدية",
+        "baladyatCount": 0
+      },
+      {
+        "id": "e00cdb8b-7c7a-4cd0-8158-2c2b752dde0b",
+        "code": 27,
+        "name": "Mostaganem",
+        "nameFr": "Mostaganem",
+        "nameAr": "مستغانم",
+        "baladyatCount": 0
+      },
+      {
+        "id": "dadb1a75-5bc7-4dd7-b58f-0ee508450895",
+        "code": 28,
+        "name": "M'Sila",
+        "nameFr": "M'Sila",
+        "nameAr": "المسيلة",
+        "baladyatCount": 0
+      },
+      {
+        "id": "1d345633-d2a5-4905-9fad-1a9551165612",
+        "code": 29,
+        "name": "Mascara",
+        "nameFr": "Mascara",
+        "nameAr": "معسكر",
+        "baladyatCount": 0
+      },
+      {
+        "id": "0af8961f-07f2-43ba-9f54-bd28af45237e",
+        "code": 30,
+        "name": "Ouargla",
+        "nameFr": "Ouargla",
+        "nameAr": "ورقلة",
+        "baladyatCount": 0
+      },
+      {
+        "id": "9177b7f5-fc8e-4380-865c-65ed4dec1ab1",
+        "code": 31,
+        "name": "Oran",
+        "nameFr": "Oran",
+        "nameAr": "وهران",
+        "baladyatCount": 0
+      },
+      {
+        "id": "2e1c0557-5bb8-44d8-9a63-8396fe0f515b",
+        "code": 32,
+        "name": "El Bayadh",
+        "nameFr": "El Bayadh",
+        "nameAr": "البيض",
+        "baladyatCount": 0
+      },
+      {
+        "id": "1ac0d11b-e058-493e-9194-152e8de7f284",
+        "code": 33,
+        "name": "Illizi",
+        "nameFr": "Illizi",
+        "nameAr": "إيليزي",
+        "baladyatCount": 0
+      },
+      {
+        "id": "7ac8bb96-8024-4bb1-826e-f6566998bf50",
+        "code": 34,
+        "name": "Bordj Bou Arréridj",
+        "nameFr": "Bordj Bou Arréridj",
+        "nameAr": "برج بوعريريج",
+        "baladyatCount": 0
+      },
+      {
+        "id": "fd419e56-3a55-41cf-b8b5-9d830d6f2d28",
+        "code": 35,
+        "name": "Boumerdès",
+        "nameFr": "Boumerdès",
+        "nameAr": "بومرداس",
+        "baladyatCount": 0
+      },
+      {
+        "id": "6ad3b14e-89fa-4357-9dcc-e2a6672f36a0",
+        "code": 36,
+        "name": "El Tarf",
+        "nameFr": "El Tarf",
+        "nameAr": "الطارف",
+        "baladyatCount": 0
+      },
+      {
+        "id": "30053664-50c1-4048-9596-7c0009e14229",
+        "code": 37,
+        "name": "Tindouf",
+        "nameFr": "Tindouf",
+        "nameAr": "تندوف",
+        "baladyatCount": 0
+      },
+      {
+        "id": "251f6d03-91e2-42ad-9bc5-e6262912a736",
+        "code": 38,
+        "name": "Tissemsilt",
+        "nameFr": "Tissemsilt",
+        "nameAr": "تيسمسيلت",
+        "baladyatCount": 0
+      },
+      {
+        "id": "9848dacb-30ef-4ecc-8d89-359dc8f688b2",
+        "code": 39,
+        "name": "El Oued",
+        "nameFr": "El Oued",
+        "nameAr": "الوادي",
+        "baladyatCount": 0
+      },
+      {
+        "id": "3cff7ae4-c6fd-4906-bb6b-b502fe7deb32",
+        "code": 40,
+        "name": "Khenchela",
+        "nameFr": "Khenchela",
+        "nameAr": "خنشلة",
+        "baladyatCount": 0
+      },
+      {
+        "id": "9d5af8c0-9ac6-4e5e-b762-57863d49f4f3",
+        "code": 41,
+        "name": "Souk Ahras",
+        "nameFr": "Souk Ahras",
+        "nameAr": "سوق أهراس",
+        "baladyatCount": 0
+      },
+      {
+        "id": "19609699-d97a-4c67-b33c-d17faf19639c",
+        "code": 42,
+        "name": "Tipaza",
+        "nameFr": "Tipaza",
+        "nameAr": "تيبازة",
+        "baladyatCount": 0
+      },
+      {
+        "id": "4d562ee6-90e7-4eb9-848c-7877c206678c",
+        "code": 43,
+        "name": "Mila",
+        "nameFr": "Mila",
+        "nameAr": "ميلة",
+        "baladyatCount": 0
+      },
+      {
+        "id": "9d95e452-e2d6-4b11-a857-35a575f0405b",
+        "code": 44,
+        "name": "Aïn Defla",
+        "nameFr": "Aïn Defla",
+        "nameAr": "عين الدفلى",
+        "baladyatCount": 0
+      },
+      {
+        "id": "f0de41bc-0255-4de3-8482-971d809631a1",
+        "code": 45,
+        "name": "Naâma",
+        "nameFr": "Naâma",
+        "nameAr": "النعامة",
+        "baladyatCount": 0
+      },
+      {
+        "id": "57f03322-5bcb-45c6-8eb3-4979d7feab1c",
+        "code": 46,
+        "name": "Aïn Témouchent",
+        "nameFr": "Aïn Témouchent",
+        "nameAr": "عين تموشنت",
+        "baladyatCount": 0
+      },
+      {
+        "id": "9efa0e53-6ac7-47ae-96d1-c5f1970c58ce",
+        "code": 47,
+        "name": "Ghardaïa",
+        "nameFr": "Ghardaïa",
+        "nameAr": "غرداية",
+        "baladyatCount": 0
+      },
+      {
+        "id": "873925cd-09e0-40c3-a171-e38baeac4958",
+        "code": 48,
+        "name": "Relizane",
+        "nameFr": "Relizane",
+        "nameAr": "غليزان",
+        "baladyatCount": 0
+      },
+      {
+        "id": "19fba89a-a57e-450e-83e5-0a7d1eb60dec",
+        "code": 49,
+        "name": "Timimoun",
+        "nameFr": "Timimoun",
+        "nameAr": "تيميمون",
+        "baladyatCount": 0
+      },
+      {
+        "id": "104bcaed-397f-494f-8b43-ed47778f9c11",
+        "code": 50,
+        "name": "Bordj Badji Mokhtar",
+        "nameFr": "Bordj Badji Mokhtar",
+        "nameAr": "برج باجي مختار",
+        "baladyatCount": 0
+      },
+      {
+        "id": "469329fe-590b-4f67-8ebb-6054174d6871",
+        "code": 51,
+        "name": "Ouled Djellal",
+        "nameFr": "Ouled Djellal",
+        "nameAr": "أولاد جلال",
+        "baladyatCount": 0
+      },
+      {
+        "id": "6db7a9e3-196a-47ea-a026-d556853ed8f1",
+        "code": 52,
+        "name": "Béni Abbès",
+        "nameFr": "Béni Abbès",
+        "nameAr": "بني عباس",
+        "baladyatCount": 0
+      },
+      {
+        "id": "d8bc4771-d702-4c92-bd53-a2c671e1d712",
+        "code": 53,
+        "name": "In Salah",
+        "nameFr": "In Salah",
+        "nameAr": "عين صالح",
+        "baladyatCount": 0
+      },
+      {
+        "id": "0d070b74-2466-4f48-bba9-507208674633",
+        "code": 54,
+        "name": "In Guezzam",
+        "nameFr": "In Guezzam",
+        "nameAr": "عين قزام",
+        "baladyatCount": 0
+      },
+      {
+        "id": "39cbf23d-6554-4b84-95a3-4463129726b0",
+        "code": 55,
+        "name": "Touggourt",
+        "nameFr": "Touggourt",
+        "nameAr": "تقرت",
+        "baladyatCount": 0
+      },
+      {
+        "id": "85a13437-0959-48ea-99db-60967e534b2c",
+        "code": 56,
+        "name": "Djanet",
+        "nameFr": "Djanet",
+        "nameAr": "جانت",
+        "baladyatCount": 0
+      },
+      {
+        "id": "efc45571-dac6-4174-b540-01830d8469da",
+        "code": 57,
+        "name": "El M'Ghair",
+        "nameFr": "El M'Ghair",
+        "nameAr": "المغير",
+        "baladyatCount": 0
+      },
+      {
+        "id": "97b89c9d-63bc-4524-b6e4-fb5dad45ccc5",
+        "code": 58,
+        "name": "El Menia",
+        "nameFr": "El Menia",
+        "nameAr": "المنيعة",
+        "baladyatCount": 0
+      }
+    ],
+    "meta": {
+      "timestamp": "2026-08-19T16:54:47.875Z"
+    }
+  },
+  {
+    "success": false,
+    "message": "Route GET /api/v1/location/v1/wilayas/538ab724-cdc3-4779-9d68-5b7ba8cda245/baladyas?limit=100 not found",
+    "error": "Route GET /api/v1/location/v1/wilayas/538ab724-cdc3-4779-9d68-5b7ba8cda245/baladyas?limit=100 not found",
+    "meta": {
+      "timestamp": "2026-08-19T16:55:05.698Z"
+    }
+  },
+  {
+    "success": false,
+    "message": "Route GET /api/v1/location/v1/wilayas/538ab724-cdc3-4779-9d68-5b7ba8cda245/baladyas?limit=100 not found",
+    "error": "Route GET /api/v1/location/v1/wilayas/538ab724-cdc3-4779-9d68-5b7ba8cda245/baladyas?limit=100 not found",
+    "meta": {
+      "timestamp": "2026-08-19T16:55:06.799Z"
+    }
+  },
+  {
+    "success": false,
+    "message": "Route GET /api/v1/location/v1/wilayas/538ab724-cdc3-4779-9d68-5b7ba8cda245/baladyas?limit=100 not found",
+    "error": "Route GET /api/v1/location/v1/wilayas/538ab724-cdc3-4779-9d68-5b7ba8cda245/baladyas?limit=100 not found",
+    "meta": {
+      "timestamp": "2026-08-19T16:55:08.946Z"
+    }
+  },
+  {
+    "success": false,
+    "message": "Validation failed",
+    "error": "Validation failed",
+    "errors": [
+      {
+        "field": "nameFr",
+        "message": "\"nameFr\" is not allowed"
+      },
+      {
+        "field": "nameAr",
+        "message": "\"nameAr\" is not allowed"
+      },
+      {
+        "field": "facilityType",
+        "message": "\"facilityType\" is not allowed"
+      },
+      {
+        "field": "wilayaId",
+        "message": "\"wilayaId\" is not allowed"
+      },
+      {
+        "field": "address",
+        "message": "\"address\" is not allowed"
+      }
+    ],
+    "meta": {
+      "timestamp": "2026-08-19T16:55:10.395Z"
+    }
+  },
+  {
+    "success": false,
+    "message": "Route GET /api/v1/location/v1/wilayas/538ab724-cdc3-4779-9d68-5b7ba8cda245/baladyas?limit=100 not found",
+    "error": "Route GET /api/v1/location/v1/wilayas/538ab724-cdc3-4779-9d68-5b7ba8cda245/baladyas?limit=100 not found",
+    "meta": {
+      "timestamp": "2026-08-19T16:55:13.182Z"
+    }
+  },
+  {
+    "success": false,
+    "message": "Validation failed",
+    "error": "Validation failed",
+    "errors": [
+      {
+        "field": "hours.0.id",
+        "message": "\"hours[0].id\" is not allowed"
+      },
+      {
+        "field": "hours.0.clinicId",
+        "message": "\"hours[0].clinicId\" is not allowed"
+      },
+      {
+        "field": "hours.1.id",
+        "message": "\"hours[1].id\" is not allowed"
+      },
+      {
+        "field": "hours.1.clinicId",
+        "message": "\"hours[1].clinicId\" is not allowed"
+      },
+      {
+        "field": "hours.2.id",
+        "message": "\"hours[2].id\" is not allowed"
+      },
+      {
+        "field": "hours.2.clinicId",
+        "message": "\"hours[2].clinicId\" is not allowed"
+      },
+      {
+        "field": "hours.3.id",
+        "message": "\"hours[3].id\" is not allowed"
+      },
+      {
+        "field": "hours.3.clinicId",
+        "message": "\"hours[3].clinicId\" is not allowed"
+      },
+      {
+        "field": "hours.4.id",
+        "message": "\"hours[4].id\" is not allowed"
+      },
+      {
+        "field": "hours.4.clinicId",
+        "message": "\"hours[4].clinicId\" is not allowed"
+      },
+      {
+        "field": "hours.5.id",
+        "message": "\"hours[5].id\" is not allowed"
+      },
+      {
+        "field": "hours.5.clinicId",
+        "message": "\"hours[5].clinicId\" is not allowed"
+      },
+      {
+        "field": "hours.6.id",
+        "message": "\"hours[6].id\" is not allowed"
+      },
+      {
+        "field": "hours.6.clinicId",
+        "message": "\"hours[6].clinicId\" is not allowed"
+      }
+    ],
+    "meta": {
+      "timestamp": "2026-08-19T16:56:14.674Z"
+    }
+  }
+]

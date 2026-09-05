@@ -1,0 +1,204 @@
+{
+  "shell": {
+    "sidebar": {
+      "portalName": "Doctor Portal",
+      "collapse": "Collapse",
+      "collapseAria": "Collapse sidebar",
+      "footer": "Iyadati Doctor Portal v1.0 · PWA Ready"
+    },
+    "commandPalette": {
+      "placeholder": "Jump to a page, patient or appointment…",
+      "pages": "Pages",
+      "appointments": "Appointments",
+      "noResults": "No results",
+      "patientFallback": "Patient"
+    },
+    "install": {
+      "installApp": "Install app"
+    },
+    "offline": {
+      "message": "You are offline — showing the last loaded data."
+    }
+  },
+  "dashboard": {
+    "period": {
+      "7d": "7 days",
+      "30d": "30 days",
+      "90d": "90 days",
+      "thisMonth": "This month"
+    },
+    "welcome": "Welcome back",
+    "welcomeName": "Welcome back, Dr. {{name}}",
+    "subtitle": "Your practice overview and live patient schedule",
+    "practiceStatus": {
+      "available": "Available",
+      "consulting": "Consulting",
+      "away": "Away",
+      "toastAvailable": "Practice status: Available for consults",
+      "toastConsulting": "Practice status: In Consultation",
+      "toastAway": "Practice status: Away / Out of Office"
+    },
+    "nextPatient": {
+      "badge": "Next Patient Up Today",
+      "fallbackName": "Scheduled Patient",
+      "fallbackType": "General Consultation",
+      "callPatient": "Call Patient",
+      "startConsultation": "Start Consultation"
+    },
+    "kpi": {
+      "appointments": "Appointments",
+      "completionRate": "Completion rate",
+      "revenue": "Revenue",
+      "patientRating": "Patient rating",
+      "completed_one": "{{count}} completed",
+      "completed_other": "{{count}} completed",
+      "noShow": "{{value}}% no-show",
+      "perVisit": "{{value}} / visit",
+      "reviews_one": "{{count}} verified review",
+      "reviews_other": "{{count}} verified reviews"
+    },
+    "schedule": {
+      "title": "Today's Schedule",
+      "summary": "{{total}} total visits · {{pending}} pending confirmation",
+      "viewAll": "View all",
+      "emptyTitle": "Nothing booked today",
+      "emptyDescription": "Open more slots under Schedule to let patients book with you.",
+      "patientFallback": "Patient",
+      "typeFallback": "Consultation"
+    },
+    "pendingRequests": {
+      "title": "Pending Requests",
+      "description": "Confirm requests promptly to maintain a top ranking.",
+      "action": "Review Requests"
+    },
+    "quickStats": {
+      "patients": "Patients",
+      "retention": "Retention",
+      "rating": "Rating"
+    },
+    "actionStrip": {
+      "toConfirm_one": "{{count}} appointment to confirm",
+      "toConfirm_other": "{{count}} appointments to confirm",
+      "toConfirmDescription": "Patients waiting for confirmation",
+      "manage": "Manage",
+      "clinicInvitation_one": "{{count}} clinic invitation",
+      "clinicInvitation_other": "{{count}} clinic invitations",
+      "clinicInvitationDescription": "Pending clinic affiliations",
+      "view": "View"
+    },
+    "heatmap": {
+      "title": "When your patients book",
+      "subtitle": "Peak hours across your busiest days",
+      "emptyTitle": "Not enough booking data yet",
+      "emptyDescription": "Your peak-hour heatmap appears once you have completed appointments."
+    },
+    "map": {
+      "title": "Where your patients come from",
+      "subtitle": "Patient density by wilaya",
+      "empty": "No patient location data yet"
+    },
+    "trend": {
+      "title": "Revenue & Volume Trend",
+      "subtitle": "Monthly breakdown of revenue and visit volume",
+      "revenue": "Revenue",
+      "appointments": "Appointments",
+      "emptyTitle": "No monthly trend data",
+      "emptyDescription": "Monthly trends will appear as you complete appointments."
+    },
+    "breakdown": {
+      "title": "Booking Breakdown",
+      "subtitle": "Appointment type distribution",
+      "emptyTitle": "No booking data",
+      "emptyDescription": "No appointment type breakdown available."
+    },
+    "recent": {
+      "all": "All"
+    }
+  },
+  "appointments": {
+    "pageTitle": "Appointments",
+    "pageSubtitle": "Confirm requests and keep every visit up to date",
+    "displayMode": {
+      "today": "Today",
+      "week": "This week",
+      "month": "This month",
+      "custom": "Custom range",
+      "all": "All"
+    },
+    "statusFilter": {
+      "placeholder": "All statuses"
+    },
+    "sort": {
+      "placeholder": "Sort by",
+      "dateDesc": "Date · newest first",
+      "dateAsc": "Date · oldest first",
+      "nameAsc": "Patient name · A–Z",
+      "status": "Status",
+      "createdDesc": "Created · newest",
+      "createdAsc": "Created · oldest"
+    },
+    "action": {
+      "startConsultation": "Start consultation",
+      "markCompleted": "Mark completed",
+      "markNoShow": "Mark no-show",
+      "cancelAppointment": "Cancel appointment",
+      "confirm": "Confirm",
+      "cancel": "Cancel",
+      "updateStatus": "Update status",
+      "refresh": "Refresh"
+    },
+    "startDate": "Start date",
+    "endDate": "End date",
+    "stat": {
+      "total": "Total",
+      "pending": "Pending",
+      "confirmed": "Confirmed",
+      "inProgress": "In progress",
+      "completed": "Completed",
+      "noShow": "No show"
+    },
+    "column": {
+      "time": "Time",
+      "patient": "Patient",
+      "type": "Type",
+      "payment": "Payment",
+      "status": "Status"
+    },
+    "patientFallback": "Patient",
+    "pendingBanner": {
+      "awaiting_one": "{{count}} request awaiting your confirmation",
+      "awaiting_other": "{{count}} requests awaiting your confirmation"
+    },
+    "emptyTitle": "No appointments",
+    "emptyDescription": "Try another date or status filter.",
+    "emptyDescriptionTable": "Nothing matches this filter.",
+    "map": {
+      "title": "Where your patients come from",
+      "subtitle": "Patient distribution by wilaya",
+      "empty": "No patient location data available"
+    },
+    "activityHeatmap": {
+      "title": "Booking activity",
+      "subtitle": "Click a cell to inspect bookings for that date"
+    },
+    "confirmDialog": {
+      "title": "Set status to {{status}}?",
+      "description": "This updates the appointment for {{name}}.",
+      "confirmLabel": "Update status"
+    },
+    "toast": {
+      "confirmed": "Appointment confirmed",
+      "statusUpdated": "Status updated"
+    }
+  },
+  "login": {
+    "title": "Doctor portal",
+    "subtitle": "Manage your practice on Iyadati",
+    "emailPlaceholder": "doctor@example.com",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "toastWelcomeBack": "Welcome back",
+    "errorNoToken": "No token returned",
+    "errorSignInFailed": "Sign in failed"
+  }
+}

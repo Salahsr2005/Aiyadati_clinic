@@ -1,0 +1,109 @@
+{
+  "app": { "name": "Iyadati Doctor Portal", "tagline": "Manage your practice, schedule and patient appointments." },
+  "nav": {
+    "dashboard": "Dashboard",
+    "appointments": "Appointments",
+    "schedule": "Schedule & Slots",
+    "patients": "My Patients",
+    "reviews": "Reviews & Ratings",
+    "wallet": "Earnings & Wallet",
+    "clinics": "Clinic Affiliations",
+    "profile": "My Profile",
+    "settings": "Settings"
+  },
+  "auth": {
+    "signIn": "Sign in as Doctor",
+    "signInSubtitle": "Access your doctor self-service portal",
+    "email": "Email address",
+    "password": "Password",
+    "rememberMe": "Remember me",
+    "submit": "Sign in",
+    "signingIn": "Signing in…",
+    "invalid": "Invalid email or password",
+    "throttled": "Too many attempts. Please wait and try again.",
+    "expired": "Your session expired. Please sign in again.",
+    "logout": "Sign out"
+  },
+  "common": {
+    "search": "Search anything…",
+    "loading": "Loading…",
+    "error": "Something went wrong",
+    "retry": "Try again",
+    "empty": "No data yet",
+    "cancel": "Cancel",
+    "save": "Save",
+    "confirm": "Confirm",
+    "close": "Close",
+    "collapseSidebar": "Collapse sidebar",
+    "toggleTheme": "Toggle theme",
+    "language": "Language",
+    "notifications": "Notifications",
+    "signedInAs": "Signed in as"
+  },
+  "overview": {
+    "title": "Dashboard",
+    "subtitle": "Your practice at a glance",
+    "kpi": {
+      "appointments": "Appointments",
+      "completionRate": "Completion rate",
+      "revenue": "Revenue",
+      "rating": "Rating"
+    }
+  },
+  "status": {
+    "ACTIVE": "Active", "INACTIVE": "Inactive",
+    "VERIFIED": "Verified", "UNVERIFIED": "Unverified", "SUSPENDED": "Suspended",
+    "PENDING": "Pending", "APPROVED": "Approved", "REJECTED": "Rejected",
+    "CONFIRMED": "Confirmed", "IN_PROGRESS": "In progress", "COMPLETED": "Completed",
+    "CANCELLED": "Cancelled", "NO_SHOW": "No-show", "PAID": "Paid",
+    "WAITING": "Waiting", "IN_REVIEW": "In review", "FAILED": "Failed",
+    "DRAFT": "Draft", "ARCHIVED": "Archived", "BANNED": "Banned"
+  },
+  "type": { "IN_PERSON": "In person", "VIDEO": "Video consultation", "HOME_VISIT": "Home visit" },
+  "payment": { "ON_SITE": "On site", "CREDIT": "Credit", "CARD": "Card", "CASH": "Cash" },
+  "filters": {
+    "open": "Filters", "apply": "Apply", "reset": "Reset", "clear": "Clear all",
+    "active": "{{count}} active",
+    "status": "Status", "wilaya": "Wilaya", "specialty": "Specialty",
+    "practiceType": "Practice type", "verification": "Verification",
+    "type": "Type", "paymentMethod": "Payment method",
+    "date": "Date range", "rating": "Min rating"
+  },
+  "views": { "grid": "Grid", "table": "Table", "kanban": "Kanban", "map": "Map", "heatmap": "Heatmap" },
+  "appt": {
+    "slot": "Slot", "notes": "Notes", "cancelReason": "Cancellation reason",
+    "cancelledAt": "Cancelled at", "createdBy": "Created by",
+    "noClinic": "Direct doctor booking (no clinic)", "noPatient": "No patient info",
+    "type": "Type", "payment": "Payment",
+    "kanban": { "empty": "No appointments in this column" }
+  },
+  "table": {
+    "search": "Search",
+    "showing": "Showing",
+    "of": "of",
+    "all": "All",
+    "actions": "Actions",
+    "view": "View",
+    "edit": "Edit",
+    "delete": "Delete",
+    "create": "New",
+    "refresh": "Refresh"
+  },
+  "doctorPortal": {
+    "welcome": "Welcome back",
+    "todaySchedule": "Today's schedule",
+    "pendingRequests": "Pending requests",
+    "actionRequired": "Action required",
+    "revenueTrend": "Revenue & Volume Trend",
+    "bookingDistribution": "How patients book with you",
+    "recentAppointments": "Recent Appointments",
+    "weeklyAvailability": "Weekly Availability",
+    "slotSettings": "Slot Settings",
+    "timeOff": "Time Off",
+    "bookableSlots": "Bookable Slots",
+    "completeness": "Profile Completeness",
+    "professionalDetails": "Professional Details",
+    "practiceLocation": "Practice Location",
+    "verificationDocs": "Verification Documents"
+  }
+}

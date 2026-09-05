@@ -1,0 +1,54 @@
+{
+  "schedule": {
+    "aggregate": {
+      "available": "Créneaux disponibles",
+      "booked": "Créneaux réservés",
+      "total": "Total des créneaux",
+      "utilization": "Taux d'occupation"
+    },
+    "filters": {
+      "all": "Tous",
+      "available": "Disponibles",
+      "full": "Complets",
+      "cancelled": "Annulés"
+    },
+    "inspector": {
+      "label": "Période analysée :",
+      "presetToday": "Aujourd'hui",
+      "presetThisWeek": "Cette semaine",
+      "presetNext7": "7 prochains jours",
+      "presetThisMonth": "Ce mois-ci",
+      "rangeTotal": "{{count}} créneaux sur la période",
+      "rangeAvailable": "{{count}} disponibles",
+      "rangeBooked": "{{count}} réservés",
+      "rangeCancelled": "{{count}} annulés",
+      "emptyTitle": "Aucun créneau sur cette période",
+      "emptyDescription": "Choisissez une autre période ou générez des créneaux pour ces dates.",
+      "cancelDay": "Annuler la journée",
+      "deleteSlot": "Supprimer le créneau"
+    },
+    "visualizer": {
+      "title": "Visualiseur d'agenda",
+      "subtitle": "Modèle hebdomadaire, créneaux générés et absences",
+      "thisWeek": "Cette semaine",
+      "noTemplate": "Aucune disponibilité"
+    },
+    "legend": {
+      "template": "Modèle hebdomadaire",
+      "available": "Disponible",
+      "booked": "Réservé",
+      "blocked": "Bloqué",
+      "timeOff": "Absence"
+    },
+    "regenerateDialog": {
+      "title": "Régénérer les créneaux à venir ?",
+      "description": "{{reason}} a changé. Les créneaux à venir doivent être régénérés pour correspondre.",
+      "affectedRange": "Période concernée",
+      "futureAvailable": "{{count}} créneaux disponibles à venir",
+      "futureBooked": "{{count}} créneaux réservés à venir",
+      "bookedPreservedNote": "Les créneaux réservés sont conservés — vérifiez les conflits dans la page Rendez-vous.",
+      "regenerateFrom": "Régénérer à partir du",
+      "confirm": "Régénérer les créneaux"
+    }
+  }
+}

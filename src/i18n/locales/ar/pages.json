@@ -1,0 +1,366 @@
+{
+  "patients": {
+    "title": "مرضاي",
+    "subtitle_one": "مريض واحد فريد مسجّل في سجل استشاراتك",
+    "subtitle_other": "{{count}} مريض فريد مسجّل في سجل استشاراتك",
+    "search": { "placeholder": "ابحث بالاسم، الهاتف، البريد الإلكتروني، الولاية..." },
+    "table": {
+      "name": "اسم المريض",
+      "noEmail": "لا يوجد بريد إلكتروني",
+      "contact": "الاتصال / الموقع",
+      "visitsStatus": "الزيارات والحالة",
+      "visit_one": "زيارة",
+      "visit_other": "زيارات",
+      "completedCount": "({{count}} مكتملة)",
+      "revenue": "الإيراد التقديري",
+      "lastVisit": "آخر زيارة",
+      "never": "أبداً"
+    },
+    "badge": { "suspended": "موقوف" },
+    "filters": {
+      "category": "الفئة:",
+      "reset": "إعادة ضبط الفلاتر",
+      "visitFrom": "من تاريخ الزيارة:",
+      "visitTo": "إلى تاريخ الزيارة:",
+      "wilaya": "الولاية:",
+      "allWilayas": "كل الولايات",
+      "tierStatus": "المستوى / الحالة:",
+      "sortBy": "الترتيب حسب:",
+      "categories": {
+        "all": "كل المرضى",
+        "frequent": "متكررون (+3)",
+        "completed": "مكتملة",
+        "has_notes": "لديهم ملاحظات",
+        "has_docs": "لديهم مستندات",
+        "suspended": "موقوفون"
+      },
+      "tiers": {
+        "all": "كل المستويات",
+        "VIP": "VIP (+5 زيارات)",
+        "Frequent": "متكرر (3-4 زيارات)",
+        "Returning": "عائد (زيارتان)",
+        "New": "جديد (زيارة واحدة)"
+      },
+      "sort": {
+        "recent": "آخر زيارة",
+        "visits": "أكثر عدد زيارات",
+        "revenue": "أعلى إيراد",
+        "name": "أبجدياً (أ-ي)"
+      }
+    },
+    "empty": {
+      "title": "لا يوجد مرضى",
+      "description": "سيظهر المرضى هنا تلقائياً بمجرد إتمامهم أو حجزهم لاستشارات معك.",
+      "noMatch": "لا يوجد مرضى يطابقون معايير التصفية"
+    },
+    "tier": { "VIP": "VIP", "Frequent": "متكرر", "Returning": "عائد", "New": "جديد" },
+    "drawer": {
+      "callPatient": "اتصل بالمريض",
+      "sendEmail": "إرسال بريد إلكتروني",
+      "trustLevel": "مستوى الثقة:",
+      "suspendedAccount": "حساب موقوف",
+      "activePatient": "مريض نشط",
+      "totalVisits": "إجمالي الزيارات",
+      "completed": "مكتملة",
+      "cancelled": "ملغاة",
+      "estDzd": "دج تقديري",
+      "na": "غير متوفر",
+      "tabs": {
+        "overview": "نظرة عامة",
+        "notes": "الملاحظات السريرية",
+        "documents": "المستندات الطبية ({{count}})",
+        "history": "السجل ({{count}})"
+      },
+      "summary": {
+        "title": "ملخص المريض",
+        "fullName": "الاسم الكامل",
+        "phone": "رقم الهاتف",
+        "email": "البريد الإلكتروني",
+        "lastVisitDate": "تاريخ آخر زيارة"
+      },
+      "noteHighlight": "أحدث ملاحظة سريرية",
+      "editNote": "تعديل الملاحظة"
+    },
+    "notes": {
+      "title": "الملاحظات السريرية الخاصة بالطبيب",
+      "clear": "مسح",
+      "save": "حفظ الملاحظة",
+      "placeholder": "سجّل الملاحظات السريرية الخاصة، التاريخ الطبي، الحساسية، الأمراض المزمنة، الوصفات، أو تذكيرات المتابعة لهذا المريض...",
+      "disclaimer": "* ملاحظة: الملاحظات المحفوظة هنا مرتبطة بمعرّف هذا المريض ومحفوظة في مساحة عملك المحلية.",
+      "savedToast": "تم حفظ الملاحظة السريرية بنجاح!",
+      "saveErrorToast": "فشل حفظ الملاحظة محلياً.",
+      "clearedToast": "تم مسح الملاحظة السريرية",
+      "clearErrorToast": "فشل مسح الملاحظة."
+    },
+    "documents": {
+      "title": "المستندات التي رفعها المريض ({{count}})",
+      "empty": {
+        "title": "لا توجد مستندات طبية",
+        "description": "لم يشارك هذا المريض أو يرفع أي ملفات طبية أو وصفات بعد."
+      },
+      "previewTitle": "معاينة الملف",
+      "preview": "معاينة",
+      "downloadTitle": "تنزيل المستند",
+      "uploaded": "تم الرفع في {{date}}",
+      "notAvailable": "المعاينة غير متوفرة لهذا النوع من الملفات ({{type}})",
+      "openOrDownload": "فتح أو تنزيل الملف",
+      "download": "تنزيل"
+    },
+    "history": {
+      "title": "سجل المواعيد ({{count}})",
+      "at": "الساعة {{time}}",
+      "type": "النوع:",
+      "consultationDefault": "استشارة",
+      "paymentMethod": "طريقة الدفع:",
+      "onSiteDefault": "في الموقع"
+    },
+    "trust": {
+      "0": "غير موثوق",
+      "1": "مريض جديد",
+      "2": "موثوق",
+      "3": "مريض VIP",
+      "points": "({{points}} نقطة)"
+    }
+  },
+  "clinics": {
+    "meta": { "locationNA": "الموقع غير متوفر" },
+    "title": "الانتساب للعيادات وغرف الممارسة",
+    "subtitle": "أدر شراكاتك النشطة مع العيادات، ورد على الدعوات، أو اطلب الوصول إلى منشآت جديدة عبر الجزائر.",
+    "exploreMarketplace": "استكشف السوق",
+    "metrics": {
+      "activeAffiliations": "الانتسابات النشطة",
+      "activeAffiliationsDesc": "المنشآت التي تمارس فيها",
+      "pendingInvitations": "الدعوات المعلّقة",
+      "pendingInvitationsDesc": "بانتظار ردك",
+      "outgoingRequests": "الطلبات المرسلة",
+      "outgoingRequestsDesc": "قيد المراجعة من قبل العيادات",
+      "availableMarketplace": "السوق المتاح",
+      "availableMarketplaceDesc": "عيادات مفتوحة للأطباء"
+    },
+    "tabs": {
+      "all": "نظرة عامة",
+      "affiliated": "عياداتي ({{count}})",
+      "invitations": "الدعوات ({{count}})",
+      "pending_requests": "الطلبات المرسلة ({{count}})",
+      "marketplace": "استكشف السوق"
+    },
+    "reset": "إعادة ضبط",
+    "search": { "placeholder": "ابحث باسم العيادة، الولاية..." },
+    "wilayaFilter": { "all": "كل الولايات", "placeholder": "تصفية حسب الولاية" },
+    "sort": { "recent": "الترتيب حسب: افتراضي / الأحدث", "name": "الترتيب حسب: الاسم (أ-ي)" },
+    "affiliations": {
+      "sectionTitle": "الانتسابات النشطة للعيادات",
+      "sectionDesc": "المنشآت التي ملفك الشخصي نشط فيها، مما يسمح بالمواعيد وتخصيص الغرف.",
+      "activeCount": "{{count}} نشطة",
+      "empty": {
+        "title": "لا توجد انتسابات نشطة",
+        "description": "لم تنضم إلى أي عيادة بعد. اقبل دعوة أدناه أو اطلب الانضمام إلى مركز طبي من السوق."
+      },
+      "phoneContact": "رقم الاتصال",
+      "phoneNA": "غير متوفر",
+      "affiliatedSince": "منتسب منذ",
+      "recent": "مؤخراً",
+      "viewFacility": "عرض المنشأة والجدول"
+    },
+    "invitations": {
+      "sectionTitle": "دعوات العيادات الواردة",
+      "sectionDesc": "عيادات دعتك للانضمام إلى فريقها الطبي والممارسة في غرفها.",
+      "pendingCount": "{{count}} معلّقة",
+      "empty": { "title": "لا توجد دعوات معلّقة", "description": "لا توجد لديك حالياً أي دعوات نشطة من العيادات." },
+      "accept": "قبول الدعوة",
+      "decline": "رفض",
+      "acceptedToast": "تم قبول الدعوة بنجاح!",
+      "declinedToast": "تم رفض الدعوة",
+      "joinedToastTitle": "لقد انضممت إلى العيادة",
+      "joinedToastDescription": "تظهر الآن ضمن عياداتي.",
+      "viewInMyClinics": "عرض في عياداتي"
+    },
+    "pendingRequests": {
+      "sectionTitle": "الطلبات التي أرسلتها",
+      "sectionDesc": "طلبات الانضمام التي أرسلتها إلى العيادات وتنتظر موافقة الإدارة.",
+      "sentCount": "{{count}} مرسلة",
+      "empty": { "title": "لا توجد طلبات مرسلة", "description": "لم تطلب الانضمام إلى أي عيادة مؤخراً." },
+      "sent": "أُرسلت",
+      "underReview": "قيد المراجعة",
+      "acceptedDeclined": "مقبولة / مرفوضة",
+      "cancel": "إلغاء الطلب",
+      "cancelledToast": "تم إلغاء الطلب"
+    },
+    "marketplace": {
+      "sectionTitle": "سوق العيادات",
+      "sectionDesc": "تصفح المنشآت الطبية عبر الجزائر واطلب مساحة استشارة.",
+      "showingCount": "عرض {{count}} عيادة",
+      "empty": { "title": "لا توجد عيادات مطابقة لبحثك", "description": "حاول تعديل الكلمة المفتاحية أو فلتر الولاية للعثور على عيادات متاحة." },
+      "activeProfile": "ملف نشط",
+      "incompleteProfile": "ملف غير مكتمل",
+      "details": "التفاصيل",
+      "affiliated": "منتسب",
+      "requested": "تم الطلب",
+      "requestToJoin": "طلب الانضمام",
+      "mapEmptyLabel": "لا توجد بيانات موقع للعيادات",
+      "requestSentToast": "تم إرسال طلب الانضمام إلى إدارة العيادة"
+    },
+    "requestModal": {
+      "title": "طلب انتساب إلى {{name}}",
+      "defaultClinicName": "عيادة",
+      "description": "اكتب مقدمة موجزة أو حدد أيام العمل المفضلة لإدارة العيادة.",
+      "cancel": "إلغاء",
+      "send": "إرسال الطلب",
+      "messageLabel": "رسالة / طلب جدول عمل (يُحفظ محلياً لملاحظاتك الخاصة):",
+      "messagePlaceholder": "أرغب في إجراء استشارات عامة في عيادتكم خلال صباح أيام الأسبوع (مثلاً الأحد والثلاثاء، 09:00 - 13:00)...",
+      "disclaimer": "* ملاحظة: سيراجع مسؤولو العيادة ملفك المهني ومؤهلاتك قبل الموافقة."
+    }
+  },
+  "profile": {
+    "title": "ملفي الشخصي",
+    "subtitle": "ملفك الشخصي العام كما يراه المرضى",
+    "saving": "جارٍ الحفظ…",
+    "saveChanges": "حفظ التغييرات",
+    "photoAlt": "صورة الدكتور {{name}}",
+    "drTitle": "د. {{name}}",
+    "verified": "موثّق",
+    "pendingVerification": "التحقق قيد الانتظار",
+    "changeNameHint": "لتغيير اسمك أو رقم هاتفك المسجل، يرجى التواصل مع الدعم.",
+    "verificationFeedback": "ملاحظات التحقق: {{reason}}",
+    "changePhoto": "تغيير الصورة",
+    "completeness": "اكتمال الملف الشخصي: {{score}}/{{total}} ({{percentage}}%)",
+    "info": {
+      "nameAr": "الاسم (عربي)",
+      "phone": "الهاتف",
+      "email": "البريد الإلكتروني",
+      "rating": "التقييم",
+      "wilayaBaladya": "الولاية / البلدية",
+      "memberSince": "عضو منذ",
+      "lastUpdated": "آخر تحديث",
+      "registrationStatus": "حالة التسجيل",
+      "notAvailable": "—",
+      "completed": "مكتمل",
+      "registered": "مسجّل",
+      "incomplete": "غير مكتمل",
+      "suspended": " · موقوف"
+    },
+    "professional": {
+      "title": "التفاصيل المهنية",
+      "yearsOfExperience": "سنوات الخبرة",
+      "specialty": "التخصص",
+      "specialtyPlaceholder": "اختر التخصص",
+      "practiceType": "نوع الممارسة",
+      "bioFr": "السيرة الذاتية (فرنسي)",
+      "bioAr": "السيرة الذاتية (عربي)"
+    },
+    "practiceTypes": {
+      "INDEPENDENT": "مستقل",
+      "CLINIC_BASED": "ضمن عيادة",
+      "BOTH": "كلاهما"
+    },
+    "location": {
+      "title": "موقع الممارسة",
+      "subtitle": "موقع البلدية وعلامة الإحداثيات على الخريطة لبحث المرضى",
+      "wilaya": "الولاية",
+      "wilayaPlaceholder": "اختر الولاية",
+      "baladya": "البلدية",
+      "baladyaPlaceholder": "اختر البلدية",
+      "baladyaPlaceholderNoWilaya": "اختر الولاية أولاً",
+      "pinpoint": "حدد موقع الممارسة على الخريطة",
+      "selectedCoordinates": "الإحداثيات المحددة: {{lat}}, {{lng}}",
+      "preview": "معاينة موقع الممارسة"
+    },
+    "documents": {
+      "title": "مستندات التحقق",
+      "subtitle": "قم برفع رخصتك الطبية وشهادتك وبطاقة الهوية للتحقق من حسابك.",
+      "typePlaceholder": "النوع",
+      "upload": "رفع",
+      "empty": { "title": "لا توجد مستندات مرفوعة", "description": "قم برفع رخصتك لإتمام التحقق." },
+      "deleteAria": "حذف المستند",
+      "deleteTitle": "هل تريد حذف هذا المستند؟",
+      "deleteDescription": "ستحتاج إلى رفعه مرة أخرى من أجل التحقق.",
+      "deleteConfirm": "حذف",
+      "defaultName": "مستند",
+      "otherType": "آخر",
+      "uploadedToast": "تم رفع المستند",
+      "removedToast": "تم حذف المستند",
+      "profileUpdatedToast": "تم تحديث الملف الشخصي"
+    },
+    "docTypes": {
+      "degree": "الشهادة",
+      "license": "الرخصة الطبية",
+      "id_card": "بطاقة الهوية",
+      "cv": "السيرة الذاتية",
+      "certificate": "شهادة",
+      "other": "آخر"
+    }
+  },
+  "reviews": {
+    "title": "آراء وتقييمات المرضى",
+    "subtitle": "درجات رضا المرضى، التعليقات التفصيلية، وإعدادات ظهور التقييمات",
+    "visibilityMode": "وضع الظهور:",
+    "visibilityOptions": {
+      "BOTH": "التقييم والمراجعة (عام)",
+      "RATING_ONLY": "التقييم فقط",
+      "REVIEW_ONLY": "المراجعة النصية فقط",
+      "NONE": "مخفي (خاص)"
+    },
+    "visibilityUpdatedToast": "تم تحديث ظهور التقييمات",
+    "basedOn_one": "استناداً إلى تقييم مريض واحد",
+    "basedOn_other": "استناداً إلى {{count}} تقييم مريض",
+    "distribution": {
+      "title": "توزيع التقييمات"
+    },
+    "list": {
+      "title": "قائمة تقييمات المرضى ({{count}})",
+      "filter": "تصفية:",
+      "all": "الكل",
+      "sortNewest": "الأحدث أولاً",
+      "sortHighest": "الأعلى تقييماً",
+      "sortLowest": "الأدنى تقييماً",
+      "verifiedVisit": "زيارة موثّقة",
+      "verifiedPatient": "مريض موثّق",
+      "patientId": "معرّف المريض: {{id}}",
+      "noComment": "لا يوجد تعليق مكتوب (تقييم بالنجوم فقط).",
+      "clinicId": "معرّف العيادة: {{id}}",
+      "reviewId": "معرّف التقييم: {{id}}",
+      "updated": "تم التحديث: {{date}}",
+      "empty": {
+        "title": "لا توجد تقييمات للمرضى",
+        "descriptionAll": "ستظهر هنا التقييمات التي يتركها المرضى بعد إتمام استشارتهم مع كامل التفاصيل.",
+        "descriptionFiltered": "لا توجد تقييمات بـ {{rating}}★ حتى الآن. جرب فلتراً آخر."
+      }
+    }
+  },
+  "earnings": {
+    "title": "الأرباح",
+    "subtitle": "إيرادات الاستشارات عبر ممارستك",
+    "periods": {
+      "last7days": "7 أيام",
+      "last30days": "30 يوماً",
+      "last90days": "90 يوماً",
+      "thisMonth": "هذا الشهر",
+      "lastMonth": "الشهر الماضي"
+    },
+    "kpi": {
+      "totalRevenue": "إجمالي الإيرادات",
+      "averagePerVisit": "متوسط لكل زيارة",
+      "completedVisits": "الزيارات المكتملة",
+      "totalVisits": "{{count}} إجمالاً",
+      "uniquePatients": "المرضى الفريدون",
+      "returningPatients": "{{count}} عائدون"
+    },
+    "chart": {
+      "revenueTrend": "اتجاه الإيرادات",
+      "emptyTitle": "لا توجد بيانات إيرادات بعد",
+      "emptyDescription": "سيظهر مخطط أرباحك الشهرية بعد أول استشارات مكتملة ومدفوعة."
+    },
+    "byMethod": {
+      "title": "الإيرادات حسب طريقة الدفع",
+      "emptyTitle": "لا يوجد تفصيل للمدفوعات",
+      "emptyDescription": "لم يتم تسجيل شيء لهذه الفترة."
+    },
+    "outcomes": {
+      "title": "نتائج الزيارات",
+      "completionRate": "معدل الإتمام",
+      "cancellationRate": "معدل الإلغاء",
+      "noShowRate": "معدل عدم الحضور",
+      "retentionRate": "معدل الاحتفاظ بالمرضى"
+    }
+  }
+}

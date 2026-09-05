@@ -1,0 +1,54 @@
+{
+  "schedule": {
+    "aggregate": {
+      "available": "Available slots",
+      "booked": "Booked slots",
+      "total": "Total slots",
+      "utilization": "Utilization"
+    },
+    "filters": {
+      "all": "All",
+      "available": "Available",
+      "full": "Full",
+      "cancelled": "Cancelled"
+    },
+    "inspector": {
+      "label": "Inspect range:",
+      "presetToday": "Today",
+      "presetThisWeek": "This week",
+      "presetNext7": "Next 7 days",
+      "presetThisMonth": "This month",
+      "rangeTotal": "{{count}} slots in range",
+      "rangeAvailable": "{{count}} available",
+      "rangeBooked": "{{count}} booked",
+      "rangeCancelled": "{{count}} cancelled",
+      "emptyTitle": "No slots in this range",
+      "emptyDescription": "Pick another range or generate slots for these dates.",
+      "cancelDay": "Cancel day",
+      "deleteSlot": "Delete slot"
+    },
+    "visualizer": {
+      "title": "Schedule visualizer",
+      "subtitle": "Weekly template versus generated slots and time off",
+      "thisWeek": "This week",
+      "noTemplate": "No availability"
+    },
+    "legend": {
+      "template": "Weekly template",
+      "available": "Available",
+      "booked": "Booked",
+      "blocked": "Blocked",
+      "timeOff": "Time off"
+    },
+    "regenerateDialog": {
+      "title": "Regenerate upcoming slots?",
+      "description": "{{reason}} changed. Existing slots in the upcoming window need to be rebuilt to match.",
+      "affectedRange": "Affected range",
+      "futureAvailable": "{{count}} available slots ahead",
+      "futureBooked": "{{count}} booked slots ahead",
+      "bookedPreservedNote": "Booked slots are preserved — please review any conflicts on the Appointments page.",
+      "regenerateFrom": "Regenerate from",
+      "confirm": "Regenerate slots"
+    }
+  }
+}

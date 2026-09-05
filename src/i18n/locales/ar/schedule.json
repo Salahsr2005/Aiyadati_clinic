@@ -1,0 +1,54 @@
+{
+  "schedule": {
+    "aggregate": {
+      "available": "المواعيد المتاحة",
+      "booked": "المواعيد المحجوزة",
+      "total": "إجمالي المواعيد",
+      "utilization": "نسبة الاستخدام"
+    },
+    "filters": {
+      "all": "الكل",
+      "available": "متاح",
+      "full": "مكتمل",
+      "cancelled": "ملغى"
+    },
+    "inspector": {
+      "label": "الفترة المعروضة:",
+      "presetToday": "اليوم",
+      "presetThisWeek": "هذا الأسبوع",
+      "presetNext7": "الأيام السبعة القادمة",
+      "presetThisMonth": "هذا الشهر",
+      "rangeTotal": "{{count}} موعد في الفترة",
+      "rangeAvailable": "{{count}} متاح",
+      "rangeBooked": "{{count}} محجوز",
+      "rangeCancelled": "{{count}} ملغى",
+      "emptyTitle": "لا توجد مواعيد في هذه الفترة",
+      "emptyDescription": "اختر فترة أخرى أو قم بتوليد مواعيد لهذه التواريخ.",
+      "cancelDay": "إلغاء اليوم",
+      "deleteSlot": "حذف الموعد"
+    },
+    "visualizer": {
+      "title": "عارض الجدول",
+      "subtitle": "النموذج الأسبوعي مقابل المواعيد المولدة والإجازات",
+      "thisWeek": "هذا الأسبوع",
+      "noTemplate": "لا توجد إتاحة"
+    },
+    "legend": {
+      "template": "النموذج الأسبوعي",
+      "available": "متاح",
+      "booked": "محجوز",
+      "blocked": "محظور",
+      "timeOff": "إجازة"
+    },
+    "regenerateDialog": {
+      "title": "إعادة توليد المواعيد القادمة؟",
+      "description": "تم تغيير {{reason}}. يجب إعادة بناء المواعيد القادمة لتتوافق مع التغيير.",
+      "affectedRange": "الفترة المتأثرة",
+      "futureAvailable": "{{count}} موعد متاح قادم",
+      "futureBooked": "{{count}} موعد محجوز قادم",
+      "bookedPreservedNote": "يتم الحفاظ على المواعيد المحجوزة — يرجى مراجعة أي تعارض في صفحة المواعيد.",
+      "regenerateFrom": "إعادة التوليد ابتداءً من",
+      "confirm": "إعادة توليد المواعيد"
+    }
+  }
+}

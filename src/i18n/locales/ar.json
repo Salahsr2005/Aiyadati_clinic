@@ -1,0 +1,109 @@
+{
+  "app": { "name": "بوابة طبيب عيادتي", "tagline": "إدارة عيادتك، جدولك ومواعيد المرضى." },
+  "nav": {
+    "dashboard": "لوحة التحكم",
+    "appointments": "المواعيد",
+    "schedule": "الجدول والفتحات",
+    "patients": "مرضاي",
+    "reviews": "التقييمات والآراء",
+    "wallet": "الأرباح والمحفظة",
+    "clinics": "العيادات المرتبطة",
+    "profile": "ملفي الشخصي",
+    "settings": "الإعدادات"
+  },
+  "auth": {
+    "signIn": "تسجيل دخول الطبيب",
+    "signInSubtitle": "ادخل إلى بوابتك الطبية الخادمة لعيادتك",
+    "email": "البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "rememberMe": "تذكرني",
+    "submit": "تسجيل الدخول",
+    "signingIn": "جارٍ الدخول…",
+    "invalid": "بريد إلكتروني أو كلمة مرور غير صحيحة",
+    "throttled": "محاولات كثيرة. أعد المحاولة لاحقًا.",
+    "expired": "انتهت الجلسة، الرجاء تسجيل الدخول من جديد.",
+    "logout": "تسجيل الخروج"
+  },
+  "common": {
+    "search": "ابحث عن أي شيء…",
+    "loading": "جارٍ التحميل…",
+    "error": "حدث خطأ ما",
+    "retry": "إعادة المحاولة",
+    "empty": "لا توجد بيانات بعد",
+    "cancel": "إلغاء",
+    "save": "حفظ",
+    "confirm": "تأكيد",
+    "close": "إغلاق",
+    "collapseSidebar": "طي الشريط الجانبي",
+    "toggleTheme": "تبديل السمة",
+    "language": "اللغة",
+    "notifications": "الإشعارات",
+    "signedInAs": "مسجّل باسم"
+  },
+  "overview": {
+    "title": "لوحة التحكم",
+    "subtitle": "نشاط عيادتك بنظرة واحدة",
+    "kpi": {
+      "appointments": "المواعيد",
+      "completionRate": "نسبة الإنجاز",
+      "revenue": "الإيرادات",
+      "rating": "التقييم"
+    }
+  },
+  "status": {
+    "ACTIVE": "نشط", "INACTIVE": "غير نشط",
+    "VERIFIED": "موثّق", "UNVERIFIED": "غير موثّق", "SUSPENDED": "موقوف",
+    "PENDING": "قيد الانتظار", "APPROVED": "مقبول", "REJECTED": "مرفوض",
+    "CONFIRMED": "مؤكد", "IN_PROGRESS": "قيد التنفيذ", "COMPLETED": "مكتمل",
+    "CANCELLED": "ملغى", "NO_SHOW": "لم يحضر", "PAID": "مدفوع",
+    "WAITING": "في الانتظار", "IN_REVIEW": "قيد المراجعة", "FAILED": "فشل",
+    "DRAFT": "مسودة", "ARCHIVED": "مؤرشف", "BANNED": "محظور"
+  },
+  "type": { "IN_PERSON": "حضوري", "VIDEO": "استشارة مرئية", "HOME_VISIT": "زيارة منزلية" },
+  "payment": { "ON_SITE": "في المكان", "CREDIT": "رصيد", "CARD": "بطاقة", "CASH": "نقدًا" },
+  "filters": {
+    "open": "عوامل التصفية", "apply": "تطبيق", "reset": "إعادة تعيين", "clear": "مسح الكل",
+    "active": "{{count}} نشط",
+    "status": "الحالة", "wilaya": "الولاية", "specialty": "التخصص",
+    "practiceType": "نوع الممارسة", "verification": "التوثيق",
+    "type": "النوع", "paymentMethod": "طريقة الدفع",
+    "date": "الفترة", "rating": "أدنى تقييم"
+  },
+  "views": { "grid": "شبكة", "table": "جدول", "kanban": "كانبان", "map": "خريطة", "heatmap": "الخريطة الحرارية" },
+  "appt": {
+    "slot": "الفترة", "notes": "ملاحظات", "cancelReason": "سبب الإلغاء",
+    "cancelledAt": "ألغي في", "createdBy": "أنشئ بواسطة",
+    "noClinic": "حجز مباشر (بدون عيادة)", "noPatient": "لا توجد معلومات المريض",
+    "type": "النوع", "payment": "الدفع",
+    "kanban": { "empty": "لا توجد مواعيد في هذا العمود" }
+  },
+  "table": {
+    "search": "بحث",
+    "showing": "عرض",
+    "of": "من",
+    "all": "الكل",
+    "actions": "إجراءات",
+    "view": "عرض",
+    "edit": "تعديل",
+    "delete": "حذف",
+    "create": "جديد",
+    "refresh": "تحديث"
+  },
+  "doctorPortal": {
+    "welcome": "مرحبًا بك",
+    "todaySchedule": "جدول اليوم",
+    "pendingRequests": "الطلبات المعلقة",
+    "actionRequired": "إجراء مطلوب",
+    "revenueTrend": "اتجاه الإيرادات والمواعيد",
+    "bookingDistribution": "كيف يحجز المرضى لديك",
+    "recentAppointments": "المواعيد الأخيرة",
+    "weeklyAvailability": "التوفر الأسبوعي",
+    "slotSettings": "إعدادات الفترات",
+    "timeOff": "الإجازات والأوقات المستقطعة",
+    "bookableSlots": "الفترات القابلة للحجز",
+    "completeness": "اكتمل الملف الشخصي",
+    "professionalDetails": "المعلومات المهنية",
+    "practiceLocation": "موقع العيادة",
+    "verificationDocs": "مستندات التوثيق"
+  }
+}

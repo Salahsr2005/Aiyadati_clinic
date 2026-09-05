@@ -1,0 +1,366 @@
+{
+  "patients": {
+    "title": "My Patients",
+    "subtitle_one": "{{count}} unique patient recorded across your consultation history",
+    "subtitle_other": "{{count}} unique patients recorded across your consultation history",
+    "search": { "placeholder": "Search name, phone, email, wilaya..." },
+    "table": {
+      "name": "Patient Name",
+      "noEmail": "No email address",
+      "contact": "Contact / Location",
+      "visitsStatus": "Visits & Status",
+      "visit_one": "visit",
+      "visit_other": "visits",
+      "completedCount": "({{count}} completed)",
+      "revenue": "Est. Revenue",
+      "lastVisit": "Last Visit",
+      "never": "Never"
+    },
+    "badge": { "suspended": "Suspended" },
+    "filters": {
+      "category": "Category:",
+      "reset": "Reset Filters",
+      "visitFrom": "Visit From:",
+      "visitTo": "Visit To:",
+      "wilaya": "Wilaya:",
+      "allWilayas": "All Wilayas",
+      "tierStatus": "Tier / Status:",
+      "sortBy": "Sort By:",
+      "categories": {
+        "all": "All Patients",
+        "frequent": "Frequent (3+)",
+        "completed": "Completed",
+        "has_notes": "Has Notes",
+        "has_docs": "Has Docs",
+        "suspended": "Suspended"
+      },
+      "tiers": {
+        "all": "All Tiers",
+        "VIP": "VIP (5+ Visits)",
+        "Frequent": "Frequent (3-4 Visits)",
+        "Returning": "Returning (2 Visits)",
+        "New": "New (1 Visit)"
+      },
+      "sort": {
+        "recent": "Most recent visit",
+        "visits": "Most total visits",
+        "revenue": "Highest revenue",
+        "name": "Alphabetical (A-Z)"
+      }
+    },
+    "empty": {
+      "title": "No patients found",
+      "description": "Patients will automatically appear here once they complete or schedule consultations with you.",
+      "noMatch": "No matching patients match your filter criteria"
+    },
+    "tier": { "VIP": "VIP", "Frequent": "Frequent", "Returning": "Returning", "New": "New" },
+    "drawer": {
+      "callPatient": "Call Patient",
+      "sendEmail": "Send Email",
+      "trustLevel": "Trust Level:",
+      "suspendedAccount": "Suspended Account",
+      "activePatient": "Active Patient",
+      "totalVisits": "Total Visits",
+      "completed": "Completed",
+      "cancelled": "Cancelled",
+      "estDzd": "Est. DZD",
+      "na": "N/A",
+      "tabs": {
+        "overview": "Overview",
+        "notes": "Clinical Notes",
+        "documents": "Medical Docs ({{count}})",
+        "history": "History ({{count}})"
+      },
+      "summary": {
+        "title": "Patient Summary",
+        "fullName": "Full Name",
+        "phone": "Phone Number",
+        "email": "Email",
+        "lastVisitDate": "Last Visit Date"
+      },
+      "noteHighlight": "Recent Clinical Note Highlight",
+      "editNote": "Edit Note"
+    },
+    "notes": {
+      "title": "Doctor's Private Clinical Notes",
+      "clear": "Clear",
+      "save": "Save Note",
+      "placeholder": "Record private clinical observations, medical history, allergies, chronic conditions, prescriptions, or follow-up reminders for this patient...",
+      "disclaimer": "* Note: Notes saved here are linked to this patient ID and preserved in your local workspace.",
+      "savedToast": "Clinical note saved successfully!",
+      "saveErrorToast": "Failed to save note locally.",
+      "clearedToast": "Clinical note cleared",
+      "clearErrorToast": "Failed to clear note."
+    },
+    "documents": {
+      "title": "Patient Uploaded Documents ({{count}})",
+      "empty": {
+        "title": "No medical documents",
+        "description": "This patient has not shared or uploaded any medical files or prescriptions yet."
+      },
+      "previewTitle": "Preview file",
+      "preview": "Preview",
+      "downloadTitle": "Download document",
+      "uploaded": "Uploaded {{date}}",
+      "notAvailable": "Preview not available for this file format ({{type}})",
+      "openOrDownload": "Open or Download File",
+      "download": "Download"
+    },
+    "history": {
+      "title": "Appointment History ({{count}})",
+      "at": "at {{time}}",
+      "type": "Type:",
+      "consultationDefault": "Consultation",
+      "paymentMethod": "Payment Method:",
+      "onSiteDefault": "On Site"
+    },
+    "trust": {
+      "0": "Unreliable",
+      "1": "New Patient",
+      "2": "Trusted",
+      "3": "VIP Patient",
+      "points": "({{points}} pts)"
+    }
+  },
+  "clinics": {
+    "meta": { "locationNA": "Location N/A" },
+    "title": "Clinic Affiliations & Practice Rooms",
+    "subtitle": "Manage active clinic partnerships, respond to invitations, or request access to new facilities across Algeria.",
+    "exploreMarketplace": "Explore Marketplace",
+    "metrics": {
+      "activeAffiliations": "Active Affiliations",
+      "activeAffiliationsDesc": "Facilities where you practice",
+      "pendingInvitations": "Pending Invitations",
+      "pendingInvitationsDesc": "Awaiting your response",
+      "outgoingRequests": "Outgoing Requests",
+      "outgoingRequestsDesc": "Under review by clinics",
+      "availableMarketplace": "Available Marketplace",
+      "availableMarketplaceDesc": "Clinics open for doctors"
+    },
+    "tabs": {
+      "all": "All Overview",
+      "affiliated": "My Clinics ({{count}})",
+      "invitations": "Invitations ({{count}})",
+      "pending_requests": "Sent Requests ({{count}})",
+      "marketplace": "Explore Marketplace"
+    },
+    "reset": "Reset",
+    "search": { "placeholder": "Search clinic name, wilaya..." },
+    "wilayaFilter": { "all": "All Wilayas", "placeholder": "Filter by Wilaya" },
+    "sort": { "recent": "Sort by: Default / Recent", "name": "Sort by: Name (A-Z)" },
+    "affiliations": {
+      "sectionTitle": "Active Clinic Affiliations",
+      "sectionDesc": "Facilities where your profile is active, allowing appointments and room allocations.",
+      "activeCount": "{{count}} Active",
+      "empty": {
+        "title": "No active affiliations",
+        "description": "You have not joined any clinic yet. Accept an invitation below or request to join a medical center from the marketplace."
+      },
+      "phoneContact": "Phone Contact",
+      "phoneNA": "N/A",
+      "affiliatedSince": "Affiliated Since",
+      "recent": "Recent",
+      "viewFacility": "View Facility & Schedule"
+    },
+    "invitations": {
+      "sectionTitle": "Incoming Clinic Invitations",
+      "sectionDesc": "Clinics that have invited you to join their medical team and practice in their rooms.",
+      "pendingCount": "{{count}} Pending",
+      "empty": { "title": "No pending invitations", "description": "You have no active invitations from clinics right now." },
+      "accept": "Accept Invitation",
+      "decline": "Decline",
+      "acceptedToast": "Invitation accepted successfully!",
+      "declinedToast": "Invitation declined",
+      "joinedToastTitle": "You've joined the clinic",
+      "joinedToastDescription": "It now appears under My Clinics.",
+      "viewInMyClinics": "View in My Clinics"
+    },
+    "pendingRequests": {
+      "sectionTitle": "Pending Requests Sent by You",
+      "sectionDesc": "Join requests you have sent to clinics that are awaiting manager approval.",
+      "sentCount": "{{count}} Sent",
+      "empty": { "title": "No pending requests sent", "description": "You have not requested to join any clinic recently." },
+      "sent": "Sent",
+      "underReview": "Under review",
+      "acceptedDeclined": "Accepted / Declined",
+      "cancel": "Cancel Request",
+      "cancelledToast": "Request cancelled"
+    },
+    "marketplace": {
+      "sectionTitle": "Clinic Marketplace",
+      "sectionDesc": "Browse medical facilities across Algeria and request consultation space.",
+      "showingCount": "Showing {{count}} clinics",
+      "empty": { "title": "No clinics match your search", "description": "Try adjusting your keyword or wilaya filter to find available clinics." },
+      "activeProfile": "Active profile",
+      "incompleteProfile": "Profile incomplete",
+      "details": "Details",
+      "affiliated": "Affiliated",
+      "requested": "Requested",
+      "requestToJoin": "Request to Join",
+      "mapEmptyLabel": "No clinic location data available",
+      "requestSentToast": "Join request sent to clinic management"
+    },
+    "requestModal": {
+      "title": "Request Affiliation with {{name}}",
+      "defaultClinicName": "Clinic",
+      "description": "Write a brief intro or specify preferred working days to clinic management.",
+      "cancel": "Cancel",
+      "send": "Send Request",
+      "messageLabel": "Message / Practice Schedule Request (kept locally, for your own notes):",
+      "messagePlaceholder": "I am interested in conducting general consultations at your clinic during weekday mornings (e.g., Sunday & Tuesday, 09:00 - 13:00)...",
+      "disclaimer": "* Note: Clinic administrators will review your practitioner profile and qualifications prior to approval."
+    }
+  },
+  "profile": {
+    "title": "My profile",
+    "subtitle": "Your public profile as patients see it",
+    "saving": "Saving…",
+    "saveChanges": "Save changes",
+    "photoAlt": "Portrait of Dr. {{name}}",
+    "drTitle": "Dr. {{name}}",
+    "verified": "Verified",
+    "pendingVerification": "Pending verification",
+    "changeNameHint": "To change your registered name or phone number, please contact support.",
+    "verificationFeedback": "Verification feedback: {{reason}}",
+    "changePhoto": "Change photo",
+    "completeness": "Profile Completeness: {{score}}/{{total}} ({{percentage}}%)",
+    "info": {
+      "nameAr": "Name (AR)",
+      "phone": "Phone",
+      "email": "Email",
+      "rating": "Rating",
+      "wilayaBaladya": "Wilaya / Baladya",
+      "memberSince": "Member since",
+      "lastUpdated": "Last updated",
+      "registrationStatus": "Registration status",
+      "notAvailable": "—",
+      "completed": "Completed",
+      "registered": "Registered",
+      "incomplete": "Incomplete",
+      "suspended": " · Suspended"
+    },
+    "professional": {
+      "title": "Professional Details",
+      "yearsOfExperience": "Years of experience",
+      "specialty": "Specialty",
+      "specialtyPlaceholder": "Select specialty",
+      "practiceType": "Practice type",
+      "bioFr": "Biography (FR)",
+      "bioAr": "Biography (AR)"
+    },
+    "practiceTypes": {
+      "INDEPENDENT": "Independent",
+      "CLINIC_BASED": "Clinic based",
+      "BOTH": "Both"
+    },
+    "location": {
+      "title": "Practice Location",
+      "subtitle": "Commune location and map coordinate pin for patient search",
+      "wilaya": "Wilaya (Province)",
+      "wilayaPlaceholder": "Select wilaya",
+      "baladya": "Baladya (Commune)",
+      "baladyaPlaceholder": "Select baladya",
+      "baladyaPlaceholderNoWilaya": "Select wilaya first",
+      "pinpoint": "Pinpoint Practice Location on Map",
+      "selectedCoordinates": "Selected coordinates: {{lat}}, {{lng}}",
+      "preview": "Practice location preview"
+    },
+    "documents": {
+      "title": "Verification documents",
+      "subtitle": "Upload your medical licence, diploma, and ID for account verification.",
+      "typePlaceholder": "Type",
+      "upload": "Upload",
+      "empty": { "title": "No documents uploaded", "description": "Upload your licence to complete verification." },
+      "deleteAria": "delete document",
+      "deleteTitle": "Delete this document?",
+      "deleteDescription": "You will need to upload it again for verification.",
+      "deleteConfirm": "Delete",
+      "defaultName": "Document",
+      "otherType": "other",
+      "uploadedToast": "Document uploaded",
+      "removedToast": "Document removed",
+      "profileUpdatedToast": "Profile updated"
+    },
+    "docTypes": {
+      "degree": "Degree",
+      "license": "Medical license",
+      "id_card": "ID card",
+      "cv": "CV",
+      "certificate": "Certificate",
+      "other": "Other"
+    }
+  },
+  "reviews": {
+    "title": "Patient Feedback & Reviews",
+    "subtitle": "Patient satisfaction scores, detailed comments, and review visibility settings",
+    "visibilityMode": "Visibility Mode:",
+    "visibilityOptions": {
+      "BOTH": "Rating & Review (Public)",
+      "RATING_ONLY": "Rating Only",
+      "REVIEW_ONLY": "Text Review Only",
+      "NONE": "Hidden (Private)"
+    },
+    "visibilityUpdatedToast": "Review visibility updated",
+    "basedOn_one": "Based on {{count}} patient review",
+    "basedOn_other": "Based on {{count}} patient reviews",
+    "distribution": {
+      "title": "Rating Distribution"
+    },
+    "list": {
+      "title": "Patient Reviews Roster ({{count}})",
+      "filter": "Filter:",
+      "all": "All",
+      "sortNewest": "Newest first",
+      "sortHighest": "Highest rated",
+      "sortLowest": "Lowest rated",
+      "verifiedVisit": "Verified Visit",
+      "verifiedPatient": "Verified Patient",
+      "patientId": "Patient ID: {{id}}",
+      "noComment": "No written comment left (Star rating only).",
+      "clinicId": "Clinic ID: {{id}}",
+      "reviewId": "Review ID: {{id}}",
+      "updated": "Updated: {{date}}",
+      "empty": {
+        "title": "No patient reviews found",
+        "descriptionAll": "Reviews left by patients after completing their consultation will be displayed here with full details.",
+        "descriptionFiltered": "No reviews with a {{rating}}★ rating yet. Try a different filter."
+      }
+    }
+  },
+  "earnings": {
+    "title": "Earnings",
+    "subtitle": "Consultation revenue across your practice",
+    "periods": {
+      "last7days": "7 days",
+      "last30days": "30 days",
+      "last90days": "90 days",
+      "thisMonth": "This month",
+      "lastMonth": "Last month"
+    },
+    "kpi": {
+      "totalRevenue": "Total revenue",
+      "averagePerVisit": "Average per visit",
+      "completedVisits": "Completed visits",
+      "totalVisits": "{{count}} total",
+      "uniquePatients": "Unique patients",
+      "returningPatients": "{{count}} returning"
+    },
+    "chart": {
+      "revenueTrend": "Revenue trend",
+      "emptyTitle": "No revenue data yet",
+      "emptyDescription": "Your monthly earnings chart appears after your first completed, paid consultations."
+    },
+    "byMethod": {
+      "title": "Revenue by payment method",
+      "emptyTitle": "No payment breakdown",
+      "emptyDescription": "Nothing recorded for this period."
+    },
+    "outcomes": {
+      "title": "Visit outcomes",
+      "completionRate": "Completion rate",
+      "cancellationRate": "Cancellation rate",
+      "noShowRate": "No-show rate",
+      "retentionRate": "Retention rate"
+    }
+  }
+}
