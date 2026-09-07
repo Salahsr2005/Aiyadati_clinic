@@ -50,12 +50,12 @@ export function Drawer({
             className="fixed inset-0 bg-black/40 backdrop-blur-sm"
           />
           <motion.aside
-            initial={{ x: "100%" }}
-            animate={{ x: 0 }}
-            exit={{ x: "100%" }}
+            initial={{ opacity: 0, filter: "blur(4px)", scale: 0.98 }}
+            animate={{ opacity: 1, filter: "blur(0px)", scale: 1 }}
+            exit={{ opacity: 0, filter: "blur(4px)", scale: 0.98 }}
             transition={{ type: "spring", stiffness: 320, damping: 32 }}
             style={{ zIndex: contentZ }}
-            className={`fixed inset-y-0 end-0 flex w-full ${width} flex-col bg-background shadow-2xl rtl:left-0 rtl:right-auto`}
+            className={`fixed inset-y-0 end-0 flex w-full ${width} flex-col bg-background shadow-2xl border-s border-border/40`}
           >
             <div className="glass flex items-start justify-between gap-4 rounded-none border-b px-5 py-4">
               <div className="min-w-0">

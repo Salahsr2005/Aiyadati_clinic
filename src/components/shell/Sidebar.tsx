@@ -55,7 +55,7 @@ export function Sidebar({ items = clinicNavItems }: { items?: NavItem[] }) {
       <motion.aside
         animate={{ width: collapsed ? 76 : 264 }}
         transition={{ type: "spring", stiffness: 260, damping: 28 }}
-        className="glass sticky top-0 hidden h-screen shrink-0 overflow-hidden rounded-none border-y-0 border-l-0 md:block rtl:border-l rtl:border-r-0 z-30"
+        className="glass sticky top-0 hidden h-screen shrink-0 overflow-hidden rounded-none border-y-0 border-s-0 border-e border-border/40 md:block z-30"
       >
         <div className="flex h-full flex-col p-3">
           <div className="flex items-center gap-3 px-2 py-3">
@@ -70,7 +70,7 @@ export function Sidebar({ items = clinicNavItems }: { items?: NavItem[] }) {
             )}
           </div>
 
-          <nav className="mt-4 flex-1 space-y-1.5 overflow-y-auto pr-1 custom-scrollbar">
+          <nav className="mt-4 flex-1 space-y-1.5 overflow-y-auto pe-1 custom-scrollbar">
             {items.map((item) => {
               const active = pathname === item.to || pathname.startsWith(item.to + "/");
               const Icon = item.icon;
@@ -116,7 +116,7 @@ export function Sidebar({ items = clinicNavItems }: { items?: NavItem[] }) {
             className="glass mt-2 flex items-center justify-center gap-2 rounded-2xl px-3 py-2 text-xs font-semibold text-muted-foreground hover:text-foreground transition cursor-pointer"
             aria-label={t("shell.sidebar.collapseAria", { defaultValue: "Toggle sidebar" })}
           >
-            <ChevronLeft className={cn("h-4 w-4 transition-transform", collapsed && "rotate-180")} />
+            <ChevronLeft className={cn("h-4 w-4 transition-transform rtl:scale-x-[-1]", collapsed && "rotate-180 rtl:rotate-0")} />
             {!collapsed && <span>{t("shell.sidebar.collapse", { defaultValue: "Collapse" })}</span>}
           </button>
         </div>
@@ -135,11 +135,11 @@ export function Sidebar({ items = clinicNavItems }: { items?: NavItem[] }) {
             />
 
             <motion.aside
-              initial={{ x: "-100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: "-100%" }}
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
               transition={{ type: "spring", stiffness: 300, damping: 30 }}
-              className="absolute inset-y-0 start-0 w-72 bg-popover text-popover-foreground border-r border-border p-4 shadow-2xl flex flex-col justify-between"
+              className="absolute inset-y-0 start-0 w-72 bg-popover text-popover-foreground border-e border-border p-4 shadow-2xl flex flex-col justify-between"
             >
               <div>
                 <div className="flex items-center justify-between px-2 pb-4 border-b border-border/40">

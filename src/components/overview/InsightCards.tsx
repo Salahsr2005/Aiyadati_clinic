@@ -123,7 +123,7 @@ export function InsightCards({
         </div>
       </div>
 
-      <div className="flex-1 space-y-3 overflow-y-auto max-h-[460px] pr-1 custom-scrollbar">
+      <div className="flex-1 space-y-3 overflow-y-auto max-h-[460px] pe-1 custom-scrollbar">
         {insights.map((insight) => {
           const config = typeConfig[insight.type];
           const Icon = config.icon;

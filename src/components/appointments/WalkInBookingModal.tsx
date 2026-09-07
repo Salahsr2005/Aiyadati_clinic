@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { useQuery, useQueryClient } from "@/lib/queryClient";
 import {
   UserCheck,
@@ -44,6 +45,7 @@ function todayISO() {
 type PatientSource = "guest" | "app";
 
 export function WalkInBookingModal({ open, onClose }: WalkInBookingModalProps) {
+  const { t } = useTranslation();
   const queryClient = useQueryClient();
   const { acceptedDoctors } = useClinicDoctors();
 
@@ -196,7 +198,7 @@ export function WalkInBookingModal({ open, onClose }: WalkInBookingModalProps) {
       if (createdSlot && createdSlot.id) {
         setSelectedSlotId(createdSlot.id);
       } else if (refetched.data && refetched.data.length > 0) {
-        const matching = refetched.data.find((s) => s.startTime === quickStartTime);
+        const matching = refetched.data.find((s: any) => s.startTime === quickStartTime);
         if (matching) setSelectedSlotId(matching.id);
       }
       setShowQuickSlot(false);
@@ -479,16 +481,16 @@ export function WalkInBookingModal({ open, onClose }: WalkInBookingModalProps) {
                 ) : (
                   <div className="space-y-2">
                     <div className="relative">
-                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                      <Search className="absolute start-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                       <input
                         type="text"
                         placeholder="Search registered app patient by name, phone (0550...), or email..."
                         value={appSearchQuery}
                         onChange={(e) => setAppSearchQuery(e.target.value)}
-                        className="w-full pl-9 pr-8 py-2.5 rounded-xl border border-border/40 bg-background text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary-500/20"
+                        className="w-full ps-9 pe-8 py-2.5 rounded-xl border border-border/40 bg-background text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary-500/20"
                       />
                       {isSearchingApp && (
-                        <Loader2 className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-primary-500 animate-spin" />
+                        <Loader2 className="absolute end-3 top-1/2 -translate-y-1/2 h-4 w-4 text-primary-500 animate-spin" />
                       )}
                     </div>
 
@@ -560,15 +562,15 @@ export function WalkInBookingModal({ open, onClose }: WalkInBookingModalProps) {
                   <div className="space-y-3">
                     {/* Search existing guest */}
                     <div className="relative">
-                      <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
+                      <Search className="absolute start-3 top-2.5 h-4 w-4 text-muted-foreground" />
                       <input
                         type="text"
                         placeholder="Search existing guest by phone or name..."
                         value={guestSearchQuery}
                         onChange={(e) => setGuestSearchQuery(e.target.value)}
-                        className="w-full rounded-xl border border-border/40 bg-muted/20 pl-9 pr-3 py-2 text-xs font-semibold outline-none focus:border-primary-500"
+                        className="w-full rounded-xl border border-border/40 bg-muted/20 ps-9 pe-3 py-2 text-xs font-semibold outline-none focus:border-primary-500"
                       />
-                      {isSearchingGuest && <Loader2 className="absolute right-3 top-2.5 h-4 w-4 animate-spin text-primary-500" />}
+                      {isSearchingGuest && <Loader2 className="absolute end-3 top-2.5 h-4 w-4 animate-spin text-primary-500" />}
                     </div>
 
                     {guestSearchResults.length > 0 && (
@@ -581,7 +583,7 @@ export function WalkInBookingModal({ open, onClose }: WalkInBookingModalProps) {
                             key={g.id}
                             type="button"
                             onClick={() => setSelectedGuestPatient(g)}
-                            className="w-full flex items-center justify-between p-2 rounded-xl hover:bg-primary-500/10 text-left text-xs transition cursor-pointer"
+                            className="w-full flex items-center justify-between p-2 rounded-xl hover:bg-primary-500/10 text-start text-xs transition cursor-pointer"
                           >
                             <span className="font-bold text-foreground">{g.firstName} {g.lastName}</span>
                             <span className="text-muted-foreground font-mono">{g.phone}</span>
@@ -706,7 +708,7 @@ export function WalkInBookingModal({ open, onClose }: WalkInBookingModalProps) {
             {/* Slots Grid (available only) */}
             {isSlotsLoading ? (
               <div className="flex items-center justify-center py-6 text-xs text-muted-foreground">
-                <Loader2 className="h-4 w-4 animate-spin mr-2" /> Loading slots…
+                <Loader2 className="h-4 w-4 animate-spin me-2" /> Loading slots…
               </div>
             ) : availableSlots.length === 0 ? (
               <div className="rounded-2xl border border-warning/30 bg-warning/10 p-4 text-center text-xs text-warning flex flex-col items-center gap-2">

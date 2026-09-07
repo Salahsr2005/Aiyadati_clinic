@@ -74,8 +74,8 @@ export function NewsTicker({
 
         {/* Marquee Ticker */}
         <div className="relative min-w-0 flex-1 overflow-hidden py-2.5">
-          <div className="pointer-events-none absolute left-0 top-0 bottom-0 z-10 w-10 bg-gradient-to-r from-slate-950 to-transparent" />
-          <div className="pointer-events-none absolute right-0 top-0 bottom-0 z-10 w-10 bg-gradient-to-l from-slate-900 to-transparent" />
+          <div className="pointer-events-none absolute start-0 top-0 bottom-0 z-10 w-10 bg-gradient-to-r rtl:bg-gradient-to-l from-slate-950 to-transparent" />
+          <div className="pointer-events-none absolute end-0 top-0 bottom-0 z-10 w-10 bg-gradient-to-l rtl:bg-gradient-to-r from-slate-900 to-transparent" />
 
           <div
             className={`pause-on-hover flex w-max items-center gap-8 ${

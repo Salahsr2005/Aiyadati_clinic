@@ -108,7 +108,7 @@ export function MultiHeatmapSection({
               <Icon className={`h-3.5 w-3.5 shrink-0 transition-colors ${isActive ? "text-primary-500" : "text-muted-foreground/60 group-hover:text-muted-foreground"}`} />
               <span>{tab.label}</span>
               <span className={`
-                ml-1 rounded-full px-1.5 py-0.5 text-[9px] font-bold tabular-nums transition-colors
+                ms-1 rounded-full px-1.5 py-0.5 text-[9px] font-bold tabular-nums transition-colors
                 ${isActive
                   ? "bg-primary-500/10 text-primary-500"
                   : "bg-muted/50 text-muted-foreground"

@@ -150,7 +150,7 @@ export function DayHourHeatmap({
     <GlassCard className={cn("p-5 border border-border/40 shadow-sm relative flex flex-col", className)}>
       {/* Background glow */}
       <div
-        className="absolute -right-24 -top-24 h-48 w-48 rounded-full blur-3xl pointer-events-none"
+        className="absolute -end-24 -top-24 h-48 w-48 rounded-full blur-3xl pointer-events-none"
         style={{ background: `rgba(${toneColor.rgb}, 0.05)` }}
       />
 
@@ -220,9 +220,9 @@ export function DayHourHeatmap({
       {/* Grid */}
       <div className="relative flex-1 flex flex-col justify-center" ref={containerRef}>
         <div className="w-full overflow-x-auto pb-1 custom-scrollbar">
-          <div className="pr-2" style={{ minWidth: cols === 24 ? 620 : 420 }}>
+          <div className="pe-2" style={{ minWidth: cols === 24 ? 620 : 420 }}>
             {/* Hour labels */}
-            <div className="flex pl-10 mb-2">
+            <div className="flex ps-10 mb-2">
               {hourLabels.map((hr) => (
                 <div
                   key={hr}

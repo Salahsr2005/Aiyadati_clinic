@@ -148,9 +148,9 @@ export function InteractiveScheduleGrid({ value, onChange }: InteractiveSchedule
       </div>
 
       <div className="w-full overflow-x-auto pb-2 custom-scrollbar">
-        <div className="min-w-[620px] pr-2">
+        <div className="min-w-[620px] pe-2">
           {/* Header Row (Hours ruler) */}
-          <div className="flex pl-10 mb-2">
+          <div className="flex ps-10 mb-2">
             {Array.from({ length: 24 }).map((_, h) => (
               <div
                 key={h}

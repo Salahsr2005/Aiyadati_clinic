@@ -86,7 +86,7 @@ export function CancellationMatrix({ appointments = [], loading = false }: Cance
 
   return (
     <GlassCard className="p-5 border border-border/40 shadow-sm relative overflow-hidden">
-      <div className="absolute -left-20 -bottom-20 h-40 w-40 rounded-full bg-red-500/5 blur-3xl pointer-events-none" />
+      <div className="absolute -start-20 -bottom-20 h-40 w-40 rounded-full bg-red-500/5 blur-3xl pointer-events-none" />
 
       {/* Header */}
       <div className="mb-4 flex items-start justify-between gap-3">
@@ -112,7 +112,7 @@ export function CancellationMatrix({ appointments = [], loading = false }: Cance
       <div className="relative w-full overflow-x-auto pb-1">
         <div className="min-w-[600px]">
           {/* Hour labels — show every 3rd */}
-          <div className="flex pl-10 mb-1">
+          <div className="flex ps-10 mb-1">
             {HOUR_LABELS.map((h, i) => (
               <div
                 key={i}

@@ -317,15 +317,15 @@ export function CreateAppointmentModal({ open, onClose }: CreateAppointmentModal
                 ) : (
                   <div className="space-y-2">
                     <div className="relative">
-                      <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
+                      <Search className="absolute start-3 top-2.5 h-4 w-4 text-muted-foreground" />
                       <input
                         type="text"
                         placeholder="Search app patient by name or phone (min 2 chars)..."
                         value={appSearchQuery}
                         onChange={(e) => setAppSearchQuery(e.target.value)}
-                        className="w-full rounded-xl border border-border/40 bg-muted/20 pl-9 pr-3 py-2 text-xs font-semibold outline-none focus:border-primary-500"
+                        className="w-full rounded-xl border border-border/40 bg-muted/20 ps-9 pe-3 py-2 text-xs font-semibold outline-none focus:border-primary-500"
                       />
-                      {isSearchingApp && <Loader2 className="absolute right-3 top-2.5 h-4 w-4 animate-spin text-primary-500" />}
+                      {isSearchingApp && <Loader2 className="absolute end-3 top-2.5 h-4 w-4 animate-spin text-primary-500" />}
                     </div>
 
                     {appSearchResults.length > 0 ? (
@@ -335,7 +335,7 @@ export function CreateAppointmentModal({ open, onClose }: CreateAppointmentModal
                             key={p.id}
                             type="button"
                             onClick={() => setSelectedAppPatient(p)}
-                            className="w-full flex items-center justify-between p-2 rounded-xl hover:bg-muted/30 text-left text-xs transition"
+                            className="w-full flex items-center justify-between p-2 rounded-xl hover:bg-muted/30 text-start text-xs transition"
                           >
                             <div>
                               <div className="font-bold text-foreground">{p.firstName} {p.lastName}</div>
@@ -386,15 +386,15 @@ export function CreateAppointmentModal({ open, onClose }: CreateAppointmentModal
                   <div className="space-y-3">
                     {/* Search existing guest */}
                     <div className="relative">
-                      <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
+                      <Search className="absolute start-3 top-2.5 h-4 w-4 text-muted-foreground" />
                       <input
                         type="text"
                         placeholder="Search existing guest by phone or name..."
                         value={guestSearchQuery}
                         onChange={(e) => setGuestSearchQuery(e.target.value)}
-                        className="w-full rounded-xl border border-border/40 bg-muted/20 pl-9 pr-3 py-2 text-xs font-semibold outline-none focus:border-primary-500"
+                        className="w-full rounded-xl border border-border/40 bg-muted/20 ps-9 pe-3 py-2 text-xs font-semibold outline-none focus:border-primary-500"
                       />
-                      {isSearchingGuest && <Loader2 className="absolute right-3 top-2.5 h-4 w-4 animate-spin text-primary-500" />}
+                      {isSearchingGuest && <Loader2 className="absolute end-3 top-2.5 h-4 w-4 animate-spin text-primary-500" />}
                     </div>
 
                     {guestSearchResults.length > 0 && (
@@ -407,7 +407,7 @@ export function CreateAppointmentModal({ open, onClose }: CreateAppointmentModal
                             key={g.id}
                             type="button"
                             onClick={() => setSelectedGuestPatient(g)}
-                            className="w-full flex items-center justify-between p-2 rounded-xl hover:bg-primary-500/10 text-left text-xs transition"
+                            className="w-full flex items-center justify-between p-2 rounded-xl hover:bg-primary-500/10 text-start text-xs transition"
                           >
                             <span className="font-bold text-foreground">{g.firstName} {g.lastName}</span>
                             <span className="text-muted-foreground font-mono">{g.phone}</span>

@@ -113,7 +113,7 @@ export function ActivityTimeline({ appointments = [], maxEntries = 50 }: Activit
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto pr-1 space-y-4 max-h-[460px] custom-scrollbar">
+      <div className="flex-1 overflow-y-auto pe-1 space-y-4 max-h-[460px] custom-scrollbar">
         {timelineItems.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-12 text-center text-muted-foreground gap-2">
             <Activity className="h-6 w-6 stroke-1.5 opacity-60" />
@@ -130,11 +130,11 @@ export function ActivityTimeline({ appointments = [], maxEntries = 50 }: Activit
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: index * 0.03, duration: 0.2 }}
                 key={item.id}
-                className="group relative flex gap-3.5 items-start pl-2 transition-all duration-200"
+                className="group relative flex gap-3.5 items-start ps-2 transition-all duration-200"
               >
                 {/* Timeline vertical rule line connector */}
                 {index < timelineItems.length - 1 && (
-                  <div className="absolute left-[21px] top-8 bottom-[-20px] w-px bg-border/40 group-hover:bg-border/60 transition-colors" />
+                  <div className="absolute start-[21px] top-8 bottom-[-20px] w-px bg-border/40 group-hover:bg-border/60 transition-colors" />
                 )}
 
                 {/* Event Type Icon Bubble */}

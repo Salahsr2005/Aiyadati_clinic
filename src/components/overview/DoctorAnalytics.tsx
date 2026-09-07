@@ -53,9 +53,9 @@ function LeaderRow({ name, photo, value, max, rank, suffix }: LeaderRowProps) {
           <div className="h-full rounded-full bg-primary-500" style={{ width: `${pct}%` }} />
         </div>
       </div>
-      <div className="text-xs font-bold tabular-nums ml-2">
+      <div className="text-xs font-bold tabular-nums ms-2">
         {typeof value === "number" ? value.toLocaleString() : value}
-        {suffix ? <span className="ml-0.5 text-warning">{suffix}</span> : null}
+        {suffix ? <span className="ms-0.5 text-warning">{suffix}</span> : null}
       </div>
     </div>
   );

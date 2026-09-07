@@ -71,7 +71,7 @@ export function Topbar() {
         >
           <Search className="h-4 w-4 shrink-0 text-muted-foreground" />
           <span className="w-full min-w-0 truncate select-none text-start text-sm text-muted-foreground">
-            Search appointments, doctors & walk-in patients...
+            {t("shell.searchPlaceholder", { defaultValue: "Search appointments, doctors & walk-in patients..." })}
           </span>
           <kbd className="hidden shrink-0 rounded-md border border-border/60 bg-background/60 px-1.5 py-0.5 text-[10px] text-muted-foreground md:inline">
             ⌘K
@@ -82,7 +82,7 @@ export function Topbar() {
         <button
           onClick={() => setSearchOpen(true)}
           className="glass grid h-9 w-9 shrink-0 place-items-center rounded-full min-[717px]:hidden"
-          aria-label="Search"
+          aria-label={t("shell.searchAria", { defaultValue: "Search" })}
         >
           <Search className="h-4 w-4" />
         </button>
@@ -136,10 +136,10 @@ export function Topbar() {
 
           <button
             className="glass relative hidden h-9 w-9 place-items-center rounded-full min-[717px]:grid"
-            aria-label="Notifications"
+            aria-label={t("shell.notifications", { defaultValue: "Notifications" })}
           >
             <Bell className="h-4 w-4" />
-            <span className="absolute right-2 top-2 h-1.5 w-1.5 rounded-full bg-danger" />
+            <span className="absolute end-2 top-2 h-1.5 w-1.5 rounded-full bg-danger" />
           </button>
 
           <DropdownMenu>
@@ -181,7 +181,7 @@ export function Topbar() {
               </DropdownMenuItem>
               <DropdownMenuItem className="gap-2">
                 <Bell className="h-4 w-4" />
-                Notifications
+                {t("shell.notifications", { defaultValue: "Notifications" })}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -196,10 +196,10 @@ export function Topbar() {
             )}
             <div className="hidden text-xs min-[900px]:block">
               <div className="font-medium leading-tight truncate max-w-[120px]">{displayName}</div>
-              <div className="leading-tight text-muted-foreground text-[10px]">Clinic</div>
+              <div className="leading-tight text-muted-foreground text-[10px]">{t("shell.clinicRole", { defaultValue: "Clinic Portal" })}</div>
             </div>
-            <button onClick={onLogout} aria-label="Log out" className="ms-1 rounded-full p-1 hover:bg-accent cursor-pointer">
-              <LogOut className="h-3.5 w-3.5" />
+            <button onClick={onLogout} aria-label={t("common.logout", { defaultValue: "Log out" })} className="ms-1 rounded-full p-1 hover:bg-accent cursor-pointer">
+              <LogOut className="h-3.5 w-3.5 rtl:scale-x-[-1]" />
             </button>
           </div>
         </div>

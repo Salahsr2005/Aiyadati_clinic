@@ -76,8 +76,8 @@ export default function LoginPage() {
 
   return (
     <div className="relative flex min-h-screen items-center justify-center overflow-hidden px-4 bg-background text-foreground">
-      <div className="pointer-events-none absolute -left-32 -top-32 h-96 w-96 rounded-full bg-primary-500/25 blur-3xl" />
-      <div className="pointer-events-none absolute -bottom-32 -right-24 h-96 w-96 rounded-full bg-secondary-500/25 blur-3xl" />
+      <div className="pointer-events-none absolute -start-32 -top-32 h-96 w-96 rounded-full bg-primary-500/25 blur-3xl" />
+      <div className="pointer-events-none absolute -bottom-32 -end-24 h-96 w-96 rounded-full bg-secondary-500/25 blur-3xl" />
 
       <motion.div
         initial={{ opacity: 0, y: 16 }}

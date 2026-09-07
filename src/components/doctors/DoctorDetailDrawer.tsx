@@ -28,7 +28,8 @@ export function DoctorDetailDrawer({
 }: DoctorDetailDrawerProps) {
   if (!doctorAffiliation) return null;
 
-  const d = doctorAffiliation.doctor;
+  const d = doctorAffiliation.doctor as any;
+  const affAny = doctorAffiliation as any;
   const firstName = d?.firstNameFr || d?.firstNameAr || d?.firstName || "";
   const lastName = d?.lastNameFr || d?.lastNameAr || d?.lastName || "";
   const fullDoctorName = `${firstName} ${lastName}`.trim() || d?.name || "Doctor";
@@ -92,10 +93,10 @@ export function DoctorDetailDrawer({
               </div>
             )}
 
-            {doctorAffiliation.joinedAt && (
+            {(affAny.joinedAt || affAny.createdAt) && (
               <div className="flex items-center gap-2 text-xs text-muted-foreground pt-1 border-t border-border/30">
                 <Calendar className="h-3.5 w-3.5 text-primary-500" />
-                <span>Joined Facility: {doctorAffiliation.joinedAt.slice(0, 10)}</span>
+                <span>Joined Facility: {(affAny.joinedAt || affAny.createdAt).slice(0, 10)}</span>
               </div>
             )}
           </div>

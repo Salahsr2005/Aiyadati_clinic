@@ -125,7 +125,7 @@ export function RecentAppointmentsTable({
           className="glass inline-flex items-center gap-1 rounded-full px-3 py-1.5 text-xs font-semibold text-primary-500 hover:bg-primary-500/10 cursor-pointer transition-colors"
         >
           View all
-          <ArrowRight className="h-3.5 w-3.5" />
+          <ArrowRight className="h-3.5 w-3.5 rtl:rotate-180" />
         </Link>
       </div>
 
@@ -148,7 +148,7 @@ export function RecentAppointmentsTable({
         open={!!selectedAppt}
         onClose={() => setSelectedAppt(null)}
         title="Appointment Preview"
-        subtitle={selectedAppt ? <CopyReferenceButton value={selectedAppt.id} label="Copy Ref" /> : undefined}
+        subtitle={selectedAppt ? `Ref ID: ${selectedAppt.id}` : undefined}
         width="max-w-md"
       >
         {selectedAppt && (
@@ -161,7 +161,7 @@ export function RecentAppointmentsTable({
                   <StatusBadge value={selectedAppt.status || "PENDING"} />
                 </div>
               </div>
-              <div className="text-right">
+              <div className="text-end">
                 <div className="text-xs text-muted-foreground">Consultation Fee</div>
                 <div className="text-base font-extrabold text-primary-500 mt-0.5">
                   {formatDZD(selectedAppt.amount)}

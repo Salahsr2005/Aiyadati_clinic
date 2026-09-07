@@ -43,11 +43,6 @@ export function ResourceListPage<T extends { id?: string | number }>({
         status: state.status,
         ...state.extras,
       }),
-    retry: (count, err) => {
-      const e = err as { status?: number };
-      if (e?.status === 403 || e?.status === 404) return false;
-      return count < 2;
-    },
   });
 
   return (

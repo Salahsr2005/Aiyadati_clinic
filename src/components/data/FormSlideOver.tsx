@@ -32,11 +32,11 @@ export function FormSlideOver({
       <AnimatePresence>
         {open && (
           <motion.div
-            initial={{ x: "100%", opacity: 0.9 }}
-            animate={{ x: 0, opacity: 1 }}
-            exit={{ x: "100%", opacity: 0.9 }}
+            initial={{ opacity: 0, scale: 0.98 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.98 }}
             transition={{ type: "spring", damping: 25, stiffness: 220 }}
-            className="relative flex h-full w-full max-w-lg flex-col border-l border-border/40 bg-background/95 shadow-2xl backdrop-blur-md md:max-w-xl"
+            className="relative flex h-full w-full max-w-lg flex-col border-s border-border/40 bg-background/95 shadow-2xl backdrop-blur-md md:max-w-xl"
           >
             {/* Header */}
             <div className="flex items-start justify-between border-b border-border/40 p-6">

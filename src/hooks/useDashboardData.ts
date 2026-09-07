@@ -114,8 +114,8 @@ export function useDashboardData() {
       const currentPeriod = byDate.slice(-daysCount);
       const prevPeriod = byDate.slice(-daysCount * 2, -daysCount);
       
-      const currentSum = currentPeriod.reduce((acc, curr) => acc + (curr.count || 0), 0);
-      const prevSum = prevPeriod.reduce((acc, curr) => acc + (curr.count || 0), 0);
+      const currentSum = currentPeriod.reduce((acc: number, curr: any) => acc + (curr.count || 0), 0);
+      const prevSum = prevPeriod.reduce((acc: number, curr: any) => acc + (curr.count || 0), 0);
 
       const delta = prevSum > 0 ? ((currentSum - prevSum) / prevSum) * 100 : 0;
       return { sum: currentSum, delta };
@@ -125,8 +125,8 @@ export function useDashboardData() {
     const todayStr = format(today, "yyyy-MM-dd");
     const yesterdayStr = format(subDays(today, 1), "yyyy-MM-dd");
 
-    const todayCount = byDate.find((d) => d.date?.startsWith(todayStr))?.count ?? 0;
-    const yesterdayCount = byDate.find((d) => d.date?.startsWith(yesterdayStr))?.count ?? 0;
+    const todayCount = byDate.find((d: any) => d.date?.startsWith(todayStr))?.count ?? 0;
+    const yesterdayCount = byDate.find((d: any) => d.date?.startsWith(yesterdayStr))?.count ?? 0;
     const todayDelta = yesterdayCount > 0 ? ((todayCount - yesterdayCount) / yesterdayCount) * 100 : 0;
 
     // Default periods based on selected filter
@@ -142,8 +142,8 @@ export function useDashboardData() {
     const currentRevMonth = byMonth.slice(-revN);
     const prevRevMonth = byMonth.slice(-revN * 2, -revN);
 
-    const currentRevSum = currentRevMonth.reduce((acc, curr) => acc + (curr.amount || 0), 0);
-    const prevRevSum = prevRevMonth.reduce((acc, curr) => acc + (curr.amount || 0), 0);
+    const currentRevSum = currentRevMonth.reduce((acc: number, curr: any) => acc + (curr.amount || 0), 0);
+    const prevRevSum = prevRevMonth.reduce((acc: number, curr: any) => acc + (curr.amount || 0), 0);
     const revDelta = prevRevSum > 0 ? ((currentRevSum - prevRevSum) / prevRevSum) * 100 : 0;
 
     // Filter verification pipeline

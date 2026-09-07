@@ -83,7 +83,7 @@ export function DashboardFilterBar() {
     <GlassCard className="flex flex-wrap items-center justify-between gap-3 p-3 border border-border/40 shadow-sm">
       <div className="flex flex-wrap items-center gap-2">
         {/* Date presets */}
-        <div className="flex items-center gap-1.5 mr-2">
+        <div className="flex items-center gap-1.5 me-2">
           <Calendar className="h-3.5 w-3.5 text-muted-foreground" />
           <SelectMenu
             value={filters.datePreset}

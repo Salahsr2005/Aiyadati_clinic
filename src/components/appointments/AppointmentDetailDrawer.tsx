@@ -63,7 +63,7 @@ export function AppointmentDetailDrawer({
 
   return (
     <>
-      <Drawer open={open} onClose={onClose} title="Appointment Details" subtitle={<CopyReferenceButton value={appt.id} label="Copy Appt Ref" />}>
+      <Drawer open={open} onClose={onClose} title="Appointment Details" subtitle={`Ref ID: ${appt.id}`}>
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <StatusBadge value={appt.status} />

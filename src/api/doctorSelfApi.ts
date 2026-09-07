@@ -9,6 +9,19 @@ import type { DoctorRow } from "@/api/doctorsApi";
  * This module must never touch staff/admin endpoints.
  * ------------------------------------------------------------------ */
 
+export interface GuestPatientRow {
+  id: string;
+  firstName: string;
+  lastName: string;
+  phone: string;
+  email?: string;
+  dateOfBirth?: string;
+  wilayaId?: string | number;
+  notes?: string;
+  isGuest?: boolean;
+  createdAt?: string;
+}
+
 export type DayOfWeek =
   | "SUNDAY" | "MONDAY" | "TUESDAY" | "WEDNESDAY" | "THURSDAY" | "FRIDAY" | "SATURDAY";
 

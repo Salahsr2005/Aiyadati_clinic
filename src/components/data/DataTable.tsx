@@ -261,7 +261,7 @@ export function DataTable<T extends { id?: string | number }>({
           </button>
 
           {showVisibilityDropdown && (
-            <div className="absolute right-0 mt-2 w-48 rounded-2xl border border-border bg-popover/95 p-2 shadow-xl backdrop-blur-md z-30">
+            <div className="absolute end-0 mt-2 w-48 rounded-2xl border border-border bg-popover/95 p-2 shadow-xl backdrop-blur-md z-30">
               <div className="px-2 py-1.5 text-[10px] uppercase font-bold text-muted-foreground tracking-wider">
                 Show/Hide Columns
               </div>
@@ -272,7 +272,7 @@ export function DataTable<T extends { id?: string | number }>({
                     <button
                       key={c.key}
                       onClick={() => toggleColumnVisibility(c.key)}
-                      className="w-full flex items-center justify-between px-2.5 py-1.5 text-xs rounded-xl hover:bg-accent/50 text-left transition-colors"
+                      className="w-full flex items-center justify-between px-2.5 py-1.5 text-xs rounded-xl hover:bg-accent/50 text-start transition-colors"
                     >
                       <span className="font-medium text-foreground">{c.header}</span>
                       {isVisible && <Check className="h-3.5 w-3.5 text-primary-500 shrink-0" />}
@@ -485,7 +485,7 @@ export function DataTable<T extends { id?: string | number }>({
         )}
 
         {loading && processedRows.length > 0 && (
-          <div className="pointer-events-none absolute right-3 top-3 z-20 bg-background/80 backdrop-blur px-2 py-1 rounded-full border border-border/40">
+          <div className="pointer-events-none absolute end-3 top-3 z-20 bg-background/80 backdrop-blur px-2 py-1 rounded-full border border-border/40">
             <Loader2 className="h-4 w-4 animate-spin text-primary-500" />
           </div>
         )}

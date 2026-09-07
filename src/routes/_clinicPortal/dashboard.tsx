@@ -1,5 +1,6 @@
 import { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { useQuery } from "@/lib/queryClient";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -81,8 +82,9 @@ type RoomFormData = z.infer<typeof roomSchema>;
 /** Extract doctor full name cleanly */
 function formatDoctorName(doc: ClinicDoctor["doctor"] | undefined): string {
   if (!doc) return "Assigned Doctor";
-  const firstName = doc.firstNameFr || doc.firstNameAr || doc.firstName || "";
-  const lastName = doc.lastNameFr || doc.lastNameAr || doc.lastName || "";
+  const docAny = doc as any;
+  const firstName = docAny.firstNameFr || docAny.firstNameAr || doc.firstName || "";
+  const lastName = docAny.lastNameFr || docAny.lastNameAr || doc.lastName || "";
   const full = `${firstName} ${lastName}`.trim();
   if (full) return `Dr. ${full}`;
   if (doc.name) return `Dr. ${doc.name}`;
@@ -93,8 +95,9 @@ function formatDoctorName(doc: ClinicDoctor["doctor"] | undefined): string {
 /** Extract specialty name */
 function formatDoctorSpecialty(doc: ClinicDoctor["doctor"] | undefined): string {
   if (!doc) return "General Practice";
-  if (Array.isArray(doc.specialties) && doc.specialties.length > 0) {
-    return doc.specialties[0].nameFr || doc.specialties[0].nameAr || "Specialist";
+  const docAny = doc as any;
+  if (Array.isArray(docAny.specialties) && docAny.specialties.length > 0) {
+    return docAny.specialties[0].nameFr || docAny.specialties[0].nameAr || "Specialist";
   }
   return doc.specialtyName || doc.specialty?.nameFr || doc.specialty?.nameAr || "Specialist";
 }
@@ -102,8 +105,9 @@ function formatDoctorSpecialty(doc: ClinicDoctor["doctor"] | undefined): string 
 /** Extract patient name */
 function formatPatientName(app: ClinicAppointmentRow): string {
   if (app.patient) {
-    const f = app.patient.firstNameFr || app.patient.firstName || "";
-    const l = app.patient.lastNameFr || app.patient.lastName || "";
+    const patAny = app.patient as any;
+    const f = patAny.firstNameFr || app.patient.firstName || "";
+    const l = patAny.lastNameFr || app.patient.lastName || "";
     const full = `${f} ${l}`.trim();
     if (full) return full;
     if (app.patient.email) return app.patient.email.split("@")[0];
@@ -118,6 +122,7 @@ function formatPatientName(app: ClinicAppointmentRow): string {
 }
 
 export default function DashboardPage() {
+  const { t } = useTranslation();
   const { data: profile, isLoading: isProfileLoading } = useClinicProfile();
   const { doctors, acceptedDoctors, pendingCount } = useClinicDoctors();
 
@@ -161,7 +166,7 @@ export default function DashboardPage() {
     queryFn: () => doctorsApi.list({ search: searchDoctorQuery, limit: 10 }),
     enabled: searchDoctorQuery.length >= 2,
   });
-  const platformDoctors: DoctorRow[] = ensureArray<DoctorRow>(platformDoctorsData?.data);
+  const platformDoctors: DoctorRow[] = ensureArray<DoctorRow>((platformDoctorsData as any)?.items || (platformDoctorsData as any)?.data);
 
   // Forms
   const walkInForm = useForm<WalkInFormData>({
@@ -207,7 +212,7 @@ export default function DashboardPage() {
   });
 
   const inviteDoctorMutation = useEntityMutation({
-    mutationFn: (doctorId: string) => clinicSelfApi.inviteDoctor({ doctorId }),
+    mutationFn: (doctorId: string) => clinicSelfApi.inviteDoctor(doctorId),
     invalidate: [qk.clinicSelf.doctors()],
     successMessage: "Doctor affiliation invitation sent",
     onSuccess: () => setInviteModalOpen(false),
@@ -317,7 +322,7 @@ export default function DashboardPage() {
                   {isProfileLoading ? (
                     <Skeleton className="h-7 w-48" />
                   ) : (
-                    profile?.nameFr || profile?.nameAr || "Clinic Operational Cockpit"
+                    profile?.nameFr || profile?.nameAr || t("dashboard.cockpitTitle", { defaultValue: "Clinic Operational Cockpit" })
                   )}
                 </h1>
                 <div className="glass inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-bold text-success border border-success/30">
@@ -325,7 +330,7 @@ export default function DashboardPage() {
                     <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-success opacity-75" />
                     <span className="relative inline-flex h-2 w-2 rounded-full bg-success" />
                   </span>
-                  Live Cockpit
+                  {t("overview.subtitle", { defaultValue: "Live Cockpit" })}
                 </div>
               </div>
               <p className="text-xs text-muted-foreground mt-1 flex items-center gap-2">
@@ -333,7 +338,7 @@ export default function DashboardPage() {
                 <span>{profile?.wilaya?.nameFr || "Algeria"}</span>
                 {profile?.isVerified && (
                   <span className="rounded-full bg-success/15 px-2 py-0.5 text-[10px] font-semibold text-success">
-                    Verified Facility
+                    {t("status.VERIFIED", { defaultValue: "Verified Facility" })}
                   </span>
                 )}
               </p>
@@ -346,28 +351,28 @@ export default function DashboardPage() {
               onClick={() => setWalkInModalOpen(true)}
               className="inline-flex items-center gap-1.5 rounded-xl bg-primary-500 px-3.5 py-2 text-xs font-semibold text-primary-foreground shadow-xs hover:opacity-90 transition cursor-pointer"
             >
-              <Zap className="h-3.5 w-3.5" /> Walk-in Booking
+              <Zap className="h-3.5 w-3.5" /> {t("patients.createGuestButton", { defaultValue: "Walk-in Booking" })}
             </button>
 
             <button
               onClick={() => setInviteModalOpen(true)}
               className="inline-flex items-center gap-1.5 rounded-xl glass border border-border/60 px-3.5 py-2 text-xs font-semibold text-foreground hover:bg-accent transition cursor-pointer"
             >
-              <UserPlus className="h-3.5 w-3.5 text-primary-500" /> Invite Doctor
+              <UserPlus className="h-3.5 w-3.5 text-primary-500" /> {t("doctors.inviteButton", { defaultValue: "Invite Doctor" })}
             </button>
 
             <button
               onClick={() => setGenerateModalOpen(true)}
               className="inline-flex items-center gap-1.5 rounded-xl glass border border-border/60 px-3.5 py-2 text-xs font-semibold text-foreground hover:bg-accent transition cursor-pointer"
             >
-              <CalendarRange className="h-3.5 w-3.5 text-primary-500" /> Generate Slots
+              <CalendarRange className="h-3.5 w-3.5 text-primary-500" /> {t("schedule.batchGenerateButton", { defaultValue: "Generate Slots" })}
             </button>
 
             <button
               onClick={() => setRoomModalOpen(true)}
               className="inline-flex items-center gap-1.5 rounded-xl glass border border-border/60 px-3.5 py-2 text-xs font-semibold text-foreground hover:bg-accent transition cursor-pointer"
             >
-              <DoorOpen className="h-3.5 w-3.5 text-primary-500" /> Add Room
+              <DoorOpen className="h-3.5 w-3.5 text-primary-500" /> {t("rooms.createButton", { defaultValue: "Add Room" })}
             </button>
 
             <button
@@ -391,28 +396,28 @@ export default function DashboardPage() {
       {/* 2. Main KPI Cards Grid & Sponsored Announcement Banner */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <KPICard
-          label="Affiliated Doctors"
+          label={t("doctors.totalDoctors", { defaultValue: "Affiliated Doctors" })}
           value={acceptedDoctors.length}
           subLabel={`${doctors.length} total affiliations (${pendingCount} pending)`}
           delta={acceptedDoctors.length}
           tone="primary"
         />
         <KPICard
-          label="Physical Rooms"
+          label={t("rooms.totalRooms", { defaultValue: "Physical Rooms" })}
           value={rooms.length}
           subLabel="Available Consultation Rooms"
           delta={rooms.length}
           tone="success"
         />
         <KPICard
-          label="Total Appointments"
+          label={t("overview.kpi.totalAppointments", { defaultValue: "Total Appointments" })}
           value={totalAppointments}
           subLabel="Appointments Across All Doctors"
           delta={totalAppointments}
           tone="info"
         />
         <KPICard
-          label="Today's Schedule"
+          label={t("dashboard.todaysSchedule", { defaultValue: "Today's Schedule" })}
           value={todayAppointments.length}
           subLabel={`Appointments on ${format(new Date(), "MMM d, yyyy")}`}
           delta={todayAppointments.length}
@@ -435,7 +440,7 @@ export default function DashboardPage() {
               <Percent className="h-3.5 w-3.5" />
             </div>
             <div>
-              <div className="text-[10px] font-semibold text-muted-foreground">Completion Rate</div>
+              <div className="text-[10px] font-semibold text-muted-foreground">{t("overview.kpi.completionRate", { defaultValue: "Completion Rate" })}</div>
               <div className="text-sm font-bold">{completionRate}%</div>
             </div>
           </div>
@@ -447,7 +452,7 @@ export default function DashboardPage() {
               <Users className="h-3.5 w-3.5" />
             </div>
             <div>
-              <div className="text-[10px] font-semibold text-muted-foreground">Guest Patients</div>
+              <div className="text-[10px] font-semibold text-muted-foreground">{t("patients.guestPatients", { defaultValue: "Guest Patients" })}</div>
               <div className="text-sm font-bold">{appointments.filter((a) => a.guestPatient).length}</div>
             </div>
           </div>
@@ -459,7 +464,7 @@ export default function DashboardPage() {
               <FileCheck className="h-3.5 w-3.5" />
             </div>
             <div>
-              <div className="text-[10px] font-semibold text-muted-foreground">Legal Docs</div>
+              <div className="text-[10px] font-semibold text-muted-foreground">{t("profile.documentsInfo", { defaultValue: "Legal Docs" })}</div>
               <div className="text-sm font-bold">{documents.length} Uploaded</div>
             </div>
           </div>
@@ -471,7 +476,7 @@ export default function DashboardPage() {
               <Clock className="h-3.5 w-3.5" />
             </div>
             <div>
-              <div className="text-[10px] font-semibold text-muted-foreground">Active Today</div>
+              <div className="text-[10px] font-semibold text-muted-foreground">{t("dashboard.activeToday", { defaultValue: "Active Today" })}</div>
               <div className="text-sm font-bold">{todayAppointments.length} Appts</div>
             </div>
           </div>
@@ -483,7 +488,7 @@ export default function DashboardPage() {
               <Building2 className="h-3.5 w-3.5" />
             </div>
             <div>
-              <div className="text-[10px] font-semibold text-muted-foreground">Facility Type</div>
+              <div className="text-[10px] font-semibold text-muted-foreground">{t("dashboard.facilityType", { defaultValue: "Facility Type" })}</div>
               <div className="text-xs font-bold truncate">{profile?.facilityType || "CLINIC"}</div>
             </div>
           </div>
@@ -498,7 +503,7 @@ export default function DashboardPage() {
               <Clock className="h-4 w-4" />
             </div>
             <div>
-              <div className="text-xs font-semibold text-muted-foreground">Confirmed</div>
+              <div className="text-xs font-semibold text-muted-foreground">{t("status.CONFIRMED", { defaultValue: "Confirmed" })}</div>
               <div className="text-base font-bold">{statusCounts.confirmed}</div>
             </div>
           </div>
@@ -510,7 +515,7 @@ export default function DashboardPage() {
               <CheckCircle2 className="h-4 w-4" />
             </div>
             <div>
-              <div className="text-xs font-semibold text-muted-foreground">Completed</div>
+              <div className="text-xs font-semibold text-muted-foreground">{t("status.COMPLETED", { defaultValue: "Completed" })}</div>
               <div className="text-base font-bold">{statusCounts.completed}</div>
             </div>
           </div>
@@ -522,7 +527,7 @@ export default function DashboardPage() {
               <AlertCircle className="h-4 w-4" />
             </div>
             <div>
-              <div className="text-xs font-semibold text-muted-foreground">Pending</div>
+              <div className="text-xs font-semibold text-muted-foreground">{t("status.PENDING", { defaultValue: "Pending" })}</div>
               <div className="text-base font-bold">{statusCounts.pending}</div>
             </div>
           </div>
@@ -534,7 +539,7 @@ export default function DashboardPage() {
               <XCircle className="h-4 w-4" />
             </div>
             <div>
-              <div className="text-xs font-semibold text-muted-foreground">Cancelled</div>
+              <div className="text-xs font-semibold text-muted-foreground">{t("status.CANCELLED", { defaultValue: "Cancelled" })}</div>
               <div className="text-base font-bold">{statusCounts.cancelled}</div>
             </div>
           </div>
@@ -546,8 +551,8 @@ export default function DashboardPage() {
         <ActivityHeatmap
           data={heatmapData}
           weeks={24}
-          title="Facility Booking Density & Volume Matrix"
-          subtitle="Visual representation of patient booking frequency across dates"
+          title={t("dashboard.optimalBookingTitle", { defaultValue: "Facility Booking Density & Volume Matrix" })}
+          subtitle={t("dashboard.optimalBookingSub", { defaultValue: "Visual representation of patient booking frequency across dates" })}
           tone="primary"
         />
 
@@ -558,8 +563,8 @@ export default function DashboardPage() {
           getTime={(a) => a.slot?.startTime}
           getStatus={(a) => a.status}
           hourBlocks={8}
-          title="Facility Day × Hour Matrix"
-          subtitle="Peak hourly consultation distribution"
+          title={t("dashboard.cancellationMatrixTitle", { defaultValue: "Facility Day × Hour Matrix" })}
+          subtitle={t("dashboard.cancellationMatrixSub", { defaultValue: "Peak hourly consultation distribution" })}
           tone="primary"
         />
       </div>
@@ -570,14 +575,14 @@ export default function DashboardPage() {
         <GlassCard className="p-6 lg:col-span-2 space-y-4">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-base font-semibold">Recent Facility Appointments</h2>
-              <p className="text-xs text-muted-foreground">Click any appointment row to open details inspector</p>
+              <h2 className="text-base font-semibold">{t("dashboard.recentTableTitle", { defaultValue: "Recent Facility Appointments" })}</h2>
+              <p className="text-xs text-muted-foreground">{t("dashboard.recentTableSub", { defaultValue: "Click any appointment row to open details inspector" })}</p>
             </div>
             <Link
               to="/appointments"
               className="inline-flex items-center gap-1 text-xs font-semibold text-primary-500 hover:underline"
             >
-              View All <ArrowRight className="h-3.5 w-3.5" />
+              {t("common.view", { defaultValue: "View All" })} <ArrowRight className="h-3.5 w-3.5 rtl:rotate-180" />
             </Link>
           </div>
 
@@ -590,9 +595,9 @@ export default function DashboardPage() {
           ) : appointments.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-12 text-center">
               <CalendarClock className="h-10 w-10 text-muted-foreground/50 mb-2" />
-              <p className="text-sm font-semibold">No appointments yet</p>
+              <p className="text-sm font-semibold">{t("common.empty", { defaultValue: "No appointments yet" })}</p>
               <p className="text-xs text-muted-foreground max-w-xs mt-1">
-                Book a walk-in patient or generate doctor slots to begin accepting appointments.
+                {t("patients.createGuestButton", { defaultValue: "Book a walk-in patient" })} or generate doctor slots to begin accepting appointments.
               </p>
             </div>
           ) : (
@@ -616,7 +621,7 @@ export default function DashboardPage() {
                           {patientName}
                         </div>
                         <div className="text-[11px] text-muted-foreground font-medium truncate">
-                          {doctorName} {app.room ? `· ${app.room.name}` : ""}
+                          {doctorName} {(app as any).room ? `· ${(app as any).room.name}` : ""}
                         </div>
                       </div>
                     </div>
@@ -626,7 +631,7 @@ export default function DashboardPage() {
                       <div className="text-[10px] text-muted-foreground font-semibold">
                         {app.slot?.date || app.createdAt?.slice(0, 10)} {app.slot?.startTime ? app.slot.startTime.slice(0, 5) : ""}
                       </div>
-                      <ChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-primary-500 transition" />
+                      <ChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-primary-500 transition rtl:rotate-180" />
                     </div>
                   </div>
                 );
@@ -638,21 +643,21 @@ export default function DashboardPage() {
         {/* Affiliated Doctors Summary Sidebar */}
         <GlassCard className="p-6 space-y-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-base font-semibold">Affiliated Doctors</h2>
+            <h2 className="text-base font-semibold">{t("doctors.totalDoctors", { defaultValue: "Affiliated Doctors" })}</h2>
             <Link to="/doctors" className="text-xs font-semibold text-primary-500 hover:underline">
-              Manage
+              {t("common.edit", { defaultValue: "Manage" })}
             </Link>
           </div>
 
           {doctors.length === 0 ? (
             <div className="text-center py-8 text-xs text-muted-foreground">
-              No doctors affiliated with this clinic yet.
+              {t("doctors.noDoctors", { defaultValue: "No doctors affiliated with this clinic yet." })}
               <div className="mt-3">
                 <button
                   onClick={() => setInviteModalOpen(true)}
                   className="inline-flex items-center gap-1.5 rounded-xl bg-primary-500/10 px-3 py-1.5 text-xs font-semibold text-primary-500 hover:bg-primary-500/20 cursor-pointer"
                 >
-                  <UserPlus className="h-3.5 w-3.5" /> Invite Doctors
+                  <UserPlus className="h-3.5 w-3.5" /> {t("doctors.inviteButton", { defaultValue: "Invite Doctors" })}
                 </button>
               </div>
             </div>
@@ -723,13 +728,13 @@ export default function DashboardPage() {
         id="quick-generate-modal"
         open={generateModalOpen}
         onClose={() => setGenerateModalOpen(false)}
-        title="Batch Generate Doctor Slots"
-        description="Generate standard consultation slots for date range"
+        title={t("schedule.batchModalTitle", { defaultValue: "Batch Generate Doctor Slots" })}
+        description={t("schedule.subtitle", { defaultValue: "Generate standard consultation slots for date range" })}
       >
         <form onSubmit={generateForm.handleSubmit((d) => generateSlotsMutation.mutate(d))} className="space-y-4">
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1.5">
-              <label className="text-sm font-medium">Start Date*</label>
+              <label className="text-sm font-medium">{t("schedule.startDate", { defaultValue: "Start Date*" })}</label>
               <input
                 type="date"
                 {...generateForm.register("startDate")}
@@ -737,7 +742,7 @@ export default function DashboardPage() {
               />
             </div>
             <div className="space-y-1.5">
-              <label className="text-sm font-medium">End Date*</label>
+              <label className="text-sm font-medium">{t("schedule.endDate", { defaultValue: "End Date*" })}</label>
               <input
                 type="date"
                 {...generateForm.register("endDate")}
@@ -747,12 +752,12 @@ export default function DashboardPage() {
           </div>
 
           <div className="space-y-1.5">
-            <label className="text-sm font-medium">Physical Room (Optional)</label>
+            <label className="text-sm font-medium">{t("rooms.title", { defaultValue: "Physical Room (Optional)" })}</label>
             <select
               {...generateForm.register("roomId")}
               className="glass w-full rounded-xl px-3.5 py-2.5 text-sm outline-none focus:ring-2 focus:ring-primary-500/40 bg-background text-foreground"
             >
-              <option value="">No specific room</option>
+              <option value="">{t("rooms.generalPurpose", { defaultValue: "No specific room" })}</option>
               {rooms.map((r) => (
                 <option key={r.id} value={r.id}>
                   {r.name}
@@ -767,7 +772,7 @@ export default function DashboardPage() {
               onClick={() => setGenerateModalOpen(false)}
               className="rounded-xl px-4 py-2 text-xs font-semibold text-muted-foreground hover:bg-accent cursor-pointer"
             >
-              Cancel
+              {t("common.cancel", { defaultValue: "Cancel" })}
             </button>
             <button
               type="submit"
@@ -775,7 +780,7 @@ export default function DashboardPage() {
               className="inline-flex items-center gap-2 rounded-xl bg-primary-500 px-4 py-2 text-xs font-semibold text-primary-foreground hover:opacity-90 disabled:opacity-50 cursor-pointer"
             >
               {generateSlotsMutation.isPending && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
-              Generate Slots
+              {t("schedule.batchGenerateButton", { defaultValue: "Generate Slots" })}
             </button>
           </div>
         </form>
@@ -786,15 +791,15 @@ export default function DashboardPage() {
         id="quick-room-modal"
         open={roomModalOpen}
         onClose={() => setRoomModalOpen(false)}
-        title="Add Physical Consultation Room"
-        description="Enter room designation"
+        title={t("rooms.createTitle", { defaultValue: "Add Physical Consultation Room" })}
+        description={t("rooms.subtitle", { defaultValue: "Enter room designation" })}
       >
         <form onSubmit={roomForm.handleSubmit((d) => createRoomMutation.mutate(d))} className="space-y-4">
           <div className="space-y-1.5">
-            <label className="text-sm font-medium">Room Designation / Name*</label>
+            <label className="text-sm font-medium">{t("rooms.nameLabel", { defaultValue: "Room Designation / Name*" })}</label>
             <input
               {...roomForm.register("name")}
-              placeholder="e.g. Consultation Room 102"
+              placeholder={t("rooms.namePlaceholder", { defaultValue: "e.g. Consultation Room 102" })}
               className="glass w-full rounded-xl px-3.5 py-2.5 text-sm outline-none focus:ring-2 focus:ring-primary-500/40"
             />
             {roomForm.formState.errors.name && (
@@ -808,7 +813,7 @@ export default function DashboardPage() {
               onClick={() => setRoomModalOpen(false)}
               className="rounded-xl px-4 py-2 text-xs font-semibold text-muted-foreground hover:bg-accent cursor-pointer"
             >
-              Cancel
+              {t("common.cancel", { defaultValue: "Cancel" })}
             </button>
             <button
               type="submit"
@@ -816,7 +821,7 @@ export default function DashboardPage() {
               className="inline-flex items-center gap-2 rounded-xl bg-primary-500 px-4 py-2 text-xs font-semibold text-primary-foreground hover:opacity-90 disabled:opacity-50 cursor-pointer"
             >
               {createRoomMutation.isPending && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
-              Create Room
+              {t("rooms.createButton", { defaultValue: "Create Room" })}
             </button>
           </div>
         </form>

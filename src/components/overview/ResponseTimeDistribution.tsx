@@ -148,7 +148,7 @@ export function ResponseTimeDistribution({
                             <span className="font-bold" style={{ color: item.color }}>
                               {item.name}
                             </span>
-                            <span className="text-muted-foreground ml-1.5 font-medium">
+                            <span className="text-muted-foreground ms-1.5 font-medium">
                               {item.value} ({pct}%)
                             </span>
                           </div>

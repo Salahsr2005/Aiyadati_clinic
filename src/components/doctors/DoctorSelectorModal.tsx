@@ -1,9 +1,11 @@
 import { useState, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { Search, Filter, Stethoscope, Award, Check, X, User } from "lucide-react";
 import { FormModal } from "@/components/data/FormModal";
 import { RemoteImage } from "@/components/common/RemoteImage";
 import { ensureArray } from "@/lib/utils";
 import type { ClinicDoctor } from "@/api/clinicSelfApi";
+import type { DoctorRow } from "@/api/doctorsApi";
 import findDoctorImg from "@/assets/home-quick-actions/find-doctor.png";
 
 export interface DoctorCardItem {
@@ -24,7 +26,8 @@ interface DoctorSelectorModalProps {
   onClose: () => void;
   doctors: DoctorCardItem[];
   selectedDoctorId?: string;
-  onSelectDoctor: (doctor: DoctorCardItem) => void;
+  onSelectDoctor?: (doctor: DoctorCardItem) => void;
+  onSelect?: (doctorId: string) => void;
   title?: string;
   subtitle?: string;
 }
@@ -35,9 +38,13 @@ export function DoctorSelectorModal({
   doctors,
   selectedDoctorId,
   onSelectDoctor,
-  title = "Select Doctor Provider",
-  subtitle = "Choose an affiliated specialist doctor for consultation",
+  onSelect,
+  title,
+  subtitle,
 }: DoctorSelectorModalProps) {
+  const { t } = useTranslation();
+  const displayTitle = title || t("doctors.selectorTitle", { defaultValue: "Select Doctor Provider" });
+  const displaySubtitle = subtitle || t("doctors.selectorSub", { defaultValue: "Choose an affiliated specialist doctor for consultation" });
   const [searchQuery, setSearchQuery] = useState("");
   const [specialtyFilter, setSpecialtyFilter] = useState("");
 
@@ -72,25 +79,25 @@ export function DoctorSelectorModal({
       id="doctor-selector-modal"
       open={open}
       onClose={onClose}
-      title={title}
-      description={subtitle}
+      title={displayTitle}
+      description={displaySubtitle}
     >
       <div className="space-y-4">
         {/* Search & Specialty Filter Bar */}
         <div className="flex flex-col sm:flex-row items-center gap-2">
           <div className="relative flex-1 w-full">
-            <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
+            <Search className="absolute start-3 top-2.5 h-4 w-4 text-muted-foreground" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search doctor by name or specialty..."
-              className="glass w-full rounded-xl pl-9 pr-3.5 py-2 text-xs font-semibold outline-none focus:ring-2 focus:ring-primary-500/40"
+              placeholder={t("doctors.searchPlaceholder", { defaultValue: "Search doctor by name or specialty..." })}
+              className="glass w-full rounded-xl ps-9 pe-3.5 py-2 text-xs font-semibold outline-none focus:ring-2 focus:ring-primary-500/40"
             />
             {searchQuery && (
               <button
                 onClick={() => setSearchQuery("")}
-                className="absolute right-3 top-2.5 text-muted-foreground hover:text-foreground"
+                className="absolute end-3 top-2.5 text-muted-foreground hover:text-foreground"
               >
                 <X className="h-3.5 w-3.5" />
               </button>
@@ -104,7 +111,7 @@ export function DoctorSelectorModal({
                 onChange={(e) => setSpecialtyFilter(e.target.value)}
                 className="glass w-full rounded-xl px-3 py-2 text-xs font-semibold outline-none focus:ring-2 focus:ring-primary-500/40 bg-background text-foreground"
               >
-                <option value="">All Specialties ({uniqueSpecialties.length})</option>
+                <option value="">{t("filters.specialty", { defaultValue: "All Specialties" })} ({uniqueSpecialties.length})</option>
                 {uniqueSpecialties.map((spec) => (
                   <option key={spec} value={spec}>
                     {spec}
@@ -120,7 +127,7 @@ export function DoctorSelectorModal({
           {filteredDoctors.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-10 text-center">
               <Stethoscope className="h-9 w-9 text-muted-foreground/40 mb-2" />
-              <p className="text-xs font-bold text-foreground">No matching doctors found</p>
+              <p className="text-xs font-bold text-foreground">{t("common.empty", { defaultValue: "No matching doctors found" })}</p>
               <p className="text-[11px] text-muted-foreground mt-0.5">Try clearing your search query or specialty filter</p>
             </div>
           ) : (
@@ -131,7 +138,8 @@ export function DoctorSelectorModal({
                 <div
                   key={doc.id}
                   onClick={() => {
-                    onSelectDoctor(doc);
+                    onSelectDoctor?.(doc);
+                    onSelect?.(doc.doctorId || doc.id);
                     onClose();
                   }}
                   className={`group relative flex items-center justify-between p-3.5 rounded-2xl border transition-all cursor-pointer ${
@@ -185,7 +193,7 @@ export function DoctorSelectorModal({
                       }`}
                     >
                       {isSelected ? <Check className="h-3.5 w-3.5" /> : null}
-                      {isSelected ? "Selected" : "Select"}
+                      {isSelected ? t("status.APPROVED", { defaultValue: "Selected" }) : t("common.view", { defaultValue: "Select" })}
                     </button>
                   </div>
                 </div>

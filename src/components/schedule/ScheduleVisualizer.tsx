@@ -13,10 +13,14 @@ function parseTime(t?: string | null): number | null {
 export function ScheduleVisualizer({
   slots = [],
   selectedDate,
+  doctorName,
+  onSelectSlot,
   className,
 }: {
   slots: DoctorSlot[];
   selectedDate: string;
+  doctorName?: string;
+  onSelectSlot?: (slot: DoctorSlot) => void;
   className?: string;
 }) {
   const [hover, setHover] = useState<{ x: number; y: number; text: string } | null>(null);

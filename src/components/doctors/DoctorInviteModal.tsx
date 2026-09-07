@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { useQuery } from "@/lib/queryClient";
 import { Search, UserPlus, Stethoscope, Award, CheckCircle2, Loader2, Sparkles, X } from "lucide-react";
 import { FormModal } from "@/components/data/FormModal";
@@ -14,6 +15,7 @@ interface DoctorInviteModalProps {
 }
 
 export function DoctorInviteModal({ open, onClose }: DoctorInviteModalProps) {
+  const { t } = useTranslation();
   const [searchQuery, setSearchQuery] = useState("");
   const [specialtyFilter, setSpecialtyFilter] = useState("");
 
@@ -26,12 +28,13 @@ export function DoctorInviteModal({ open, onClose }: DoctorInviteModalProps) {
     enabled: open,
   });
 
-  const doctors: DoctorRow[] = ensureArray<DoctorRow>(doctorsData?.data);
+  const doctors: DoctorRow[] = ensureArray<DoctorRow>((doctorsData as any)?.items || (doctorsData as any)?.data);
 
   // Filtered list
   const filteredDoctors = useMemo(() => {
     return doctors.filter((doc) => {
-      const spec = doc.specialtyName || doc.specialties?.[0]?.nameFr || "Specialist";
+      const docAny = doc as any;
+      const spec = docAny.specialtyName || docAny.specialty?.nameFr || docAny.specialties?.[0]?.nameFr || "Specialist";
       const matchesSpecialty = !specialtyFilter || spec === specialtyFilter;
       return matchesSpecialty;
     });
@@ -41,7 +44,8 @@ export function DoctorInviteModal({ open, onClose }: DoctorInviteModalProps) {
   const uniqueSpecialties = useMemo(() => {
     const set = new Set<string>();
     doctors.forEach((d) => {
-      const spec = d.specialtyName || d.specialties?.[0]?.nameFr;
+      const dAny = d as any;
+      const spec = dAny.specialtyName || dAny.specialty?.nameFr || dAny.specialties?.[0]?.nameFr;
       if (spec) set.add(spec);
     });
     return Array.from(set).sort();
@@ -49,7 +53,7 @@ export function DoctorInviteModal({ open, onClose }: DoctorInviteModalProps) {
 
   // Invitation Mutation
   const inviteMutation = useEntityMutation({
-    mutationFn: (doctorId: string) => clinicSelfApi.inviteDoctor({ doctorId }),
+    mutationFn: (doctorId: string) => clinicSelfApi.inviteDoctor(doctorId),
     invalidate: [qk.clinicSelf.doctors()],
     successMessage: "Doctor affiliation request sent successfully",
     onSuccess: () => {
@@ -62,25 +66,25 @@ export function DoctorInviteModal({ open, onClose }: DoctorInviteModalProps) {
       id="doctor-invite-modal"
       open={open}
       onClose={onClose}
-      title="Invite Doctor for Affiliation"
-      description="Search platform doctors and send facility affiliation invitations"
+      title={t("doctors.inviteModalTitle", { defaultValue: "Invite Doctor for Affiliation" })}
+      description={t("doctors.inviteModalSub", { defaultValue: "Search platform doctors and send facility affiliation invitations" })}
     >
       <div className="space-y-4">
         {/* Search & Filter Bar */}
         <div className="flex flex-col sm:flex-row items-center gap-2">
           <div className="relative flex-1 w-full">
-            <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
+            <Search className="absolute start-3 top-2.5 h-4 w-4 text-muted-foreground" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search doctor by name or specialty..."
-              className="glass w-full rounded-xl pl-9 pr-3.5 py-2 text-xs font-semibold outline-none focus:ring-2 focus:ring-primary-500/40"
+              placeholder={t("doctors.searchPlaceholder", { defaultValue: "Search doctor by name or specialty..." })}
+              className="glass w-full rounded-xl ps-9 pe-3.5 py-2 text-xs font-semibold outline-none focus:ring-2 focus:ring-primary-500/40"
             />
             {searchQuery && (
               <button
                 onClick={() => setSearchQuery("")}
-                className="absolute right-3 top-2.5 text-muted-foreground hover:text-foreground"
+                className="absolute end-3 top-2.5 text-muted-foreground hover:text-foreground"
               >
                 <X className="h-3.5 w-3.5" />
               </button>
@@ -94,7 +98,7 @@ export function DoctorInviteModal({ open, onClose }: DoctorInviteModalProps) {
                 onChange={(e) => setSpecialtyFilter(e.target.value)}
                 className="glass w-full rounded-xl px-3 py-2 text-xs font-semibold outline-none focus:ring-2 focus:ring-primary-500/40 bg-background text-foreground"
               >
-                <option value="">All Specialties ({uniqueSpecialties.length})</option>
+                <option value="">{t("filters.specialty", { defaultValue: "All Specialties" })} ({uniqueSpecialties.length})</option>
                 {uniqueSpecialties.map((spec) => (
                   <option key={spec} value={spec}>
                     {spec}
@@ -114,15 +118,16 @@ export function DoctorInviteModal({ open, onClose }: DoctorInviteModalProps) {
           ) : filteredDoctors.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-10 text-center">
               <Stethoscope className="h-9 w-9 text-muted-foreground/40 mb-2" />
-              <p className="text-xs font-bold text-foreground">No doctors found</p>
+              <p className="text-xs font-bold text-foreground">{t("common.empty", { defaultValue: "No doctors found" })}</p>
               <p className="text-[11px] text-muted-foreground mt-0.5">
                 Type at least 2 characters to search the nationwide doctor directory.
               </p>
             </div>
           ) : (
             filteredDoctors.map((doc) => {
-              const name = `Dr. ${doc.firstName || doc.name || ""} ${doc.lastName || ""}`.trim();
-              const spec = doc.specialtyName || doc.specialties?.[0]?.nameFr || "General Practitioner";
+              const docAny = doc as any;
+              const name = `Dr. ${docAny.firstNameFr || docAny.firstName || docAny.name || ""} ${docAny.lastNameFr || docAny.lastName || ""}`.trim();
+              const spec = docAny.specialtyName || docAny.specialty?.nameFr || docAny.specialties?.[0]?.nameFr || "General Practitioner";
 
               return (
                 <div
@@ -132,7 +137,7 @@ export function DoctorInviteModal({ open, onClose }: DoctorInviteModalProps) {
                   <div className="flex items-center gap-3.5 min-w-0">
                     <div className="relative h-12 w-12 shrink-0 rounded-2xl overflow-hidden border border-border/40 bg-accent">
                       <img
-                        src={doc.avatarUrl || doc.photoUrl || fallbackPhoto}
+                        src={docAny.avatarUrl || docAny.photoUrl || fallbackPhoto}
                         alt={name}
                         onError={(e) => {
                           (e.currentTarget as HTMLImageElement).src = fallbackPhoto;
@@ -165,7 +170,7 @@ export function DoctorInviteModal({ open, onClose }: DoctorInviteModalProps) {
                       ) : (
                         <UserPlus className="h-3.5 w-3.5" />
                       )}
-                      Invite
+                      {t("doctors.inviteButton", { defaultValue: "Invite" })}
                     </button>
                   </div>
                 </div>

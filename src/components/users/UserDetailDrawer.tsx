@@ -128,7 +128,6 @@ export function UserDetailDrawer({
     queryKey: ["user-wallet", user?.id],
     queryFn: () => usersApi.getWallet(user!.id),
     enabled: !!user && open,
-    retry: false,
   });
 
   const apptsQ = useQuery({
@@ -136,7 +135,6 @@ export function UserDetailDrawer({
     queryFn: () =>
       appointmentsApi.list({ patientId: user!.id, limit: 25, sortBy: "createdAt", sortOrder: "desc" }),
     enabled: !!user && open && (tab === "appointments" || tab === "overview"),
-    retry: false,
   });
 
   const txQ = useQuery({
@@ -144,7 +142,6 @@ export function UserDetailDrawer({
     queryFn: () =>
       walletApi.getTransactions({ userId: user!.id, limit: 20, sortBy: "createdAt", sortOrder: "desc" }),
     enabled: !!user && open && tab === "wallet",
-    retry: false,
   });
 
   const invalidate = () => {
@@ -161,7 +158,7 @@ export function UserDetailDrawer({
       setSuspendOpen(false);
       setReason("");
     },
-    onError: (e: Error) => toast.error(e.message),
+    onError: (e: Error) => { toast.error(e.message); },
   });
   const unsuspend = useMutation({
     mutationFn: () => usersApi.unsuspend(user!.id),
@@ -170,7 +167,7 @@ export function UserDetailDrawer({
       invalidate();
       setUnsuspendOpen(false);
     },
-    onError: (e: Error) => toast.error(e.message),
+    onError: (e: Error) => { toast.error(e.message); },
   });
   const grant = useMutation({
     mutationFn: () => usersApi.grantCredits(user!.id, credits, creditReason || undefined),
@@ -181,7 +178,7 @@ export function UserDetailDrawer({
       setCredits(10);
       setCreditReason("");
     },
-    onError: (e: Error) => toast.error(e.message),
+    onError: (e: Error) => { toast.error(e.message); },
   });
 
   const apptStats = useMemo(() => {
@@ -237,14 +234,13 @@ export function UserDetailDrawer({
               >
                 <Hash className="h-3 w-3" /> ID
               </button>
-              <Link
-                to="/appointments"
-                search={{ patientId: user.id } as never}
+              <a
+                href={`/appointments?patientId=${user.id}`}
                 className="glass inline-flex items-center gap-1 rounded-lg px-2 py-1.5 text-[11px] hover:bg-accent"
                 onClick={onClose}
               >
                 <ExternalLink className="h-3 w-3" /> Appointments
-              </Link>
+              </a>
             </div>
             <div className="flex flex-wrap items-center gap-2">
               {currentAdmin?.role === "SUPER_ADMIN" && (

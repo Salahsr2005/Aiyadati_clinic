@@ -4,6 +4,21 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ModalPortal } from "@/components/ui/ModalPortal";
 
+export interface ConfirmDialogProps {
+  open: boolean;
+  onClose: () => void;
+  onConfirm: () => void | Promise<void>;
+  title: string;
+  description?: string;
+  danger?: boolean;
+  variant?: "danger" | "primary" | string;
+  confirmLabel?: string;
+  confirmText?: string;
+  isLoading?: boolean;
+  typeToConfirm?: string;
+  id?: string;
+}
+
 export function ConfirmDialog({
   open,
   onClose,
@@ -11,20 +26,13 @@ export function ConfirmDialog({
   title,
   description,
   danger,
+  variant,
   confirmLabel,
+  confirmText,
+  isLoading,
   typeToConfirm,
   id = "confirm-dialog",
-}: {
-  open: boolean;
-  onClose: () => void;
-  onConfirm: () => void | Promise<void>;
-  title: string;
-  description?: string;
-  danger?: boolean;
-  confirmLabel?: string;
-  typeToConfirm?: string;
-  id?: string;
-}) {
+}: ConfirmDialogProps) {
   const { t } = useTranslation();
   const [typed, setTyped] = useState("");
   const [busy, setBusy] = useState(false);
@@ -36,7 +44,9 @@ export function ConfirmDialog({
     }
   }, [open]);
 
-  const disabled = busy || (typeToConfirm ? typed !== typeToConfirm : false);
+  const isDanger = danger || variant === "danger";
+  const label = confirmLabel || confirmText || t("common.confirm", { defaultValue: "تأكيد" });
+  const isDisabled = busy || !!isLoading || (typeToConfirm ? typed !== typeToConfirm : false);
 
   return (
     <ModalPortal id={id} open={open} onClose={onClose}>
@@ -50,7 +60,7 @@ export function ConfirmDialog({
           >
             <div className="mb-3 flex items-start gap-3">
               <div
-                className={`grid h-10 w-10 place-items-center rounded-2xl ${danger ? "bg-danger/15 text-danger" : "bg-primary-500/15 text-primary-500"}`}
+                className={`grid h-10 w-10 place-items-center rounded-2xl ${isDanger ? "bg-danger/15 text-danger" : "bg-primary-500/15 text-primary-500"}`}
               >
                 <AlertTriangle className="h-5 w-5" />
               </div>
@@ -82,7 +92,7 @@ export function ConfirmDialog({
               </button>
               <button
                 type="button"
-                disabled={disabled}
+                disabled={isDisabled}
                 onClick={async () => {
                   setBusy(true);
                   try {
@@ -91,9 +101,9 @@ export function ConfirmDialog({
                     setBusy(false);
                   }
                 }}
-                className={`rounded-xl px-4 py-2 text-sm font-medium text-white shadow-lg transition disabled:opacity-60 ${danger ? "bg-danger" : "bg-primary-500"}`}
+                className={`rounded-xl px-4 py-2 text-sm font-medium text-white shadow-lg transition disabled:opacity-60 ${isDanger ? "bg-danger" : "bg-primary-500"}`}
               >
-                {confirmLabel || t("common.confirm")}
+                {label}
               </button>
             </div>
           </motion.div>

@@ -141,7 +141,7 @@ export function LocationPicker({
   return (
     <div className="relative overflow-hidden rounded-2xl border border-border/40">
       <div ref={containerRef} style={{ height, width: "100%" }} />
-      <div className="absolute bottom-2 left-2 z-10 rounded-xl bg-background/90 px-3 py-1.5 text-[11px] font-semibold shadow backdrop-blur">
+      <div className="absolute bottom-2 start-2 z-10 rounded-xl bg-background/90 px-3 py-1.5 text-[11px] font-semibold shadow backdrop-blur">
         Click or drag pin to position practice location
       </div>
       <button
@@ -149,13 +149,13 @@ export function LocationPicker({
         onClick={locateMe}
         disabled={locating}
         title={locateError ?? "Use my current location"}
-        className="absolute right-2 top-2 z-10 flex items-center gap-1.5 rounded-xl bg-background/90 px-2.5 py-1.5 text-[11px] font-bold shadow backdrop-blur disabled:opacity-60 cursor-pointer"
+        className="absolute end-2 top-2 z-10 flex items-center gap-1.5 rounded-xl bg-background/90 px-2.5 py-1.5 text-[11px] font-bold shadow backdrop-blur disabled:opacity-60 cursor-pointer"
       >
         <LocateFixed className={cn("h-3.5 w-3.5 text-primary-500", locating && "animate-pulse")} />
         {locating ? "Locating…" : "Use my current location"}
       </button>
       {locateError && (
-        <div className="absolute right-2 top-11 z-10 max-w-[200px] rounded-xl bg-danger/10 border border-danger/30 px-2.5 py-1.5 text-[10px] font-semibold text-danger shadow">
+        <div className="absolute end-2 top-11 z-10 max-w-[200px] rounded-xl bg-danger/10 border border-danger/30 px-2.5 py-1.5 text-[10px] font-semibold text-danger shadow">
           {locateError}
         </div>
       )}

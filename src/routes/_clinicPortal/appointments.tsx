@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { useQuery, useQueryClient } from "@/lib/queryClient";
 import {
   Plus,
@@ -38,6 +39,7 @@ import {
   clinicAppointmentsApi,
   type ClinicAppointmentRow,
   type AppointmentStatus,
+  type GuestPatient,
 } from "@/api/clinicAppointmentsApi";
 import { useClinicDoctors } from "@/hooks/useClinicDoctors";
 import { qk } from "@/lib/queryKeys";
@@ -172,6 +174,7 @@ type ViewMode = "list" | "grid" | "kanban";
    PAGE COMPONENT
    ══════════════════════════════════════════════════════════════ */
 export default function AppointmentsPage() {
+  const { t } = useTranslation();
   const queryClient = useQueryClient();
   const [page, setPage] = useState(1);
   const [statusFilter, setStatusFilter] = useState<string>("");
@@ -271,9 +274,9 @@ export default function AppointmentsPage() {
       {/* ─── Header ─── */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Clinic Appointments</h1>
+          <h1 className="text-2xl font-bold tracking-tight">{t("nav.appointments", { defaultValue: "Clinic Appointments" })}</h1>
           <p className="text-xs text-muted-foreground mt-0.5">
-            {appointmentsData?.total ?? 0} total appointments · Manage and book across all affiliated doctors
+            {appointmentsData?.total ?? 0} {t("overview.kpi.totalAppointments", { defaultValue: "total appointments" })} · {t("doctors.title", { defaultValue: "Manage and book across all affiliated doctors" })}
           </p>
         </div>
         <button
@@ -281,7 +284,7 @@ export default function AppointmentsPage() {
           className="inline-flex items-center gap-2 rounded-xl bg-primary-500 px-5 py-2.5 text-xs font-bold text-primary-foreground shadow-sm transition hover:opacity-90 cursor-pointer self-start sm:self-auto"
         >
           <Plus className="h-4 w-4" />
-          Book Appointment
+          {t("patients.createGuestButton", { defaultValue: "Book Appointment" })}
         </button>
       </div>
 
@@ -290,21 +293,21 @@ export default function AppointmentsPage() {
         <div className="flex flex-wrap items-center gap-3">
           <div className="flex items-center gap-2 text-xs font-bold text-muted-foreground">
             <Filter className="h-4 w-4 text-primary-500" />
-            <span>Filters</span>
+            <span>{t("filters.open", { defaultValue: "Filters" })}</span>
           </div>
 
           {/* Search */}
           <div className="relative flex-1 min-w-[180px]">
-            <Search className="absolute left-3 top-2.5 h-3.5 w-3.5 text-muted-foreground" />
+            <Search className="absolute start-3 top-2.5 h-3.5 w-3.5 text-muted-foreground" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => { setSearchQuery(e.target.value); setPage(1); }}
-              placeholder="Search patient name or phone..."
-              className="glass w-full rounded-xl pl-8 pr-3 py-2 text-xs font-semibold outline-none focus:ring-2 focus:ring-primary-500/40"
+              placeholder={t("patients.searchPlaceholder", { defaultValue: "Search patient name or phone..." })}
+              className="glass w-full rounded-xl ps-8 pe-3 py-2 text-xs font-semibold outline-none focus:ring-2 focus:ring-primary-500/40"
             />
             {searchQuery && (
-              <button onClick={() => setSearchQuery("")} className="absolute right-2.5 top-2.5 text-muted-foreground hover:text-foreground cursor-pointer">
+              <button onClick={() => setSearchQuery("")} className="absolute end-2.5 top-2.5 text-muted-foreground hover:text-foreground cursor-pointer">
                 <X className="h-3.5 w-3.5" />
               </button>
             )}
@@ -318,8 +321,8 @@ export default function AppointmentsPage() {
             }`}
           >
             <Stethoscope className="h-3.5 w-3.5" />
-            {selectedDoctorCard ? selectedDoctorCard.name : "All Doctors"}
-            <ChevronRight className="h-3 w-3 text-muted-foreground" />
+            {selectedDoctorCard ? selectedDoctorCard.name : t("doctors.allTab", { defaultValue: "All Doctors" })}
+            <ChevronRight className="h-3 w-3 text-muted-foreground rtl:rotate-180" />
           </button>
 
           {/* Date Range */}
@@ -332,15 +335,15 @@ export default function AppointmentsPage() {
               setDateEndFilter(end);
               setPage(1);
             }}
-            placeholder="Date Range"
+            placeholder={t("filters.date", { defaultValue: "Date Range" })}
           />
 
           {/* View Mode Toggle */}
           <div className="flex items-center rounded-xl bg-muted/30 border border-border/30 p-0.5 ms-auto">
             {([
-              { mode: "list" as ViewMode, icon: List, label: "List" },
-              { mode: "grid" as ViewMode, icon: LayoutGrid, label: "Grid" },
-              { mode: "kanban" as ViewMode, icon: Columns3, label: "Kanban" },
+              { mode: "list" as ViewMode, icon: List, label: t("views.table", { defaultValue: "List" }) },
+              { mode: "grid" as ViewMode, icon: LayoutGrid, label: t("views.grid", { defaultValue: "Grid" }) },
+              { mode: "kanban" as ViewMode, icon: Columns3, label: t("views.kanban", { defaultValue: "Kanban" }) },
             ]).map(({ mode, icon: Icon, label }) => (
               <button
                 key={mode}
@@ -363,7 +366,7 @@ export default function AppointmentsPage() {
               onClick={clearFilters}
               className="inline-flex items-center gap-1 text-xs text-primary-500 font-bold hover:underline cursor-pointer"
             >
-              <RotateCcw className="h-3 w-3" /> Reset
+              <RotateCcw className="h-3 w-3" /> {t("filters.reset", { defaultValue: "Reset" })}
             </button>
           )}
         </div>
@@ -376,12 +379,13 @@ export default function AppointmentsPage() {
               !statusFilter ? "bg-primary-500 text-primary-foreground shadow-sm" : "bg-muted/30 text-muted-foreground hover:text-foreground"
             }`}
           >
-            All
+            {t("common.all", { defaultValue: "All" })}
           </button>
           {ALL_STATUSES.map((status) => {
             const cfg = STATUS_CONFIG[status];
             const isActive = statusFilter === status;
             const Icon = cfg.icon;
+            const statusLabel = t(`status.${status}`, { defaultValue: cfg.label });
             return (
               <button
                 key={status}
@@ -391,7 +395,7 @@ export default function AppointmentsPage() {
                 }`}
               >
                 <Icon className="h-3 w-3" />
-                {cfg.label}
+                {statusLabel}
               </button>
             );
           })}
@@ -407,14 +411,14 @@ export default function AppointmentsPage() {
         </div>
       ) : appointments.length === 0 ? (
         <EmptyState
-          title="No appointments found"
-          description={hasFilters ? "Try adjusting your filters" : "No appointments have been booked yet."}
+          title={t("common.empty", { defaultValue: "No appointments found" })}
+          description={hasFilters ? t("filters.reset", { defaultValue: "Try adjusting your filters" }) : t("common.empty", { defaultValue: "No appointments have been booked yet." })}
           action={
             <button
               onClick={() => setBookModalOpen(true)}
               className="inline-flex items-center gap-2 rounded-xl bg-primary-500 px-4 py-2 text-xs font-semibold text-primary-foreground hover:opacity-90 cursor-pointer"
             >
-              <Plus className="h-4 w-4" /> Book Appointment
+              <Plus className="h-4 w-4" /> {t("patients.createGuestButton", { defaultValue: "Book Appointment" })}
             </button>
           }
         />
@@ -450,13 +454,13 @@ export default function AppointmentsPage() {
         open={doctorSelectorOpen}
         onClose={() => setDoctorSelectorOpen(false)}
         doctors={[
-          { id: "all", doctorId: "", name: "All Doctors", specialty: "Show all appointments", status: "active" },
+          { id: "all", doctorId: "", name: t("doctors.allTab", { defaultValue: "All Doctors" }), specialty: "Show all appointments", status: "active" },
           ...doctorCardItems,
         ]}
         selectedDoctorId={doctorFilter}
         onSelectDoctor={(doc) => { setDoctorFilter(doc.doctorId); setPage(1); }}
-        title="Filter by Doctor"
-        subtitle="Select a doctor to filter appointments"
+        title={t("doctors.selectorTitle", { defaultValue: "Filter by Doctor" })}
+        subtitle={t("doctors.selectorSub", { defaultValue: "Select a doctor to filter appointments" })}
       />
 
       {/* ─── Detail Drawer ─── */}
@@ -464,8 +468,8 @@ export default function AppointmentsPage() {
         id="appointment-detail-drawer"
         open={!!selectedAppointment}
         onClose={() => setSelectedAppointment(null)}
-        title="Appointment Details"
-        subtitle={selectedAppointment ? <CopyReferenceButton value={selectedAppointment.id} label="Copy Ref" /> : undefined}
+        title={t("common.details", { defaultValue: "Appointment Details" })}
+        subtitle={selectedAppointment ? `Ref ID: ${selectedAppointment.id}` : undefined}
         width="max-w-xl"
         footer={
           selectedAppointment && (
@@ -507,6 +511,7 @@ function ListView({ appointments, onSelect }: { appointments: ClinicAppointmentR
 }
 
 function AppointmentListRow({ app, onSelect }: { app: ClinicAppointmentRow; onSelect: (a: ClinicAppointmentRow) => void }) {
+  const { t } = useTranslation();
   const patient = extractPatientDisplay(app);
   const doctorName = getDoctorName(app);
   const doctorPhoto = getDoctorPhoto(app);
@@ -529,7 +534,7 @@ function AppointmentListRow({ app, onSelect }: { app: ClinicAppointmentRow; onSe
             className="h-full w-full object-cover"
           />
           {patient.isGuest && (
-            <span className="absolute -top-0.5 -right-0.5 h-4 w-4 rounded-full bg-amber-500 text-white grid place-items-center text-[9px] font-bold shadow-xs">
+            <span className="absolute -top-0.5 -end-0.5 h-4 w-4 rounded-full bg-amber-500 text-white grid place-items-center text-[9px] font-bold shadow-xs">
               G
             </span>
           )}
@@ -538,9 +543,9 @@ function AppointmentListRow({ app, onSelect }: { app: ClinicAppointmentRow; onSe
           <div className="flex items-center gap-2">
             <h4 className="text-xs font-extrabold truncate group-hover:text-primary-500 transition">{patient.name}</h4>
             {patient.isGuest ? (
-              <span className="rounded-full bg-amber-500/15 px-2 py-0.5 text-[9px] font-bold text-amber-600 uppercase shrink-0">Walk-in Guest</span>
+              <span className="rounded-full bg-amber-500/15 px-2 py-0.5 text-[9px] font-bold text-amber-600 uppercase shrink-0">{t("patients.guestPatients", { defaultValue: "Walk-in Guest" })}</span>
             ) : (
-              <span className="rounded-full bg-primary-500/15 px-2 py-0.5 text-[9px] font-bold text-primary-500 uppercase shrink-0">App Patient</span>
+              <span className="rounded-full bg-primary-500/15 px-2 py-0.5 text-[9px] font-bold text-primary-500 uppercase shrink-0">{t("patients.appRegistered", { defaultValue: "App Patient" })}</span>
             )}
           </div>
           <div className="flex items-center gap-2 mt-0.5">
@@ -576,14 +581,14 @@ function AppointmentListRow({ app, onSelect }: { app: ClinicAppointmentRow; onSe
         <div className="flex flex-col items-end gap-1">
           <span className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[10px] font-bold ${statusCfg.bg} ${statusCfg.text}`}>
             <StatusIcon className="h-3 w-3" />
-            {statusCfg.label}
+            {t(`status.${app.status}`, { defaultValue: statusCfg.label })}
           </span>
           {cancelLabel && (
             <span className="text-[9px] font-semibold text-danger/70">{cancelLabel}</span>
           )}
         </div>
 
-        <ChevronRight className="h-4 w-4 text-muted-foreground/40 group-hover:text-primary-500 transition" />
+        <ChevronRight className="h-4 w-4 text-muted-foreground/40 group-hover:text-primary-500 transition rtl:rotate-180" />
       </div>
     </div>
   );
@@ -603,6 +608,7 @@ function GridView({ appointments, onSelect }: { appointments: ClinicAppointmentR
 }
 
 function AppointmentGridCard({ app, onSelect }: { app: ClinicAppointmentRow; onSelect: (a: ClinicAppointmentRow) => void }) {
+  const { t } = useTranslation();
   const patient = extractPatientDisplay(app);
   const doctorName = getDoctorName(app);
   const doctorPhoto = getDoctorPhoto(app);
@@ -619,16 +625,16 @@ function AppointmentGridCard({ app, onSelect }: { app: ClinicAppointmentRow; onS
       <div className="flex items-center justify-between">
         <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-extrabold ${statusCfg.bg} ${statusCfg.text}`}>
           <StatusIcon className="h-3 w-3" />
-          {statusCfg.label}
+          {t(`status.${app.status}`, { defaultValue: statusCfg.label })}
         </span>
         <div className="flex items-center gap-1">
           {patient.isGuest ? (
             <span className="rounded-full bg-amber-500/15 px-2 py-0.5 text-[9px] font-extrabold text-amber-600 uppercase">
-              Guest
+              {t("patients.guestPatients", { defaultValue: "Guest" })}
             </span>
           ) : (
             <span className="rounded-full bg-primary-500/15 px-2 py-0.5 text-[9px] font-extrabold text-primary-500 uppercase">
-              App
+              {t("patients.appRegistered", { defaultValue: "App" })}
             </span>
           )}
         </div>
@@ -654,7 +660,7 @@ function AppointmentGridCard({ app, onSelect }: { app: ClinicAppointmentRow; onS
               <span className="truncate">{patient.phone}</span>
             </p>
           ) : (
-            <p className="text-[10px] text-muted-foreground/60 italic">No phone provided</p>
+            <p className="text-[10px] text-muted-foreground/60 italic">{t("common.empty", { defaultValue: "No phone provided" })}</p>
           )}
         </div>
       </div>
@@ -696,6 +702,7 @@ function AppointmentGridCard({ app, onSelect }: { app: ClinicAppointmentRow; onS
    KANBAN VIEW
    ══════════════════════════════════════════════════════════════ */
 function KanbanView({ groups, onSelect }: { groups: Record<string, ClinicAppointmentRow[]>; onSelect: (a: ClinicAppointmentRow) => void }) {
+  const { t } = useTranslation();
   const activeStatuses = ALL_STATUSES.filter((s) => groups[s]?.length > 0 || ["PENDING", "CONFIRMED", "IN_PROGRESS"].includes(s));
   return (
     <div className="flex gap-3 overflow-x-auto pb-4 custom-scrollbar">
@@ -703,13 +710,14 @@ function KanbanView({ groups, onSelect }: { groups: Record<string, ClinicAppoint
         const cfg = STATUS_CONFIG[status];
         const Icon = cfg.icon;
         const items = groups[status] || [];
+        const statusLabel = t(`status.${status}`, { defaultValue: cfg.label });
         return (
           <div key={status} className="flex-shrink-0 w-72">
             {/* Column header */}
             <div className={`flex items-center justify-between p-3 rounded-t-2xl ${cfg.bg} border border-b-0 border-border/30`}>
               <div className="flex items-center gap-2">
                 <Icon className={`h-4 w-4 ${cfg.text}`} />
-                <span className={`text-xs font-extrabold ${cfg.text}`}>{cfg.label}</span>
+                <span className={`text-xs font-extrabold ${cfg.text}`}>{statusLabel}</span>
               </div>
               <span className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${cfg.bg} ${cfg.text}`}>
                 {items.length}
@@ -720,7 +728,7 @@ function KanbanView({ groups, onSelect }: { groups: Record<string, ClinicAppoint
             <div className="glass border border-t-0 border-border/30 rounded-b-2xl min-h-[200px] max-h-[600px] overflow-y-auto custom-scrollbar space-y-2 p-2">
               {items.length === 0 ? (
                 <div className="flex items-center justify-center py-10 text-[11px] text-muted-foreground/50">
-                  No appointments
+                  {t("common.empty", { defaultValue: "No appointments" })}
                 </div>
               ) : (
                 items.map((app) => (
@@ -736,6 +744,7 @@ function KanbanView({ groups, onSelect }: { groups: Record<string, ClinicAppoint
 }
 
 function KanbanCard({ app, onSelect }: { app: ClinicAppointmentRow; onSelect: (a: ClinicAppointmentRow) => void }) {
+  const { t } = useTranslation();
   const patient = extractPatientDisplay(app);
   const doctorName = getDoctorName(app);
   const doctorPhoto = getDoctorPhoto(app);
@@ -759,7 +768,7 @@ function KanbanCard({ app, onSelect }: { app: ClinicAppointmentRow; onSelect: (a
           <div className="flex items-center gap-1 justify-between">
             <h4 className="text-[11px] font-extrabold truncate">{patient.name}</h4>
             {patient.isGuest && (
-              <span className="rounded-full bg-amber-500/15 px-1.5 py-0.5 text-[8px] font-extrabold text-amber-600 uppercase">Guest</span>
+              <span className="rounded-full bg-amber-500/15 px-1.5 py-0.5 text-[8px] font-extrabold text-amber-600 uppercase">{t("patients.guestPatients", { defaultValue: "Guest" })}</span>
             )}
           </div>
           <p className="text-[10px] text-muted-foreground font-mono truncate">{patient.phone || "No phone"}</p>
@@ -797,6 +806,7 @@ function DrawerFooterActions({ app, onConfirm, onTransition, isUpdating }: {
   onTransition: (status: string) => void;
   isUpdating: boolean;
 }) {
+  const { t } = useTranslation();
   return (
     <div className="flex items-center justify-between gap-2">
       <span className="text-[11px] text-muted-foreground">
@@ -810,7 +820,7 @@ function DrawerFooterActions({ app, onConfirm, onTransition, isUpdating }: {
             className="inline-flex items-center gap-1.5 rounded-xl bg-success px-4 py-2 text-xs font-bold text-white hover:opacity-90 transition disabled:opacity-50 cursor-pointer"
           >
             {isUpdating ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <CheckCircle2 className="h-3.5 w-3.5" />}
-            Confirm
+            {t("status.CONFIRMED", { defaultValue: "Confirm" })}
           </button>
         )}
         {canTransition(app.status, "IN_PROGRESS") && (
@@ -819,7 +829,7 @@ function DrawerFooterActions({ app, onConfirm, onTransition, isUpdating }: {
             disabled={isUpdating}
             className="inline-flex items-center gap-1.5 rounded-xl bg-blue-500 px-4 py-2 text-xs font-bold text-white hover:opacity-90 transition disabled:opacity-50 cursor-pointer"
           >
-            <Activity className="h-3.5 w-3.5" /> Start
+            <Activity className="h-3.5 w-3.5" /> {t("status.IN_PROGRESS", { defaultValue: "Start" })}
           </button>
         )}
         {canTransition(app.status, "COMPLETED") && (
@@ -828,7 +838,7 @@ function DrawerFooterActions({ app, onConfirm, onTransition, isUpdating }: {
             disabled={isUpdating}
             className="inline-flex items-center gap-1.5 rounded-xl bg-primary-500 px-4 py-2 text-xs font-bold text-primary-foreground hover:opacity-90 transition disabled:opacity-50 cursor-pointer"
           >
-            <CheckCircle2 className="h-3.5 w-3.5" /> Complete
+            <CheckCircle2 className="h-3.5 w-3.5" /> {t("status.COMPLETED", { defaultValue: "Complete" })}
           </button>
         )}
       </div>
@@ -850,6 +860,7 @@ function AppointmentDetailContent({
   onConfirm: () => void;
   isUpdating: boolean;
 }) {
+  const { t } = useTranslation();
   const [cancelReason, setCancelReason] = useState("");
   const [showCancelInput, setShowCancelInput] = useState(false);
 
@@ -878,13 +889,13 @@ function AppointmentDetailContent({
             <StatusIcon className="h-5 w-5" />
           </div>
           <div>
-            <span className={`text-sm font-extrabold ${statusCfg.text}`}>{statusCfg.label}</span>
+            <span className={`text-sm font-extrabold ${statusCfg.text}`}>{t(`status.${app.status}`, { defaultValue: statusCfg.label })}</span>
             {isTerminal && <p className="text-[10px] text-muted-foreground">Terminal status — no further transitions</p>}
           </div>
         </div>
         {app.type && (
           <span className="rounded-xl bg-background/60 px-2.5 py-1 text-[10px] font-bold text-foreground uppercase">
-            {app.type.replace("_", " ")}
+            {t(`type.${app.type}`, { defaultValue: app.type.replace("_", " ") })}
           </span>
         )}
       </div>
@@ -910,9 +921,9 @@ function AppointmentDetailContent({
         <div className="flex items-center justify-between">
           <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider flex items-center gap-1.5">
             <User className="h-3.5 w-3.5 text-primary-500" />
-            Patient Credentials
+            {t("patients.patientDetails", { defaultValue: "Patient Credentials" })}
           </h4>
-          {patient.id && <CopyReferenceButton value={patient.id} label="Copy Patient Ref" />}
+          {patient.id && <CopyReferenceButton value={patient.id} label={t("common.copyRef", { defaultValue: "Copy Patient Ref" })} />}
         </div>
         <div className="flex items-center gap-3.5">
           <div className="relative h-12 w-12 rounded-2xl overflow-hidden bg-primary-500/10 border border-border/40 shrink-0">
@@ -929,7 +940,7 @@ function AppointmentDetailContent({
               <span className={`rounded-full px-2 py-0.5 text-[9px] font-bold uppercase inline-block ${
                 patient.isGuest ? "bg-amber-500/15 text-amber-600" : "bg-primary-500/15 text-primary-500"
               }`}>
-                {patient.isGuest ? "Walk-In Guest Patient" : "Registered App Patient"}
+                {patient.isGuest ? t("patients.guestPatients", { defaultValue: "Walk-In Guest Patient" }) : t("patients.appRegistered", { defaultValue: "Registered App Patient" })}
               </span>
             </div>
           </div>
@@ -939,7 +950,7 @@ function AppointmentDetailContent({
           <div className="flex items-center gap-2">
             <Phone className="h-3.5 w-3.5 text-primary-500 shrink-0" />
             <div>
-              <p className="text-[10px] text-muted-foreground">Phone Number</p>
+              <p className="text-[10px] text-muted-foreground">{t("common.phone", { defaultValue: "Phone Number" })}</p>
               <p className="text-xs font-bold font-mono">{patient.phone || "N/A"}</p>
             </div>
           </div>
@@ -947,7 +958,7 @@ function AppointmentDetailContent({
             <div className="flex items-center gap-2">
               <Mail className="h-3.5 w-3.5 text-primary-500 shrink-0" />
               <div>
-                <p className="text-[10px] text-muted-foreground">Email</p>
+                <p className="text-[10px] text-muted-foreground">{t("common.email", { defaultValue: "Email" })}</p>
                 <p className="text-xs font-bold truncate">{patient.email}</p>
               </div>
             </div>
@@ -956,7 +967,7 @@ function AppointmentDetailContent({
             <div className="flex items-center gap-2">
               <CalendarIcon className="h-3.5 w-3.5 text-primary-500 shrink-0" />
               <div>
-                <p className="text-[10px] text-muted-foreground">Date of Birth</p>
+                <p className="text-[10px] text-muted-foreground">{t("filters.date", { defaultValue: "Date of Birth" })}</p>
                 <p className="text-xs font-bold">{patient.dateOfBirth}</p>
               </div>
             </div>
@@ -968,7 +979,7 @@ function AppointmentDetailContent({
       <div className="rounded-2xl border border-border/40 bg-accent/30 p-4 space-y-3">
         <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider flex items-center gap-1.5">
           <Stethoscope className="h-3.5 w-3.5 text-primary-500" />
-          Attending Doctor
+          {t("doctors.selectorTitle", { defaultValue: "Attending Doctor" })}
         </h4>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3.5">
@@ -985,7 +996,7 @@ function AppointmentDetailContent({
               )}
             </div>
           </div>
-          {app.doctorId && <CopyReferenceButton value={app.doctorId} label="Copy Doctor Ref" />}
+          {app.doctorId && <CopyReferenceButton value={app.doctorId} label={t("common.copyRef", { defaultValue: "Copy Doctor Ref" })} />}
         </div>
       </div>
 
@@ -993,20 +1004,20 @@ function AppointmentDetailContent({
       <div className="rounded-2xl border border-border/40 bg-accent/30 p-4 space-y-3">
         <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider flex items-center gap-1.5">
           <CalendarRange className="h-3.5 w-3.5 text-primary-500" />
-          Schedule Details
+          {t("schedule.title", { defaultValue: "Schedule Details" })}
         </h4>
         <div className="grid grid-cols-2 gap-3">
           <div className="flex items-center gap-2">
             <CalendarIcon className="h-3.5 w-3.5 text-primary-500 shrink-0" />
             <div>
-              <p className="text-[10px] text-muted-foreground">Date</p>
+              <p className="text-[10px] text-muted-foreground">{t("filters.date", { defaultValue: "Date" })}</p>
               <p className="text-xs font-bold">{app.slot?.date || "TBD"}</p>
             </div>
           </div>
           <div className="flex items-center gap-2">
             <Clock className="h-3.5 w-3.5 text-primary-500 shrink-0" />
             <div>
-              <p className="text-[10px] text-muted-foreground">Time</p>
+              <p className="text-[10px] text-muted-foreground">{t("common.duration", { defaultValue: "Time" })}</p>
               <p className="text-xs font-bold">{app.slot?.startTime?.slice(0, 5) || "—"} — {app.slot?.endTime?.slice(0, 5) || "—"}</p>
             </div>
           </div>
@@ -1014,8 +1025,8 @@ function AppointmentDetailContent({
             <div className="flex items-center gap-2">
               <CreditCard className="h-3.5 w-3.5 text-primary-500 shrink-0" />
               <div>
-                <p className="text-[10px] text-muted-foreground">Payment</p>
-                <p className="text-xs font-bold">{app.paymentMethod === "ON_SITE" ? "On Site" : "Platform Credit"}</p>
+                <p className="text-[10px] text-muted-foreground">{t("filters.paymentMethod", { defaultValue: "Payment" })}</p>
+                <p className="text-xs font-bold">{t(`payment.${app.paymentMethod}`, { defaultValue: app.paymentMethod === "ON_SITE" ? "On Site" : "Platform Credit" })}</p>
               </div>
             </div>
           )}
@@ -1023,7 +1034,7 @@ function AppointmentDetailContent({
             <div className="flex items-center gap-2">
               <User className="h-3.5 w-3.5 text-primary-500 shrink-0" />
               <div>
-                <p className="text-[10px] text-muted-foreground">Slot Capacity</p>
+                <p className="text-[10px] text-muted-foreground">{t("schedule.totalSlots", { defaultValue: "Slot Capacity" })}</p>
                 <p className="text-xs font-bold">{app.slot.currentPatients ?? 0}/{app.slot.maxPatients}</p>
               </div>
             </div>
@@ -1036,7 +1047,7 @@ function AppointmentDetailContent({
         <div className="rounded-2xl border border-border/40 bg-accent/30 p-4 space-y-2">
           <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider flex items-center gap-1.5">
             <FileText className="h-3.5 w-3.5 text-primary-500" />
-            Notes
+            {t("patients.medicalNotes", { defaultValue: "Notes" })}
           </h4>
           <p className="text-xs text-foreground">{app.notes}</p>
         </div>
@@ -1053,7 +1064,7 @@ function AppointmentDetailContent({
             <div>
               <p className="text-[10px] text-muted-foreground">Appointment Reference</p>
             </div>
-            <CopyReferenceButton value={app.id} label="Copy Appt Ref" />
+            <CopyReferenceButton value={app.id} label={t("common.copyRef", { defaultValue: "Copy Appt Ref" })} />
           </div>
           {app.createdAt && (
             <div className="flex justify-between items-center">
@@ -1071,7 +1082,7 @@ function AppointmentDetailContent({
             <div className="flex items-center gap-2 p-2 rounded-xl bg-success/5 border border-success/20">
               <ShieldCheck className="h-3.5 w-3.5 text-success shrink-0" />
               <div>
-                <p className="text-[10px] font-bold text-success">Confirmed</p>
+                <p className="text-[10px] font-bold text-success">{t("status.CONFIRMED", { defaultValue: "Confirmed" })}</p>
                 <p className="text-[10px] text-muted-foreground">{format(new Date(app.confirmedAt), "PPP p")}</p>
               </div>
             </div>
@@ -1088,7 +1099,7 @@ function AppointmentDetailContent({
       {/* ─── Lifecycle Actions ─── */}
       {!isTerminal && (
         <div className="space-y-3 pt-2 border-t border-border/30">
-          <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Quick Actions</h4>
+          <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider">{t("common.actions", { defaultValue: "Quick Actions" })}</h4>
 
           <div className="grid grid-cols-2 gap-2">
             {canTransition(app.status, "CONFIRMED") && (
@@ -1097,7 +1108,7 @@ function AppointmentDetailContent({
                 disabled={isUpdating}
                 className="inline-flex items-center justify-center gap-1.5 rounded-xl p-2.5 text-xs font-bold bg-success/15 text-success hover:bg-success/25 transition disabled:opacity-40 cursor-pointer"
               >
-                <CheckCircle2 className="h-3.5 w-3.5" /> Confirm
+                <CheckCircle2 className="h-3.5 w-3.5" /> {t("status.CONFIRMED", { defaultValue: "Confirm" })}
               </button>
             )}
             {canTransition(app.status, "IN_PROGRESS") && (
@@ -1106,7 +1117,7 @@ function AppointmentDetailContent({
                 disabled={isUpdating}
                 className="inline-flex items-center justify-center gap-1.5 rounded-xl p-2.5 text-xs font-bold bg-blue-500/15 text-blue-500 hover:bg-blue-500/25 transition disabled:opacity-40 cursor-pointer"
               >
-                <Activity className="h-3.5 w-3.5" /> Start Session
+                <Activity className="h-3.5 w-3.5" /> {t("status.IN_PROGRESS", { defaultValue: "Start Session" })}
               </button>
             )}
             {canTransition(app.status, "COMPLETED") && (
@@ -1115,7 +1126,7 @@ function AppointmentDetailContent({
                 disabled={isUpdating}
                 className="inline-flex items-center justify-center gap-1.5 rounded-xl p-2.5 text-xs font-bold bg-primary-500/15 text-primary-500 hover:bg-primary-500/25 transition disabled:opacity-40 cursor-pointer"
               >
-                <CheckCircle2 className="h-3.5 w-3.5" /> Complete
+                <CheckCircle2 className="h-3.5 w-3.5" /> {t("status.COMPLETED", { defaultValue: "Complete" })}
               </button>
             )}
             {canTransition(app.status, "NO_SHOW") && (
@@ -1124,7 +1135,7 @@ function AppointmentDetailContent({
                 disabled={isUpdating}
                 className="inline-flex items-center justify-center gap-1.5 rounded-xl p-2.5 text-xs font-bold bg-muted/30 text-muted-foreground hover:bg-muted/50 transition disabled:opacity-40 cursor-pointer"
               >
-                <AlertCircle className="h-3.5 w-3.5" /> No Show
+                <AlertCircle className="h-3.5 w-3.5" /> {t("status.NO_SHOW", { defaultValue: "No Show" })}
               </button>
             )}
           </div>
@@ -1146,7 +1157,7 @@ function AppointmentDetailContent({
                       onClick={() => { setShowCancelInput(false); setCancelReason(""); }}
                       className="text-xs font-bold text-muted-foreground hover:text-foreground cursor-pointer"
                     >
-                      Back
+                      {t("common.cancel", { defaultValue: "Back" })}
                     </button>
                     <button
                       onClick={() => onStatusChange("CANCELLED", cancelReason || undefined)}
@@ -1154,7 +1165,7 @@ function AppointmentDetailContent({
                       className="inline-flex items-center gap-1.5 rounded-xl bg-danger px-4 py-2 text-xs font-bold text-white hover:opacity-90 transition disabled:opacity-50 cursor-pointer"
                     >
                       {isUpdating ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <XCircle className="h-3.5 w-3.5" />}
-                      Cancel Appointment
+                      {t("status.CANCELLED", { defaultValue: "Cancel Appointment" })}
                     </button>
                   </div>
                 </div>
@@ -1163,7 +1174,7 @@ function AppointmentDetailContent({
                   onClick={() => setShowCancelInput(true)}
                   className="w-full inline-flex items-center justify-center gap-1.5 rounded-xl p-2.5 text-xs font-bold border border-danger/30 text-danger hover:bg-danger/10 transition cursor-pointer"
                 >
-                  <XCircle className="h-3.5 w-3.5" /> Cancel Appointment
+                  <XCircle className="h-3.5 w-3.5" /> {t("status.CANCELLED", { defaultValue: "Cancel Appointment" })}
                 </button>
               )}
             </div>

@@ -29,8 +29,12 @@ interface AppointmentDrawerProps {
 export function AppointmentDrawer({ appointment, onClose }: AppointmentDrawerProps) {
   if (!appointment) return null;
 
+  const patAny = appointment.patient as any;
+  const docAny = appointment.doctor as any;
+  const appAny = appointment as any;
+
   const patientName = appointment.patient
-    ? `${appointment.patient.firstNameFr || appointment.patient.firstName || ""} ${appointment.patient.lastNameFr || appointment.patient.lastName || ""}`.trim()
+    ? `${patAny.firstNameFr || appointment.patient.firstName || ""} ${patAny.lastNameFr || appointment.patient.lastName || ""}`.trim()
     : appointment.guestPatient
       ? `${appointment.guestPatient.firstName} ${appointment.guestPatient.lastName}`.trim()
       : "Patient";
@@ -39,12 +43,12 @@ export function AppointmentDrawer({ appointment, onClose }: AppointmentDrawerPro
   const patientEmail = appointment.patient?.email || appointment.guestPatient?.email;
 
   const doctorName = appointment.doctor
-    ? `Dr. ${appointment.doctor.firstNameFr || appointment.doctor.firstName || ""} ${appointment.doctor.lastNameFr || appointment.doctor.lastName || appointment.doctor.name || ""}`.trim()
+    ? `Dr. ${docAny.firstNameFr || appointment.doctor.firstName || ""} ${docAny.lastNameFr || appointment.doctor.lastName || appointment.doctor.name || ""}`.trim()
     : "Assigned Doctor";
 
-  const doctorSpecialty = Array.isArray(appointment.doctor?.specialties) && appointment.doctor.specialties.length > 0
-    ? appointment.doctor.specialties[0].nameFr || appointment.doctor.specialties[0].nameAr
-    : appointment.doctor?.specialtyName || appointment.doctor?.specialty?.nameFr || "Specialist";
+  const doctorSpecialty = Array.isArray(docAny?.specialties) && docAny.specialties.length > 0
+    ? docAny.specialties[0].nameFr || docAny.specialties[0].nameAr
+    : appointment.doctor?.specialtyName || docAny?.specialty?.nameFr || "Specialist";
 
   // Status Mutation
   const updateStatusMutation = useEntityMutation({
@@ -61,7 +65,7 @@ export function AppointmentDrawer({ appointment, onClose }: AppointmentDrawerPro
       open={!!appointment}
       onClose={onClose}
       title="Appointment Details"
-      subtitle={<CopyReferenceButton value={appointment.id} label="Copy Ref" />}
+      subtitle={`Ref ID: ${appointment.id}`}
     >
       <div className="space-y-5">
         {/* Status Header Badge */}
@@ -126,10 +130,10 @@ export function AppointmentDrawer({ appointment, onClose }: AppointmentDrawerPro
               <div className="text-xs text-muted-foreground">{doctorSpecialty}</div>
             </div>
 
-            {appointment.room && (
+            {appAny.room && (
               <div className="flex items-center gap-2 text-xs text-muted-foreground pt-1 border-t border-border/30">
                 <DoorOpen className="h-3.5 w-3.5 text-primary-500" />
-                <span className="font-semibold text-foreground">{appointment.room.name}</span>
+                <span className="font-semibold text-foreground">{appAny.room.name}</span>
               </div>
             )}
           </div>

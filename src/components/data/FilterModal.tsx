@@ -22,7 +22,7 @@ export function FilterButton({
       <SlidersHorizontal className="h-3.5 w-3.5" />
       <span>{t("filters.open")}</span>
       {count ? (
-        <span className="ml-1 rounded-full bg-primary-500 px-1.5 py-0.5 text-[10px] font-semibold text-white">
+        <span className="ms-1 rounded-full bg-primary-500 px-1.5 py-0.5 text-[10px] font-semibold text-white">
           {count}
         </span>
       ) : null}

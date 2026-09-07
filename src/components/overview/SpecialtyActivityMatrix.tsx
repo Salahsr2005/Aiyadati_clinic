@@ -102,7 +102,7 @@ export function SpecialtyActivityMatrix({
   return (
     <GlassCard className="p-5 border border-border/40 shadow-sm relative overflow-hidden flex flex-col justify-between h-full">
       {/* Radial highlight */}
-      <div className="absolute -left-20 -top-20 h-40 w-40 rounded-full bg-indigo-500/5 blur-3xl pointer-events-none" />
+      <div className="absolute -start-20 -top-20 h-40 w-40 rounded-full bg-indigo-500/5 blur-3xl pointer-events-none" />
 
       {/* Header */}
       <div className="mb-4 flex items-start justify-between gap-3">
@@ -133,9 +133,9 @@ export function SpecialtyActivityMatrix({
           </div>
         ) : (
           <div className="w-full overflow-x-auto pb-1 custom-scrollbar">
-            <div className="min-w-[460px] pr-2">
+            <div className="min-w-[460px] pe-2">
               {/* Day Labels (X-Axis) */}
-              <div className="flex pl-32 mb-2">
+              <div className="flex ps-32 mb-2">
                 {DAYS.map((day) => (
                   <div
                     key={day}
@@ -151,7 +151,7 @@ export function SpecialtyActivityMatrix({
                 {specialties.map((specName) => (
                   <div key={specName} className="flex items-center">
                     {/* Specialty Label (Y-Axis) */}
-                    <div className="w-32 pr-3 text-[10px] font-semibold text-muted-foreground/80 truncate select-none" title={specName}>
+                    <div className="w-32 pe-3 text-[10px] font-semibold text-muted-foreground/80 truncate select-none" title={specName}>
                       {specName}
                     </div>
 

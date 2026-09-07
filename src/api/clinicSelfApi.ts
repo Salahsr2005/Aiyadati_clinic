@@ -125,6 +125,18 @@ export const clinicSelfApi = {
     return api.post<unknown, ClinicRoom>('/clinic/v1/me/rooms', payload);
   },
 
+  updateRoom: async (id: string, payload: Partial<Pick<ClinicRoom, 'name' | 'specialtyId'>>): Promise<ClinicRoom> => {
+    return api.patch<unknown, ClinicRoom>(`/clinic/v1/me/rooms/${id}`, payload);
+  },
+
+  toggleRoomActive: async (id: string, isActive: boolean): Promise<ClinicRoom> => {
+    return api.patch<unknown, ClinicRoom>(`/clinic/v1/me/rooms/${id}`, { isActive });
+  },
+
+  deleteRoom: async (id: string): Promise<void> => {
+    return api.delete(`/clinic/v1/me/rooms/${id}`);
+  },
+
   getDoctors: async (): Promise<ClinicDoctor[]> => {
     const raw = await api.get<unknown, unknown>('/clinic/v1/me/doctors');
     return ensureArray<ClinicDoctor>(raw);
@@ -155,5 +167,13 @@ export const clinicSelfApi = {
     return api.post<unknown, ClinicGalleryItem>('/clinic/v1/me/gallery', formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
     });
+  },
+
+  updateGalleryImage: async (id: string, payload: { sortOrder?: number; title?: string }): Promise<ClinicGalleryItem> => {
+    return api.patch<unknown, ClinicGalleryItem>(`/clinic/v1/me/gallery/${id}`, payload);
+  },
+
+  deleteGalleryImage: async (id: string): Promise<void> => {
+    return api.delete(`/clinic/v1/me/gallery/${id}`);
   },
 };

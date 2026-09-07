@@ -5,6 +5,7 @@ export interface ReviewRow {
   rating: number;
   comment?: string | null;
   review?: string | null;
+  response?: string | null;
   userId?: string;
   patientId?: string;
   doctorId?: string;
@@ -70,5 +71,8 @@ export const reviewsApi = {
   },
   setClinicVisibility: async (payload: { isVisible: boolean }) => {
     return api.patch<unknown, { reviewsVisible: boolean }>('/review/v1/clinic/me/visibility', payload);
+  },
+  respondToReview: async (reviewId: string, payload: { response: string }): Promise<ReviewRow> => {
+    return api.post<unknown, ReviewRow>(`/review/v1/clinic/me/${reviewId}/response`, payload);
   },
 };

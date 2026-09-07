@@ -124,7 +124,7 @@ export function OptimalBookingTime({ appointments = [], loading = false }: Optim
   return (
     <GlassCard className="p-5 border border-border/40 shadow-sm relative overflow-hidden flex flex-col justify-between h-full">
       {/* Background radial highlight */}
-      <div className="absolute -right-24 -top-24 h-48 w-48 rounded-full bg-orange-500/5 blur-3xl pointer-events-none" />
+      <div className="absolute -end-24 -top-24 h-48 w-48 rounded-full bg-orange-500/5 blur-3xl pointer-events-none" />
 
       {/* Header */}
       <div className="mb-4 flex items-start justify-between gap-3">
@@ -154,9 +154,9 @@ export function OptimalBookingTime({ appointments = [], loading = false }: Optim
       <div className="relative mt-2 flex-1 flex flex-col justify-center">
         {/* Heatmap table/grid */}
         <div className="w-full overflow-x-auto pb-1 custom-scrollbar">
-          <div className="min-w-[420px] pr-2">
+          <div className="min-w-[420px] pe-2">
             {/* Hour Labels (X-Axis) */}
-            <div className="flex pl-10 mb-2">
+            <div className="flex ps-10 mb-2">
               {HOURS.map((hr) => (
                 <div
                   key={hr}
