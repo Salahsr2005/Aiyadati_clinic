@@ -31,7 +31,7 @@ import { useClinicDoctors } from "@/hooks/useClinicDoctors";
 import { ensureArray } from "@/lib/utils";
 import { clinicAppointmentsApi, type ClinicAppointmentRow } from "@/api/clinicAppointmentsApi";
 import { clinicSelfApi, type ClinicDoctor, type ClinicRoom } from "@/api/clinicSelfApi";
-import { doctorsApi, type DoctorRow } from "@/api/doctorsApi";
+
 import { qk } from "@/lib/queryKeys";
 import { useEntityMutation } from "@/lib/mutations";
 import { KPICard } from "@/components/overview/KPICard";
@@ -161,12 +161,12 @@ export default function DashboardPage() {
 
   // Doctor search for invitation modal
   const [searchDoctorQuery, setSearchDoctorQuery] = useState("");
-  const { data: platformDoctorsData } = useQuery({
+  const { data: platformDoctorsRaw } = useQuery({
     queryKey: ["platformDoctorsSearch", searchDoctorQuery],
-    queryFn: () => doctorsApi.list({ search: searchDoctorQuery, limit: 10 }),
+    queryFn: () => clinicSelfApi.searchPlatformDoctors(searchDoctorQuery, 10),
     enabled: searchDoctorQuery.length >= 2,
   });
-  const platformDoctors: DoctorRow[] = ensureArray<DoctorRow>((platformDoctorsData as any)?.items || (platformDoctorsData as any)?.data);
+  const platformDoctors = ensureArray<any>(platformDoctorsRaw);
 
   // Forms
   const walkInForm = useForm<WalkInFormData>({

@@ -53,7 +53,7 @@ const quickSlotSchema = z.object({
   startTime: z.string().min(1, "Start time is required"),
   endTime: z.string().min(1, "End time is required"),
   roomId: z.string().optional(),
-  maxPatients: z.coerce.number().min(1).default(1),
+  maxPatients: z.coerce.number().min(1),
 });
 
 const cancelDateSchema = z.object({

@@ -3,7 +3,6 @@ import { useTranslation } from "react-i18next";
 import { useQuery } from "@/lib/queryClient";
 import { Search, UserPlus, Stethoscope, Award, CheckCircle2, Loader2, Sparkles, X } from "lucide-react";
 import { FormModal } from "@/components/data/FormModal";
-import { doctorsApi, type DoctorRow } from "@/api/doctorsApi";
 import { clinicSelfApi } from "@/api/clinicSelfApi";
 import { useEntityMutation } from "@/lib/mutations";
 import { qk } from "@/lib/queryKeys";
@@ -22,13 +21,13 @@ export function DoctorInviteModal({ open, onClose }: DoctorInviteModalProps) {
   const fallbackPhoto = "/assets/standard/doctor-placeholder.png";
 
   // Platform doctor search query
-  const { data: doctorsData, isLoading } = useQuery({
+  const { data: doctorsRaw, isLoading } = useQuery({
     queryKey: ["platformDoctorsInviteSearch", searchQuery, specialtyFilter],
-    queryFn: () => doctorsApi.list({ search: searchQuery, limit: 30 }),
+    queryFn: () => clinicSelfApi.searchPlatformDoctors(searchQuery, 30),
     enabled: open,
   });
 
-  const doctors: DoctorRow[] = ensureArray<DoctorRow>((doctorsData as any)?.items || (doctorsData as any)?.data);
+  const doctors = ensureArray<any>(doctorsRaw);
 
   // Filtered list
   const filteredDoctors = useMemo(() => {
@@ -149,10 +148,10 @@ export function DoctorInviteModal({ open, onClose }: DoctorInviteModalProps) {
                     <div className="min-w-0">
                       <h4 className="text-xs font-extrabold text-foreground truncate">{name}</h4>
                       <p className="text-[11px] font-semibold text-primary-500 mt-0.5 truncate">{spec}</p>
-                      {doc.yearsOfExp !== undefined && (
+                      {(doc as any).yearsOfExp !== undefined && (
                         <p className="text-[10px] text-muted-foreground flex items-center gap-1 mt-0.5">
                           <Award className="h-3 w-3 text-amber-500" />
-                          <span>{doc.yearsOfExp} Years Medical Experience</span>
+                          <span>{(doc as any).yearsOfExp} Years Medical Experience</span>
                         </p>
                       )}
                     </div>

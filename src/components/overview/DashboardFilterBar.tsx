@@ -3,8 +3,7 @@ import { FilterX, Calendar } from "lucide-react";
 import { useDashboardFiltersStore, DatePreset } from "@/store/dashboardFilters";
 import { useWilayas } from "@/hooks/useWilayas";
 import { specialtyApi } from "@/api/specialtyApi";
-import { doctorsApi } from "@/api/doctorsApi";
-import { clinicsApi } from "@/api/clinicsApi";
+import { clinicSelfApi } from "@/api/clinicSelfApi";
 import { SelectMenu } from "@/components/data/SelectMenu";
 import { GlassCard } from "@/components/glass/GlassCard";
 import { useTranslation } from "react-i18next";
@@ -26,14 +25,8 @@ export function DashboardFilterBar() {
   });
 
   const doctorsQ = useQuery({
-    queryKey: ["filter-doctors"],
-    queryFn: () => doctorsApi.list({ page: 1, limit: 100, isVerified: true }),
-    staleTime: 5 * 60 * 1000,
-  });
-
-  const clinicsQ = useQuery({
-    queryKey: ["filter-clinics"],
-    queryFn: () => clinicsApi.list({ page: 1, limit: 100, isVerified: true }),
+    queryKey: ["filter-clinic-doctors"],
+    queryFn: clinicSelfApi.getDoctors,
     staleTime: 5 * 60 * 1000,
   });
 
@@ -58,19 +51,16 @@ export function DashboardFilterBar() {
     label: pickLocaleField(s as unknown as Record<string, unknown>, "name", locale) || `Specialty ${s.id}`,
   }));
 
-  const doctorOptions = (doctorsQ.data?.items ?? []).map((d) => {
-    const first = locale === "ar" ? d.firstNameAr || d.firstNameFr : d.firstNameFr || d.firstNameAr;
-    const last = locale === "ar" ? d.lastNameAr || d.lastNameFr : d.lastNameFr || d.lastNameAr;
+  const doctorOptions = (Array.isArray(doctorsQ.data) ? doctorsQ.data : []).filter((d: any) => d.status === "ACCEPTED").map((d: any) => {
+    const doc = d.doctor;
+    if (!doc) return null;
+    const first = locale === "ar" ? doc.firstNameAr || doc.firstNameFr || doc.firstName : doc.firstNameFr || doc.firstNameAr || doc.firstName;
+    const last = locale === "ar" ? doc.lastNameAr || doc.lastNameFr || doc.lastName : doc.lastNameFr || doc.lastNameAr || doc.lastName;
     return {
-      value: d.id,
+      value: doc.id || d.doctorId,
       label: `Dr. ${[first, last].filter(Boolean).join(" ")}`,
     };
-  });
-
-  const clinicOptions = (clinicsQ.data?.items ?? []).map((c) => ({
-    value: c.id,
-    label: pickLocaleField(c as unknown as Record<string, unknown>, "name", locale) || `Clinic ${c.id}`,
-  }));
+  }).filter(Boolean) as Array<{ value: string; label: string }>;
 
   const hasActiveFilters = 
     filters.doctorId || 
@@ -105,16 +95,7 @@ export function DashboardFilterBar() {
           className="min-w-[9rem]"
         />
 
-        {/* Clinic filter */}
-        <SelectMenu
-          value={filters.clinicId}
-          onChange={(v) => filters.setClinicId(v)}
-          options={clinicOptions}
-          placeholder="Filter by Clinic"
-          searchable
-          searchPlaceholder="Search clinics..."
-          className="min-w-[9rem]"
-        />
+
 
         {/* Specialty filter */}
         <SelectMenu

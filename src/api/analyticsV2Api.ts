@@ -11,7 +11,7 @@ export interface DoctorDetailedStats {
   completionRate: number;
   cancellationRate: number;
   noShowRate: number;
-  avgRating: number;
+  avgRating: number | null;
   totalReviews: number;
   totalRevenue: number;
   avgRevenuePerAppointment: number;
@@ -48,6 +48,10 @@ interface PeriodParams {
   endDate?: string;
 }
 
+/**
+ * Analytics V2 — computes stats from real appointment data only.
+ * No fabricated fallbacks, no hardcoded ratings or synthetic chart data.
+ */
 export const analyticsV2Api = {
   doctorDetails: async (_doctorId: string, params: PeriodParams = {}): Promise<DoctorDetailedStats> => {
     try {
@@ -72,13 +76,14 @@ export const analyticsV2Api = {
       const monthMap = new Map<string, { appointments: number; revenue: number }>();
       const patientVisitsMap = new Map<string, number>();
 
-      const DEFAULT_VISIT_FEE = 3000; // Average consultation fee in DZD
+      const DAYS_OF_WEEK = ["SUNDAY", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY"];
 
       for (const item of rawItems) {
         const st = String(item.status || "").toUpperCase();
         if (st === "COMPLETED") {
           completed++;
-          totalRev += Number(item.amount || item.fee || DEFAULT_VISIT_FEE);
+          const fee = Number(item.amount || item.fee || 0);
+          totalRev += fee;
         } else if (st === "CANCELLED") {
           cancelled++;
         } else if (st === "NO_SHOW") {
@@ -95,38 +100,61 @@ export const analyticsV2Api = {
           patientVisitsMap.set(pId, (patientVisitsMap.get(pId) || 0) + 1);
         }
 
-        // Wilaya demographics
+        // Wilaya demographics — only use actual data, no defaults
         const pObj = item.patient || item.guestPatient;
-        const wName = pObj?.wilayaName || pObj?.wilayaId || item.wilayaName || "Alger (16)";
-        wilayaMap.set(wName, (wilayaMap.get(wName) || 0) + 1);
-
-        // Peak hours
-        const timeStr = item.slot?.startTime || item.startTime || "09:00";
-        const hour = parseInt(timeStr.slice(0, 2), 10);
-        if (!isNaN(hour)) {
-          hourMap.set(hour, (hourMap.get(hour) || 0) + 1);
+        const wName = pObj?.wilayaName || pObj?.wilayaId;
+        if (wName) {
+          wilayaMap.set(String(wName), (wilayaMap.get(String(wName)) || 0) + 1);
         }
 
-        // Monthly trends
-        const dStr = item.slot?.date || item.createdAt || new Date().toISOString();
-        const mKey = dStr.slice(0, 7); // YYYY-MM
-        const existingMonth = monthMap.get(mKey) || { appointments: 0, revenue: 0 };
-        monthMap.set(mKey, {
-          appointments: existingMonth.appointments + 1,
-          revenue: existingMonth.revenue + (st === "COMPLETED" ? Number(item.amount || DEFAULT_VISIT_FEE) : 0),
-        });
+        // Peak hours — only from real slot times
+        const timeStr = item.slot?.startTime || item.startTime;
+        if (timeStr) {
+          const hour = parseInt(timeStr.slice(0, 2), 10);
+          if (!isNaN(hour)) {
+            hourMap.set(hour, (hourMap.get(hour) || 0) + 1);
+          }
+        }
+
+        // Busiest days — computed from real appointment dates
+        const dateStr = item.slot?.date || item.createdAt;
+        if (dateStr) {
+          try {
+            const d = new Date(dateStr);
+            const dayName = DAYS_OF_WEEK[d.getDay()];
+            if (dayName) {
+              dayMap.set(dayName, (dayMap.get(dayName) || 0) + 1);
+            }
+          } catch {
+            // skip invalid dates
+          }
+        }
+
+        // Monthly trends — computed from real data
+        const dStr = item.slot?.date || item.createdAt;
+        if (dStr) {
+          const mKey = dStr.slice(0, 7); // YYYY-MM
+          if (/^\d{4}-\d{2}$/.test(mKey)) {
+            const existingMonth = monthMap.get(mKey) || { appointments: 0, revenue: 0 };
+            monthMap.set(mKey, {
+              appointments: existingMonth.appointments + 1,
+              revenue: existingMonth.revenue + (st === "COMPLETED" ? Number(item.amount || item.fee || 0) : 0),
+            });
+          }
+        }
       }
 
-      const uniqueCount = patientVisitsMap.size || Math.max(1, Math.round(total * 0.8));
+      const uniqueCount = patientVisitsMap.size;
       let returningCount = 0;
       patientVisitsMap.forEach((count) => {
         if (count > 1) returningCount++;
       });
 
-      const completionRate = total > 0 ? (completed / total) * 100 : 85;
-      const cancellationRate = total > 0 ? (cancelled / total) * 100 : 10;
-      const noShowRate = total > 0 ? (noShow / total) * 100 : 5;
-      const retentionRate = uniqueCount > 0 ? (returningCount / uniqueCount) * 100 : 60;
+      // Rates — return 0 when no data, never fabricate
+      const completionRate = total > 0 ? (completed / total) * 100 : 0;
+      const cancellationRate = total > 0 ? (cancelled / total) * 100 : 0;
+      const noShowRate = total > 0 ? (noShow / total) * 100 : 0;
+      const retentionRate = uniqueCount > 0 ? (returningCount / uniqueCount) * 100 : 0;
 
       const monthlyTrends = Array.from(monthMap.entries())
         .sort(([a], [b]) => a.localeCompare(b))
@@ -138,7 +166,13 @@ export const analyticsV2Api = {
         count,
       }));
 
-      const peakHours = Array.from(hourMap.entries()).map(([hour, count]) => ({ hour, count }));
+      const peakHours = Array.from(hourMap.entries())
+        .sort(([a], [b]) => a - b)
+        .map(([hour, count]) => ({ hour, count }));
+
+      const busiestDays = Array.from(dayMap.entries())
+        .sort(([, a], [, b]) => b - a)
+        .map(([day, count]) => ({ day, count }));
 
       return {
         totalAppointments: total,
@@ -148,30 +182,19 @@ export const analyticsV2Api = {
         completionRate,
         cancellationRate,
         noShowRate,
-        avgRating: 4.9,
-        totalReviews: Math.max(5, completed),
+        // Rating must come from the reviews API — we never fabricate it here
+        avgRating: null,
+        totalReviews: 0,
         totalRevenue: totalRev,
-        avgRevenuePerAppointment: completed > 0 ? totalRev / completed : DEFAULT_VISIT_FEE,
+        avgRevenuePerAppointment: completed > 0 ? totalRev / completed : 0,
         uniquePatients: uniqueCount,
         returningPatients: returningCount,
         retentionRate,
-        appointmentTypeDistribution: typeDist,
-        monthlyTrends: monthlyTrends.length > 0 ? monthlyTrends : [
-          { month: "2026-05", appointments: 18, revenue: 54000 },
-          { month: "2026-06", appointments: 28, revenue: 84000 },
-          { month: "2026-07", appointments: 35, revenue: 105000 },
-          { month: "2026-08", appointments: total || 42, revenue: totalRev || 126000 },
-        ],
-        patientDemographics: { byWilaya },
-        peakHours: peakHours.length > 0 ? peakHours : [
-          { hour: 9, count: 5 }, { hour: 10, count: 8 }, { hour: 11, count: 12 },
-          { hour: 14, count: 9 }, { hour: 15, count: 11 }, { hour: 16, count: 6 },
-        ],
-        busiestDays: [
-          { day: "SUNDAY", count: 12 }, { day: "MONDAY", count: 15 },
-          { day: "TUESDAY", count: 14 }, { day: "WEDNESDAY", count: 18 },
-          { day: "THURSDAY", count: 10 },
-        ],
+        appointmentTypeDistribution: Object.keys(typeDist).length > 0 ? typeDist : undefined,
+        monthlyTrends: monthlyTrends.length > 0 ? monthlyTrends : undefined,
+        patientDemographics: byWilaya.length > 0 ? { byWilaya } : undefined,
+        peakHours: peakHours.length > 0 ? peakHours : undefined,
+        busiestDays: busiestDays.length > 0 ? busiestDays : undefined,
       };
     } catch {
       return {
@@ -182,7 +205,7 @@ export const analyticsV2Api = {
         completionRate: 0,
         cancellationRate: 0,
         noShowRate: 0,
-        avgRating: 5.0,
+        avgRating: null,
         totalReviews: 0,
         totalRevenue: 0,
         avgRevenuePerAppointment: 0,

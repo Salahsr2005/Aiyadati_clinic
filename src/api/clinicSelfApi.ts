@@ -176,4 +176,57 @@ export const clinicSelfApi = {
   deleteGalleryImage: async (id: string): Promise<void> => {
     return api.delete(`/clinic/v1/me/gallery/${id}`);
   },
+
+  /**
+   * Search for platform doctors for invitation purposes.
+   * Tries the public endpoint first, falls back to admin endpoint.
+   * Returns empty array on failure (no 403 propagation).
+   */
+  searchPlatformDoctors: async (search: string, limit = 10): Promise<Array<{
+    id: string;
+    email?: string;
+    firstNameFr?: string;
+    firstNameAr?: string;
+    lastNameFr?: string;
+    lastNameAr?: string;
+    phone?: string;
+    photoUrl?: string;
+    specialties?: Array<{ specialty?: { id: string; nameFr?: string; nameAr?: string } }>;
+    isVerified?: boolean;
+  }>> => {
+    const term = (search || "").trim();
+    if (!term || term.length < 2) return [];
+
+    // Try public doctor search first
+    try {
+      const res = await api.get('/public/v1/doctors', {
+        params: { search: term, limit },
+      });
+      const raw = res.data;
+      if (Array.isArray(raw)) return raw;
+      if (raw && typeof raw === "object") {
+        if (Array.isArray((raw as any).items)) return (raw as any).items;
+        if (Array.isArray((raw as any).data)) return (raw as any).data;
+      }
+    } catch {
+      // public endpoint may not exist
+    }
+
+    // Fallback: try admin doctor list (may 403 for clinic tokens)
+    try {
+      const res = await api.get('/doctor/v1', {
+        params: { search: term, limit },
+      });
+      const raw = res.data;
+      if (Array.isArray(raw)) return raw;
+      if (raw && typeof raw === "object") {
+        if (Array.isArray((raw as any).items)) return (raw as any).items;
+        if (Array.isArray((raw as any).data)) return (raw as any).data;
+      }
+    } catch {
+      // admin endpoint forbidden for clinic tokens — return empty
+    }
+
+    return [];
+  },
 };

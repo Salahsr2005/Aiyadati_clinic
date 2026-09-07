@@ -498,7 +498,7 @@ async function resolveMissingGuestPatients(items: AppointmentRow[]): Promise<App
       if (cached) {
         return {
           ...r,
-          guestPatient: r.guestPatient ? { ...cached, ...r.guestPatient } : cached,
+          guestPatient: (r.guestPatient ? { ...cached, ...r.guestPatient } : cached) as AppointmentRow["guestPatient"],
         };
       }
     }

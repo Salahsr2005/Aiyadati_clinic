@@ -22,7 +22,6 @@ import {
   Mail,
 } from "lucide-react";
 import { clinicSelfApi, type ClinicDoctor } from "@/api/clinicSelfApi";
-import { doctorsApi, type DoctorRow } from "@/api/doctorsApi";
 import { clinicAppointmentsApi, type ClinicAppointmentRow } from "@/api/clinicAppointmentsApi";
 import { qk } from "@/lib/queryKeys";
 import { useEntityMutation } from "@/lib/mutations";
@@ -63,13 +62,13 @@ export default function DoctorsPage() {
   const appointments: ClinicAppointmentRow[] = ensureArray<ClinicAppointmentRow>(appointmentsData?.data);
 
   // Search doctors on platform for invitation
-  const { data: platformDoctorsData, isLoading: isSearchLoading } = useQuery({
+  const { data: searchedDoctorsRaw, isLoading: isSearchLoading } = useQuery({
     queryKey: ["platformDoctorsSearch", searchDoctorQuery],
-    queryFn: () => doctorsApi.list({ search: searchDoctorQuery, limit: 10 }),
+    queryFn: () => clinicSelfApi.searchPlatformDoctors(searchDoctorQuery, 10),
     enabled: inviteModalOpen && searchDoctorQuery.trim().length >= 2,
   });
 
-  const searchedDoctors: DoctorRow[] = (platformDoctorsData as any)?.items ?? (platformDoctorsData as any)?.data ?? [];
+  const searchedDoctors = ensureArray<any>(searchedDoctorsRaw);
 
   // Mutations
   const inviteMutation = useEntityMutation({
