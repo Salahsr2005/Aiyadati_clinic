@@ -38,7 +38,7 @@ export function resolveWilaya(
       if (fromMap.code != null) return `#${fromMap.code}`;
     }
   }
-  return locale === "ar" ? "غير معروف" : locale === "fr" ? "Inconnu" : "Unknown";
+  return locale === "ar" ? "Unknown" : locale === "fr" ? "Inconnu" : "Unknown";
 }
 
 export function resolveSpecialty(

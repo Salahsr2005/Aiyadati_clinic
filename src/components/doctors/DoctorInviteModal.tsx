@@ -58,8 +58,8 @@ export function DoctorInviteModal({ open, onClose }: DoctorInviteModalProps) {
     return map;
   }, [roster]);
 
-  // Gate query: require >= 2 chars unless empty
-  const searchEnabled = open && (debouncedSearch.length >= 2 || debouncedSearch.length === 0);
+  // Gate query: require open
+  const searchEnabled = open;
 
   // Platform doctor search query
   const { data: doctorsRaw, isLoading } = useQuery({
@@ -85,10 +85,7 @@ export function DoctorInviteModal({ open, onClose }: DoctorInviteModalProps) {
   const inviteMutation = useEntityMutation({
     mutationFn: (doctorId: string) => clinicSelfApi.inviteDoctor(doctorId),
     invalidate: [qk.clinicSelf.doctors(), qk.dashboard.doctors(), qk.dashboard.pendingInvites()],
-    successMessage: t("doctors.inviteSuccess", { defaultValue: "تم إرسال طلب الانضمام إلى الطبيب بنجاح" }),
-    onSuccess: () => {
-      onClose();
-    },
+    successMessage: t("doctors.inviteSuccess", { defaultValue: "Doctor invitation sent successfully" }),
   });
 
   return (

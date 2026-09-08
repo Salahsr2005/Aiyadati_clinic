@@ -64,7 +64,7 @@ export default function ReviewsPage() {
   const toggleVisibilityMutation = useEntityMutation({
     mutationFn: (visible: boolean) => reviewsApi.setClinicVisibility({ isVisible: visible }),
     invalidate: [qk.clinicSelf.profile()],
-    successMessage: t("reviews.visibilitySuccess", { defaultValue: "تم تحديث حالة إظهار التقييمات للعامة" }),
+    successMessage: t("reviews.visibilitySuccess", { defaultValue: "Visibility Success" }),
     onSuccess: (_, variables) => setIsVisible(variables),
   });
 
@@ -72,7 +72,7 @@ export default function ReviewsPage() {
     mutationFn: ({ reviewId, response }: { reviewId: string; response: string }) =>
       reviewsApi.respondToReview(reviewId, { response }),
     invalidate: [qk.clinics.reviews(clinicId || "")],
-    successMessage: t("reviews.replySuccess", { defaultValue: "تم إرسال رد العيادة بنجاح" }),
+    successMessage: t("reviews.replySuccess", { defaultValue: "Reply Success" }),
     onSuccess: () => {
       setReplyModalReview(null);
       setReplyText("");
@@ -80,10 +80,10 @@ export default function ReviewsPage() {
   });
 
   const stats = statsData as any;
-  const averageRating = stats?.average ?? stats?.avgRating ?? (reviews.length > 0 ? (reviews.reduce((acc, r) => acc + r.rating, 0) / reviews.length) : 5.0);
+  const averageRating = stats?.average ?? stats?.avgRating ?? (reviews.length > 0 ? (reviews.reduce((acc, r) => acc + r.rating, 0) / reviews.length) : 0);
   const totalReviews = reviews.length;
   const respondedCount = reviews.filter((r) => r.response && r.response.trim().length > 0).length;
-  const responseRate = totalReviews > 0 ? Math.round((respondedCount / totalReviews) * 100) : 100;
+  const responseRate = totalReviews > 0 ? Math.round((respondedCount / totalReviews) * 100) : 0;
 
   // Calculate client-side star distribution from real reviews
   const starDistribution = useMemo(() => {
@@ -113,10 +113,10 @@ export default function ReviewsPage() {
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <h1 className="text-2xl font-bold tracking-tight">
-              {t("reviews.title", { defaultValue: "التقييمات وآراء المرضى" })}
+              {t("reviews.title", { defaultValue: "Patient Feedback & Reviews" })}
             </h1>
             <p className="text-xs text-muted-foreground mt-0.5">
-              {t("reviews.subtitle", { defaultValue: "متابعة انطباعات المرضى والاستجابة لملاحظاتهم الطبيّة" })}
+              {t("reviews.subtitle", { defaultValue: "Patient satisfaction scores, detailed comments, and review visibility settings" })}
             </p>
           </div>
 
@@ -128,7 +128,7 @@ export default function ReviewsPage() {
                 <EyeOff className="h-4 w-4 text-muted-foreground" />
               )}
               <span className="text-xs font-semibold">
-                {t("reviews.toggleVisibility", { defaultValue: "إظهار التقييمات للعامة" })}: {isVisible ? t("common.active", { defaultValue: "نشط" }) : t("common.inactive", { defaultValue: "مخفي" })}
+                {t("reviews.toggleVisibility", { defaultValue: "Toggle Review Visibility" })}: {isVisible ? t("common.active", { defaultValue: "Active" }) : t("common.inactive", { defaultValue: "Inactive" })}
               </span>
             </div>
 
@@ -149,33 +149,33 @@ export default function ReviewsPage() {
       {/* 2. Main KPI Cards Grid */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <KPICard
-          label={t("reviews.avgRating", { defaultValue: "معدل التقييم العام" })}
+          label={t("reviews.avgRating", { defaultValue: "Average Rating" })}
           value={averageRating}
-          format={(n) => n.toFixed(1)}
-          subLabel="من 5.0 نجوم"
+          format={(n) => n > 0 ? n.toFixed(1) : t("reviews.noRating", { defaultValue: "No rating" })}
+          subLabel={t("reviews.outOfFive", { defaultValue: "Out of 5.0 stars" })}
           delta={averageRating}
           tone="warning"
         />
         <KPICard
-          label={t("reviews.totalReviews", { defaultValue: "إجمالي التقييمات" })}
+          label={t("reviews.totalReviews", { defaultValue: "Total Reviews" })}
           value={totalReviews}
-          subLabel="تقييمات مراجعة المرضى"
+          subLabel={t("reviews.patientRatings", { defaultValue: "Patient review ratings" })}
           delta={totalReviews}
           tone="primary"
         />
         <KPICard
-          label={t("reviews.responseRate", { defaultValue: "نسبة الرد على التقييمات" })}
+          label={t("reviews.responseRate", { defaultValue: "Response Rate" })}
           value={responseRate}
           format={(n) => `${n}%`}
-          subLabel={`${respondedCount} من ${totalReviews} تم الرد عليها`}
+          subLabel={t("reviews.respondedSummary", { defaultValue: "{{responded}} of {{total}} responded", responded: respondedCount, total: totalReviews })}
           delta={responseRate}
           tone="success"
         />
         <KPICard
-          label={t("reviews.toggleVisibility", { defaultValue: "إظهار التقييمات للعامة" })}
+          label={t("reviews.toggleVisibility", { defaultValue: "Toggle Review Visibility" })}
           value={isVisible ? 100 : 0}
-          format={() => (isVisible ? t("common.active", { defaultValue: "ظاهر" }) : t("common.inactive", { defaultValue: "مخفي" }))}
-          subLabel="تظهر بملف العيادة العام"
+          format={() => (isVisible ? t("common.active", { defaultValue: "Active" }) : t("common.inactive", { defaultValue: "Inactive" }))}
+          subLabel={t("reviews.visibleSub", { defaultValue: "Visible on public clinic profile" })}
           tone="info"
         />
       </div>
@@ -184,7 +184,7 @@ export default function ReviewsPage() {
       <GlassCard className="p-5 border border-border/40 space-y-3">
         <h3 className="text-xs font-bold text-foreground uppercase tracking-wider flex items-center gap-2">
           <Star className="h-4 w-4 text-amber-500 fill-amber-500" />
-          {t("reviews.distributionTitle", { defaultValue: "توزيع التقييمات حسب النجوم" })}
+          {t("reviews.distributionTitle", { defaultValue: "Distribution Title" })}
         </h3>
         <div className="grid grid-cols-1 sm:grid-cols-5 gap-3">
           {[5, 4, 3, 2, 1].map((star) => {
@@ -223,7 +223,7 @@ export default function ReviewsPage() {
         <div className="flex flex-wrap items-center gap-3">
           <div className="flex items-center gap-2 text-xs font-bold text-muted-foreground">
             <Filter className="h-4 w-4 text-primary-500" />
-            <span>{t("filters.open", { defaultValue: "تصفية وتنقيب" })}</span>
+            <span>{t("filters.open", { defaultValue: "Filter & Refine" })}</span>
           </div>
 
           {ratingFilter !== "ALL" && (
@@ -231,7 +231,7 @@ export default function ReviewsPage() {
               onClick={() => setRatingFilter("ALL")}
               className="inline-flex items-center gap-1 text-xs text-primary-500 font-bold hover:underline cursor-pointer ms-auto"
             >
-              <RotateCcw className="h-3 w-3" /> {t("filters.reset", { defaultValue: "إعادة تعيين" })}
+              <RotateCcw className="h-3 w-3" /> {t("filters.reset", { defaultValue: "Reset" })}
             </button>
           )}
         </div>
@@ -240,7 +240,7 @@ export default function ReviewsPage() {
         <div className="flex items-center gap-2 flex-wrap pt-1 border-t border-border/30">
           {(
             [
-              { id: "ALL" as RatingFilter, label: t("reviews.filterAll", { defaultValue: "جميع التقييمات" }) },
+              { id: "ALL" as RatingFilter, label: t("reviews.filterAll", { defaultValue: "All Reviews" }) },
               { id: "5" as RatingFilter, label: "5 ★" },
               { id: "4" as RatingFilter, label: "4 ★" },
               { id: "3" as RatingFilter, label: "3 ★" },
@@ -277,13 +277,13 @@ export default function ReviewsPage() {
         <EmptyState
           title={
             ratingFilter !== "ALL"
-              ? t("common.empty", { defaultValue: "لا توجد سجّلات متاحة حاليًا" })
-              : t("reviews.emptyTitle", { defaultValue: "لا توجد تقييمات مسجلة للعيادة حتى الآن" })
+              ? t("common.empty", { defaultValue: "No records found" })
+              : t("reviews.emptyTitle", { defaultValue: "Empty Title" })
           }
           description={
             ratingFilter !== "ALL"
-              ? t("filters.clear", { defaultValue: "جرب تعديل فلاتر التقييم." })
-              : t("reviews.emptySub", { defaultValue: "ستظهر تقييمات المرضى هنا فور إجرائهم الفحوصات الطبية." })
+              ? t("filters.clear", { defaultValue: "Clear All" })
+              : t("reviews.emptySub", { defaultValue: "Empty Sub" })
           }
           action={
             ratingFilter !== "ALL" ? (
@@ -291,7 +291,7 @@ export default function ReviewsPage() {
                 onClick={() => setRatingFilter("ALL")}
                 className="inline-flex items-center gap-2 rounded-xl bg-primary-500 px-4 py-2 text-xs font-semibold text-primary-foreground hover:opacity-90 cursor-pointer"
               >
-                <RotateCcw className="h-4 w-4" /> {t("filters.reset", { defaultValue: "إعادة تعيين" })}
+                <RotateCcw className="h-4 w-4" /> {t("filters.reset", { defaultValue: "Reset" })}
               </button>
             ) : undefined
           }
@@ -304,7 +304,7 @@ export default function ReviewsPage() {
                 ? `${rev.user.firstName || ""} ${rev.user.lastName || ""}`.trim()
                 : rev.patient
                   ? `${rev.patient.firstName || ""} ${rev.patient.lastName || ""}`.trim()
-                  : t("reviews.patientLabel", { defaultValue: "مريض موثق" });
+                  : t("reviews.patientLabel", { defaultValue: "Patient Label" });
 
             const avatarUrl = rev.user?.avatarUrl || rev.patient?.avatarUrl;
 
@@ -340,7 +340,7 @@ export default function ReviewsPage() {
                 {rev.response && (
                   <div className="ms-4 p-3.5 rounded-2xl bg-primary-500/10 border border-primary-500/30 space-y-1.5">
                     <div className="text-xs font-bold text-primary-500 flex items-center gap-1.5">
-                      <CornerDownRight className="h-3.5 w-3.5 rtl:rotate-180" /> {t("reviews.clinicReplyTitle", { defaultValue: "رد العيادة الرسمي" })}
+                      <CornerDownRight className="h-3.5 w-3.5 rtl:rotate-180" /> {t("reviews.clinicReplyTitle", { defaultValue: "Clinic Reply Title" })}
                     </div>
                     <p className="text-xs text-foreground/90 leading-relaxed ps-5">{rev.response}</p>
                   </div>

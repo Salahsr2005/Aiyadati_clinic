@@ -163,7 +163,7 @@ export default function ProfilePage() {
       return clinicSelfApi.updateProfile(formData);
     },
     invalidate: [qk.clinicSelf.profile(), qk.dashboard.profile()],
-    successMessage: t("profile.updateSuccess", { defaultValue: "تم تحديث ملف العيادة بنجاح" }),
+    successMessage: t("profile.updateSuccess", { defaultValue: "Update Success" }),
     onSuccess: () => {
       setIsEditing(false);
     },
@@ -173,7 +173,7 @@ export default function ProfilePage() {
   const saveHoursMutation = useEntityMutation({
     mutationFn: (hours: ClinicWorkingHour[]) => clinicSelfApi.upsertWorkingHours(hours),
     invalidate: [qk.clinicSelf.workingHours()],
-    successMessage: t("profile.hoursSuccess", { defaultValue: "تم حفظ جدول ساعات العمل بنجاح" }),
+    successMessage: t("profile.hoursSuccess", { defaultValue: "Hours Success" }),
   });
 
   // Document Upload Mutation
@@ -194,7 +194,7 @@ export default function ProfilePage() {
       return clinicSelfApi.uploadDocument(formData);
     },
     invalidate: [qk.clinicSelf.documents(), qk.dashboard.profile()],
-    successMessage: t("profile.docSuccess", { defaultValue: "تم رفع الوثيقة القانونية بنجاح" }),
+    successMessage: t("profile.docSuccess", { defaultValue: "Doc Success" }),
     onSuccess: () => {
       setDocUploadModalOpen(false);
       setDocFile(null);
@@ -205,7 +205,7 @@ export default function ProfilePage() {
   const deleteDocMutation = useEntityMutation({
     mutationFn: (id: string) => clinicSelfApi.deleteDocument(id),
     invalidate: [qk.clinicSelf.documents()],
-    successMessage: t("profile.docDeleteSuccess", { defaultValue: "تم حذف الوثيقة بنجاح" }),
+    successMessage: t("profile.docDeleteSuccess", { defaultValue: "Doc Delete Success" }),
     onSuccess: () => setDeleteDocId(null),
   });
 
@@ -238,7 +238,7 @@ export default function ProfilePage() {
             <div>
               <div className="flex items-center gap-2">
                 <h1 className="text-2xl font-bold tracking-tight">
-                  {profile?.nameFr || t("profile.title", { defaultValue: "ملف العيادة والاعتمادات الرسمية" })}
+                  {profile?.nameFr || t("profile.title", { defaultValue: "Clinic Profile & Credentials" })}
                 </h1>
                 <StatusBadge value={profile?.isVerified ? "VERIFIED" : "PENDING"} />
               </div>
@@ -247,7 +247,7 @@ export default function ProfilePage() {
                 <span>{profile?.facilityType || "عيادة"}</span>
                 <span>·</span>
                 <MapPin className="h-3.5 w-3.5 text-primary-500" />
-                <span>{profile?.address || t("common.address", { defaultValue: "العنوان الرئيسي" })}</span>
+                <span>{profile?.address || t("common.address", { defaultValue: "Primary Address" })}</span>
               </p>
             </div>
           </div>
@@ -256,7 +256,7 @@ export default function ProfilePage() {
           <div className="flex flex-col gap-2 min-w-[200px] p-3 rounded-2xl bg-accent/30 border border-border/40">
             <div className="flex items-center justify-between text-xs font-bold">
               <span className="flex items-center gap-1.5 text-foreground">
-                <Sparkles className="h-3.5 w-3.5 text-primary-500" /> {t("profile.bannerTitle", { defaultValue: "اكتمل الملف بنسبة {{pct}}%", pct: completeness })}
+                <Sparkles className="h-3.5 w-3.5 text-primary-500" /> {t("profile.bannerTitle", { defaultValue: "Profile {{pct}}% Complete", pct: completeness })}
               </span>
               <span className="text-primary-500 font-extrabold">{completeness}%</span>
             </div>
@@ -267,7 +267,7 @@ export default function ProfilePage() {
               />
             </div>
             <div className="text-[10px] text-muted-foreground">
-              {t("profile.bannerSub", { defaultValue: "قم باستكمال كافة الوثائق القانونية والساعات لرفع موثوقية العيادة" })}
+              {t("profile.bannerSub", { defaultValue: "Complete all legal verification documents and hours to boost credibility" })}
             </div>
           </div>
         </div>
@@ -277,9 +277,9 @@ export default function ProfilePage() {
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border/40 pb-2">
         <div className="flex items-center gap-2">
           {[
-            { id: "profile", label: t("profile.basicInfo", { defaultValue: "المعلومات الأساسية والتواصل" }), icon: Building2 },
-            { id: "schedule", label: t("profile.hoursInfo", { defaultValue: "ساعات العمل والدياجات الأسبوعية" }), icon: Clock },
-            { id: "documents", label: t("profile.documentsInfo", { defaultValue: "الوثائق والتراخيص القانونية الطبيّة" }), icon: FileText, count: documents.length },
+            { id: "profile", label: t("profile.basicInfo", { defaultValue: "Basic Information & Contact" }), icon: Building2 },
+            { id: "schedule", label: t("profile.hoursInfo", { defaultValue: "Weekly Working Schedule" }), icon: Clock },
+            { id: "documents", label: t("profile.documentsInfo", { defaultValue: "Legal Licenses & Credentials" }), icon: FileText, count: documents.length },
           ].map((tab) => {
             const Icon = tab.icon;
             const isActive = activeTab === tab.id;
@@ -313,12 +313,12 @@ export default function ProfilePage() {
             {isEditing ? (
               <>
                 <CheckCircle2 className="h-4 w-4" />
-                {t("profile.viewMode", { defaultValue: "عرض الملف الشخصي" })}
+                {t("profile.viewMode", { defaultValue: "View Profile" })}
               </>
             ) : (
               <>
                 <Save className="h-4 w-4" />
-                {t("profile.editMode", { defaultValue: "تعديل الملف الشخصي" })}
+                {t("profile.editMode", { defaultValue: "Edit Profile" })}
               </>
             )}
           </button>
@@ -333,7 +333,7 @@ export default function ProfilePage() {
             <div className="flex items-center justify-between pb-3 border-b border-border/30">
               <h2 className="text-base font-bold text-foreground flex items-center gap-2">
                 <Building2 className="h-5 w-5 text-primary-500" />
-                {t("profile.view.basicTitle", { defaultValue: "معلومات العيادة العامة" })}
+                {t("profile.view.basicTitle", { defaultValue: "Basic Title" })}
               </h2>
               <StatusBadge value={profile?.isVerified ? "VERIFIED" : "PENDING"} />
             </div>
@@ -342,21 +342,21 @@ export default function ProfilePage() {
               <div className="space-y-3">
                 <div>
                   <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-                    {t("app.name", { defaultValue: "اسم العيادة" })} (FR)
+                    {t("app.name", { defaultValue: "Iyadati Clinic Portal" })} (FR)
                   </span>
                   <p className="text-sm font-bold text-foreground mt-0.5">{profile?.nameFr || "—"}</p>
                 </div>
 
                 <div>
                   <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-                    {t("app.name", { defaultValue: "اسم العيادة" })} (AR)
+                    {t("app.name", { defaultValue: "Iyadati Clinic Portal" })} (AR)
                   </span>
                   <p className="text-sm font-bold text-foreground mt-0.5" dir="rtl">{profile?.nameAr || "—"}</p>
                 </div>
 
                 <div>
                   <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-                    {t("filters.practiceType", { defaultValue: "نوع المنشأة" })}
+                    {t("filters.practiceType", { defaultValue: "Practice Type" })}
                   </span>
                   <p className="text-sm font-semibold text-foreground mt-0.5">{profile?.facilityType || "CLINIC"}</p>
                 </div>
@@ -365,14 +365,14 @@ export default function ProfilePage() {
               <div className="space-y-3">
                 <div>
                   <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-                    {t("common.details", { defaultValue: "الوصف" })} (FR)
+                    {t("common.details", { defaultValue: "Details" })} (FR)
                   </span>
                   <p className="text-xs text-foreground/80 leading-relaxed mt-0.5">{profile?.descriptionFr || "No description available"}</p>
                 </div>
 
                 <div>
                   <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-                    {t("common.details", { defaultValue: "الوصف" })} (AR)
+                    {t("common.details", { defaultValue: "Details" })} (AR)
                   </span>
                   <p className="text-xs text-foreground/80 leading-relaxed mt-0.5" dir="rtl">{profile?.descriptionAr || "لا يوجد وصف متوفر"}</p>
                 </div>
@@ -384,13 +384,13 @@ export default function ProfilePage() {
           <GlassCard className="p-6 space-y-4 border border-border/40">
             <h2 className="text-base font-bold text-foreground flex items-center gap-2">
               <MapPin className="h-5 w-5 text-primary-500" />
-              {t("profile.view.location", { defaultValue: "الموقع الإداري والإحداثيات الجغرافية" })}
+              {t("profile.view.location", { defaultValue: "Location & Coordinates" })}
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="p-3 rounded-2xl bg-accent/30 border border-border/30">
                 <span className="text-[11px] font-bold text-muted-foreground uppercase">
-                  {t("filters.wilaya", { defaultValue: "الولاية" })}
+                  {t("filters.wilaya", { defaultValue: "Wilaya" })}
                 </span>
                 <p className="text-xs font-bold text-foreground mt-1">
                   {wilayas.find((w: any) => String(w.id) === String(profile?.wilayaId))?.nameFr || profile?.wilayaId || "—"}
@@ -414,7 +414,7 @@ export default function ProfilePage() {
 
             <div className="space-y-1.5">
               <span className="text-xs font-semibold text-muted-foreground">
-                {t("common.address", { defaultValue: "العنوان المحدد" })}
+                {t("common.address", { defaultValue: "Primary Address" })}
               </span>
               <p className="text-xs font-medium text-foreground p-3 rounded-2xl bg-muted/20 border border-border/30">
                 {profile?.address || "No detailed address specified"}
@@ -438,7 +438,7 @@ export default function ProfilePage() {
           {/* Basic Info GlassCard */}
           <GlassCard className="p-6 space-y-4 border border-border/40">
             <h2 className="text-base font-semibold text-foreground flex items-center gap-2">
-              <Building2 className="h-4.5 w-4.5 text-primary-500" /> {t("profile.basicInfo", { defaultValue: "المعلومات الأساسية والتواصل" })}
+              <Building2 className="h-4.5 w-4.5 text-primary-500" /> {t("profile.basicInfo", { defaultValue: "Basic Information & Contact" })}
             </h2>
 
             {/* Logo Upload Dropzone */}
@@ -452,7 +452,7 @@ export default function ProfilePage() {
               </div>
               <div>
                 <label className="inline-flex items-center gap-2 rounded-xl bg-primary-500/15 px-3 py-1.5 text-xs font-bold text-primary-500 hover:bg-primary-500/25 transition cursor-pointer">
-                  <Upload className="h-3.5 w-3.5" /> {t("gallery.uploadButton", { defaultValue: "تغيير شعار العيادة" })}
+                  <Upload className="h-3.5 w-3.5" /> {t("gallery.uploadButton", { defaultValue: "Upload New Image" })}
                   <input
                     type="file"
                     accept="image/*"
@@ -471,7 +471,7 @@ export default function ProfilePage() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-1.5">
-                <label className="text-sm font-medium">{t("app.name", { defaultValue: "اسم العيادة" })} (الفرنسية)*</label>
+                <label className="text-sm font-medium">{t("app.name", { defaultValue: "Iyadati Clinic Portal" })} (الفرنسية)*</label>
                 <input
                   {...register("nameFr")}
                   placeholder="e.g. Clinique El Shifa"
@@ -481,7 +481,7 @@ export default function ProfilePage() {
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-sm font-medium">{t("app.name", { defaultValue: "اسم العيادة" })} (العربية)</label>
+                <label className="text-sm font-medium">{t("app.name", { defaultValue: "Iyadati Clinic Portal" })} (العربية)</label>
                 <input
                   {...register("nameAr")}
                   placeholder="مثال: عيادة الشفاء"
@@ -492,7 +492,7 @@ export default function ProfilePage() {
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-sm font-medium">{t("filters.practiceType", { defaultValue: "نمط الممارسة" })}</label>
+              <label className="text-sm font-medium">{t("filters.practiceType", { defaultValue: "Practice Type" })}</label>
               <select
                 {...register("facilityType")}
                 className="glass w-full rounded-xl px-3.5 py-2.5 text-sm outline-none focus:ring-2 focus:ring-primary-500/40 bg-background text-foreground"
@@ -506,7 +506,7 @@ export default function ProfilePage() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-1.5">
-                <label className="text-sm font-medium">{t("common.details", { defaultValue: "التفاصيل" })} (الفرنسية)</label>
+                <label className="text-sm font-medium">{t("common.details", { defaultValue: "Details" })} (الفرنسية)</label>
                 <textarea
                   {...register("descriptionFr")}
                   rows={3}
@@ -516,7 +516,7 @@ export default function ProfilePage() {
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-sm font-medium">{t("common.details", { defaultValue: "التفاصيل" })} (العربية)</label>
+                <label className="text-sm font-medium">{t("common.details", { defaultValue: "Details" })} (العربية)</label>
                 <textarea
                   {...register("descriptionAr")}
                   rows={3}
@@ -531,12 +531,12 @@ export default function ProfilePage() {
           {/* Location & Coordinates GlassCard */}
           <GlassCard className="p-6 space-y-4 border border-border/40">
             <h2 className="text-base font-semibold text-foreground flex items-center gap-2">
-              <MapPin className="h-4.5 w-4.5 text-primary-500" /> {t("profile.locationInfo", { defaultValue: "الموقع الجغرافي والإحداثيات" })}
+              <MapPin className="h-4.5 w-4.5 text-primary-500" /> {t("profile.locationInfo", { defaultValue: "Practice Geolocation & Coordinates" })}
             </h2>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-1.5">
-                <label className="text-sm font-medium">{t("filters.wilaya", { defaultValue: "الولاية" })}*</label>
+                <label className="text-sm font-medium">{t("filters.wilaya", { defaultValue: "Wilaya" })}*</label>
                 <select
                   value={selectedWilayaId}
                   onChange={(e) => {
@@ -572,7 +572,7 @@ export default function ProfilePage() {
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-sm font-medium">{t("common.address", { defaultValue: "العنوان الرئيسي" })}</label>
+              <label className="text-sm font-medium">{t("common.address", { defaultValue: "Primary Address" })}</label>
               <input
                 {...register("address")}
                 placeholder="مثال: 14 شارع ديدوش مراد، الجزائر العاصمة"
@@ -582,7 +582,7 @@ export default function ProfilePage() {
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-1.5">
-                <label className="text-sm font-medium">خط العرض (Latitude)</label>
+                <label className="text-sm font-medium">Latitude (Latitude)</label>
                 <input
                   type="number"
                   step="any"
@@ -593,7 +593,7 @@ export default function ProfilePage() {
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-sm font-medium">خط الطول (Longitude)</label>
+                <label className="text-sm font-medium">Longitude (Longitude)</label>
                 <input
                   type="number"
                   step="any"
@@ -616,7 +616,7 @@ export default function ProfilePage() {
               ) : (
                 <Save className="h-4 w-4" />
               )}
-              {t("common.save", { defaultValue: "حفظ التغييرات" })}
+              {t("common.save", { defaultValue: "Save Changes" })}
             </button>
           </div>
         </form>
@@ -628,10 +628,10 @@ export default function ProfilePage() {
           <div className="flex items-center justify-between">
             <div>
               <h2 className="text-base font-semibold text-foreground flex items-center gap-2">
-                <Clock className="h-4.5 w-4.5 text-primary-500" /> {t("profile.hoursInfo", { defaultValue: "ساعات العمل والدياجات الأسبوعية" })}
+                <Clock className="h-4.5 w-4.5 text-primary-500" /> {t("profile.hoursInfo", { defaultValue: "Weekly Working Schedule" })}
               </h2>
               <p className="text-xs text-muted-foreground mt-0.5">
-                تحديد مواعيد وساعات عمل العيادة الرسمية للأسبوع
+                تحديد Appointments وساعات عمل العيادة الرسمية للأسبوع
               </p>
             </div>
 
@@ -641,7 +641,7 @@ export default function ProfilePage() {
               className="inline-flex items-center gap-2 rounded-xl bg-primary-500 px-4 py-2 text-xs font-semibold text-primary-foreground hover:opacity-90 disabled:opacity-50 cursor-pointer"
             >
               {saveHoursMutation.isPending ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Save className="h-3.5 w-3.5" />}
-              {t("common.save", { defaultValue: "حفظ التغييرات" })}
+              {t("common.save", { defaultValue: "Save Changes" })}
             </button>
           </div>
 
@@ -704,7 +704,7 @@ export default function ProfilePage() {
                     </div>
                   ) : (
                     <span className="text-xs font-bold text-muted-foreground px-3 py-1.5">
-                      مغلق
+                      Closed
                     </span>
                   )}
                 </div>
@@ -721,7 +721,7 @@ export default function ProfilePage() {
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
                 <h2 className="text-base font-semibold text-foreground flex items-center gap-2">
-                  <ShieldCheck className="h-4.5 w-4.5 text-primary-500" /> {t("profile.documentsInfo", { defaultValue: "الوثائق والتراخيص القانونية الطبيّة" })}
+                  <ShieldCheck className="h-4.5 w-4.5 text-primary-500" /> {t("profile.documentsInfo", { defaultValue: "Legal Licenses & Credentials" })}
                 </h2>
                 <p className="text-xs text-muted-foreground mt-0.5">
                   رفع تراخيص فتح العيادة والوثائق الرسمية للاعتماد الرقمي
@@ -733,7 +733,7 @@ export default function ProfilePage() {
                 className="inline-flex items-center gap-2 rounded-xl bg-primary-500 px-4 py-2.5 text-xs font-semibold text-primary-foreground shadow-xs transition hover:opacity-90 cursor-pointer self-start sm:self-auto"
               >
                 <Upload className="h-4 w-4" />
-                {t("profile.uploadDoc", { defaultValue: "رفع وثيقة ترخيص جديدة" })}
+                {t("profile.uploadDoc", { defaultValue: "Upload License Document" })}
               </button>
             </div>
 
@@ -752,7 +752,7 @@ export default function ProfilePage() {
                     onClick={() => setDocUploadModalOpen(true)}
                     className="inline-flex items-center gap-2 rounded-xl bg-primary-500 px-4 py-2 text-xs font-semibold text-primary-foreground hover:opacity-90 cursor-pointer"
                   >
-                    <Upload className="h-4 w-4" /> {t("profile.uploadDoc", { defaultValue: "رفع وثيقة ترخيص جديدة" })}
+                    <Upload className="h-4 w-4" /> {t("profile.uploadDoc", { defaultValue: "Upload License Document" })}
                   </button>
                 }
               />
@@ -786,7 +786,7 @@ export default function ProfilePage() {
                       <button
                         onClick={() => setDeleteDocId(doc.id)}
                         className="p-1.5 rounded-lg text-danger/70 hover:bg-danger/10 hover:text-danger transition cursor-pointer"
-                        title={t("common.delete", { defaultValue: "حذف" })}
+                        title={t("common.delete", { defaultValue: "Delete" })}
                       >
                         <Trash2 className="h-4 w-4" />
                       </button>
@@ -804,7 +804,7 @@ export default function ProfilePage() {
         id="upload-doc-modal"
         open={docUploadModalOpen}
         onClose={() => setDocUploadModalOpen(false)}
-        title={t("profile.uploadDoc", { defaultValue: "رفع وثيقة ترخيص جديدة" })}
+        title={t("profile.uploadDoc", { defaultValue: "Upload License Document" })}
         description="اختر ملف الوثيقة (PDF, PNG, JPG, بحجم أقل من 10 ميجابايت)"
       >
         <div className="space-y-4">
@@ -855,7 +855,7 @@ export default function ProfilePage() {
               onClick={() => setDocUploadModalOpen(false)}
               className="rounded-xl px-4 py-2 text-xs font-semibold text-muted-foreground hover:bg-accent cursor-pointer"
             >
-              {t("common.cancel", { defaultValue: "إلغاء" })}
+              {t("common.cancel", { defaultValue: "Cancel" })}
             </button>
             <button
               type="button"
@@ -868,7 +868,7 @@ export default function ProfilePage() {
               className="inline-flex items-center gap-2 rounded-xl bg-primary-500 px-4 py-2 text-xs font-semibold text-primary-foreground hover:opacity-90 disabled:opacity-50 cursor-pointer"
             >
               {uploadDocMutation.isPending && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
-              {t("profile.uploadDoc", { defaultValue: "رفع وثيقة ترخيص جديدة" })}
+              {t("profile.uploadDoc", { defaultValue: "Upload License Document" })}
             </button>
           </div>
         </div>
@@ -879,9 +879,9 @@ export default function ProfilePage() {
         open={!!deleteDocId}
         onClose={() => setDeleteDocId(null)}
         onConfirm={() => { if (deleteDocId) deleteDocMutation.mutate(deleteDocId); }}
-        title={t("profile.deleteDocTitle", { defaultValue: "حذف وثيقة ترخيص" })}
-        description={t("profile.deleteDocMessage", { defaultValue: "هل أنت متأكد من حذف هذه الوثيقة من ملف العيادة الرسمي؟" })}
-        confirmText={t("common.delete", { defaultValue: "حذف" })}
+        title={t("profile.deleteDocTitle", { defaultValue: "Delete License Document" })}
+        description={t("profile.deleteDocMessage", { defaultValue: "Are you sure you want to remove this document from the clinic profile?" })}
+        confirmText={t("common.delete", { defaultValue: "Delete" })}
         variant="danger"
         isLoading={deleteDocMutation.isPending}
       />

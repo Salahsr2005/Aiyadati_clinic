@@ -74,7 +74,7 @@ export default function DoctorsPage() {
   const inviteMutation = useEntityMutation({
     mutationFn: (doctorId: string) => clinicSelfApi.inviteDoctor(doctorId),
     invalidate: [qk.clinicSelf.doctors()],
-    successMessage: t("doctors.inviteSuccess", { defaultValue: "تم إرسال دعوة الانضمام للطبيب بنجاح" }),
+    successMessage: t("doctors.inviteSuccess", { defaultValue: "Invite Success" }),
     onSuccess: () => {
       setInviteModalOpen(false);
       setSelectedDoctorId(null);
@@ -85,19 +85,19 @@ export default function DoctorsPage() {
   const acceptMutation = useEntityMutation({
     mutationFn: (id: string) => clinicSelfApi.acceptDoctor(id),
     invalidate: [qk.clinicSelf.doctors()],
-    successMessage: t("doctors.acceptSuccess", { defaultValue: "تم قبول طلب الاعتماد بالعيادة" }),
+    successMessage: t("doctors.acceptSuccess", { defaultValue: "Accept Success" }),
   });
 
   const rejectMutation = useEntityMutation({
     mutationFn: (id: string) => clinicSelfApi.rejectDoctor(id),
     invalidate: [qk.clinicSelf.doctors()],
-    successMessage: t("doctors.rejectSuccess", { defaultValue: "تم رفض طلب الاعتماد" }),
+    successMessage: t("doctors.rejectSuccess", { defaultValue: "Reject Success" }),
   });
 
   const removeMutation = useEntityMutation({
     mutationFn: (id: string) => clinicSelfApi.removeDoctor(id),
     invalidate: [qk.clinicSelf.doctors()],
-    successMessage: t("doctors.removeSuccess", { defaultValue: "تم إلغاء اعتماد الطبيب من العيادة" }),
+    successMessage: t("doctors.removeSuccess", { defaultValue: "Remove Success" }),
     onSuccess: () => setConfirmRemoveId(null),
   });
 
@@ -136,10 +136,10 @@ export default function DoctorsPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">
-            {t("doctors.title", { defaultValue: "الطاقم الطبي والأطباء المعتمدون" })}
+            {t("doctors.title", { defaultValue: "Affiliated Medical Staff" })}
           </h1>
           <p className="text-xs text-muted-foreground mt-0.5">
-            {t("doctors.subtitle", { defaultValue: "إدارة الأطباء المعتمدين بإنشاء العيادة واعتماداتهم التشغيلية" })}
+            {t("doctors.subtitle", { defaultValue: "Manage practice doctors, staff roster, and facility credentials" })}
           </p>
         </div>
 
@@ -148,7 +148,7 @@ export default function DoctorsPage() {
           className="inline-flex items-center gap-2 rounded-xl bg-primary-500 px-4 py-2.5 text-xs font-semibold text-primary-foreground shadow-xs transition hover:opacity-90 cursor-pointer self-start sm:self-auto"
         >
           <UserPlus className="h-4 w-4" />
-          {t("doctors.inviteButton", { defaultValue: "دعوة طبيب جديد للانضمام" })}
+          {t("doctors.inviteButton", { defaultValue: "Invite Doctor" })}
         </button>
       </div>
 
@@ -161,7 +161,7 @@ export default function DoctorsPage() {
             </div>
             <div>
               <div className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-                {t("doctors.activeStaff", { defaultValue: "أطباء نشطون حالياً" })}
+                {t("doctors.activeStaff", { defaultValue: "Active Staff" })}
               </div>
               <div className="text-base font-bold text-primary-500">{counts.ACCEPTED}</div>
             </div>
@@ -175,7 +175,7 @@ export default function DoctorsPage() {
             </div>
             <div>
               <div className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-                {t("doctors.pendingInvites", { defaultValue: "طلبات انضمام معلقة" })}
+                {t("doctors.pendingInvites", { defaultValue: "Pending Invites" })}
               </div>
               <div className="text-base font-bold text-warning">{counts.PENDING}</div>
             </div>
@@ -189,7 +189,7 @@ export default function DoctorsPage() {
             </div>
             <div>
               <div className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-                {t("doctors.rejectedInvites", { defaultValue: "طلبات مرفوضة" })}
+                {t("doctors.rejectedInvites", { defaultValue: "Rejected Invites" })}
               </div>
               <div className="text-base font-bold text-danger">{counts.REJECTED}</div>
             </div>
@@ -203,7 +203,7 @@ export default function DoctorsPage() {
             </div>
             <div>
               <div className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-                {t("doctors.totalDoctors", { defaultValue: "إجمالي الأطباء المعتمدين" })}
+                {t("doctors.totalDoctors", { defaultValue: "Affiliated Doctors" })}
               </div>
               <div className="text-base font-bold">{counts.total}</div>
             </div>
@@ -216,7 +216,7 @@ export default function DoctorsPage() {
         <div className="flex flex-wrap items-center gap-3">
           <div className="flex items-center gap-2 text-xs font-bold text-muted-foreground">
             <Filter className="h-4 w-4 text-primary-500" />
-            <span>{t("filters.open", { defaultValue: "تصفية وتنقيب" })}</span>
+            <span>{t("filters.open", { defaultValue: "Filter & Refine" })}</span>
           </div>
 
           {/* Search Input */}
@@ -226,7 +226,7 @@ export default function DoctorsPage() {
               type="text"
               value={listSearchQuery}
               onChange={(e) => setListSearchQuery(e.target.value)}
-              placeholder={t("doctors.searchPlaceholder", { defaultValue: "البحث عن طبيب بالاسم أو التخصص..." })}
+              placeholder={t("doctors.searchPlaceholder", { defaultValue: "Search doctor by name or specialty..." })}
               className="glass w-full rounded-xl ps-8 pe-8 py-2 text-xs font-semibold outline-none focus:ring-2 focus:ring-primary-500/40"
             />
             {listSearchQuery && (
@@ -244,7 +244,7 @@ export default function DoctorsPage() {
               onClick={clearFilters}
               className="inline-flex items-center gap-1 text-xs text-primary-500 font-bold hover:underline cursor-pointer ms-auto"
             >
-              <RotateCcw className="h-3 w-3" /> {t("filters.reset", { defaultValue: "إعادة تعيين" })}
+              <RotateCcw className="h-3 w-3" /> {t("filters.reset", { defaultValue: "Reset" })}
             </button>
           )}
         </div>
@@ -253,9 +253,9 @@ export default function DoctorsPage() {
         <div className="flex items-center gap-2 flex-wrap pt-1 border-t border-border/30">
           {(
             [
-              { id: "ACCEPTED" as TabStatus, label: t("doctors.acceptedTab", { defaultValue: "الأطباء المقبولون" }), count: counts.ACCEPTED },
-              { id: "PENDING" as TabStatus, label: t("doctors.pendingTab", { defaultValue: "الطلبات المعلقة" }), count: counts.PENDING },
-              { id: "REJECTED" as TabStatus, label: t("doctors.rejectedTab", { defaultValue: "الطلبات المرفوضة" }), count: counts.REJECTED },
+              { id: "ACCEPTED" as TabStatus, label: t("doctors.acceptedTab", { defaultValue: "Accepted Staff" }), count: counts.ACCEPTED },
+              { id: "PENDING" as TabStatus, label: t("doctors.pendingTab", { defaultValue: "Pending Invites" }), count: counts.PENDING },
+              { id: "REJECTED" as TabStatus, label: t("doctors.rejectedTab", { defaultValue: "Rejected Invites" }), count: counts.REJECTED },
             ] as const
           ).map((pill) => {
             const isActive = activeTab === pill.id;
@@ -288,15 +288,15 @@ export default function DoctorsPage() {
         </div>
       ) : filteredAffiliations.length === 0 ? (
         <EmptyState
-          title={t("common.empty", { defaultValue: "لا توجد سجّلات متاحة حاليًا" })}
+          title={t("common.empty", { defaultValue: "No records found" })}
           description={
             listSearchQuery
-              ? t("filters.clear", { defaultValue: "جرب تعديل كلمات البحث." })
+              ? t("filters.clear", { defaultValue: "Clear All" })
               : activeTab === "ACCEPTED"
-                ? t("doctors.emptyAccepted", { defaultValue: "لا يوجد أطباء نشطون معتمدون بالعيادة حالياً." })
+                ? t("doctors.emptyAccepted", { defaultValue: "Empty Accepted" })
                 : activeTab === "PENDING"
-                  ? t("doctors.emptyPending", { defaultValue: "لا توجد طلبات اعتماد معلقة." })
-                  : t("doctors.emptyRejected", { defaultValue: "لا توجد طلبات مرفوضة." })
+                  ? t("doctors.emptyPending", { defaultValue: "Empty Pending" })
+                  : t("doctors.emptyRejected", { defaultValue: "Empty Rejected" })
           }
           action={
             activeTab === "ACCEPTED" && !listSearchQuery ? (
@@ -304,7 +304,7 @@ export default function DoctorsPage() {
                 onClick={() => setInviteModalOpen(true)}
                 className="inline-flex items-center gap-2 rounded-xl bg-primary-500 px-4 py-2 text-xs font-semibold text-primary-foreground hover:opacity-90 cursor-pointer"
               >
-                <UserPlus className="h-4 w-4" /> {t("doctors.inviteButton", { defaultValue: "دعوة طبيب جديد للانضمام" })}
+                <UserPlus className="h-4 w-4" /> {t("doctors.inviteButton", { defaultValue: "Invite Doctor" })}
               </button>
             ) : undefined
           }
@@ -339,7 +339,7 @@ export default function DoctorsPage() {
                       />
                       <div className="min-w-0">
                         <h3 className="text-sm font-bold text-foreground truncate group-hover:text-primary-500 transition">
-                          {t("doctors.doctorPrefix", { defaultValue: "د." })} {fullName}
+                          {t("doctors.doctorPrefix", { defaultValue: "Doctor Prefix" })} {fullName}
                         </h3>
                         <p className="text-xs text-primary-500 font-semibold truncate mt-0.5">
                           {specialtyName}
@@ -369,7 +369,7 @@ export default function DoctorsPage() {
                 <div className="pt-3 border-t border-border/30 flex items-center justify-between text-xs text-muted-foreground">
                   <span className="flex items-center gap-1 font-medium">
                     <Clock className="h-3.5 w-3.5 text-primary-500" />
-                    {docApptsCount} {t("doctors.apptsScheduled", { defaultValue: "مواعيد مجدولة" })}
+                    {docApptsCount} {t("doctors.apptsScheduled", { defaultValue: "Appts Scheduled" })}
                   </span>
 
                   <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
@@ -380,14 +380,14 @@ export default function DoctorsPage() {
                           disabled={acceptMutation.isPending}
                           className="px-2.5 py-1 rounded-lg text-[10px] font-bold bg-success/15 text-success hover:bg-success/25 transition cursor-pointer"
                         >
-                          {t("doctors.acceptButton", { defaultValue: "قبول طلب الانضمام" })}
+                          {t("doctors.acceptButton", { defaultValue: "Accept Affiliation" })}
                         </button>
                         <button
                           onClick={() => rejectMutation.mutate(affiliation.id)}
                           disabled={rejectMutation.isPending}
                           className="px-2.5 py-1 rounded-lg text-[10px] font-bold bg-danger/15 text-danger hover:bg-danger/25 transition cursor-pointer"
                         >
-                          {t("doctors.rejectButton", { defaultValue: "رفض الطلب" })}
+                          {t("doctors.rejectButton", { defaultValue: "Reject Request" })}
                         </button>
                       </>
                     )}
@@ -396,7 +396,7 @@ export default function DoctorsPage() {
                       <button
                         onClick={() => setConfirmRemoveId(affiliation.id)}
                         className="p-1.5 rounded-lg text-danger/70 hover:bg-danger/10 hover:text-danger transition cursor-pointer"
-                        title={t("doctors.cancelAffiliation", { defaultValue: "إلغاء الاعتماد بالعيادة" })}
+                        title={t("doctors.cancelAffiliation", { defaultValue: "Revoke Affiliation" })}
                       >
                         <Trash2 className="h-3.5 w-3.5" />
                       </button>
@@ -428,8 +428,8 @@ export default function DoctorsPage() {
           setSelectedDoctorId(null);
           setSearchDoctorQuery("");
         }}
-        title={t("doctors.inviteModalTitle", { defaultValue: "دعوة طبيب للاعتماد بالعيادة" })}
-        description={t("doctors.inviteModalSub", { defaultValue: "ابحث في دليل الأطباء وأرسل دعوة اعتماد رسمية بالعيادة" })}
+        title={t("doctors.inviteModalTitle", { defaultValue: "Invite Doctor for Affiliation" })}
+        description={t("doctors.inviteModalSub", { defaultValue: "Search directory doctors and send official clinic affiliation invitations" })}
       >
         <div className="space-y-4">
           <div className="relative">
@@ -438,7 +438,7 @@ export default function DoctorsPage() {
               type="text"
               value={searchDoctorQuery}
               onChange={(e) => setSearchDoctorQuery(e.target.value)}
-              placeholder={t("doctors.searchPlaceholder", { defaultValue: "البحث عن طبيب بالاسم أو التخصص..." })}
+              placeholder={t("doctors.searchPlaceholder", { defaultValue: "Search doctor by name or specialty..." })}
               className="glass w-full rounded-xl ps-9 pe-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-primary-500/40"
             />
             {isSearchLoading && (
@@ -450,7 +450,7 @@ export default function DoctorsPage() {
             <div className="space-y-2 max-h-64 overflow-y-auto custom-scrollbar pe-1">
               {searchedDoctors.length === 0 && !isSearchLoading ? (
                 <div className="p-4 text-center text-xs text-muted-foreground">
-                  {t("common.empty", { defaultValue: "لا توجد سجّلات متاحة حاليًا" })}
+                  {t("common.empty", { defaultValue: "No records found" })}
                 </div>
               ) : (
                 searchedDoctors.map((doc) => {
@@ -480,7 +480,7 @@ export default function DoctorsPage() {
                         />
                         <div>
                           <div className="text-xs font-bold text-foreground">
-                            {t("doctors.doctorPrefix", { defaultValue: "د." })} {docName}
+                            {t("doctors.doctorPrefix", { defaultValue: "Doctor Prefix" })} {docName}
                           </div>
                           <div className="text-[11px] text-primary-500 font-medium">
                             {specName}
@@ -502,7 +502,7 @@ export default function DoctorsPage() {
               onClick={() => setInviteModalOpen(false)}
               className="rounded-xl px-4 py-2 text-xs font-semibold text-muted-foreground hover:bg-accent cursor-pointer"
             >
-              {t("common.cancel", { defaultValue: "إلغاء" })}
+              {t("common.cancel", { defaultValue: "Cancel" })}
             </button>
             <button
               type="button"
@@ -511,7 +511,7 @@ export default function DoctorsPage() {
               className="inline-flex items-center gap-2 rounded-xl bg-primary-500 px-4 py-2 text-xs font-semibold text-primary-foreground hover:opacity-90 disabled:opacity-50 cursor-pointer"
             >
               {inviteMutation.isPending && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
-              {t("doctors.inviteButton", { defaultValue: "دعوة طبيب جديد للانضمام" })}
+              {t("doctors.inviteButton", { defaultValue: "Invite Doctor" })}
             </button>
           </div>
         </div>
@@ -522,9 +522,9 @@ export default function DoctorsPage() {
         open={!!confirmRemoveId}
         onClose={() => setConfirmRemoveId(null)}
         onConfirm={() => { if (confirmRemoveId) removeMutation.mutate(confirmRemoveId); }}
-        title={t("doctors.cancelAffiliation", { defaultValue: "إلغاء الاعتماد بالعيادة" })}
-        description={t("doctors.removeConfirmDesc", { defaultValue: "هل أنت متأكد من إلغاء اعتماد هذا الطبيب بالعيادة؟ لن يظهر ضمن طاقم العيادة الطبي." })}
-        confirmText={t("doctors.cancelAffiliation", { defaultValue: "إلغاء الاعتماد بالعيادة" })}
+        title={t("doctors.cancelAffiliation", { defaultValue: "Revoke Affiliation" })}
+        description={t("doctors.removeConfirmDesc", { defaultValue: "Remove Confirm Desc" })}
+        confirmText={t("doctors.cancelAffiliation", { defaultValue: "Revoke Affiliation" })}
         variant="danger"
         isLoading={removeMutation.isPending}
       />

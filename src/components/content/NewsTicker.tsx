@@ -21,7 +21,7 @@ export function NewsTicker({
       id: "stat-today",
       category: isRtl ? "مباشر" : "LIVE METRICS",
       text: isRtl
-        ? `مواعيد اليوم: ${todayCount} (مكتملة: ${completedCount})`
+        ? `Appointments اليوم: ${todayCount} (مكتملة: ${completedCount})`
         : `Today's Appointments: ${todayCount} (${completedCount} completed)`,
       icon: Calendar,
     },
@@ -31,7 +31,7 @@ export function NewsTicker({
             id: "stat-pending",
             category: isRtl ? "تنبيه هام" : "ACTION REQ",
             text: isRtl
-              ? `لديك ${pendingCount} مواعيد جديدة بانتظار التأكيد السريع!`
+              ? `لديك ${pendingCount} Appointments جديدة بانتظار الConfirm السريع!`
               : `You have ${pendingCount} pending appointments awaiting confirmation!`,
             icon: ShieldAlert,
           },
@@ -49,7 +49,7 @@ export function NewsTicker({
       id: "news-health",
       category: isRtl ? "تحديث طبي" : "HEALTH MATRIX",
       text: isRtl
-        ? "تحديث بروتوكولات الوصفات الطبية الإلكترونية وتأكيد الهوية الوطنية للمريض متوفر الآن."
+        ? "تحديث بروتوكولات الوصفات الطبية الإلكترونية وConfirm الهوية الوطنية للمريض متوفر الآن."
         : "Digital prescription verification & electronic health record sync is now active.",
       icon: HeartPulse,
     },

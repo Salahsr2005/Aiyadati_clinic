@@ -82,107 +82,112 @@ export interface ClinicGalleryItem {
 
 export const clinicSelfApi = {
   getProfile: async (): Promise<ClinicProfile> => {
-    return api.get<unknown, ClinicProfile>('/clinic/v1/me/profile');
+    const res = await api.get('/clinic/v1/me/profile');
+    return res.data as ClinicProfile;
   },
 
   updateProfile: async (formData: FormData): Promise<ClinicProfile> => {
-    return api.patch<unknown, ClinicProfile>('/clinic/v1/me/complete', formData, {
-      headers: { 'Content-Type': 'multipart/form-data' },
-    });
+    const res = await api.patch('/clinic/v1/me/complete', formData);
+    return res.data as ClinicProfile;
   },
 
   getDocuments: async (): Promise<ClinicDocument[]> => {
-    const raw = await api.get<unknown, unknown>('/clinic/v1/me/documents');
-    return ensureArray<ClinicDocument>(raw);
+    const res = await api.get('/clinic/v1/me/documents');
+    return ensureArray<ClinicDocument>(res.data);
   },
 
   uploadDocument: async (formData: FormData): Promise<ClinicDocument> => {
-    return api.post<unknown, ClinicDocument>('/clinic/v1/me/documents', formData, {
-      headers: { 'Content-Type': 'multipart/form-data' },
-    });
+    const res = await api.post('/clinic/v1/me/documents', formData);
+    return res.data as ClinicDocument;
   },
 
   deleteDocument: async (id: string): Promise<void> => {
-    return api.delete(`/clinic/v1/me/documents/${id}`);
+    await api.delete(`/clinic/v1/me/documents/${id}`);
   },
 
   getWorkingHours: async (): Promise<ClinicWorkingHour[]> => {
-    const raw = await api.get<unknown, unknown>('/clinic/v1/me/working-hours');
-    return ensureArray<ClinicWorkingHour>(raw);
+    const res = await api.get('/clinic/v1/me/working-hours');
+    return ensureArray<ClinicWorkingHour>(res.data);
   },
 
   upsertWorkingHours: async (hours: ClinicWorkingHour[]): Promise<ClinicWorkingHour[]> => {
-    const raw = await api.post<unknown, unknown>('/clinic/v1/me/working-hours', { hours });
-    return ensureArray<ClinicWorkingHour>(raw);
+    const res = await api.post('/clinic/v1/me/working-hours', { hours });
+    return ensureArray<ClinicWorkingHour>(res.data);
   },
 
   getRooms: async (): Promise<ClinicRoom[]> => {
-    const raw = await api.get<unknown, unknown>('/clinic/v1/me/rooms');
-    return ensureArray<ClinicRoom>(raw);
+    const res = await api.get('/clinic/v1/me/rooms');
+    return ensureArray<ClinicRoom>(res.data);
   },
 
   createRoom: async (payload: { name: string; specialtyId?: string }): Promise<ClinicRoom> => {
-    return api.post<unknown, ClinicRoom>('/clinic/v1/me/rooms', payload);
+    const res = await api.post('/clinic/v1/me/rooms', payload);
+    return res.data as ClinicRoom;
   },
 
   updateRoom: async (id: string, payload: Partial<Pick<ClinicRoom, 'name' | 'specialtyId'>>): Promise<ClinicRoom> => {
-    return api.patch<unknown, ClinicRoom>(`/clinic/v1/me/rooms/${id}`, payload);
+    const res = await api.patch(`/clinic/v1/me/rooms/${id}`, payload);
+    return res.data as ClinicRoom;
   },
 
   toggleRoomActive: async (id: string, isActive: boolean): Promise<ClinicRoom> => {
-    return api.patch<unknown, ClinicRoom>(`/clinic/v1/me/rooms/${id}`, { isActive });
+    const res = await api.patch(`/clinic/v1/me/rooms/${id}`, { isActive });
+    return res.data as ClinicRoom;
   },
 
   deleteRoom: async (id: string): Promise<void> => {
-    return api.delete(`/clinic/v1/me/rooms/${id}`);
+    await api.delete(`/clinic/v1/me/rooms/${id}`);
   },
 
   getDoctors: async (): Promise<ClinicDoctor[]> => {
-    const raw = await api.get<unknown, unknown>('/clinic/v1/me/doctors');
-    return ensureArray<ClinicDoctor>(raw);
+    const res = await api.get('/clinic/v1/me/doctors');
+    return ensureArray<ClinicDoctor>(res.data);
   },
 
   inviteDoctor: async (doctorId: string): Promise<ClinicDoctor> => {
-    return api.post<unknown, ClinicDoctor>('/clinic/v1/me/doctors/invite', { doctorId });
+    const res = await api.post('/clinic/v1/me/doctors/invite', { doctorId });
+    return res.data as ClinicDoctor;
   },
 
   acceptDoctor: async (id: string): Promise<ClinicDoctor> => {
-    return api.post<unknown, ClinicDoctor>(`/clinic/v1/me/doctors/${id}/accept`);
+    const res = await api.post(`/clinic/v1/me/doctors/${id}/accept`);
+    return res.data as ClinicDoctor;
   },
 
   rejectDoctor: async (id: string): Promise<ClinicDoctor> => {
-    return api.post<unknown, ClinicDoctor>(`/clinic/v1/me/doctors/${id}/reject`);
+    const res = await api.post(`/clinic/v1/me/doctors/${id}/reject`);
+    return res.data as ClinicDoctor;
   },
 
   removeDoctor: async (id: string): Promise<void> => {
-    return api.delete(`/clinic/v1/me/doctors/${id}`);
+    await api.delete(`/clinic/v1/me/doctors/${id}`);
   },
 
   getGallery: async (): Promise<ClinicGalleryItem[]> => {
-    const raw = await api.get<unknown, unknown>('/clinic/v1/me/gallery');
-    return ensureArray<ClinicGalleryItem>(raw);
+    const res = await api.get('/clinic/v1/me/gallery');
+    return ensureArray<ClinicGalleryItem>(res.data);
   },
 
   uploadGalleryImage: async (formData: FormData): Promise<ClinicGalleryItem> => {
-    return api.post<unknown, ClinicGalleryItem>('/clinic/v1/me/gallery', formData, {
-      headers: { 'Content-Type': 'multipart/form-data' },
-    });
+    const res = await api.post('/clinic/v1/me/gallery', formData);
+    return res.data as ClinicGalleryItem;
   },
 
   updateGalleryImage: async (id: string, payload: { sortOrder?: number; title?: string }): Promise<ClinicGalleryItem> => {
-    return api.patch<unknown, ClinicGalleryItem>(`/clinic/v1/me/gallery/${id}`, payload);
+    const res = await api.patch(`/clinic/v1/me/gallery/${id}`, payload);
+    return res.data as ClinicGalleryItem;
   },
 
   deleteGalleryImage: async (id: string): Promise<void> => {
-    return api.delete(`/clinic/v1/me/gallery/${id}`);
+    await api.delete(`/clinic/v1/me/gallery/${id}`);
   },
 
   /**
    * Search for platform doctors for invitation purposes.
-   * Tries the public endpoint first, falls back to admin endpoint.
+   * Tries public endpoint first, falls back to admin endpoint.
    * Returns empty array on failure (no 403 propagation).
    */
-  searchPlatformDoctors: async (search: string, limit = 10): Promise<Array<{
+  searchPlatformDoctors: async (search?: string, limit = 20): Promise<Array<{
     id: string;
     email?: string;
     firstNameFr?: string;
@@ -195,13 +200,12 @@ export const clinicSelfApi = {
     isVerified?: boolean;
   }>> => {
     const term = (search || "").trim();
-    if (!term || term.length < 2) return [];
+    const params: Record<string, unknown> = { limit };
+    if (term) params.search = term;
 
     // Try public doctor search first
     try {
-      const res = await api.get('/public/v1/doctors', {
-        params: { search: term, limit },
-      });
+      const res = await api.get('/public/v1/doctors', { params });
       const raw = res.data;
       if (Array.isArray(raw)) return raw;
       if (raw && typeof raw === "object") {
@@ -212,11 +216,9 @@ export const clinicSelfApi = {
       // public endpoint may not exist
     }
 
-    // Fallback: try admin doctor list (may 403 for clinic tokens)
+    // Fallback: try doctor list endpoint
     try {
-      const res = await api.get('/doctor/v1', {
-        params: { search: term, limit },
-      });
+      const res = await api.get('/doctor/v1', { params });
       const raw = res.data;
       if (Array.isArray(raw)) return raw;
       if (raw && typeof raw === "object") {

@@ -52,7 +52,7 @@ export default function GalleryPage() {
       return clinicSelfApi.uploadGalleryImage(formData);
     },
     invalidate: [qk.clinicSelf.gallery(), qk.dashboard.gallery()],
-    successMessage: t("gallery.uploadSuccess", { defaultValue: "تم رفع صورة المعرض بنجاح" }),
+    successMessage: t("gallery.uploadSuccess", { defaultValue: "Upload Success" }),
     onSuccess: () => {
       setUploadModalOpen(false);
       setSelectedFile(null);
@@ -63,7 +63,7 @@ export default function GalleryPage() {
   const deleteMutation = useEntityMutation({
     mutationFn: (id: string) => clinicSelfApi.deleteGalleryImage(id),
     invalidate: [qk.clinicSelf.gallery()],
-    successMessage: t("gallery.deleteSuccess", { defaultValue: "تم حذف الصورة من المعرض" }),
+    successMessage: t("gallery.deleteSuccess", { defaultValue: "Delete Success" }),
     onSuccess: () => setConfirmDeleteId(null),
   });
 
@@ -80,10 +80,10 @@ export default function GalleryPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">
-            {t("gallery.title", { defaultValue: "معرض صور ومرافق العيادة" })}
+            {t("gallery.title", { defaultValue: "Clinic Facility Gallery" })}
           </h1>
           <p className="text-xs text-muted-foreground mt-0.5">
-            {t("gallery.subtitle", { defaultValue: "إدارة التوثيق البصري للعيادة والتجهيزات الطبيّة" })}
+            {t("gallery.subtitle", { defaultValue: "Manage facility photography and clinical imagery" })}
           </p>
         </div>
 
@@ -92,7 +92,7 @@ export default function GalleryPage() {
           className="inline-flex items-center gap-2 rounded-xl bg-primary-500 px-4 py-2.5 text-xs font-semibold text-primary-foreground shadow-xs transition hover:opacity-90 cursor-pointer self-start sm:self-auto"
         >
           <Upload className="h-4 w-4" />
-          {t("gallery.uploadButton", { defaultValue: "إضافة صورة جديدة للمعرض" })}
+          {t("gallery.uploadButton", { defaultValue: "Upload New Image" })}
         </button>
       </div>
 
@@ -103,7 +103,7 @@ export default function GalleryPage() {
             <Info className="h-4.5 w-4.5" />
           </div>
           <p className="text-xs text-muted-foreground leading-relaxed">
-            {t("gallery.noticeText", { defaultValue: "الصور ذات الجودة العالية ترفع موثوقية العيادة وتظهر مباشرة للمرضى على المنصة." })}
+            {t("gallery.noticeText", { defaultValue: "Notice Text" })}
           </p>
         </div>
       </GlassCard>
@@ -117,7 +117,7 @@ export default function GalleryPage() {
             </div>
             <div>
               <div className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-                {t("gallery.totalImages", { defaultValue: "إجمالي الصور" })}
+                {t("gallery.totalImages", { defaultValue: "Total Images" })}
               </div>
               <div className="text-base font-bold">{stats.total}</div>
             </div>
@@ -131,7 +131,7 @@ export default function GalleryPage() {
             </div>
             <div>
               <div className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-                {t("gallery.featuredImages", { defaultValue: "صور بعناوين" })}
+                {t("gallery.featuredImages", { defaultValue: "Featured Shots" })}
               </div>
               <div className="text-base font-bold text-success">{stats.withTitle}</div>
             </div>
@@ -145,7 +145,7 @@ export default function GalleryPage() {
             </div>
             <div>
               <div className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-                {t("gallery.limitLabel", { defaultValue: "حد الصور المسموح" })}
+                {t("gallery.limitLabel", { defaultValue: "Limit Label" })}
               </div>
               <div className="text-base font-bold">{stats.total} / 20</div>
             </div>
@@ -162,14 +162,14 @@ export default function GalleryPage() {
         </div>
       ) : gallery.length === 0 ? (
         <EmptyState
-          title={t("gallery.emptyTitle", { defaultValue: "لا توجد صور في المعرض حالياً" })}
-          description={t("gallery.emptySub", { defaultValue: "قم برفع صور واضحة لقاعات الانتظار وقاعات الفحص والتجهيزات." })}
+          title={t("gallery.emptyTitle", { defaultValue: "Empty Title" })}
+          description={t("gallery.emptySub", { defaultValue: "Empty Sub" })}
           action={
             <button
               onClick={() => setUploadModalOpen(true)}
               className="inline-flex items-center gap-2 rounded-xl bg-primary-500 px-4 py-2 text-xs font-semibold text-primary-foreground hover:opacity-90 cursor-pointer"
             >
-              <Upload className="h-4 w-4" /> {t("gallery.uploadButton", { defaultValue: "إضافة صورة جديدة للمعرض" })}
+              <Upload className="h-4 w-4" /> {t("gallery.uploadButton", { defaultValue: "Upload New Image" })}
             </button>
           }
         />
@@ -196,7 +196,7 @@ export default function GalleryPage() {
                 <button
                   onClick={() => setPreviewImage(item.imageUrl)}
                   className="p-2.5 rounded-xl bg-white/20 text-white backdrop-blur-xs hover:bg-white/40 transition cursor-pointer"
-                  title={t("common.view", { defaultValue: "معاينة" })}
+                  title={t("common.view", { defaultValue: "View" })}
                 >
                   <Maximize2 className="h-4 w-4" />
                 </button>
@@ -204,7 +204,7 @@ export default function GalleryPage() {
                 <button
                   onClick={() => setConfirmDeleteId(item.id)}
                   className="p-2.5 rounded-xl bg-danger/80 text-white backdrop-blur-xs hover:bg-danger transition cursor-pointer"
-                  title={t("common.delete", { defaultValue: "حذف" })}
+                  title={t("common.delete", { defaultValue: "Delete" })}
                 >
                   <Trash2 className="h-4 w-4" />
                 </button>
@@ -223,14 +223,14 @@ export default function GalleryPage() {
           setSelectedFile(null);
           setTitleInput("");
         }}
-        title={t("gallery.uploadButton", { defaultValue: "إضافة صورة جديدة للمعرض" })}
-        description={t("gallery.modalDesc", { defaultValue: "اختر صورة عالية الجودة (JPEG, PNG, WebP) بحجم أقل من 5 ميجابايت" })}
+        title={t("gallery.uploadButton", { defaultValue: "Upload New Image" })}
+        description={t("gallery.modalDesc", { defaultValue: "Modal Desc" })}
       >
         <div className="space-y-4">
           <label className="flex flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-border/60 p-8 text-center hover:border-primary-500/50 hover:bg-primary-500/5 transition cursor-pointer">
             <ImageIcon className="h-8 w-8 text-primary-500" />
             <span className="text-xs font-semibold text-foreground">
-              {selectedFile ? selectedFile.name : t("gallery.clickToBrowse", { defaultValue: "اضغط لاختيار صورة أو اسحبها هنا" })}
+              {selectedFile ? selectedFile.name : t("gallery.clickToBrowse", { defaultValue: "Click To Browse" })}
             </span>
             <span className="text-[11px] text-muted-foreground">JPG, PNG, WEBP (Max 5MB)</span>
             <input
@@ -245,12 +245,12 @@ export default function GalleryPage() {
           </label>
 
           <div className="space-y-1.5">
-            <label className="text-xs font-medium text-muted-foreground">{t("gallery.imageTitlePlaceholder", { defaultValue: "عنوان الصورة (اختياري)" })}</label>
+            <label className="text-xs font-medium text-muted-foreground">{t("gallery.imageTitlePlaceholder", { defaultValue: "Image Title (e.g., Main Waiting Lobby)" })}</label>
             <input
               type="text"
               value={titleInput}
               onChange={(e) => setTitleInput(e.target.value)}
-              placeholder={t("gallery.imageTitlePlaceholder", { defaultValue: "عنوان الصورة (مثال: قاعة الانتظار الرئيسية)" })}
+              placeholder={t("gallery.imageTitlePlaceholder", { defaultValue: "Image Title (e.g., Main Waiting Lobby)" })}
               className="glass w-full rounded-xl px-3.5 py-2 text-xs outline-none focus:ring-2 focus:ring-primary-500/40"
             />
           </div>
@@ -265,7 +265,7 @@ export default function GalleryPage() {
               }}
               className="rounded-xl px-4 py-2 text-xs font-semibold text-muted-foreground hover:bg-accent cursor-pointer"
             >
-              {t("common.cancel", { defaultValue: "إلغاء" })}
+              {t("common.cancel", { defaultValue: "Cancel" })}
             </button>
             <button
               type="button"
@@ -276,7 +276,7 @@ export default function GalleryPage() {
               className="inline-flex items-center gap-2 rounded-xl bg-primary-500 px-4 py-2 text-xs font-semibold text-primary-foreground hover:opacity-90 disabled:opacity-50 cursor-pointer"
             >
               {uploadMutation.isPending && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
-              {t("gallery.uploadButton", { defaultValue: "إضافة صورة جديدة للمعرض" })}
+              {t("gallery.uploadButton", { defaultValue: "Upload New Image" })}
             </button>
           </div>
         </div>
@@ -310,9 +310,9 @@ export default function GalleryPage() {
         open={!!confirmDeleteId}
         onClose={() => { setConfirmDeleteId(null); }}
         onConfirm={() => { if (confirmDeleteId) deleteMutation.mutate(confirmDeleteId); }}
-        title={t("gallery.deleteTitle", { defaultValue: "حذف صورة من المعرض" })}
-        description={t("gallery.deleteMessage", { defaultValue: "هل أنت متأكد من حذف هذه الصورة من معرض صور العيادة؟" })}
-        confirmText={t("common.delete", { defaultValue: "حذف" })}
+        title={t("gallery.deleteTitle", { defaultValue: "Delete Gallery Photo" })}
+        description={t("gallery.deleteMessage", { defaultValue: "Are you sure you want to delete this photo from the clinic gallery?" })}
+        confirmText={t("common.delete", { defaultValue: "Delete" })}
         variant="danger"
         isLoading={deleteMutation.isPending}
       />

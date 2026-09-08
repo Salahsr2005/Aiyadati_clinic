@@ -98,7 +98,7 @@ export default function ServicesPage() {
   const createMutation = useEntityMutation({
     mutationFn: (payload: CreateServicePayload) => clinicServicesApi.create(payload),
     invalidate: [qk.clinicSelf.services()],
-    successMessage: t("services.createSuccess", { defaultValue: "تم إنشاء الخدمة الطبية بنجاح" }),
+    successMessage: t("services.createSuccess", { defaultValue: "Service created successfully" }),
     onSuccess: () => {
       setModalOpen(false);
       reset();
@@ -109,7 +109,7 @@ export default function ServicesPage() {
     mutationFn: ({ id, payload }: { id: string; payload: ServiceFormData }) =>
       clinicServicesApi.update(id, payload),
     invalidate: [qk.clinicSelf.services()],
-    successMessage: t("services.updateSuccess", { defaultValue: "تم تحديث تفاصيل الخدمة بنجاح" }),
+    successMessage: t("services.updateSuccess", { defaultValue: "Service updated successfully" }),
     onSuccess: () => {
       setModalOpen(false);
       setEditingService(null);
@@ -120,7 +120,7 @@ export default function ServicesPage() {
   const deleteMutation = useEntityMutation({
     mutationFn: (id: string) => clinicServicesApi.delete(id),
     invalidate: [qk.clinicSelf.services()],
-    successMessage: t("services.deleteSuccess", { defaultValue: "تم حذف الخدمة الطبية بنجاح" }),
+    successMessage: t("services.deleteSuccess", { defaultValue: "Service deleted successfully" }),
     onSuccess: () => setDeleteConfirmId(null),
   });
 
@@ -129,14 +129,14 @@ export default function ServicesPage() {
     mutationFn: ({ serviceId, doctorId }: { serviceId: string; doctorId: string }) =>
       clinicServicesApi.assignDoctor(serviceId, { doctorId }),
     invalidate: [qk.clinicSelf.services()],
-    successMessage: t("services.assignSuccess", { defaultValue: "تم تخصيص الطبيب للخدمة بنجاح" }),
+    successMessage: t("services.assignSuccess", { defaultValue: "Doctor assigned to service" }),
   });
 
   const unassignDoctorMutation = useEntityMutation({
     mutationFn: ({ serviceId, doctorId }: { serviceId: string; doctorId: string }) =>
       clinicServicesApi.unassignDoctor(serviceId, doctorId),
     invalidate: [qk.clinicSelf.services()],
-    successMessage: t("services.unassignSuccess", { defaultValue: "تم إزالة تخصيص الطبيب من الخدمة" }),
+    successMessage: t("services.unassignSuccess", { defaultValue: "Doctor removed from service" }),
   });
 
   // Image Upload mutation
@@ -151,14 +151,14 @@ export default function ServicesPage() {
       return clinicServicesApi.uploadImage(serviceId, formData);
     },
     invalidate: [qk.clinicSelf.services(), qk.dashboard.services()],
-    successMessage: t("services.imageUploadSuccess", { defaultValue: "تم رفع صورة الخدمة بنجاح" }),
+    successMessage: t("services.imageUploadSuccess", { defaultValue: "Service image uploaded successfully" }),
   });
 
   const deleteImageMutation = useEntityMutation({
     mutationFn: ({ serviceId, imageId }: { serviceId: string; imageId: string }) =>
       clinicServicesApi.deleteImage(serviceId, imageId),
     invalidate: [qk.clinicSelf.services()],
-    successMessage: t("services.imageDeleteSuccess", { defaultValue: "تم إزالة صورة الخدمة" }),
+    successMessage: t("services.imageDeleteSuccess", { defaultValue: "Service image deleted" }),
   });
 
   const openCreateModal = () => {
@@ -241,10 +241,10 @@ export default function ServicesPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">
-            {t("services.title", { defaultValue: "الخدمات والفحوصات الطبيّة" })}
+            {t("services.title", { defaultValue: "Care Offerings & Services" })}
           </h1>
           <p className="text-xs text-muted-foreground mt-0.5">
-            {t("services.subtitle", { defaultValue: "إدارة قائمة الخدمات والعلاجات وتحديد الأسعار والمدة الزمنية" })}
+            {t("services.subtitle", { defaultValue: "Manage clinic treatments, diagnostic offerings, pricing and durations" })}
           </p>
         </div>
 
@@ -253,7 +253,7 @@ export default function ServicesPage() {
           className="inline-flex items-center gap-2 rounded-xl bg-primary-500 px-4 py-2.5 text-xs font-semibold text-primary-foreground shadow-xs transition hover:opacity-90 cursor-pointer self-start sm:self-auto"
         >
           <Plus className="h-4 w-4" />
-          {t("services.createButton", { defaultValue: "إضافة خدمة طبية جديدة" })}
+          {t("services.createButton", { defaultValue: "Add New Service" })}
         </button>
       </div>
 
@@ -266,7 +266,7 @@ export default function ServicesPage() {
             </div>
             <div>
               <div className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-                {t("services.totalServices", { defaultValue: "إجمالي الخدمات" })}
+                {t("services.totalServices", { defaultValue: "Total Services" })}
               </div>
               <div className="text-base font-bold">{stats.total}</div>
             </div>
@@ -280,7 +280,7 @@ export default function ServicesPage() {
             </div>
             <div>
               <div className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-                {t("services.activeServices", { defaultValue: "خدمات متاحة حاليًا" })}
+                {t("services.activeServices", { defaultValue: "Active Offerings" })}
               </div>
               <div className="text-base font-bold text-success">{stats.active}</div>
             </div>
@@ -294,7 +294,7 @@ export default function ServicesPage() {
             </div>
             <div>
               <div className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-                {t("services.avgPrice", { defaultValue: "متوسط السعر (د.ج)" })}
+                {t("services.avgPrice", { defaultValue: "Avg Price (DZD)" })}
               </div>
               <div className="text-base font-bold">{stats.avgPrice.toLocaleString()} د.ج</div>
             </div>
@@ -308,7 +308,7 @@ export default function ServicesPage() {
             </div>
             <div>
               <div className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-                {t("services.avgDuration", { defaultValue: "متوسط المدة (دقيقة)" })}
+                {t("services.avgDuration", { defaultValue: "Avg Duration (mins)" })}
               </div>
               <div className="text-base font-bold">{stats.avgDuration} دقيقة</div>
             </div>
@@ -321,7 +321,7 @@ export default function ServicesPage() {
         <div className="flex flex-wrap items-center gap-3">
           <div className="flex items-center gap-2 text-xs font-bold text-muted-foreground">
             <Filter className="h-4 w-4 text-primary-500" />
-            <span>{t("filters.open", { defaultValue: "تصفية وتنقيب" })}</span>
+            <span>{t("filters.open", { defaultValue: "Filter & Refine" })}</span>
           </div>
 
           {/* Search Input */}
@@ -331,7 +331,7 @@ export default function ServicesPage() {
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder={t("services.searchPlaceholder", { defaultValue: "البحث عن خدمة طبية..." })}
+              placeholder={t("services.searchPlaceholder", { defaultValue: "Search service offering..." })}
               className="glass w-full rounded-xl ps-8 pe-8 py-2 text-xs font-semibold outline-none focus:ring-2 focus:ring-primary-500/40"
             />
             {searchQuery && (
@@ -353,7 +353,7 @@ export default function ServicesPage() {
               }`}
             >
               <LayoutGrid className="h-3.5 w-3.5" />
-              <span className="hidden sm:inline">{t("views.grid", { defaultValue: "عرض بطاقات" })}</span>
+              <span className="hidden sm:inline">{t("views.grid", { defaultValue: "Grid Cards" })}</span>
             </button>
             <button
               onClick={() => setViewMode("list")}
@@ -362,7 +362,7 @@ export default function ServicesPage() {
               }`}
             >
               <List className="h-3.5 w-3.5" />
-              <span className="hidden sm:inline">{t("views.table", { defaultValue: "عرض جدول" })}</span>
+              <span className="hidden sm:inline">{t("views.table", { defaultValue: "Data Table" })}</span>
             </button>
           </div>
 
@@ -374,7 +374,7 @@ export default function ServicesPage() {
               }}
               className="inline-flex items-center gap-1 text-xs text-primary-500 font-bold hover:underline cursor-pointer"
             >
-              <RotateCcw className="h-3 w-3" /> {t("filters.reset", { defaultValue: "إعادة تعيين" })}
+              <RotateCcw className="h-3 w-3" /> {t("filters.reset", { defaultValue: "Reset" })}
             </button>
           )}
         </div>
@@ -383,9 +383,9 @@ export default function ServicesPage() {
         <div className="flex items-center gap-2 flex-wrap pt-1 border-t border-border/30">
           {(
             [
-              { id: "ALL" as StatusFilter, label: t("common.all", { defaultValue: "الكل" }), count: stats.total },
-              { id: "ACTIVE" as StatusFilter, label: t("common.active", { defaultValue: "نشط" }), count: stats.active },
-              { id: "INACTIVE" as StatusFilter, label: t("common.inactive", { defaultValue: "غير نشط" }), count: stats.inactive },
+              { id: "ALL" as StatusFilter, label: t("common.all", { defaultValue: "All" }), count: stats.total },
+              { id: "ACTIVE" as StatusFilter, label: t("common.active", { defaultValue: "Active" }), count: stats.active },
+              { id: "INACTIVE" as StatusFilter, label: t("common.inactive", { defaultValue: "Inactive" }), count: stats.inactive },
             ] as const
           ).map((pill) => {
             const isActive = statusFilter === pill.id;
@@ -418,18 +418,18 @@ export default function ServicesPage() {
         </div>
       ) : filteredServices.length === 0 ? (
         <EmptyState
-          title={hasFilters ? t("common.empty", { defaultValue: "لا توجد سجّلات متاحة حاليًا" }) : t("services.emptyTitle", { defaultValue: "لا توجد خدمات علاجية مسجلة حاليًا" })}
+          title={hasFilters ? t("common.empty", { defaultValue: "No records found" }) : t("services.emptyTitle", { defaultValue: "No services configured" })}
           description={
             hasFilters
-              ? t("filters.clear", { defaultValue: "جرب تعديل فلاتر البحث." })
-              : t("services.emptySub", { defaultValue: "قم بإضافة الخدمات والفحوصات الطبيّة المتاحة بالعيادة مع تحديد أسعارها." })
+              ? t("filters.clear", { defaultValue: "Clear All" })
+              : t("services.emptySub", { defaultValue: "Empty Sub" })
           }
           action={
             <button
               onClick={openCreateModal}
               className="inline-flex items-center gap-2 rounded-xl bg-primary-500 px-4 py-2 text-xs font-semibold text-primary-foreground hover:opacity-90 cursor-pointer"
             >
-              <Plus className="h-4 w-4" /> {t("services.createButton", { defaultValue: "إضافة خدمة طبية جديدة" })}
+              <Plus className="h-4 w-4" /> {t("services.createButton", { defaultValue: "Add New Service" })}
             </button>
           }
         />
@@ -486,19 +486,19 @@ export default function ServicesPage() {
                     <button
                       onClick={() => setSelectedDoctorService(service)}
                       className="inline-flex items-center gap-1 hover:text-primary-500 transition cursor-pointer"
-                      title={t("services.assignDoctors", { defaultValue: "الأطباء الممارسون لهذه الخدمة" })}
+                      title={t("services.assignDoctors", { defaultValue: "Practicing Doctors for Service" })}
                     >
                       <UserCheck className="h-3.5 w-3.5 text-primary-500" />
-                      <span>{assignedCount} {t("doctors.title", { defaultValue: "أطباء" })}</span>
+                      <span>{assignedCount} {t("doctors.title", { defaultValue: "Affiliated Medical Staff" })}</span>
                     </button>
                     <span className="mx-1">·</span>
                     <button
                       onClick={() => setSelectedImageService(service)}
                       className="inline-flex items-center gap-1 hover:text-primary-500 transition cursor-pointer"
-                      title={t("gallery.title", { defaultValue: "معرض صور الخدمة" })}
+                      title={t("gallery.title", { defaultValue: "Clinic Facility Gallery" })}
                     >
                       <ImageIcon className="h-3.5 w-3.5 text-primary-500" />
-                      <span>{imagesCount} {t("gallery.totalImages", { defaultValue: "صور" })}</span>
+                      <span>{imagesCount} {t("gallery.totalImages", { defaultValue: "Total Images" })}</span>
                     </button>
                   </div>
 
@@ -506,7 +506,7 @@ export default function ServicesPage() {
                     <button
                       onClick={() => openEditModal(service)}
                       className="p-1.5 rounded-lg text-muted-foreground hover:bg-accent hover:text-foreground transition cursor-pointer"
-                      title={t("common.edit", { defaultValue: "تعديل" })}
+                      title={t("common.edit", { defaultValue: "Edit" })}
                     >
                       <Edit2 className="h-3.5 w-3.5" />
                     </button>
@@ -514,7 +514,7 @@ export default function ServicesPage() {
                     <button
                       onClick={() => setDeleteConfirmId(service.id)}
                       className="p-1.5 rounded-lg text-danger/70 hover:bg-danger/10 hover:text-danger transition cursor-pointer"
-                      title={t("common.delete", { defaultValue: "حذف" })}
+                      title={t("common.delete", { defaultValue: "Delete" })}
                     >
                       <Trash2 className="h-3.5 w-3.5" />
                     </button>
@@ -562,7 +562,7 @@ export default function ServicesPage() {
                     onClick={() => setSelectedDoctorService(service)}
                     className="px-2.5 py-1 rounded-xl text-xs font-bold bg-primary-500/10 text-primary-500 hover:bg-primary-500/20 transition cursor-pointer"
                   >
-                    {t("doctors.title", { defaultValue: "أطباء" })} ({assignedCount})
+                    {t("doctors.title", { defaultValue: "Affiliated Medical Staff" })} ({assignedCount})
                   </button>
                   <button
                     onClick={() => setSelectedImageService(service)}
@@ -594,13 +594,13 @@ export default function ServicesPage() {
         id="service-form-modal"
         open={modalOpen}
         onClose={() => setModalOpen(false)}
-        title={editingService ? t("services.editTitle", { defaultValue: "تعديل تفاصيل الخدمة" }) : t("services.createTitle", { defaultValue: "إضافة خدمة علاجية جديدة" })}
-        description={t("services.modalDesc", { defaultValue: "حدد مسمى الخدمة والمدة والسعر المخصص للاستشارة" })}
+        title={editingService ? t("services.editTitle", { defaultValue: "Edit Care Service Details" }) : t("services.createTitle", { defaultValue: "Create New Care Service" })}
+        description={t("services.modalDesc", { defaultValue: "Modal Desc" })}
       >
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1.5">
-              <label className="text-sm font-medium">{t("services.serviceName", { defaultValue: "اسم الخدمة / الفحص الطبي" })} (الفرنسية)*</label>
+              <label className="text-sm font-medium">{t("services.serviceName", { defaultValue: "Service / Treatment Name" })} (الفرنسية)*</label>
               <input
                 {...register("nameFr")}
                 placeholder="e.g. Consultation Générale"
@@ -610,7 +610,7 @@ export default function ServicesPage() {
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-sm font-medium">{t("services.serviceName", { defaultValue: "اسم الخدمة / الفحص الطبي" })} (العربية)</label>
+              <label className="text-sm font-medium">{t("services.serviceName", { defaultValue: "Service / Treatment Name" })} (العربية)</label>
               <input
                 {...register("nameAr")}
                 placeholder="مثال: فحص عام"
@@ -622,7 +622,7 @@ export default function ServicesPage() {
 
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1.5">
-              <label className="text-sm font-medium">{t("services.servicePrice", { defaultValue: "سعر الخدمة (د.ج)" })}</label>
+              <label className="text-sm font-medium">{t("services.servicePrice", { defaultValue: "Price (DZD)" })}</label>
               <input
                 type="number"
                 {...register("price")}
@@ -632,7 +632,7 @@ export default function ServicesPage() {
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-sm font-medium">{t("services.serviceDuration", { defaultValue: "مدة الخدمة بالدقائق" })}</label>
+              <label className="text-sm font-medium">{t("services.serviceDuration", { defaultValue: "Duration in Minutes" })}</label>
               <input
                 type="number"
                 {...register("durationMinutes")}
@@ -643,7 +643,7 @@ export default function ServicesPage() {
           </div>
 
           <div className="space-y-1.5">
-            <label className="text-sm font-medium">{t("common.details", { defaultValue: "التفاصيل" })}</label>
+            <label className="text-sm font-medium">{t("common.details", { defaultValue: "Details" })}</label>
             <textarea
               {...register("descriptionFr")}
               rows={2}
@@ -659,7 +659,7 @@ export default function ServicesPage() {
                 {...register("isActive")}
                 className="rounded text-primary-500 focus:ring-primary-500 h-4 w-4"
               />
-              <span className="text-xs font-bold text-foreground">{t("services.activeState", { defaultValue: "الخدمة متاحة للحجز المباشر" })}</span>
+              <span className="text-xs font-bold text-foreground">{t("services.activeState", { defaultValue: "Active State" })}</span>
             </label>
           )}
 
@@ -669,7 +669,7 @@ export default function ServicesPage() {
               onClick={() => setModalOpen(false)}
               className="rounded-xl px-4 py-2 text-xs font-semibold text-muted-foreground hover:bg-accent cursor-pointer"
             >
-              {t("common.cancel", { defaultValue: "إلغاء" })}
+              {t("common.cancel", { defaultValue: "Cancel" })}
             </button>
             <button
               type="submit"
@@ -679,7 +679,7 @@ export default function ServicesPage() {
               {(createMutation.isPending || updateMutation.isPending) && (
                 <Loader2 className="h-3.5 w-3.5 animate-spin" />
               )}
-              {editingService ? t("common.save", { defaultValue: "حفظ التغييرات" }) : t("common.create", { defaultValue: "إضافة جديد" })}
+              {editingService ? t("common.save", { defaultValue: "Save Changes" }) : t("common.create", { defaultValue: "Create New" })}
             </button>
           </div>
         </form>
@@ -689,19 +689,19 @@ export default function ServicesPage() {
       <Drawer
         open={!!selectedDoctorService}
         onClose={() => setSelectedDoctorService(null)}
-        title={selectedDoctorService ? `${t("services.assignDoctors", { defaultValue: "الأطباء الممارسون لخدمة" })}: ${selectedDoctorService.nameFr}` : t("services.assignDoctors", { defaultValue: "الأطباء الممارسون لهذه الخدمة" })}
+        title={selectedDoctorService ? `${t("services.assignDoctors", { defaultValue: "Practicing Doctors for Service" })}: ${selectedDoctorService.nameFr}` : t("services.assignDoctors", { defaultValue: "Practicing Doctors for Service" })}
         subtitle="تحديد وتعيين الطاقم الطبي المخول بتقديم هذه الخدمة"
       >
         {selectedDoctorService && (
           <div className="space-y-5">
             <div className="space-y-3">
               <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
-                {t("doctors.activeStaff", { defaultValue: "أطباء نشطون حالياً" })} ({acceptedDoctors.length})
+                {t("doctors.activeStaff", { defaultValue: "Active Staff" })} ({acceptedDoctors.length})
               </h4>
 
               {acceptedDoctors.length === 0 ? (
                 <div className="p-4 rounded-2xl border border-border/40 text-center text-xs text-muted-foreground">
-                  {t("doctors.emptyAccepted", { defaultValue: "لا يوجد أطباء نشطون معتمدون بالعيادة حالياً." })}
+                  {t("doctors.emptyAccepted", { defaultValue: "Empty Accepted" })}
                 </div>
               ) : (
                 <div className="space-y-2">
@@ -724,7 +724,7 @@ export default function ServicesPage() {
                             className="h-9 w-9 rounded-full object-cover border border-border/40"
                           />
                           <div>
-                            <div className="text-xs font-bold text-foreground">{t("doctors.doctorPrefix", { defaultValue: "د." })} {name}</div>
+                            <div className="text-xs font-bold text-foreground">{t("doctors.doctorPrefix", { defaultValue: "Doctor Prefix" })} {name}</div>
                             <div className="text-[10px] text-muted-foreground">
                               {d?.specialtyName || "تخصص طبي"}
                             </div>
@@ -743,7 +743,7 @@ export default function ServicesPage() {
                             className="px-3 py-1 rounded-xl text-xs font-bold bg-danger/15 text-danger hover:bg-danger/25 transition cursor-pointer inline-flex items-center gap-1"
                           >
                             {unassignDoctorMutation.isPending && <Loader2 className="h-3 w-3 animate-spin" />}
-                            إلغاء التخصيص
+                            Cancel التخصيص
                           </button>
                         ) : (
                           <button
@@ -774,7 +774,7 @@ export default function ServicesPage() {
       <Drawer
         open={!!selectedImageService}
         onClose={() => setSelectedImageService(null)}
-        title={selectedImageService ? `${t("gallery.title", { defaultValue: "معرض صور الخدمة" })}: ${selectedImageService.nameFr}` : t("gallery.title", { defaultValue: "معرض صور الخدمة" })}
+        title={selectedImageService ? `${t("gallery.title", { defaultValue: "Clinic Facility Gallery" })}: ${selectedImageService.nameFr}` : t("gallery.title", { defaultValue: "Clinic Facility Gallery" })}
         subtitle="رفع وإدارة التوثيق البصري للخدمة الطبية"
       >
         {selectedImageService && (
@@ -782,14 +782,14 @@ export default function ServicesPage() {
             {/* Upload Area */}
             <div className="p-4 rounded-2xl border-2 border-dashed border-border/60 bg-accent/20 text-center space-y-3">
               <ImageIcon className="h-8 w-8 text-primary-500 mx-auto" />
-              <div className="text-xs font-bold text-foreground">{t("gallery.uploadButton", { defaultValue: "إضافة صورة جديدة للمعرض" })}</div>
+              <div className="text-xs font-bold text-foreground">{t("gallery.uploadButton", { defaultValue: "Upload New Image" })}</div>
               <label className="inline-flex items-center gap-2 rounded-xl bg-primary-500 px-4 py-2 text-xs font-semibold text-primary-foreground hover:opacity-90 transition cursor-pointer">
                 {uploadImageMutation.isPending ? (
                   <Loader2 className="h-3.5 w-3.5 animate-spin" />
                 ) : (
                   <Upload className="h-3.5 w-3.5" />
                 )}
-                {t("gallery.clickToBrowse", { defaultValue: "اضغط لاختيار صورة" })}
+                {t("gallery.clickToBrowse", { defaultValue: "Click To Browse" })}
                 <input
                   type="file"
                   accept="image/*"
@@ -807,12 +807,12 @@ export default function ServicesPage() {
             {/* Existing Images */}
             <div className="space-y-3">
               <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
-                {t("gallery.totalImages", { defaultValue: "إجمالي الصور" })} ({selectedImageService.images?.length || 0})
+                {t("gallery.totalImages", { defaultValue: "Total Images" })} ({selectedImageService.images?.length || 0})
               </h4>
 
               {(!selectedImageService.images || selectedImageService.images.length === 0) ? (
                 <div className="p-4 text-center text-xs text-muted-foreground rounded-2xl border border-border/40">
-                  {t("gallery.emptyTitle", { defaultValue: "لا توجد صور في المعرض حالياً" })}
+                  {t("gallery.emptyTitle", { defaultValue: "Empty Title" })}
                 </div>
               ) : (
                 <div className="grid grid-cols-2 gap-3">
@@ -822,7 +822,7 @@ export default function ServicesPage() {
                       <button
                         onClick={() => deleteImageMutation.mutate({ serviceId: selectedImageService.id, imageId: img.id })}
                         className="absolute top-1.5 end-1.5 p-1 rounded-lg bg-danger text-white opacity-0 group-hover:opacity-100 transition cursor-pointer"
-                        title={t("common.delete", { defaultValue: "حذف" })}
+                        title={t("common.delete", { defaultValue: "Delete" })}
                       >
                         <Trash2 className="h-3.5 w-3.5" />
                       </button>
@@ -840,9 +840,9 @@ export default function ServicesPage() {
         open={!!deleteConfirmId}
         onClose={() => setDeleteConfirmId(null)}
         onConfirm={() => { if (deleteConfirmId) deleteMutation.mutate(deleteConfirmId); }}
-        title={t("services.deleteTitle", { defaultValue: "حذف الخدمة الطبية" })}
-        description={t("services.deleteMessage", { defaultValue: "هل أنت متأكد من حذف هذه الخدمة نهائيًا من قائمة خدمات العيادة؟" })}
-        confirmText={t("common.delete", { defaultValue: "حذف" })}
+        title={t("services.deleteTitle", { defaultValue: "Delete Care Service" })}
+        description={t("services.deleteMessage", { defaultValue: 'Are you sure you want to permanently delete service "{{name}}"' })}
+        confirmText={t("common.delete", { defaultValue: "Delete" })}
         variant="danger"
         isLoading={deleteMutation.isPending}
       />

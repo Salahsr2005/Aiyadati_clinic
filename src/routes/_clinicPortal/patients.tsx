@@ -168,10 +168,10 @@ export default function PatientsPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">
-            {t("patients.title", { defaultValue: "سجل المرضى والزوار" })}
+            {t("patients.title", { defaultValue: "My Patients" })}
           </h1>
           <p className="text-xs text-muted-foreground mt-0.5">
-            {t("patients.subtitle", { defaultValue: "متابعة بيانات المرضى المباشرين والزوار المسجلين بالعيادة" })}
+            {t("patients.subtitle", { defaultValue: "Track walk-in guest patients and registered app patients" })}
           </p>
         </div>
 
@@ -180,7 +180,7 @@ export default function PatientsPage() {
           className="inline-flex items-center gap-2 rounded-xl bg-primary-500 px-4 py-2.5 text-xs font-semibold text-primary-foreground shadow-xs transition hover:opacity-90 cursor-pointer self-start sm:self-auto"
         >
           <UserPlus className="h-4 w-4" />
-          {t("patients.createGuestButton", { defaultValue: "حجز مريض زائر جديد" })}
+          {t("patients.createGuestButton", { defaultValue: "Book Walk-In Guest" })}
         </button>
       </div>
 
@@ -193,7 +193,7 @@ export default function PatientsPage() {
             </div>
             <div>
               <div className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-                {t("patients.guestPatients", { defaultValue: "مرضى زوار بالعيادة" })}
+                {t("patients.guestPatients", { defaultValue: "Walk-In Guests" })}
               </div>
               <div className="text-base font-bold">{stats.total}</div>
             </div>
@@ -207,7 +207,7 @@ export default function PatientsPage() {
             </div>
             <div>
               <div className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-                {t("patients.totalVisits", { defaultValue: "إجمالي الزيارات والمواعيد" })}
+                {t("patients.totalVisits", { defaultValue: "Total Visits" })}
               </div>
               <div className="text-base font-bold text-success">{stats.withAppts}</div>
             </div>
@@ -221,7 +221,7 @@ export default function PatientsPage() {
             </div>
             <div>
               <div className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-                {t("common.email", { defaultValue: "البريد الإلكتروني" })}
+                {t("common.email", { defaultValue: "Email Address" })}
               </div>
               <div className="text-base font-bold">{stats.withEmail}</div>
             </div>
@@ -235,7 +235,7 @@ export default function PatientsPage() {
             </div>
             <div>
               <div className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-                {t("patients.medicalNotes", { defaultValue: "الملاحظات الطبية" })}
+                {t("patients.medicalNotes", { defaultValue: "Digital Medical Records & Notes" })}
               </div>
               <div className="text-base font-bold">{stats.withNotes}</div>
             </div>
@@ -254,7 +254,7 @@ export default function PatientsPage() {
               setSearchQuery(e.target.value);
               setPage(1);
             }}
-            placeholder={t("patients.searchPlaceholder", { defaultValue: "البحث باسم المريض أو رقم الهاتف..." })}
+            placeholder={t("patients.searchPlaceholder", { defaultValue: "Search by patient name or phone..." })}
             className="glass w-full rounded-xl ps-8 pe-8 py-2 text-xs font-semibold outline-none focus:ring-2 focus:ring-primary-500/40"
           />
           {searchQuery && (
@@ -278,7 +278,7 @@ export default function PatientsPage() {
             }}
             className="inline-flex items-center gap-1 text-xs text-primary-500 font-bold hover:underline cursor-pointer"
           >
-            <RotateCcw className="h-3 w-3" /> {t("filters.reset", { defaultValue: "إعادة تعيين" })}
+            <RotateCcw className="h-3 w-3" /> {t("filters.reset", { defaultValue: "Reset" })}
           </button>
         )}
       </GlassCard>
@@ -292,18 +292,18 @@ export default function PatientsPage() {
         </div>
       ) : patients.length === 0 ? (
         <EmptyState
-          title={searchQuery ? t("common.empty", { defaultValue: "لا توجد سجّلات متاحة حاليًا" }) : t("patients.emptyTitle", { defaultValue: "لا يوجد مرضى زوار مسجلين حتى الآن" })}
+          title={searchQuery ? t("common.empty", { defaultValue: "No records found" }) : t("patients.emptyTitle", { defaultValue: "Empty Title" })}
           description={
             searchQuery
-              ? t("filters.clear", { defaultValue: "جرب تعديل كلمات البحث." })
-              : t("patients.emptySub", { defaultValue: "قم بحجز المريض الزائر لمتابعة مواعيده ورسائله بالعيادة." })
+              ? t("filters.clear", { defaultValue: "Clear All" })
+              : t("patients.emptySub", { defaultValue: "Empty Sub" })
           }
           action={
             <button
               onClick={openCreateModal}
               className="inline-flex items-center gap-2 rounded-xl bg-primary-500 px-4 py-2 text-xs font-semibold text-primary-foreground hover:opacity-90 cursor-pointer"
             >
-              <Plus className="h-4 w-4" /> {t("patients.createGuestButton", { defaultValue: "حجز مريض زائر جديد" })}
+              <Plus className="h-4 w-4" /> {t("patients.createGuestButton", { defaultValue: "Book Walk-In Guest" })}
             </button>
           }
         />
@@ -341,7 +341,7 @@ export default function PatientsPage() {
                       </div>
                     </div>
 
-                    <span className="rounded-full bg-amber-500/15 px-2 py-0.5 text-[9px] font-bold text-amber-600 uppercase">{t("patients.guestTag", { defaultValue: "مريض زائر" })}</span>
+                    <span className="rounded-full bg-amber-500/15 px-2 py-0.5 text-[9px] font-bold text-amber-600 uppercase">{t("patients.guestTag", { defaultValue: "Guest Tag" })}</span>
                   </div>
 
                   {patient.email && (
@@ -354,7 +354,7 @@ export default function PatientsPage() {
                   {patient.dateOfBirth && (
                     <div className="flex items-center gap-1.5 text-xs text-muted-foreground mt-1">
                       <Calendar className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
-                      <span>{t("patients.dob", { defaultValue: "تاريخ الميلاد" })}: {patient.dateOfBirth}</span>
+                      <span>{t("patients.dob", { defaultValue: "Dob" })}: {patient.dateOfBirth}</span>
                     </div>
                   )}
 
@@ -368,21 +368,21 @@ export default function PatientsPage() {
                 <div className="pt-3 border-t border-border/30 flex items-center justify-between text-xs text-muted-foreground">
                   <span className="flex items-center gap-1 font-medium">
                     <Clock className="h-3.5 w-3.5 text-primary-500" />
-                    {apptCount} {t("patients.visitsCount", { defaultValue: "زيارات" })}
+                    {apptCount} {t("patients.visitsCount", { defaultValue: "Visits Count" })}
                   </span>
 
                   <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
                     <button
                       onClick={() => setDocsModalPatient({ id: patient.id, name: `${patient.firstName} ${patient.lastName}` })}
                       className="p-1.5 rounded-lg text-primary-500 hover:bg-primary-500/10 transition cursor-pointer"
-                      title={t("patients.openDocs", { defaultValue: "عرض المستندات والتحاليل الطبية" })}
+                      title={t("patients.openDocs", { defaultValue: "View Medical Records & Tests" })}
                     >
                       <FolderOpen className="h-3.5 w-3.5" />
                     </button>
                     <button
                       onClick={() => openEditModal(patient)}
                       className="p-1.5 rounded-lg text-muted-foreground hover:bg-accent hover:text-foreground transition cursor-pointer"
-                      title={t("common.edit", { defaultValue: "تعديل" })}
+                      title={t("common.edit", { defaultValue: "Edit" })}
                     >
                       <Edit2 className="h-3.5 w-3.5" />
                     </button>
@@ -410,8 +410,8 @@ export default function PatientsPage() {
       <Drawer
         open={!!selectedPatient}
         onClose={() => setSelectedPatient(null)}
-        title={selectedPatient ? `${selectedPatient.firstName} ${selectedPatient.lastName}` : t("patients.patientDetails", { defaultValue: "الملف الطبي للمريض" })}
-        subtitle={t("patients.inspectorSub", { defaultValue: "بيانات المريض الشخصية والتأكيدات وسجل المواعيد" })}
+        title={selectedPatient ? `${selectedPatient.firstName} ${selectedPatient.lastName}` : t("patients.patientDetails", { defaultValue: "Patient Medical Profile" })}
+        subtitle={t("patients.inspectorSub", { defaultValue: "Inspector Sub" })}
       >
         {selectedPatient && (
           <div className="space-y-5">
@@ -432,23 +432,23 @@ export default function PatientsPage() {
                   </div>
                 </div>
               </div>
-              <span className="rounded-full bg-amber-500/15 px-2 py-0.5 text-[9px] font-bold text-amber-600 uppercase">{t("patients.guestTag", { defaultValue: "مريض زائر" })}</span>
+              <span className="rounded-full bg-amber-500/15 px-2 py-0.5 text-[9px] font-bold text-amber-600 uppercase">{t("patients.guestTag", { defaultValue: "Guest Tag" })}</span>
             </div>
 
             {/* Information Section */}
             <div className="rounded-2xl border border-border/40 bg-accent/30 p-4 space-y-3">
               <div className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
-                <ShieldCheck className="h-3.5 w-3.5 text-primary-500" /> {t("patients.contactDetails", { defaultValue: "بيانات التواصل والتأكيد" })}
+                <ShieldCheck className="h-3.5 w-3.5 text-primary-500" /> {t("patients.contactDetails", { defaultValue: "Contact Details" })}
               </div>
               <div className="grid grid-cols-2 gap-3 text-xs">
                 <div>
-                  <div className="text-muted-foreground text-[11px]">{t("common.email", { defaultValue: "البريد الإلكتروني" })}</div>
+                  <div className="text-muted-foreground text-[11px]">{t("common.email", { defaultValue: "Email Address" })}</div>
                   <div className="font-bold text-foreground mt-0.5 truncate">
                     {selectedPatient.email || "—"}
                   </div>
                 </div>
                 <div>
-                  <div className="text-muted-foreground text-[11px]">{t("patients.dob", { defaultValue: "تاريخ الميلاد" })}</div>
+                  <div className="text-muted-foreground text-[11px]">{t("patients.dob", { defaultValue: "Dob" })}</div>
                   <div className="font-bold text-foreground mt-0.5">
                     {selectedPatient.dateOfBirth || "—"}
                   </div>
@@ -456,7 +456,7 @@ export default function PatientsPage() {
               </div>
               {selectedPatient.notes && (
                 <div className="pt-2 border-t border-border/30">
-                  <div className="text-muted-foreground text-[11px] mb-1">{t("patients.medicalNotes", { defaultValue: "الملاحظات والسجلات الطبية الرقمية" })}</div>
+                  <div className="text-muted-foreground text-[11px] mb-1">{t("patients.medicalNotes", { defaultValue: "Digital Medical Records & Notes" })}</div>
                   <div className="p-2.5 rounded-xl bg-card border border-border/30 text-xs leading-relaxed text-foreground">
                     {selectedPatient.notes}
                   </div>
@@ -468,13 +468,13 @@ export default function PatientsPage() {
             <div className="space-y-3">
               <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider flex items-center justify-between">
                 <span className="flex items-center gap-1.5">
-                  <History className="h-3.5 w-3.5 text-primary-500" /> {t("patients.visitHistory", { defaultValue: "سجل الزيارات والمواعيد السابقة" })} ({patientAppointments.length})
+                  <History className="h-3.5 w-3.5 text-primary-500" /> {t("patients.visitHistory", { defaultValue: "Past Visit & Appointment History" })} ({patientAppointments.length})
                 </span>
               </h4>
 
               {patientAppointments.length === 0 ? (
                 <div className="p-4 rounded-2xl border border-border/40 bg-muted/10 text-center text-xs text-muted-foreground">
-                  {t("patients.noHistory", { defaultValue: "لا توجد زيارات مسجلة لهذا المريض حتى الآن." })}
+                  {t("patients.noHistory", { defaultValue: "No History" })}
                 </div>
               ) : (
                 <div className="space-y-2 max-h-56 overflow-y-auto custom-scrollbar pe-1">
@@ -485,7 +485,7 @@ export default function PatientsPage() {
                     >
                       <div>
                         <div className="font-bold text-foreground">
-                          {app.doctor ? `${t("doctors.doctorPrefix", { defaultValue: "د." })} ${app.doctor.firstName || app.doctor.name || ""}` : t("patients.consultation", { defaultValue: "استشارة طبية" })}
+                          {app.doctor ? `${t("doctors.doctorPrefix", { defaultValue: "Doctor Prefix" })} ${app.doctor.firstName || app.doctor.name || ""}` : t("patients.consultation", { defaultValue: "Consultation" })}
                         </div>
                         <div className="text-[11px] text-muted-foreground">
                           {app.slot?.date} {app.slot?.startTime ? `· ${app.slot.startTime.slice(0, 5)}` : ""}
@@ -509,7 +509,7 @@ export default function PatientsPage() {
                 }}
                 className="flex-1 inline-flex items-center justify-center gap-1.5 rounded-xl bg-primary-500/10 px-4 py-2.5 text-xs font-bold text-primary-500 hover:bg-primary-500/20 transition cursor-pointer"
               >
-                <FolderOpen className="h-3.5 w-3.5" /> {t("patients.openDocs", { defaultValue: "عرض المستندات والتحاليل الطبية" })}
+                <FolderOpen className="h-3.5 w-3.5" /> {t("patients.openDocs", { defaultValue: "View Medical Records & Tests" })}
               </button>
               <button
                 onClick={() => {
@@ -518,7 +518,7 @@ export default function PatientsPage() {
                   openEditModal(pToEdit);
                 }}
                 className="inline-flex items-center justify-center p-2.5 rounded-xl bg-accent text-foreground hover:bg-accent/80 transition cursor-pointer"
-                title={t("common.edit", { defaultValue: "تعديل" })}
+                title={t("common.edit", { defaultValue: "Edit" })}
               >
                 <Edit2 className="h-4 w-4" />
               </button>
@@ -540,13 +540,13 @@ export default function PatientsPage() {
         id="guest-patient-modal"
         open={modalOpen}
         onClose={() => setModalOpen(false)}
-        title={editingPatient ? t("patients.editTitle", { defaultValue: "تعديل بيانات المريض" }) : t("patients.createGuestButton", { defaultValue: "حجز مريض زائر جديد" })}
-        description={t("patients.modalDesc", { defaultValue: "أدخل المعلومات والبيانات الشخصية للمريض الزائر" })}
+        title={editingPatient ? t("patients.editTitle", { defaultValue: "Edit Title" }) : t("patients.createGuestButton", { defaultValue: "Book Walk-In Guest" })}
+        description={t("patients.modalDesc", { defaultValue: "Modal Desc" })}
       >
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1.5">
-              <label className="text-sm font-medium">{t("patients.firstName", { defaultValue: "الاسم الأول" })}*</label>
+              <label className="text-sm font-medium">{t("patients.firstName", { defaultValue: "First Name" })}*</label>
               <input
                 {...register("firstName")}
                 className="glass w-full rounded-xl px-3.5 py-2.5 text-sm outline-none focus:ring-2 focus:ring-primary-500/40"
@@ -555,7 +555,7 @@ export default function PatientsPage() {
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-sm font-medium">{t("patients.lastName", { defaultValue: "اللقب" })}*</label>
+              <label className="text-sm font-medium">{t("patients.lastName", { defaultValue: "Last Name" })}*</label>
               <input
                 {...register("lastName")}
                 className="glass w-full rounded-xl px-3.5 py-2.5 text-sm outline-none focus:ring-2 focus:ring-primary-500/40"
@@ -565,7 +565,7 @@ export default function PatientsPage() {
           </div>
 
           <div className="space-y-1.5">
-            <label className="text-sm font-medium">{t("common.phone", { defaultValue: "رقم الهاتف" })}*</label>
+            <label className="text-sm font-medium">{t("common.phone", { defaultValue: "Phone Number" })}*</label>
             <input
               {...register("phone")}
               placeholder="0661234567"
@@ -576,7 +576,7 @@ export default function PatientsPage() {
 
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1.5">
-              <label className="text-sm font-medium">{t("common.email", { defaultValue: "البريد الإلكتروني" })}</label>
+              <label className="text-sm font-medium">{t("common.email", { defaultValue: "Email Address" })}</label>
               <input
                 type="email"
                 {...register("email")}
@@ -585,7 +585,7 @@ export default function PatientsPage() {
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-sm font-medium">{t("patients.dob", { defaultValue: "تاريخ الميلاد" })}</label>
+              <label className="text-sm font-medium">{t("patients.dob", { defaultValue: "Dob" })}</label>
               <input
                 type="date"
                 {...register("dateOfBirth")}
@@ -595,11 +595,11 @@ export default function PatientsPage() {
           </div>
 
           <div className="space-y-1.5">
-            <label className="text-sm font-medium">{t("patients.medicalNotes", { defaultValue: "الملاحظات الطبية" })}</label>
+            <label className="text-sm font-medium">{t("patients.medicalNotes", { defaultValue: "Digital Medical Records & Notes" })}</label>
             <textarea
               {...register("notes")}
               rows={2}
-              placeholder={t("patients.notesPlaceholder", { defaultValue: "الملاحظات الطبية الخاصة بالعيادة..." })}
+              placeholder={t("patients.notesPlaceholder", { defaultValue: "Notes Placeholder" })}
               className="glass w-full rounded-xl px-3.5 py-2.5 text-sm outline-none focus:ring-2 focus:ring-primary-500/40"
             />
           </div>
@@ -610,7 +610,7 @@ export default function PatientsPage() {
               onClick={() => setModalOpen(false)}
               className="rounded-xl px-4 py-2 text-xs font-semibold text-muted-foreground hover:bg-accent cursor-pointer"
             >
-              {t("common.cancel", { defaultValue: "إلغاء" })}
+              {t("common.cancel", { defaultValue: "Cancel" })}
             </button>
             <button
               type="submit"
@@ -620,7 +620,7 @@ export default function PatientsPage() {
               {(createMutation.isPending || updateMutation.isPending) && (
                 <Loader2 className="h-3.5 w-3.5 animate-spin" />
               )}
-              {editingPatient ? t("common.save", { defaultValue: "حفظ التغييرات" }) : t("common.create", { defaultValue: "إضافة جديد" })}
+              {editingPatient ? t("common.save", { defaultValue: "Save Changes" }) : t("common.create", { defaultValue: "Create New" })}
             </button>
           </div>
         </form>

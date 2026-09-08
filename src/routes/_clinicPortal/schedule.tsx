@@ -106,7 +106,7 @@ export default function SchedulePage() {
       return {
         id: doc.id,
         doctorId: doc.doctorId,
-        name: `${t("doctors.doctorPrefix", { defaultValue: "د." })} ${name}`,
+        name: `${t("doctors.doctorPrefix", { defaultValue: "Doctor Prefix" })} ${name}`,
         specialty: spec,
         photoUrl: d?.avatarUrl || d?.photoUrl,
         email: d?.email,
@@ -166,7 +166,7 @@ export default function SchedulePage() {
     mutationFn: (data: GenerateFormData) =>
       clinicAppointmentsApi.generateDoctorSlots(activeDoctorId, data),
     invalidate: [qk.clinicSelf.all()],
-    successMessage: t("schedule.batchSuccess", { defaultValue: "تم توليد فترات الحجز بنجاح" }),
+    successMessage: t("schedule.batchSuccess", { defaultValue: "Batch Success" }),
     onSuccess: () => {
       setGenerateModalOpen(false);
       generateForm.reset();
@@ -177,7 +177,7 @@ export default function SchedulePage() {
     mutationFn: (data: QuickSlotFormData) =>
       clinicAppointmentsApi.addQuickDoctorSlot(activeDoctorId, data),
     invalidate: [qk.clinicSelf.all()],
-    successMessage: t("schedule.quickSuccess", { defaultValue: "تم إضافة الفترة بنجاح" }),
+    successMessage: t("schedule.quickSuccess", { defaultValue: "Quick Success" }),
     onSuccess: () => {
       setQuickSlotModalOpen(false);
       quickSlotForm.reset();
@@ -188,7 +188,7 @@ export default function SchedulePage() {
     mutationFn: (data: CancelDateFormData) =>
       clinicAppointmentsApi.cancelDoctorSlotsDate(activeDoctorId, data),
     invalidate: [qk.clinicSelf.all()],
-    successMessage: t("schedule.cancelSuccess", { defaultValue: "تم إلغاء الفترات لهذا التاريخ" }),
+    successMessage: t("schedule.cancelSuccess", { defaultValue: "Cancel Success" }),
     onSuccess: () => {
       setCancelModalOpen(false);
       cancelDateForm.reset();
@@ -210,10 +210,10 @@ export default function SchedulePage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">
-            {t("schedule.title", { defaultValue: "جدول الأطباء والفترات الزمنية" })}
+            {t("schedule.title", { defaultValue: "Doctor Schedules & Slots" })}
           </h1>
           <p className="text-xs text-muted-foreground mt-0.5">
-            {t("schedule.subtitle", { defaultValue: "توليد وضبط فترات الحجز المتاحة للمرضى وساعات العمل" })}
+            {t("schedule.subtitle", { defaultValue: "Configure bookable time slots, weekly hours, and break schedules" })}
           </p>
         </div>
 
@@ -222,20 +222,20 @@ export default function SchedulePage() {
             onClick={() => setQuickSlotModalOpen(true)}
             className="inline-flex items-center gap-1.5 rounded-xl bg-primary-500 px-3.5 py-2 text-xs font-semibold text-primary-foreground shadow-xs hover:opacity-90 transition cursor-pointer"
           >
-            <Zap className="h-3.5 w-3.5" /> {t("schedule.quickSlotButton", { defaultValue: "فترة سريعة" })}
+            <Zap className="h-3.5 w-3.5" /> {t("schedule.quickSlotButton", { defaultValue: "Quick Slot Button" })}
           </button>
 
           <button
             onClick={() => setGenerateModalOpen(true)}
             className="inline-flex items-center gap-1.5 rounded-xl glass border border-border/60 px-3.5 py-2 text-xs font-semibold text-foreground hover:bg-accent transition cursor-pointer"
           >
-            <CalendarRange className="h-3.5 w-3.5 text-primary-500" /> {t("schedule.batchGenerateButton", { defaultValue: "توليد فترات زمنية تلقائية" })}
+            <CalendarRange className="h-3.5 w-3.5 text-primary-500" /> {t("schedule.batchGenerateButton", { defaultValue: "Batch Generate Slots" })}
           </button>
 
           <button
             onClick={() => setCancelModalOpen(true)}
             className="inline-flex items-center gap-1.5 rounded-xl glass border border-border/60 px-3 py-2 text-xs font-semibold text-danger hover:bg-danger/10 transition cursor-pointer"
-            title={t("schedule.cancelSlot", { defaultValue: "إلغاء الفترة" })}
+            title={t("schedule.cancelSlot", { defaultValue: "Cancel Slot" })}
           >
             <Ban className="h-3.5 w-3.5" />
           </button>
@@ -245,28 +245,28 @@ export default function SchedulePage() {
       {/* 2. Main KPI Cards Grid */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <KPICard
-          label={t("schedule.totalSlots", { defaultValue: "إجمالي الفترات هذا اليوم" })}
+          label={t("schedule.totalSlots", { defaultValue: "Total Slots This Week" })}
           value={stats.total}
-          subLabel={`${t("filters.date", { defaultValue: "التاريخ" })}: ${selectedDate}`}
+          subLabel={`${t("filters.date", { defaultValue: "Time Period" })}: ${selectedDate}`}
           delta={stats.total}
           tone="primary"
         />
         <KPICard
-          label={t("schedule.availableSlots", { defaultValue: "فترات متاحة للحجز" })}
+          label={t("schedule.availableSlots", { defaultValue: "Available Slots" })}
           value={stats.available}
           subLabel="متاحة لحجز المرضى"
           delta={stats.available}
           tone="success"
         />
         <KPICard
-          label={t("schedule.bookedSlots", { defaultValue: "فترات محجوزة" })}
+          label={t("schedule.bookedSlots", { defaultValue: "Booked Slots" })}
           value={stats.booked}
-          subLabel="مواعيد مؤكدة للمرضى"
+          subLabel="Appointments مؤكدة للمرضى"
           delta={stats.booked}
           tone="info"
         />
         <KPICard
-          label={t("status.CANCELLED", { defaultValue: "ملغى" })}
+          label={t("status.CANCELLED", { defaultValue: "Cancelled" })}
           value={stats.cancelled}
           subLabel="فترات غير متاحة"
           delta={stats.cancelled}
@@ -279,7 +279,7 @@ export default function SchedulePage() {
         <div className="flex flex-wrap items-center gap-3">
           <div className="flex items-center gap-2 text-xs font-bold text-muted-foreground">
             <Filter className="h-4 w-4 text-primary-500" />
-            <span>{t("filters.open", { defaultValue: "تصفية وتنقيب" })}</span>
+            <span>{t("filters.open", { defaultValue: "Filter & Refine" })}</span>
           </div>
 
           {/* Doctor Selector */}
@@ -288,7 +288,7 @@ export default function SchedulePage() {
             className="inline-flex items-center gap-2 glass rounded-xl px-3.5 py-2 text-xs font-semibold text-foreground hover:bg-accent transition cursor-pointer"
           >
             <Stethoscope className="h-3.5 w-3.5 text-primary-500" />
-            {selectedDoctorCard ? selectedDoctorCard.name : t("doctors.selectorTitle", { defaultValue: "اختيار الطبيب المعالج" })}
+            {selectedDoctorCard ? selectedDoctorCard.name : t("doctors.selectorTitle", { defaultValue: "Select Practitioner Doctor" })}
             <ChevronRight className="h-3 w-3 text-muted-foreground rtl:rotate-180" />
           </button>
 
@@ -308,7 +308,7 @@ export default function SchedulePage() {
               }}
               className="inline-flex items-center gap-1 text-xs text-primary-500 font-bold hover:underline cursor-pointer ms-auto"
             >
-              <RotateCcw className="h-3 w-3" /> {t("filters.reset", { defaultValue: "إعادة تعيين" })}
+              <RotateCcw className="h-3 w-3" /> {t("filters.reset", { defaultValue: "Reset" })}
             </button>
           )}
         </div>
@@ -348,7 +348,7 @@ export default function SchedulePage() {
       <ScheduleVisualizer
         slots={slots}
         selectedDate={selectedDate}
-        doctorName={selectedDoctorCard?.name || t("doctors.doctorPrefix", { defaultValue: "د." })}
+        doctorName={selectedDoctorCard?.name || t("doctors.doctorPrefix", { defaultValue: "Doctor Prefix" })}
         onSelectSlot={() => {}}
       />
 
@@ -369,12 +369,12 @@ export default function SchedulePage() {
         id="quick-slot-modal"
         open={quickSlotModalOpen}
         onClose={() => setQuickSlotModalOpen(false)}
-        title={t("schedule.quickSlotButton", { defaultValue: "إضافة فترة حجز سريعة" })}
-        description={t("schedule.quickSlotDesc", { defaultValue: "إنشاء فترة استشارة فورية للطبيب المحدد" })}
+        title={t("schedule.quickSlotButton", { defaultValue: "Quick Slot Button" })}
+        description={t("schedule.quickSlotDesc", { defaultValue: "Quick Slot Desc" })}
       >
         <form onSubmit={quickSlotForm.handleSubmit((d) => quickSlotMutation.mutate(d))} className="space-y-4">
           <div className="space-y-1.5">
-            <label className="text-sm font-medium">{t("filters.date", { defaultValue: "التاريخ" })}*</label>
+            <label className="text-sm font-medium">{t("filters.date", { defaultValue: "Time Period" })}*</label>
             <input
               type="date"
               {...quickSlotForm.register("date")}
@@ -384,7 +384,7 @@ export default function SchedulePage() {
 
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1.5">
-              <label className="text-sm font-medium">{t("schedule.startTime", { defaultValue: "وقت البداية" })}*</label>
+              <label className="text-sm font-medium">{t("schedule.startTime", { defaultValue: "Start Time" })}*</label>
               <input
                 type="time"
                 {...quickSlotForm.register("startTime")}
@@ -392,7 +392,7 @@ export default function SchedulePage() {
               />
             </div>
             <div className="space-y-1.5">
-              <label className="text-sm font-medium">{t("schedule.endTime", { defaultValue: "وقت النهاية" })}*</label>
+              <label className="text-sm font-medium">{t("schedule.endTime", { defaultValue: "End Time" })}*</label>
               <input
                 type="time"
                 {...quickSlotForm.register("endTime")}
@@ -402,12 +402,12 @@ export default function SchedulePage() {
           </div>
 
           <div className="space-y-1.5">
-            <label className="text-sm font-medium">{t("rooms.title", { defaultValue: "قاعة الفحص" })} ({t("common.optional", { defaultValue: "اختياري" })})</label>
+            <label className="text-sm font-medium">{t("rooms.title", { defaultValue: "Consultation Rooms & Spaces" })} ({t("common.optional", { defaultValue: "Optional" })})</label>
             <select
               {...quickSlotForm.register("roomId")}
               className="glass w-full rounded-xl px-3.5 py-2.5 text-sm outline-none focus:ring-2 focus:ring-primary-500/40 bg-background text-foreground"
             >
-              <option value="">{t("rooms.generalPurpose", { defaultValue: "استخدام عام / كافة القاعات" })}</option>
+              <option value="">{t("rooms.generalPurpose", { defaultValue: "General Purpose / All Specialties" })}</option>
               {rooms.map((r) => (
                 <option key={r.id} value={r.id}>
                   {r.name}
@@ -422,7 +422,7 @@ export default function SchedulePage() {
               onClick={() => setQuickSlotModalOpen(false)}
               className="rounded-xl px-4 py-2 text-xs font-semibold text-muted-foreground hover:bg-accent cursor-pointer"
             >
-              {t("common.cancel", { defaultValue: "إلغاء" })}
+              {t("common.cancel", { defaultValue: "Cancel" })}
             </button>
             <button
               type="submit"
@@ -430,7 +430,7 @@ export default function SchedulePage() {
               className="inline-flex items-center gap-2 rounded-xl bg-primary-500 px-4 py-2 text-xs font-semibold text-primary-foreground hover:opacity-90 disabled:opacity-50 cursor-pointer"
             >
               {quickSlotMutation.isPending && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
-              {t("common.create", { defaultValue: "إضافة جديد" })}
+              {t("common.create", { defaultValue: "Create New" })}
             </button>
           </div>
         </form>
@@ -441,13 +441,13 @@ export default function SchedulePage() {
         id="batch-generate-modal"
         open={generateModalOpen}
         onClose={() => setGenerateModalOpen(false)}
-        title={t("schedule.batchModalTitle", { defaultValue: "توليد فترات حجز جماعية للأطباء" })}
-        description={t("schedule.batchDesc", { defaultValue: "توليد فترات الاستشارة تلقائيًا للفترة الزمنية المحددة" })}
+        title={t("schedule.batchModalTitle", { defaultValue: "Batch Generate Doctor Slots" })}
+        description={t("schedule.batchDesc", { defaultValue: "Batch Desc" })}
       >
         <form onSubmit={generateForm.handleSubmit((d) => generateSlotsMutation.mutate(d))} className="space-y-4">
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1.5">
-              <label className="text-sm font-medium">{t("schedule.startDate", { defaultValue: "تاريخ البداية" })}*</label>
+              <label className="text-sm font-medium">{t("schedule.startDate", { defaultValue: "Start Date" })}*</label>
               <input
                 type="date"
                 {...generateForm.register("startDate")}
@@ -455,7 +455,7 @@ export default function SchedulePage() {
               />
             </div>
             <div className="space-y-1.5">
-              <label className="text-sm font-medium">{t("schedule.endDate", { defaultValue: "تاريخ النهاية" })}*</label>
+              <label className="text-sm font-medium">{t("schedule.endDate", { defaultValue: "End Date" })}*</label>
               <input
                 type="date"
                 {...generateForm.register("endDate")}
@@ -465,12 +465,12 @@ export default function SchedulePage() {
           </div>
 
           <div className="space-y-1.5">
-            <label className="text-sm font-medium">{t("rooms.title", { defaultValue: "قاعة الفحص" })} ({t("common.optional", { defaultValue: "اختياري" })})</label>
+            <label className="text-sm font-medium">{t("rooms.title", { defaultValue: "Consultation Rooms & Spaces" })} ({t("common.optional", { defaultValue: "Optional" })})</label>
             <select
               {...generateForm.register("roomId")}
               className="glass w-full rounded-xl px-3.5 py-2.5 text-sm outline-none focus:ring-2 focus:ring-primary-500/40 bg-background text-foreground"
             >
-              <option value="">{t("rooms.generalPurpose", { defaultValue: "استخدام عام / كافة القاعات" })}</option>
+              <option value="">{t("rooms.generalPurpose", { defaultValue: "General Purpose / All Specialties" })}</option>
               {rooms.map((r) => (
                 <option key={r.id} value={r.id}>
                   {r.name}
@@ -485,7 +485,7 @@ export default function SchedulePage() {
               {...generateForm.register("force")}
               className="rounded text-primary-500 focus:ring-primary-500 h-4 w-4"
             />
-            <span className="text-xs font-bold text-foreground">{t("schedule.overwriteSlots", { defaultValue: "إعادة كتابة الفترات غير المحجوزة" })}</span>
+            <span className="text-xs font-bold text-foreground">{t("schedule.overwriteSlots", { defaultValue: "Overwrite Slots" })}</span>
           </label>
 
           <div className="pt-4 border-t border-border/40 flex justify-end gap-2">
@@ -494,7 +494,7 @@ export default function SchedulePage() {
               onClick={() => setGenerateModalOpen(false)}
               className="rounded-xl px-4 py-2 text-xs font-semibold text-muted-foreground hover:bg-accent cursor-pointer"
             >
-              {t("common.cancel", { defaultValue: "إلغاء" })}
+              {t("common.cancel", { defaultValue: "Cancel" })}
             </button>
             <button
               type="submit"
@@ -502,7 +502,7 @@ export default function SchedulePage() {
               className="inline-flex items-center gap-2 rounded-xl bg-primary-500 px-4 py-2 text-xs font-semibold text-primary-foreground hover:opacity-90 disabled:opacity-50 cursor-pointer"
             >
               {generateSlotsMutation.isPending && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
-              {t("schedule.batchGenerateButton", { defaultValue: "توليد فترات زمنية تلقائية" })}
+              {t("schedule.batchGenerateButton", { defaultValue: "Batch Generate Slots" })}
             </button>
           </div>
         </form>
@@ -513,12 +513,12 @@ export default function SchedulePage() {
         id="cancel-date-modal"
         open={cancelModalOpen}
         onClose={() => setCancelModalOpen(false)}
-        title={t("schedule.cancelSlotsTitle", { defaultValue: "إلغاء جميع الفترات لهذا اليوم" })}
-        description={t("schedule.cancelSlotsDesc", { defaultValue: "تعليم جميع الفترات الغير محجوزة كملغاة لهذا اليوم" })}
+        title={t("schedule.cancelSlotsTitle", { defaultValue: "Cancel Slots Title" })}
+        description={t("schedule.cancelSlotsDesc", { defaultValue: "Cancel Slots Desc" })}
       >
         <form onSubmit={cancelDateForm.handleSubmit((d) => cancelDateMutation.mutate(d))} className="space-y-4">
           <div className="space-y-1.5">
-            <label className="text-sm font-medium">{t("filters.date", { defaultValue: "التاريخ" })}*</label>
+            <label className="text-sm font-medium">{t("filters.date", { defaultValue: "Time Period" })}*</label>
             <input
               type="date"
               {...cancelDateForm.register("date")}
@@ -527,11 +527,11 @@ export default function SchedulePage() {
           </div>
 
           <div className="space-y-1.5">
-            <label className="text-sm font-medium">{t("schedule.cancelReason", { defaultValue: "سبب الإلغاء (اختياري)" })}</label>
+            <label className="text-sm font-medium">{t("schedule.cancelReason", { defaultValue: "Cancel Reason" })}</label>
             <input
               type="text"
               {...cancelDateForm.register("reason")}
-              placeholder={t("schedule.reasonPlaceholder", { defaultValue: "مثال: عطلة طارئة للطبيب / عطلة رسمية" })}
+              placeholder={t("schedule.reasonPlaceholder", { defaultValue: "Reason Placeholder" })}
               className="glass w-full rounded-xl px-3.5 py-2.5 text-sm outline-none focus:ring-2 focus:ring-primary-500/40"
             />
           </div>
@@ -542,7 +542,7 @@ export default function SchedulePage() {
               onClick={() => setCancelModalOpen(false)}
               className="rounded-xl px-4 py-2 text-xs font-semibold text-muted-foreground hover:bg-accent cursor-pointer"
             >
-              {t("common.cancel", { defaultValue: "إلغاء" })}
+              {t("common.cancel", { defaultValue: "Cancel" })}
             </button>
             <button
               type="submit"
@@ -550,7 +550,7 @@ export default function SchedulePage() {
               className="inline-flex items-center gap-2 rounded-xl bg-danger px-4 py-2 text-xs font-semibold text-white hover:opacity-90 disabled:opacity-50 cursor-pointer"
             >
               {cancelDateMutation.isPending && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
-              {t("schedule.cancelSlot", { defaultValue: "إلغاء الفترة" })}
+              {t("schedule.cancelSlot", { defaultValue: "Cancel Slot" })}
             </button>
           </div>
         </form>

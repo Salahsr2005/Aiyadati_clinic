@@ -45,7 +45,7 @@ export function ConfirmDialog({
   }, [open]);
 
   const isDanger = danger || variant === "danger";
-  const label = confirmLabel || confirmText || t("common.confirm", { defaultValue: "تأكيد" });
+  const label = confirmLabel || confirmText || t("common.confirm", { defaultValue: "Confirm Action" });
   const isDisabled = busy || !!isLoading || (typeToConfirm ? typed !== typeToConfirm : false);
 
   return (
