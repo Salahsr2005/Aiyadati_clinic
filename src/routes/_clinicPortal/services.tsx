@@ -27,6 +27,8 @@ import {
   Building2,
   Check,
 } from "lucide-react";
+import { buildUploadFormData, validateUploadFile } from "@/utils/uploadHelper";
+import { toast } from "sonner";
 import {
   clinicServicesApi,
   type ClinicService,
@@ -140,11 +142,15 @@ export default function ServicesPage() {
   // Image Upload mutation
   const uploadImageMutation = useEntityMutation({
     mutationFn: ({ serviceId, file }: { serviceId: string; file: File }) => {
-      const formData = new FormData();
-      formData.append("file", file);
+      const validation = validateUploadFile(file, "IMAGE");
+      if (!validation.valid) {
+        toast.error(validation.error);
+        return Promise.reject(new Error(validation.error));
+      }
+      const formData = buildUploadFormData("image", file);
       return clinicServicesApi.uploadImage(serviceId, formData);
     },
-    invalidate: [qk.clinicSelf.services()],
+    invalidate: [qk.clinicSelf.services(), qk.dashboard.services()],
     successMessage: t("services.imageUploadSuccess", { defaultValue: "تم رفع صورة الخدمة بنجاح" }),
   });
 

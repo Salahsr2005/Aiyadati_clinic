@@ -1,9 +1,10 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useQuery } from "@/lib/queryClient";
-import { Search, UserPlus, Stethoscope, Award, CheckCircle2, Loader2, Sparkles, X } from "lucide-react";
+import { Search, UserPlus, Stethoscope, Award, CheckCircle2, Loader2, Clock, X } from "lucide-react";
 import { FormModal } from "@/components/data/FormModal";
 import { clinicSelfApi } from "@/api/clinicSelfApi";
+import { specialtyApi, type SpecialtyRow } from "@/api/specialtyApi";
 import { useEntityMutation } from "@/lib/mutations";
 import { qk } from "@/lib/queryKeys";
 import { ensureArray } from "@/lib/utils";
@@ -16,45 +17,75 @@ interface DoctorInviteModalProps {
 export function DoctorInviteModal({ open, onClose }: DoctorInviteModalProps) {
   const { t } = useTranslation();
   const [searchQuery, setSearchQuery] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
   const [specialtyFilter, setSpecialtyFilter] = useState("");
 
   const fallbackPhoto = "/assets/standard/doctor-placeholder.png";
 
+  // Debounce search input (~350ms)
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(searchQuery.trim());
+    }, 350);
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
+
+  // Fetch real specialties directory
+  const { data: specialtiesRaw } = useQuery({
+    queryKey: qk.specialties.list(),
+    queryFn: () => specialtyApi.list(),
+    enabled: open,
+  });
+  const specialties: SpecialtyRow[] = ensureArray<SpecialtyRow>(specialtiesRaw);
+
+  // Fetch current clinic doctor roster to check existing affiliations
+  const { data: rosterRaw } = useQuery({
+    queryKey: qk.clinicSelf.doctors(),
+    queryFn: clinicSelfApi.getDoctors,
+    enabled: open,
+  });
+  const roster = ensureArray<any>(rosterRaw);
+
+  // Map doctor ID to affiliation status
+  const rosterStatusMap = useMemo(() => {
+    const map = new Map<string, string>();
+    roster.forEach((r) => {
+      const docId = r.doctorId || r.doctor?.id || r.id;
+      if (docId) {
+        map.set(String(docId), r.status || "ACCEPTED");
+      }
+    });
+    return map;
+  }, [roster]);
+
+  // Gate query: require >= 2 chars unless empty
+  const searchEnabled = open && (debouncedSearch.length >= 2 || debouncedSearch.length === 0);
+
   // Platform doctor search query
   const { data: doctorsRaw, isLoading } = useQuery({
-    queryKey: ["platformDoctorsInviteSearch", searchQuery, specialtyFilter],
-    queryFn: () => clinicSelfApi.searchPlatformDoctors(searchQuery, 30),
-    enabled: open,
+    queryKey: ["platformDoctorsInviteSearch", debouncedSearch, specialtyFilter],
+    queryFn: () => clinicSelfApi.searchPlatformDoctors(debouncedSearch, 30),
+    enabled: searchEnabled,
   });
 
   const doctors = ensureArray<any>(doctorsRaw);
 
-  // Filtered list
+  // Filtered list by specialty
   const filteredDoctors = useMemo(() => {
     return doctors.filter((doc) => {
+      if (!specialtyFilter) return true;
       const docAny = doc as any;
-      const spec = docAny.specialtyName || docAny.specialty?.nameFr || docAny.specialties?.[0]?.nameFr || "Specialist";
-      const matchesSpecialty = !specialtyFilter || spec === specialtyFilter;
-      return matchesSpecialty;
+      const specId = docAny.specialtyId || docAny.specialty?.id;
+      const specName = docAny.specialtyName || docAny.specialty?.nameFr || docAny.specialties?.[0]?.nameFr;
+      return String(specId) === String(specialtyFilter) || specName === specialtyFilter;
     });
   }, [doctors, specialtyFilter]);
-
-  // Unique specialties for filter dropdown
-  const uniqueSpecialties = useMemo(() => {
-    const set = new Set<string>();
-    doctors.forEach((d) => {
-      const dAny = d as any;
-      const spec = dAny.specialtyName || dAny.specialty?.nameFr || dAny.specialties?.[0]?.nameFr;
-      if (spec) set.add(spec);
-    });
-    return Array.from(set).sort();
-  }, [doctors]);
 
   // Invitation Mutation
   const inviteMutation = useEntityMutation({
     mutationFn: (doctorId: string) => clinicSelfApi.inviteDoctor(doctorId),
-    invalidate: [qk.clinicSelf.doctors()],
-    successMessage: "Doctor affiliation request sent successfully",
+    invalidate: [qk.clinicSelf.doctors(), qk.dashboard.doctors(), qk.dashboard.pendingInvites()],
+    successMessage: t("doctors.inviteSuccess", { defaultValue: "تم إرسال طلب الانضمام إلى الطبيب بنجاح" }),
     onSuccess: () => {
       onClose();
     },
@@ -90,22 +121,20 @@ export function DoctorInviteModal({ open, onClose }: DoctorInviteModalProps) {
             )}
           </div>
 
-          {uniqueSpecialties.length > 0 && (
-            <div className="relative w-full sm:w-48">
-              <select
-                value={specialtyFilter}
-                onChange={(e) => setSpecialtyFilter(e.target.value)}
-                className="glass w-full rounded-xl px-3 py-2 text-xs font-semibold outline-none focus:ring-2 focus:ring-primary-500/40 bg-background text-foreground"
-              >
-                <option value="">{t("filters.specialty", { defaultValue: "All Specialties" })} ({uniqueSpecialties.length})</option>
-                {uniqueSpecialties.map((spec) => (
-                  <option key={spec} value={spec}>
-                    {spec}
-                  </option>
-                ))}
-              </select>
-            </div>
-          )}
+          <div className="relative w-full sm:w-48">
+            <select
+              value={specialtyFilter}
+              onChange={(e) => setSpecialtyFilter(e.target.value)}
+              className="glass w-full rounded-xl px-3 py-2 text-xs font-semibold outline-none focus:ring-2 focus:ring-primary-500/40 bg-background text-foreground"
+            >
+              <option value="">{t("doctors.allSpecialties", { defaultValue: "All Specialties" })}</option>
+              {specialties.map((spec) => (
+                <option key={spec.id} value={spec.id}>
+                  {spec.nameFr || spec.nameAr}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
 
         {/* Doctor Cards Directory */}
@@ -119,14 +148,18 @@ export function DoctorInviteModal({ open, onClose }: DoctorInviteModalProps) {
               <Stethoscope className="h-9 w-9 text-muted-foreground/40 mb-2" />
               <p className="text-xs font-bold text-foreground">{t("common.empty", { defaultValue: "No doctors found" })}</p>
               <p className="text-[11px] text-muted-foreground mt-0.5">
-                Type at least 2 characters to search the nationwide doctor directory.
+                {t("doctors.searchHint", {
+                  defaultValue: "Type at least 2 characters to search the nationwide doctor directory.",
+                })}
               </p>
             </div>
           ) : (
             filteredDoctors.map((doc) => {
               const docAny = doc as any;
-              const name = `Dr. ${docAny.firstNameFr || docAny.firstName || docAny.name || ""} ${docAny.lastNameFr || docAny.lastName || ""}`.trim();
-              const spec = docAny.specialtyName || docAny.specialty?.nameFr || docAny.specialties?.[0]?.nameFr || "General Practitioner";
+              const doctorId = String(doc.id);
+              const name = `${t("doctors.drPrefix", { defaultValue: "Dr." })} ${docAny.firstNameFr || docAny.firstName || docAny.name || ""} ${docAny.lastNameFr || docAny.lastName || ""}`.trim();
+              const spec = docAny.specialtyName || docAny.specialty?.nameFr || docAny.specialties?.[0]?.nameFr || t("doctors.generalPractitioner", { defaultValue: "General Practitioner" });
+              const existingStatus = rosterStatusMap.get(doctorId);
 
               return (
                 <div
@@ -148,29 +181,41 @@ export function DoctorInviteModal({ open, onClose }: DoctorInviteModalProps) {
                     <div className="min-w-0">
                       <h4 className="text-xs font-extrabold text-foreground truncate">{name}</h4>
                       <p className="text-[11px] font-semibold text-primary-500 mt-0.5 truncate">{spec}</p>
-                      {(doc as any).yearsOfExp !== undefined && (
+                      {docAny.yearsOfExp !== undefined && (
                         <p className="text-[10px] text-muted-foreground flex items-center gap-1 mt-0.5">
                           <Award className="h-3 w-3 text-amber-500" />
-                          <span>{(doc as any).yearsOfExp} Years Medical Experience</span>
+                          <span>{t("doctors.experienceYears", { defaultValue: "{{years}} Years Experience", years: docAny.yearsOfExp })}</span>
                         </p>
                       )}
                     </div>
                   </div>
 
                   <div className="shrink-0 ms-3">
-                    <button
-                      type="button"
-                      disabled={inviteMutation.isPending}
-                      onClick={() => inviteMutation.mutate(doc.id)}
-                      className="inline-flex items-center gap-1.5 rounded-xl bg-primary-500 px-3.5 py-1.5 text-xs font-bold text-primary-foreground shadow-xs hover:opacity-90 transition disabled:opacity-50 cursor-pointer"
-                    >
-                      {inviteMutation.isPending ? (
-                        <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                      ) : (
-                        <UserPlus className="h-3.5 w-3.5" />
-                      )}
-                      {t("doctors.inviteButton", { defaultValue: "Invite" })}
-                    </button>
+                    {existingStatus === "ACCEPTED" || existingStatus === "APPROVED" ? (
+                      <span className="inline-flex items-center gap-1 rounded-xl bg-emerald-500/15 px-3 py-1.5 text-xs font-bold text-emerald-600 dark:text-emerald-400">
+                        <CheckCircle2 className="h-3.5 w-3.5" />
+                        {t("doctors.alreadyAffiliated", { defaultValue: "Already on team" })}
+                      </span>
+                    ) : existingStatus === "PENDING" ? (
+                      <span className="inline-flex items-center gap-1 rounded-xl bg-amber-500/15 px-3 py-1.5 text-xs font-bold text-amber-600 dark:text-amber-400">
+                        <Clock className="h-3.5 w-3.5" />
+                        {t("doctors.pendingInviteBadge", { defaultValue: "Pending Invite" })}
+                      </span>
+                    ) : (
+                      <button
+                        type="button"
+                        disabled={inviteMutation.isPending}
+                        onClick={() => inviteMutation.mutate(doc.id)}
+                        className="inline-flex items-center gap-1.5 rounded-xl bg-primary-500 px-3.5 py-1.5 text-xs font-bold text-primary-foreground shadow-xs hover:opacity-90 transition disabled:opacity-50 cursor-pointer"
+                      >
+                        {inviteMutation.isPending ? (
+                          <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                        ) : (
+                          <UserPlus className="h-3.5 w-3.5" />
+                        )}
+                        {t("doctors.inviteButton", { defaultValue: "Invite" })}
+                      </button>
+                    )}
                   </div>
                 </div>
               );
@@ -181,3 +226,4 @@ export function DoctorInviteModal({ open, onClose }: DoctorInviteModalProps) {
     </FormModal>
   );
 }
+

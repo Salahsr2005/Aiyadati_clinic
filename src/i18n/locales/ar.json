@@ -188,6 +188,14 @@
     "pendingInvites": "طلبات انضمام معلقة",
     "rejectedInvites": "طلبات مرفوضة",
     "searchPlaceholder": "البحث عن طبيب بالاسم أو التخصص...",
+    "searchHint": "اكتب حرفين على الأقل للبحث في دليل الأطباء على مستوى الوطن.",
+    "experienceYears": "{{years}} سنوات خبرة",
+    "generalPractitioner": "طبيب عام",
+    "drPrefix": "د.",
+    "alreadyAffiliated": "ضمن الفريق حالياً",
+    "pendingInviteBadge": "دعوة معلّقة",
+    "loadMore": "تحميل المزيد من الأطباء",
+    "allSpecialties": "كل التخصصات",
     "allTab": "جميع الأطباء",
     "acceptedTab": "الأطباء المقبولون",
     "pendingTab": "الطلبات المعلقة",
@@ -242,7 +250,15 @@
     "serviceDuration": "مدة الخدمة بالدقائق",
     "assignDoctors": "الأطباء الممارسون لهذه الخدمة",
     "deleteTitle": "حذف الخدمة الطبية",
-    "deleteMessage": "هل أنت متأكد من حذف خدمة \"{{name}}\" نهائيًا من قائمة خدمات العيادة؟"
+    "deleteMessage": "هل أنت متأكد من حذف خدمة \"{{name}}\" نهائيًا من قائمة خدمات العيادة؟",
+    "createSuccess": "تم إنشاء الخدمة بنجاح",
+    "updateSuccess": "تم تحديث الخدمة بنجاح",
+    "deleteSuccess": "تم حذف الخدمة بنجاح",
+    "assignSuccess": "تم تعيين الطبيب للخدمة",
+    "unassignSuccess": "تم إزالة الطبيب من الخدمة",
+    "imageUploadSuccess": "تم رفع صورة الخدمة بنجاح",
+    "imageDeleteSuccess": "تم حذف صورة الخدمة",
+    "emptyTitle": "لا توجد خدمات مضافة"
   },
   "schedule": {
     "title": "جدول الأطباء والفترات الزمنية",
@@ -255,7 +271,17 @@
     "searchPlaceholder": "البحث في فترات الجدول...",
     "batchModalTitle": "توليد فترات حجز جماعية للأطباء",
     "breakModalTitle": "حل تعارض أوقات الاستراحة والدوام",
-    "cancelSlot": "إلغاء الفترة"
+    "cancelSlot": "إلغاء الفترة",
+    "heatmap": {
+      "title": "مصفوفة الجدول الأسبوعي التفاعلية",
+      "subtitle": "عرض كثافة المواعيد والسحب لإدارة ساعات العمل والتوافر",
+      "dragHint": "انقر واسحب عبر خلايا الوقت لتوليد المواعيد أو مسحها",
+      "noSlot": "لا يوجد موعد",
+      "available": "متاح",
+      "partial": "محجوز جزئياً",
+      "full": "محجوز بالكامل",
+      "cancelled": "ملغى"
+    }
   },
   "profile": {
     "title": "ملف العيادة والاعتمادات الرسمية",
@@ -268,7 +294,24 @@
     "documentsInfo": "الوثائق والتراخيص القانونية الطبيّة",
     "uploadDoc": "رفع وثيقة ترخيص جديدة",
     "deleteDocTitle": "حذف وثيقة ترخيص",
-    "deleteDocMessage": "هل أنت متأكد من حذف هذه الوثيقة من ملف العيادة الرسمي؟"
+    "deleteDocMessage": "هل أنت متأكد من حذف هذه الوثيقة من ملف العيادة الرسمي؟",
+    "viewMode": "عرض الملف الشخصي",
+    "editMode": "تعديل الملف الشخصي",
+    "view": {
+      "openHours": "أوقات العمل",
+      "location": "الموقع والإحداثيات",
+      "documents": "المستندات الموثّقة",
+      "status": "حالة التحقق"
+    },
+    "edit": {
+      "title": "تعديل معلومات العيادة",
+      "descriptionAr": "الوصف باللغة العربية",
+      "descriptionFr": "الوصف باللغة الفرنسية",
+      "baladya": "البلدية",
+      "latitude": "خط العرض (Latitude)",
+      "longitude": "خط الطول (Longitude)",
+      "logo": "شعار العيادة"
+    }
   },
   "dashboard": {
     "cockpitTitle": "لوحة القيادة والمتابعة المركزية",
@@ -283,6 +326,17 @@
     "responseTimeTitle": "توزيع سرعة الاستجابة للمواعيد",
     "responseTimeSub": "الفارق الزمني بين طلب الحجز وتأكيده من العيادة",
     "recentTableTitle": "أحدث المواعيد المحجوزة",
-    "recentTableSub": "المواعيد المسجلة مؤخرًا عبر المنصة وفي العيادة"
+    "recentTableSub": "المواعيد المسجلة مؤخرًا عبر المنصة وفي العيادة",
+    "profileCompleteness": "اكتمال الملف الشخصي",
+    "openNow": "مفتوح الآن",
+    "closedNow": "مغلق",
+    "roomsUtilization": "استخدام الغرف النشطة",
+    "servicesPreview": "خدمات وعروض الرعاية",
+    "galleryPreview": "معاينة معرض الصور",
+    "doctorRoster": "الفريق الطبي والانتسابات",
+    "appointmentFunnel": "تفصيل مسار المواعيد",
+    "patientTypes": "توزيع المرضى (مسجلون مقابل زوار)",
+    "reviewsWidget": "أحدث تقييمات المرضى",
+    "pendingInvitesWidget": "دعوات الأطباء المعلّقة"
   }
 }

@@ -188,6 +188,14 @@
     "pendingInvites": "Pending Invites",
     "rejectedInvites": "Rejected Invites",
     "searchPlaceholder": "Search doctor by name or specialty...",
+    "searchHint": "Type at least 2 characters to search the nationwide doctor directory.",
+    "experienceYears": "{{years}} Years Experience",
+    "generalPractitioner": "General Practitioner",
+    "drPrefix": "Dr.",
+    "alreadyAffiliated": "Already on team",
+    "pendingInviteBadge": "Pending Invite",
+    "loadMore": "Load More Doctors",
+    "allSpecialties": "All Specialties",
     "allTab": "All Doctors",
     "acceptedTab": "Accepted Staff",
     "pendingTab": "Pending Invites",
@@ -242,7 +250,15 @@
     "serviceDuration": "Duration in Minutes",
     "assignDoctors": "Practicing Doctors for Service",
     "deleteTitle": "Delete Care Service",
-    "deleteMessage": "Are you sure you want to permanently delete service \"{{name}}\"?"
+    "deleteMessage": "Are you sure you want to permanently delete service \"{{name}}\"?",
+    "createSuccess": "Service created successfully",
+    "updateSuccess": "Service updated successfully",
+    "deleteSuccess": "Service deleted successfully",
+    "assignSuccess": "Doctor assigned to service",
+    "unassignSuccess": "Doctor removed from service",
+    "imageUploadSuccess": "Service image uploaded successfully",
+    "imageDeleteSuccess": "Service image deleted",
+    "emptyTitle": "No services configured"
   },
   "schedule": {
     "title": "Doctor Schedules & Slots",
@@ -255,7 +271,17 @@
     "searchPlaceholder": "Search schedule slots...",
     "batchModalTitle": "Batch Generate Doctor Slots",
     "breakModalTitle": "Resolve Schedule Break Conflict",
-    "cancelSlot": "Cancel Slot"
+    "cancelSlot": "Cancel Slot",
+    "heatmap": {
+      "title": "Interactive Weekly Schedule Matrix",
+      "subtitle": "View slot density and drag to manage working hours & availability",
+      "dragHint": "Click and drag across time cells to generate or clear slots",
+      "noSlot": "No Slot",
+      "available": "Available",
+      "partial": "Partially Booked",
+      "full": "Fully Booked",
+      "cancelled": "Cancelled"
+    }
   },
   "profile": {
     "title": "Clinic Profile & Credentials",
@@ -268,7 +294,24 @@
     "documentsInfo": "Legal Licenses & Credentials",
     "uploadDoc": "Upload License Document",
     "deleteDocTitle": "Delete License Document",
-    "deleteDocMessage": "Are you sure you want to remove this document from the clinic profile?"
+    "deleteDocMessage": "Are you sure you want to remove this document from the clinic profile?",
+    "viewMode": "View Profile",
+    "editMode": "Edit Profile",
+    "view": {
+      "openHours": "Operating Hours",
+      "location": "Location & Coordinates",
+      "documents": "Verified Documents",
+      "status": "Verification Status"
+    },
+    "edit": {
+      "title": "Edit Clinic Information",
+      "descriptionAr": "Arabic Description",
+      "descriptionFr": "French Description",
+      "baladya": "Baladya / Commune",
+      "latitude": "Latitude",
+      "longitude": "Longitude",
+      "logo": "Clinic Logo"
+    }
   },
   "dashboard": {
     "cockpitTitle": "Central Practice Cockpit",
@@ -283,6 +326,17 @@
     "responseTimeTitle": "Response Time Distribution",
     "responseTimeSub": "Time elapsed between appointment creation and confirmation",
     "recentTableTitle": "Recent Appointment Activity",
-    "recentTableSub": "Latest appointments booked online and walk-in guest registrations"
+    "recentTableSub": "Latest appointments booked online and walk-in guest registrations",
+    "profileCompleteness": "Profile Completeness",
+    "openNow": "Open Now",
+    "closedNow": "Closed",
+    "roomsUtilization": "Active Rooms Utilization",
+    "servicesPreview": "Care Services & Offerings",
+    "galleryPreview": "Facility Gallery Preview",
+    "doctorRoster": "Doctor Team & Affiliations",
+    "appointmentFunnel": "Appointment Funnel Breakdown",
+    "patientTypes": "Patient Breakdown (Registered vs Walk-In)",
+    "reviewsWidget": "Recent Patient Reviews",
+    "pendingInvitesWidget": "Pending Doctor Invitations"
   }
 }

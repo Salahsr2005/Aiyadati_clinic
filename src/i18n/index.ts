@@ -15,15 +15,35 @@ const modules = import.meta.glob<Record<string, unknown>>("./locales/*/*.json", 
   import: "default",
 });
 
-const merged: Record<string, Record<string, unknown>> = {
-  en: { ...en },
-  fr: { ...fr },
-  ar: { ...ar },
+function isObject(item: unknown): item is Record<string, unknown> {
+  return Boolean(item && typeof item === "object" && !Array.isArray(item));
+}
+
+function deepMerge(target: Record<string, any>, source: Record<string, any>): Record<string, any> {
+  for (const key of Object.keys(source)) {
+    if (isObject(source[key])) {
+      if (!target[key] || !isObject(target[key])) {
+        target[key] = {};
+      }
+      deepMerge(target[key], source[key]);
+    } else {
+      target[key] = source[key];
+    }
+  }
+  return target;
+}
+
+const merged: Record<string, Record<string, any>> = {
+  en: JSON.parse(JSON.stringify(en)),
+  fr: JSON.parse(JSON.stringify(fr)),
+  ar: JSON.parse(JSON.stringify(ar)),
 };
 
 for (const [path, dict] of Object.entries(modules)) {
   const lang = path.split("/")[2];
-  if (merged[lang]) Object.assign(merged[lang], dict);
+  if (merged[lang] && dict) {
+    deepMerge(merged[lang], dict as Record<string, any>);
+  }
 }
 
 if (!i18n.isInitialized) {

@@ -25,6 +25,8 @@ import {
   Sparkles,
   Info,
 } from "lucide-react";
+import { buildUploadFormData, validateUploadFile } from "@/utils/uploadHelper";
+import { toast } from "sonner";
 import {
   clinicSelfApi,
   type ClinicWorkingHour,
@@ -71,6 +73,7 @@ type ProfileFormData = z.infer<typeof profileSchema>;
 export default function ProfilePage() {
   const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState<"profile" | "schedule" | "documents">("profile");
+  const [isEditing, setIsEditing] = useState(false);
 
   const { data: profile, isLoading: isProfileLoading } = useQuery({
     queryKey: qk.clinicSelf.profile(),
@@ -105,7 +108,6 @@ export default function ProfilePage() {
     if (workingHours.length > 0) {
       setHoursState(workingHours);
     } else {
-      // Default 7 days setup
       const initial = DAYS.map((_, idx) => ({
         dayOfWeek: idx,
         openTime: "08:00",
@@ -144,20 +146,27 @@ export default function ProfilePage() {
     }
   }, [profile, reset]);
 
-  // Profile Update Mutation
+  // Profile Update Mutation aligned with backend completeClinicSchema
   const updateProfileMutation = useEntityMutation({
     mutationFn: (data: ProfileFormData) => {
       const formData = new FormData();
-      Object.entries(data).forEach(([key, val]) => {
-        if (val !== undefined && val !== null) formData.append(key, String(val));
-      });
+      if (data.descriptionFr) formData.append("descriptionFr", data.descriptionFr);
+      if (data.descriptionAr) formData.append("descriptionAr", data.descriptionAr);
+      if (data.baladyaId) formData.append("baladyaId", String(data.baladyaId));
+      if (data.latitude !== undefined && data.latitude !== null)
+        formData.append("latitude", String(data.latitude));
+      if (data.longitude !== undefined && data.longitude !== null)
+        formData.append("longitude", String(data.longitude));
       if (logoFile) {
         formData.append("logo", logoFile);
       }
       return clinicSelfApi.updateProfile(formData);
     },
-    invalidate: [qk.clinicSelf.profile()],
+    invalidate: [qk.clinicSelf.profile(), qk.dashboard.profile()],
     successMessage: t("profile.updateSuccess", { defaultValue: "تم تحديث ملف العيادة بنجاح" }),
+    onSuccess: () => {
+      setIsEditing(false);
+    },
   });
 
   // Working Hours Mutation
@@ -176,13 +185,15 @@ export default function ProfilePage() {
 
   const uploadDocMutation = useEntityMutation({
     mutationFn: ({ file, name, type }: { file: File; name: string; type: string }) => {
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append("name", name);
-      formData.append("type", type);
+      const validation = validateUploadFile(file, "DOCUMENT");
+      if (!validation.valid) {
+        toast.error(validation.error);
+        return Promise.reject(new Error(validation.error));
+      }
+      const formData = buildUploadFormData("document", file, { name, type });
       return clinicSelfApi.uploadDocument(formData);
     },
-    invalidate: [qk.clinicSelf.documents()],
+    invalidate: [qk.clinicSelf.documents(), qk.dashboard.profile()],
     successMessage: t("profile.docSuccess", { defaultValue: "تم رفع الوثيقة القانونية بنجاح" }),
     onSuccess: () => {
       setDocUploadModalOpen(false);
@@ -262,39 +273,167 @@ export default function ProfilePage() {
         </div>
       </GlassCard>
 
-      {/* 2. Navigation Tabs */}
-      <div className="flex items-center gap-2 border-b border-border/40 pb-2">
-        {[
-          { id: "profile", label: t("profile.basicInfo", { defaultValue: "المعلومات الأساسية والتواصل" }), icon: Building2 },
-          { id: "schedule", label: t("profile.hoursInfo", { defaultValue: "ساعات العمل والدياجات الأسبوعية" }), icon: Clock },
-          { id: "documents", label: t("profile.documentsInfo", { defaultValue: "الوثائق والتراخيص القانونية الطبيّة" }), icon: FileText, count: documents.length },
-        ].map((tab) => {
-          const Icon = tab.icon;
-          const isActive = activeTab === tab.id;
-          return (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id as any)}
-              className={`inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-xs font-bold transition cursor-pointer ${
-                isActive
-                  ? "bg-primary-500 text-primary-foreground shadow-xs"
-                  : "text-muted-foreground hover:bg-accent/60 hover:text-foreground"
-              }`}
-            >
-              <Icon className="h-3.5 w-3.5" />
-              <span>{tab.label}</span>
-              {tab.count !== undefined && (
-                <span className={`px-1.5 py-0.2 rounded-full text-[9px] ${isActive ? "bg-white/20 text-white" : "bg-muted/40"}`}>
-                  {tab.count}
-                </span>
-              )}
-            </button>
-          );
-        })}
+      {/* 2. Navigation Tabs & Mode Toggle */}
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border/40 pb-2">
+        <div className="flex items-center gap-2">
+          {[
+            { id: "profile", label: t("profile.basicInfo", { defaultValue: "المعلومات الأساسية والتواصل" }), icon: Building2 },
+            { id: "schedule", label: t("profile.hoursInfo", { defaultValue: "ساعات العمل والدياجات الأسبوعية" }), icon: Clock },
+            { id: "documents", label: t("profile.documentsInfo", { defaultValue: "الوثائق والتراخيص القانونية الطبيّة" }), icon: FileText, count: documents.length },
+          ].map((tab) => {
+            const Icon = tab.icon;
+            const isActive = activeTab === tab.id;
+            return (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id as any)}
+                className={`inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-xs font-bold transition cursor-pointer ${
+                  isActive
+                    ? "bg-primary-500 text-primary-foreground shadow-xs"
+                    : "text-muted-foreground hover:bg-accent/60 hover:text-foreground"
+                }`}
+              >
+                <Icon className="h-3.5 w-3.5" />
+                <span>{tab.label}</span>
+                {tab.count !== undefined && (
+                  <span className={`px-1.5 py-0.2 rounded-full text-[9px] ${isActive ? "bg-white/20 text-white" : "bg-muted/40"}`}>
+                    {tab.count}
+                  </span>
+                )}
+              </button>
+            );
+          })}
+        </div>
+
+        {activeTab === "profile" && (
+          <button
+            onClick={() => setIsEditing(!isEditing)}
+            className="inline-flex items-center gap-1.5 rounded-xl bg-primary-500/15 px-4 py-2 text-xs font-bold text-primary-500 hover:bg-primary-500/25 transition cursor-pointer ms-auto"
+          >
+            {isEditing ? (
+              <>
+                <CheckCircle2 className="h-4 w-4" />
+                {t("profile.viewMode", { defaultValue: "عرض الملف الشخصي" })}
+              </>
+            ) : (
+              <>
+                <Save className="h-4 w-4" />
+                {t("profile.editMode", { defaultValue: "تعديل الملف الشخصي" })}
+              </>
+            )}
+          </button>
+        )}
       </div>
 
       {/* 3. Tab Content */}
-      {activeTab === "profile" && (
+      {activeTab === "profile" && !isEditing && (
+        <div className="space-y-6">
+          {/* Read-Only Basic Info View */}
+          <GlassCard className="p-6 space-y-5 border border-border/40">
+            <div className="flex items-center justify-between pb-3 border-b border-border/30">
+              <h2 className="text-base font-bold text-foreground flex items-center gap-2">
+                <Building2 className="h-5 w-5 text-primary-500" />
+                {t("profile.view.basicTitle", { defaultValue: "معلومات العيادة العامة" })}
+              </h2>
+              <StatusBadge value={profile?.isVerified ? "VERIFIED" : "PENDING"} />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-3">
+                <div>
+                  <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                    {t("app.name", { defaultValue: "اسم العيادة" })} (FR)
+                  </span>
+                  <p className="text-sm font-bold text-foreground mt-0.5">{profile?.nameFr || "—"}</p>
+                </div>
+
+                <div>
+                  <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                    {t("app.name", { defaultValue: "اسم العيادة" })} (AR)
+                  </span>
+                  <p className="text-sm font-bold text-foreground mt-0.5" dir="rtl">{profile?.nameAr || "—"}</p>
+                </div>
+
+                <div>
+                  <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                    {t("filters.practiceType", { defaultValue: "نوع المنشأة" })}
+                  </span>
+                  <p className="text-sm font-semibold text-foreground mt-0.5">{profile?.facilityType || "CLINIC"}</p>
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                <div>
+                  <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                    {t("common.details", { defaultValue: "الوصف" })} (FR)
+                  </span>
+                  <p className="text-xs text-foreground/80 leading-relaxed mt-0.5">{profile?.descriptionFr || "No description available"}</p>
+                </div>
+
+                <div>
+                  <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                    {t("common.details", { defaultValue: "الوصف" })} (AR)
+                  </span>
+                  <p className="text-xs text-foreground/80 leading-relaxed mt-0.5" dir="rtl">{profile?.descriptionAr || "لا يوجد وصف متوفر"}</p>
+                </div>
+              </div>
+            </div>
+          </GlassCard>
+
+          {/* Read-Only Location Card with Map Preview */}
+          <GlassCard className="p-6 space-y-4 border border-border/40">
+            <h2 className="text-base font-bold text-foreground flex items-center gap-2">
+              <MapPin className="h-5 w-5 text-primary-500" />
+              {t("profile.view.location", { defaultValue: "الموقع الإداري والإحداثيات الجغرافية" })}
+            </h2>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="p-3 rounded-2xl bg-accent/30 border border-border/30">
+                <span className="text-[11px] font-bold text-muted-foreground uppercase">
+                  {t("filters.wilaya", { defaultValue: "الولاية" })}
+                </span>
+                <p className="text-xs font-bold text-foreground mt-1">
+                  {wilayas.find((w: any) => String(w.id) === String(profile?.wilayaId))?.nameFr || profile?.wilayaId || "—"}
+                </p>
+              </div>
+
+              <div className="p-3 rounded-2xl bg-accent/30 border border-border/30">
+                <span className="text-[11px] font-bold text-muted-foreground uppercase">البلدية</span>
+                <p className="text-xs font-bold text-foreground mt-1">
+                  {baladyat.find((b: any) => String(b.id) === String(profile?.baladyaId))?.nameFr || profile?.baladyaId || "—"}
+                </p>
+              </div>
+
+              <div className="p-3 rounded-2xl bg-accent/30 border border-border/30">
+                <span className="text-[11px] font-bold text-muted-foreground uppercase">الإحداثيات</span>
+                <p className="text-xs font-mono font-semibold text-foreground mt-1">
+                  {profile?.latitude && profile?.longitude ? `${profile.latitude}, ${profile.longitude}` : "36.75, 3.05"}
+                </p>
+              </div>
+            </div>
+
+            <div className="space-y-1.5">
+              <span className="text-xs font-semibold text-muted-foreground">
+                {t("common.address", { defaultValue: "العنوان المحدد" })}
+              </span>
+              <p className="text-xs font-medium text-foreground p-3 rounded-2xl bg-muted/20 border border-border/30">
+                {profile?.address || "No detailed address specified"}
+              </p>
+            </div>
+
+            <div className="h-64 rounded-2xl overflow-hidden border border-border/40">
+              <LocationPicker
+                lat={profile?.latitude || 36.75}
+                lng={profile?.longitude || 3.05}
+                onLocationSelect={() => {}}
+              />
+            </div>
+          </GlassCard>
+        </div>
+      )}
+
+      {/* 3. Tab Content Edit Mode */}
+      {activeTab === "profile" && isEditing && (
         <form onSubmit={handleSubmit((d) => updateProfileMutation.mutate(d))} className="space-y-6">
           {/* Basic Info GlassCard */}
           <GlassCard className="p-6 space-y-4 border border-border/40">

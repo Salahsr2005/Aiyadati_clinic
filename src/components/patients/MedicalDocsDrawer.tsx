@@ -16,6 +16,7 @@ import { doctorConsentApi, type PatientDocumentRow, type ConsentError } from "@/
 import { qk } from "@/lib/queryKeys";
 import { GlassCard } from "@/components/glass/GlassCard";
 import { Skeleton } from "@/components/glass/Skeleton";
+import { buildUploadFormData, validateUploadFile } from "@/utils/uploadHelper";
 import { toast } from "sonner";
 
 interface MedicalDocsDrawerProps {
@@ -52,12 +53,18 @@ export function MedicalDocsDrawer({
     e.preventDefault();
     if (!fileToUpload || !patientId) return;
 
-    setIsUploading(true);
-    const formData = new FormData();
-    formData.append("file", fileToUpload);
-    if (docTitle.trim()) {
-      formData.append("title", docTitle.trim());
+    const validation = validateUploadFile(fileToUpload, "DOCUMENT");
+    if (!validation.valid) {
+      toast.error(validation.error);
+      return;
     }
+
+    setIsUploading(true);
+    const formData = buildUploadFormData(
+      "document",
+      fileToUpload,
+      docTitle.trim() ? { title: docTitle.trim() } : undefined
+    );
 
     try {
       await doctorConsentApi.upload(patientId, formData);

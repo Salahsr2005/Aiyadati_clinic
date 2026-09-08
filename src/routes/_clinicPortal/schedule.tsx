@@ -34,6 +34,7 @@ import { RemoteImage } from "@/components/common/RemoteImage";
 import { FormModal } from "@/components/data/FormModal";
 import { EmptyState } from "@/components/data/EmptyState";
 import { Skeleton } from "@/components/glass/Skeleton";
+import { DoctorScheduleHeatmap } from "@/components/schedule/DoctorScheduleHeatmap";
 import { ScheduleVisualizer } from "@/components/schedule/ScheduleVisualizer";
 import { DateRangeInspector } from "@/components/schedule/DateRangeInspector";
 import { DayHourHeatmap } from "@/components/data/DayHourHeatmap";
@@ -313,32 +314,36 @@ export default function SchedulePage() {
         </div>
       </GlassCard>
 
-      {/* 4. Day × Hour Utilization Heatmap */}
-      <DayHourHeatmap
-        data={[]}
-        rawData={appointments}
-        getDate={(a) => a.slot?.date || a.createdAt}
-        getTime={(a) => a.slot?.startTime}
-        getStatus={(a) => a.status}
-        hourBlocks={8}
-        title={t("dashboard.optimalBookingTitle", { defaultValue: "أفضل أوقات حجز المواعيد" })}
-        subtitle={t("dashboard.optimalBookingSub", { defaultValue: "المخطط الحراري لأوقات ذروة طلب المواعيد من المرضى" })}
-        tone="primary"
-      />
-
-      {/* 5. Schedule Visualizer & Slot Inspector Grid */}
+      {/* 4. Interactive Week-at-a-Glance Doctor Schedule Heatmap */}
       {isSlotsLoading ? (
         <Skeleton className="h-80 w-full rounded-3xl" />
       ) : (
-        <ScheduleVisualizer
+        <DoctorScheduleHeatmap
           slots={slots}
           selectedDate={selectedDate}
-          doctorName={selectedDoctorCard?.name || t("doctors.doctorPrefix", { defaultValue: "د." })}
-          onSelectSlot={(slot) => {
-            // Optional slot selection callback
+          onDateSelect={(d) => setSelectedDate(d)}
+          isGenerating={generateSlotsMutation.isPending}
+          onGenerateSlots={({ date, startHour, endHour }) => {
+            const pad = (n: number) => String(n).padStart(2, "0");
+            generateSlotsMutation.mutate({
+              startDate: date,
+              endDate: date,
+              startTime: `${pad(startHour)}:00`,
+              endTime: `${pad(endHour)}:00`,
+              durationMinutes: 30,
+              maxPatients: 1,
+            });
           }}
         />
       )}
+
+      {/* 5. Schedule Slot Inspector Strip */}
+      <ScheduleVisualizer
+        slots={slots}
+        selectedDate={selectedDate}
+        doctorName={selectedDoctorCard?.name || t("doctors.doctorPrefix", { defaultValue: "د." })}
+        onSelectSlot={() => {}}
+      />
 
       {/* Doctor Selector Modal */}
       <DoctorSelectorModal

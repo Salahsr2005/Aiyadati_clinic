@@ -188,6 +188,14 @@
     "pendingInvites": "Invitations en Attente",
     "rejectedInvites": "Invitations Rejetées",
     "searchPlaceholder": "Rechercher un médecin par nom ou spécialité...",
+    "searchHint": "Tapez au moins 2 caractères pour rechercher dans l'annuaire national.",
+    "experienceYears": "{{years}} ans d'expérience",
+    "generalPractitioner": "Médecin Généraliste",
+    "drPrefix": "Dr",
+    "alreadyAffiliated": "Déjà dans l'équipe",
+    "pendingInviteBadge": "Invitation en attente",
+    "loadMore": "Charger plus de médecins",
+    "allSpecialties": "Toutes les spécialités",
     "allTab": "Tous les Médecins",
     "acceptedTab": "Personnel Accepté",
     "pendingTab": "En Attente",
@@ -242,7 +250,15 @@
     "serviceDuration": "Durée en Minutes",
     "assignDoctors": "Médecins Praticiens pour ce Service",
     "deleteTitle": "Supprimer le Service",
-    "deleteMessage": "Êtes-vous sûr de vouloir supprimer définitivement le service \"{{name}}\" ?"
+    "deleteMessage": "Êtes-vous sûr de vouloir supprimer définitivement le service \"{{name}}\" ?",
+    "createSuccess": "Service créé avec succès",
+    "updateSuccess": "Service mis à jour avec succès",
+    "deleteSuccess": "Service supprimé avec succès",
+    "assignSuccess": "Médecin attribué au service",
+    "unassignSuccess": "Médecin retiré du service",
+    "imageUploadSuccess": "Image du service téléversée avec succès",
+    "imageDeleteSuccess": "Image du service supprimée",
+    "emptyTitle": "Aucun service configuré"
   },
   "schedule": {
     "title": "Planning & Créneaux des Médecins",
@@ -255,7 +271,17 @@
     "searchPlaceholder": "Rechercher des créneaux...",
     "batchModalTitle": "Générer les Créneaux en Masse",
     "breakModalTitle": "Résoudre le Conflit de Pause",
-    "cancelSlot": "Annuler le Créneau"
+    "cancelSlot": "Annuler le Créneau",
+    "heatmap": {
+      "title": "Matrice de Planning Hebdomadaire Interactive",
+      "subtitle": "Consultez la densité des créneaux et glissez pour gérer les horaires de travail",
+      "dragHint": "Cliquez et glissez sur les cellules de temps pour générer ou effacer des créneaux",
+      "noSlot": "Aucun créneau",
+      "available": "Disponible",
+      "partial": "Partiellement réservé",
+      "full": "Complet",
+      "cancelled": "Annulé"
+    }
   },
   "profile": {
     "title": "Profil & Agréments de la Clinique",
@@ -268,7 +294,24 @@
     "documentsInfo": "Agréments & Licences Légales",
     "uploadDoc": "Téléverser une Licence",
     "deleteDocTitle": "Supprimer la Licence",
-    "deleteDocMessage": "Êtes-vous sûr de vouloir supprimer ce document du profil de la clinique ?"
+    "deleteDocMessage": "Êtes-vous sûr de vouloir supprimer ce document du profil de la clinique ?",
+    "viewMode": "Voir le profil",
+    "editMode": "Modifier le profil",
+    "view": {
+      "openHours": "Horaires d'ouverture",
+      "location": "Localisation & Coordonnées",
+      "documents": "Documents vérifiés",
+      "status": "Statut de vérification"
+    },
+    "edit": {
+      "title": "Modifier les informations de la clinique",
+      "descriptionAr": "Description en arabe",
+      "descriptionFr": "Description en français",
+      "baladya": "Baladya / Commune",
+      "latitude": "Latitude",
+      "longitude": "Longitude",
+      "logo": "Logo de la clinique"
+    }
   },
   "dashboard": {
     "cockpitTitle": "Cockpit Central de Pratique",
@@ -283,6 +326,17 @@
     "responseTimeTitle": "Distribution des Temps de Réponse",
     "responseTimeSub": "Temps écoulé entre la création et la confirmation du rendez-vous",
     "recentTableTitle": "Activité Récente des Rendez-vous",
-    "recentTableSub": "Derniers rendez-vous réservés en ligne et enregistrements sur place"
+    "recentTableSub": "Derniers rendez-vous réservés en ligne et enregistrements sur place",
+    "profileCompleteness": "Complétude du profil",
+    "openNow": "Ouvert actuellement",
+    "closedNow": "Fermé",
+    "roomsUtilization": "Utilisation des salles actives",
+    "servicesPreview": "Services & Offres de Soins",
+    "galleryPreview": "Aperçu Galerie Photos",
+    "doctorRoster": "Équipe Médicale & Affiliations",
+    "appointmentFunnel": "Répartition du Funnel de Rendez-vous",
+    "patientTypes": "Répartition des Patients (Inscrits vs Sur Place)",
+    "reviewsWidget": "Avis Patients Récents",
+    "pendingInvitesWidget": "Invitations de Médecins en Attente"
   }
 }

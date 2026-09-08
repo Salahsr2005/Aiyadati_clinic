@@ -1,11 +1,5 @@
 {
   "shell": {
-    "sidebar": {
-      "portalName": "بوابة الطبيب",
-      "collapse": "طي",
-      "collapseAria": "طي الشريط الجانبي",
-      "footer": "بوابة الطبيب إياداتي v1.0 · جاهز كتطبيق ويب"
-    },
     "commandPalette": {
       "placeholder": "انتقل إلى صفحة أو مريض أو موعد…",
       "pages": "الصفحات",
@@ -18,101 +12,6 @@
     },
     "offline": {
       "message": "أنت غير متصل بالإنترنت — يتم عرض آخر البيانات المحمّلة."
-    }
-  },
-  "dashboard": {
-    "period": {
-      "7d": "7 أيام",
-      "30d": "30 يومًا",
-      "90d": "90 يومًا",
-      "thisMonth": "هذا الشهر"
-    },
-    "welcome": "مرحبًا بعودتك",
-    "welcomeName": "مرحبًا بعودتك، د. {{name}}",
-    "subtitle": "نظرة عامة على عيادتك وجدول المرضى المباشر",
-    "practiceStatus": {
-      "available": "متاح",
-      "consulting": "في استشارة",
-      "away": "غائب",
-      "toastAvailable": "حالة العيادة: متاح للاستشارات",
-      "toastConsulting": "حالة العيادة: في استشارة",
-      "toastAway": "حالة العيادة: غائب / خارج العيادة"
-    },
-    "nextPatient": {
-      "badge": "المريض التالي اليوم",
-      "fallbackName": "مريض مجدول",
-      "fallbackType": "استشارة عامة",
-      "callPatient": "اتصال بالمريض",
-      "startConsultation": "بدء الاستشارة"
-    },
-    "kpi": {
-      "appointments": "المواعيد",
-      "completionRate": "معدل الإنجاز",
-      "revenue": "الإيرادات",
-      "patientRating": "تقييم المرضى",
-      "completed_one": "{{count}} مكتمل",
-      "completed_other": "{{count}} مكتملة",
-      "noShow": "{{value}}% تغيّب",
-      "perVisit": "{{value}} / زيارة",
-      "reviews_one": "{{count}} تقييم موثّق",
-      "reviews_other": "{{count}} تقييمات موثّقة"
-    },
-    "schedule": {
-      "title": "جدول اليوم",
-      "summary": "{{total}} زيارة إجمالًا · {{pending}} بانتظار التأكيد",
-      "viewAll": "عرض الكل",
-      "emptyTitle": "لا مواعيد اليوم",
-      "emptyDescription": "افتح المزيد من المواعيد ضمن الجدول للسماح للمرضى بالحجز معك.",
-      "patientFallback": "مريض",
-      "typeFallback": "استشارة"
-    },
-    "pendingRequests": {
-      "title": "طلبات معلّقة",
-      "description": "أكّد الطلبات بسرعة للحفاظ على تصنيف جيد.",
-      "action": "مراجعة الطلبات"
-    },
-    "quickStats": {
-      "patients": "المرضى",
-      "retention": "معدل العودة",
-      "rating": "التقييم"
-    },
-    "actionStrip": {
-      "toConfirm_one": "{{count}} موعد بحاجة للتأكيد",
-      "toConfirm_other": "{{count}} مواعيد بحاجة للتأكيد",
-      "toConfirmDescription": "مرضى بانتظار التأكيد",
-      "manage": "إدارة",
-      "clinicInvitation_one": "{{count}} دعوة عيادة",
-      "clinicInvitation_other": "{{count}} دعوات عيادات",
-      "clinicInvitationDescription": "انتساب معلّق",
-      "view": "عرض"
-    },
-    "heatmap": {
-      "title": "متى يحجز مرضاك",
-      "subtitle": "أوقات الذروة خلال أكثر أيامك ازدحامًا",
-      "emptyTitle": "لا توجد بيانات كافية بعد",
-      "emptyDescription": "ستظهر خريطة أوقات الذروة بعد إتمام مواعيد."
-    },
-    "map": {
-      "title": "من أين يأتي مرضاك",
-      "subtitle": "كثافة المرضى حسب الولاية",
-      "empty": "لا توجد بيانات موقع للمرضى بعد"
-    },
-    "trend": {
-      "title": "اتجاه الإيرادات والحجم",
-      "subtitle": "التوزيع الشهري للإيرادات وعدد الزيارات",
-      "revenue": "الإيرادات",
-      "appointments": "المواعيد",
-      "emptyTitle": "لا توجد بيانات اتجاه شهري",
-      "emptyDescription": "ستظهر الاتجاهات الشهرية بعد إتمام مواعيدك."
-    },
-    "breakdown": {
-      "title": "توزيع الحجوزات",
-      "subtitle": "التوزيع حسب نوع الموعد",
-      "emptyTitle": "لا توجد بيانات حجوزات",
-      "emptyDescription": "لا يتوفر توزيع حسب نوع الموعد."
-    },
-    "recent": {
-      "all": "الكل"
     }
   },
   "appointments": {

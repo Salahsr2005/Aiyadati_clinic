@@ -147,4 +147,17 @@ export const qk = {
     guestPatientDetail: (id: string) => ["clinicSelf", "guestPatients", id] as const,
     reviews: (p?: Params) => ["clinicSelf", "reviews", stable(p)] as const,
   },
+  dashboard: {
+    all: () => ["dashboard"] as const,
+    kpis: () => ["dashboard", "kpis"] as const,
+    profile: () => ["dashboard", "profile"] as const,
+    workingHours: () => ["dashboard", "workingHours"] as const,
+    rooms: () => ["dashboard", "rooms"] as const,
+    services: () => ["dashboard", "services"] as const,
+    gallery: () => ["dashboard", "gallery"] as const,
+    doctors: () => ["dashboard", "doctors"] as const,
+    pendingInvites: () => ["dashboard", "pendingInvites"] as const,
+    appointments: (p?: Params) => ["dashboard", "appointments", stable(p)] as const,
+    reviews: () => ["dashboard", "reviews"] as const,
+  },
 } as const;

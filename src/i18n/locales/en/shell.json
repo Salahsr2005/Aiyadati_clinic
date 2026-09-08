@@ -1,11 +1,5 @@
 {
   "shell": {
-    "sidebar": {
-      "portalName": "Doctor Portal",
-      "collapse": "Collapse",
-      "collapseAria": "Collapse sidebar",
-      "footer": "Iyadati Doctor Portal v1.0 · PWA Ready"
-    },
     "commandPalette": {
       "placeholder": "Jump to a page, patient or appointment…",
       "pages": "Pages",
@@ -18,101 +12,6 @@
     },
     "offline": {
       "message": "You are offline — showing the last loaded data."
-    }
-  },
-  "dashboard": {
-    "period": {
-      "7d": "7 days",
-      "30d": "30 days",
-      "90d": "90 days",
-      "thisMonth": "This month"
-    },
-    "welcome": "Welcome back",
-    "welcomeName": "Welcome back, Dr. {{name}}",
-    "subtitle": "Your practice overview and live patient schedule",
-    "practiceStatus": {
-      "available": "Available",
-      "consulting": "Consulting",
-      "away": "Away",
-      "toastAvailable": "Practice status: Available for consults",
-      "toastConsulting": "Practice status: In Consultation",
-      "toastAway": "Practice status: Away / Out of Office"
-    },
-    "nextPatient": {
-      "badge": "Next Patient Up Today",
-      "fallbackName": "Scheduled Patient",
-      "fallbackType": "General Consultation",
-      "callPatient": "Call Patient",
-      "startConsultation": "Start Consultation"
-    },
-    "kpi": {
-      "appointments": "Appointments",
-      "completionRate": "Completion rate",
-      "revenue": "Revenue",
-      "patientRating": "Patient rating",
-      "completed_one": "{{count}} completed",
-      "completed_other": "{{count}} completed",
-      "noShow": "{{value}}% no-show",
-      "perVisit": "{{value}} / visit",
-      "reviews_one": "{{count}} verified review",
-      "reviews_other": "{{count}} verified reviews"
-    },
-    "schedule": {
-      "title": "Today's Schedule",
-      "summary": "{{total}} total visits · {{pending}} pending confirmation",
-      "viewAll": "View all",
-      "emptyTitle": "Nothing booked today",
-      "emptyDescription": "Open more slots under Schedule to let patients book with you.",
-      "patientFallback": "Patient",
-      "typeFallback": "Consultation"
-    },
-    "pendingRequests": {
-      "title": "Pending Requests",
-      "description": "Confirm requests promptly to maintain a top ranking.",
-      "action": "Review Requests"
-    },
-    "quickStats": {
-      "patients": "Patients",
-      "retention": "Retention",
-      "rating": "Rating"
-    },
-    "actionStrip": {
-      "toConfirm_one": "{{count}} appointment to confirm",
-      "toConfirm_other": "{{count}} appointments to confirm",
-      "toConfirmDescription": "Patients waiting for confirmation",
-      "manage": "Manage",
-      "clinicInvitation_one": "{{count}} clinic invitation",
-      "clinicInvitation_other": "{{count}} clinic invitations",
-      "clinicInvitationDescription": "Pending clinic affiliations",
-      "view": "View"
-    },
-    "heatmap": {
-      "title": "When your patients book",
-      "subtitle": "Peak hours across your busiest days",
-      "emptyTitle": "Not enough booking data yet",
-      "emptyDescription": "Your peak-hour heatmap appears once you have completed appointments."
-    },
-    "map": {
-      "title": "Where your patients come from",
-      "subtitle": "Patient density by wilaya",
-      "empty": "No patient location data yet"
-    },
-    "trend": {
-      "title": "Revenue & Volume Trend",
-      "subtitle": "Monthly breakdown of revenue and visit volume",
-      "revenue": "Revenue",
-      "appointments": "Appointments",
-      "emptyTitle": "No monthly trend data",
-      "emptyDescription": "Monthly trends will appear as you complete appointments."
-    },
-    "breakdown": {
-      "title": "Booking Breakdown",
-      "subtitle": "Appointment type distribution",
-      "emptyTitle": "No booking data",
-      "emptyDescription": "No appointment type breakdown available."
-    },
-    "recent": {
-      "all": "All"
     }
   },
   "appointments": {

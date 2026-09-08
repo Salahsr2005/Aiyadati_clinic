@@ -1,11 +1,5 @@
 {
   "shell": {
-    "sidebar": {
-      "portalName": "Portail Médecin",
-      "collapse": "Réduire",
-      "collapseAria": "Réduire la barre latérale",
-      "footer": "Iyadati Portail Médecin v1.0 · Prêt en PWA"
-    },
     "commandPalette": {
       "placeholder": "Rechercher une page, un patient ou un rendez-vous…",
       "pages": "Pages",
@@ -18,101 +12,6 @@
     },
     "offline": {
       "message": "Vous êtes hors ligne — affichage des dernières données chargées."
-    }
-  },
-  "dashboard": {
-    "period": {
-      "7d": "7 jours",
-      "30d": "30 jours",
-      "90d": "90 jours",
-      "thisMonth": "Ce mois-ci"
-    },
-    "welcome": "Bon retour",
-    "welcomeName": "Bon retour, Dr {{name}}",
-    "subtitle": "Aperçu de votre cabinet et planning en direct",
-    "practiceStatus": {
-      "available": "Disponible",
-      "consulting": "En consultation",
-      "away": "Absent",
-      "toastAvailable": "Statut du cabinet : Disponible pour consultation",
-      "toastConsulting": "Statut du cabinet : En consultation",
-      "toastAway": "Statut du cabinet : Absent / Hors du cabinet"
-    },
-    "nextPatient": {
-      "badge": "Prochain patient aujourd'hui",
-      "fallbackName": "Patient programmé",
-      "fallbackType": "Consultation générale",
-      "callPatient": "Appeler le patient",
-      "startConsultation": "Démarrer la consultation"
-    },
-    "kpi": {
-      "appointments": "Rendez-vous",
-      "completionRate": "Taux de complétion",
-      "revenue": "Revenus",
-      "patientRating": "Note des patients",
-      "completed_one": "{{count}} terminé",
-      "completed_other": "{{count}} terminés",
-      "noShow": "{{value}}% d'absences",
-      "perVisit": "{{value}} / visite",
-      "reviews_one": "{{count}} avis vérifié",
-      "reviews_other": "{{count}} avis vérifiés"
-    },
-    "schedule": {
-      "title": "Planning du jour",
-      "summary": "{{total}} visites au total · {{pending}} en attente de confirmation",
-      "viewAll": "Voir tout",
-      "emptyTitle": "Rien de prévu aujourd'hui",
-      "emptyDescription": "Ouvrez plus de créneaux dans Planning pour permettre aux patients de réserver.",
-      "patientFallback": "Patient",
-      "typeFallback": "Consultation"
-    },
-    "pendingRequests": {
-      "title": "Demandes en attente",
-      "description": "Confirmez rapidement les demandes pour maintenir un bon classement.",
-      "action": "Examiner les demandes"
-    },
-    "quickStats": {
-      "patients": "Patients",
-      "retention": "Fidélisation",
-      "rating": "Note"
-    },
-    "actionStrip": {
-      "toConfirm_one": "{{count}} rendez-vous à confirmer",
-      "toConfirm_other": "{{count}} rendez-vous à confirmer",
-      "toConfirmDescription": "Patients en attente de confirmation",
-      "manage": "Gérer",
-      "clinicInvitation_one": "{{count}} invitation de clinique",
-      "clinicInvitation_other": "{{count}} invitations de clinique",
-      "clinicInvitationDescription": "Affiliations en attente",
-      "view": "Voir"
-    },
-    "heatmap": {
-      "title": "Quand vos patients réservent",
-      "subtitle": "Heures de pointe sur vos journées les plus chargées",
-      "emptyTitle": "Pas encore assez de données",
-      "emptyDescription": "Votre carte des heures de pointe apparaîtra une fois des rendez-vous terminés."
-    },
-    "map": {
-      "title": "D'où viennent vos patients",
-      "subtitle": "Densité de patients par wilaya",
-      "empty": "Aucune donnée de localisation des patients"
-    },
-    "trend": {
-      "title": "Tendance Revenus & Volume",
-      "subtitle": "Répartition mensuelle des revenus et du volume de visites",
-      "revenue": "Revenus",
-      "appointments": "Rendez-vous",
-      "emptyTitle": "Aucune donnée de tendance mensuelle",
-      "emptyDescription": "Les tendances mensuelles apparaîtront après vos rendez-vous terminés."
-    },
-    "breakdown": {
-      "title": "Répartition des réservations",
-      "subtitle": "Répartition par type de rendez-vous",
-      "emptyTitle": "Aucune donnée de réservation",
-      "emptyDescription": "Aucune répartition par type de rendez-vous disponible."
-    },
-    "recent": {
-      "all": "Tous"
     }
   },
   "appointments": {

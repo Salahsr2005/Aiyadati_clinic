@@ -21,6 +21,8 @@ import { GlassCard } from "@/components/glass/GlassCard";
 import { RemoteImage } from "@/components/common/RemoteImage";
 import { FormModal } from "@/components/data/FormModal";
 import { ConfirmDialog } from "@/components/data/ConfirmDialog";
+import { buildUploadFormData, validateUploadFile } from "@/utils/uploadHelper";
+import { toast } from "sonner";
 import { EmptyState } from "@/components/data/EmptyState";
 import { Skeleton } from "@/components/glass/Skeleton";
 
@@ -41,14 +43,15 @@ export default function GalleryPage() {
 
   const uploadMutation = useEntityMutation({
     mutationFn: ({ file, title }: { file: File; title?: string }) => {
-      const formData = new FormData();
-      formData.append("file", file);
-      if (title?.trim()) {
-        formData.append("title", title.trim());
+      const validation = validateUploadFile(file, "IMAGE");
+      if (!validation.valid) {
+        toast.error(validation.error);
+        return Promise.reject(new Error(validation.error));
       }
+      const formData = buildUploadFormData("image", file, title?.trim() ? { title: title.trim() } : undefined);
       return clinicSelfApi.uploadGalleryImage(formData);
     },
-    invalidate: [qk.clinicSelf.gallery()],
+    invalidate: [qk.clinicSelf.gallery(), qk.dashboard.gallery()],
     successMessage: t("gallery.uploadSuccess", { defaultValue: "تم رفع صورة المعرض بنجاح" }),
     onSuccess: () => {
       setUploadModalOpen(false);

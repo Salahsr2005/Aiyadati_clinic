@@ -85,20 +85,25 @@ export default function ReviewsPage() {
   const respondedCount = reviews.filter((r) => r.response && r.response.trim().length > 0).length;
   const responseRate = totalReviews > 0 ? Math.round((respondedCount / totalReviews) * 100) : 100;
 
+  // Calculate client-side star distribution from real reviews
+  const starDistribution = useMemo(() => {
+    const dist: Record<number, number> = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
+    reviews.forEach((r) => {
+      const star = Math.min(5, Math.max(1, Math.round(r.rating)));
+      dist[star] = (dist[star] || 0) + 1;
+    });
+    return dist;
+  }, [reviews]);
+
   // Filtered reviews
   const filteredReviews = useMemo(() => {
     return reviews.filter((r) => {
       if (ratingFilter === "ALL") return true;
       if (ratingFilter === "RESPONDED") return !!r.response;
       if (ratingFilter === "UNRESPONDED") return !r.response;
-      return String(Math.floor(r.rating)) === ratingFilter;
+      return String(Math.round(r.rating)) === ratingFilter;
     });
   }, [reviews, ratingFilter]);
-
-  const openReplyModal = (rev: ReviewRow) => {
-    setReplyModalReview(rev);
-    setReplyText(rev.response || "");
-  };
 
   return (
     <div className="space-y-6">
@@ -169,11 +174,49 @@ export default function ReviewsPage() {
         <KPICard
           label={t("reviews.toggleVisibility", { defaultValue: "إظهار التقييمات للعامة" })}
           value={isVisible ? 100 : 0}
-          format={() => isVisible ? t("common.active", { defaultValue: "ظاهر" }) : t("common.inactive", { defaultValue: "مخفي" })}
+          format={() => (isVisible ? t("common.active", { defaultValue: "ظاهر" }) : t("common.inactive", { defaultValue: "مخفي" }))}
           subLabel="تظهر بملف العيادة العام"
           tone="info"
         />
       </div>
+
+      {/* Real Star Breakdown Distribution Card */}
+      <GlassCard className="p-5 border border-border/40 space-y-3">
+        <h3 className="text-xs font-bold text-foreground uppercase tracking-wider flex items-center gap-2">
+          <Star className="h-4 w-4 text-amber-500 fill-amber-500" />
+          {t("reviews.distributionTitle", { defaultValue: "توزيع التقييمات حسب النجوم" })}
+        </h3>
+        <div className="grid grid-cols-1 sm:grid-cols-5 gap-3">
+          {[5, 4, 3, 2, 1].map((star) => {
+            const count = starDistribution[star] || 0;
+            const pct = totalReviews > 0 ? Math.round((count / totalReviews) * 100) : 0;
+            return (
+              <div
+                key={star}
+                onClick={() => setRatingFilter(String(star) as RatingFilter)}
+                className={`p-3 rounded-2xl border transition cursor-pointer ${
+                  ratingFilter === String(star)
+                    ? "border-amber-500/50 bg-amber-500/10 shadow-xs"
+                    : "border-border/30 bg-accent/20 hover:border-border/60"
+                }`}
+              >
+                <div className="flex items-center justify-between text-xs font-bold">
+                  <span className="flex items-center gap-1 text-amber-500">
+                    {star} <Star className="h-3 w-3 fill-amber-500" />
+                  </span>
+                  <span className="tabular-nums text-foreground">{count} ({pct}%)</span>
+                </div>
+                <div className="h-1.5 w-full rounded-full bg-muted/40 overflow-hidden mt-2">
+                  <div
+                    className="h-full bg-amber-500 rounded-full transition-all duration-300"
+                    style={{ width: `${pct}%` }}
+                  />
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </GlassCard>
 
       {/* 3. Filter Bar */}
       <GlassCard className="p-4 space-y-3">
@@ -203,8 +246,6 @@ export default function ReviewsPage() {
               { id: "3" as RatingFilter, label: "3 ★" },
               { id: "2" as RatingFilter, label: "2 ★" },
               { id: "1" as RatingFilter, label: "1 ★" },
-              { id: "UNRESPONDED" as RatingFilter, label: t("reviews.filterPending", { defaultValue: "بانتظار الرد" }) },
-              { id: "RESPONDED" as RatingFilter, label: t("reviews.filterResponded", { defaultValue: "تم الرد عليها" }) },
             ] as const
           ).map((pill) => {
             const isActive = ratingFilter === pill.id;
@@ -212,7 +253,7 @@ export default function ReviewsPage() {
               <button
                 key={pill.id}
                 onClick={() => setRatingFilter(pill.id)}
-                className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-bold transition cursor-pointer ${
+                className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-[11px] font-bold transition cursor-pointer ${
                   isActive
                     ? "bg-primary-500 text-primary-foreground shadow-xs"
                     : "bg-accent/30 text-muted-foreground hover:text-foreground hover:bg-accent/60"
@@ -234,7 +275,11 @@ export default function ReviewsPage() {
         </div>
       ) : filteredReviews.length === 0 ? (
         <EmptyState
-          title={ratingFilter !== "ALL" ? t("common.empty", { defaultValue: "لا توجد سجّلات متاحة حاليًا" }) : t("reviews.emptyTitle", { defaultValue: "لا توجد تقييمات مسجلة للعيادة حتى الآن" })}
+          title={
+            ratingFilter !== "ALL"
+              ? t("common.empty", { defaultValue: "لا توجد سجّلات متاحة حاليًا" })
+              : t("reviews.emptyTitle", { defaultValue: "لا توجد تقييمات مسجلة للعيادة حتى الآن" })
+          }
           description={
             ratingFilter !== "ALL"
               ? t("filters.clear", { defaultValue: "جرب تعديل فلاتر التقييم." })
@@ -291,30 +336,13 @@ export default function ReviewsPage() {
                   </p>
                 )}
 
-                {/* Clinic Official Response Block */}
-                {rev.response ? (
+                {/* Clinic Official Response Display (if present from backend) */}
+                {rev.response && (
                   <div className="ms-4 p-3.5 rounded-2xl bg-primary-500/10 border border-primary-500/30 space-y-1.5">
-                    <div className="flex items-center justify-between text-xs font-bold text-primary-500">
-                      <span className="flex items-center gap-1.5">
-                        <CornerDownRight className="h-3.5 w-3.5 rtl:rotate-180" /> {t("reviews.clinicReplyTitle", { defaultValue: "رد العيادة الرسمي" })}
-                      </span>
-                      <button
-                        onClick={() => openReplyModal(rev)}
-                        className="text-[11px] underline hover:opacity-80 cursor-pointer"
-                      >
-                        {t("common.edit", { defaultValue: "تعديل" })}
-                      </button>
+                    <div className="text-xs font-bold text-primary-500 flex items-center gap-1.5">
+                      <CornerDownRight className="h-3.5 w-3.5 rtl:rotate-180" /> {t("reviews.clinicReplyTitle", { defaultValue: "رد العيادة الرسمي" })}
                     </div>
                     <p className="text-xs text-foreground/90 leading-relaxed ps-5">{rev.response}</p>
-                  </div>
-                ) : (
-                  <div className="flex justify-end pt-1">
-                    <button
-                      onClick={() => openReplyModal(rev)}
-                      className="inline-flex items-center gap-1.5 rounded-xl bg-primary-500/15 px-3.5 py-1.5 text-xs font-bold text-primary-500 hover:bg-primary-500/25 transition cursor-pointer"
-                    >
-                      <MessageCircle className="h-3.5 w-3.5" /> {t("reviews.respondButton", { defaultValue: "الرد على المريض" })}
-                    </button>
                   </div>
                 )}
               </GlassCard>
@@ -322,62 +350,6 @@ export default function ReviewsPage() {
           })}
         </div>
       )}
-
-      {/* 5. Reply Modal */}
-      <FormModal
-        id="reply-review-modal"
-        open={!!replyModalReview}
-        onClose={() => setReplyModalReview(null)}
-        title={t("reviews.replyModalTitle", { defaultValue: "الرد الرسمي على تقييم المريض" })}
-        description={t("reviews.replyModalSub", { defaultValue: "اكتب رد العيادة الرسمي على المريض بأسلوب مهني..." })}
-      >
-        <div className="space-y-4">
-          {replyModalReview && (
-            <div className="p-3.5 rounded-2xl bg-accent/30 border border-border/40 text-xs space-y-1">
-              <div className="font-bold text-foreground">
-                {t("reviews.patientReviewLabel", { defaultValue: "تقييم المريض" })} ({replyModalReview.rating} ★):
-              </div>
-              <p className="text-muted-foreground italic">
-                &quot;{replyModalReview.comment || replyModalReview.review || "—"}&quot;
-              </p>
-            </div>
-          )}
-
-          <div className="space-y-1.5">
-            <label className="text-xs font-medium text-muted-foreground">{t("reviews.replyPlaceholder", { defaultValue: "اكتب رد العيادة الرسمي..." })}*</label>
-            <textarea
-              value={replyText}
-              onChange={(e) => setReplyText(e.target.value)}
-              rows={4}
-              placeholder={t("reviews.replyPlaceholder", { defaultValue: "اكتب رد العيادة الرسمي على المريض بأسلوب مهني..." })}
-              className="glass w-full rounded-xl p-3 text-xs outline-none focus:ring-2 focus:ring-primary-500/40"
-            />
-          </div>
-
-          <div className="pt-4 border-t border-border/40 flex justify-end gap-2">
-            <button
-              type="button"
-              onClick={() => setReplyModalReview(null)}
-              className="rounded-xl px-4 py-2 text-xs font-semibold text-muted-foreground hover:bg-accent cursor-pointer"
-            >
-              {t("common.cancel", { defaultValue: "إلغاء" })}
-            </button>
-            <button
-              type="button"
-              disabled={!replyText.trim() || replyMutation.isPending}
-              onClick={() => {
-                if (replyModalReview && replyText.trim()) {
-                  replyMutation.mutate({ reviewId: replyModalReview.id, response: replyText.trim() });
-                }
-              }}
-              className="inline-flex items-center gap-2 rounded-xl bg-primary-500 px-4 py-2 text-xs font-semibold text-primary-foreground hover:opacity-90 disabled:opacity-50 cursor-pointer"
-            >
-              {replyMutation.isPending && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
-              <Send className="h-3.5 w-3.5" /> {t("reviews.respondButton", { defaultValue: "الرد على المريض" })}
-            </button>
-          </div>
-        </div>
-      </FormModal>
     </div>
   );
 }
