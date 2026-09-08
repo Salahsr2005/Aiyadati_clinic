@@ -191,7 +191,7 @@ export default function DashboardPage() {
   });
 
   const { data: rawServices } = useQuery({
-    queryKey: qk.clinicServices.all(),
+    queryKey: qk.clinicSelf.services(),
     queryFn: clinicServicesApi.list,
   });
 
@@ -212,13 +212,13 @@ export default function DashboardPage() {
 
   const clinicId = profile?.id || "";
   const { data: reviewStats } = useQuery<ReviewStats>({
-    queryKey: qk.reviews.clinicStats(clinicId),
+    queryKey: ["clinicReviewStats", clinicId],
     queryFn: () => reviewsApi.clinicStats(clinicId),
     enabled: !!clinicId,
   });
 
   const { data: rawClinicReviews } = useQuery<ReviewRow[]>({
-    queryKey: qk.reviews.clinic(clinicId),
+    queryKey: ["clinicReviews", clinicId],
     queryFn: () => reviewsApi.clinic(clinicId),
     enabled: !!clinicId,
   });

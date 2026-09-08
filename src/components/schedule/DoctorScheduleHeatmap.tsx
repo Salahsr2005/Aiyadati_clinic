@@ -3,7 +3,9 @@ import { useTranslation } from "react-i18next";
 import { Calendar, Clock, Sparkles, AlertCircle, Info, ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { GlassCard } from "@/components/glass/GlassCard";
-import type { AppointmentSlotRow } from "@/api/clinicAppointmentsApi";
+import type { DoctorSlot } from "@/api/clinicAppointmentsApi";
+
+type AppointmentSlotRow = DoctorSlot;
 
 export interface DoctorScheduleHeatmapProps {
   slots: AppointmentSlotRow[];

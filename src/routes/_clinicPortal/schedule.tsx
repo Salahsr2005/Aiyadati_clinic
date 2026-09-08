@@ -325,14 +325,21 @@ export default function SchedulePage() {
           isGenerating={generateSlotsMutation.isPending}
           onGenerateSlots={({ date, startHour, endHour }) => {
             const pad = (n: number) => String(n).padStart(2, "0");
-            generateSlotsMutation.mutate({
-              startDate: date,
-              endDate: date,
-              startTime: `${pad(startHour)}:00`,
-              endTime: `${pad(endHour)}:00`,
-              durationMinutes: 30,
-              maxPatients: 1,
-            });
+            if (selectedDoctorId) {
+              clinicAppointmentsApi.addQuickDoctorSlot(selectedDoctorId, {
+                date,
+                startTime: `${pad(startHour)}:00`,
+                endTime: `${pad(endHour)}:00`,
+                maxPatients: 1,
+              }).then(() => {
+                generateSlotsMutation.reset();
+              });
+            } else {
+              generateSlotsMutation.mutate({
+                startDate: date,
+                endDate: date,
+              });
+            }
           }}
         />
       )}

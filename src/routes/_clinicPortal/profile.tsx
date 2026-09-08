@@ -423,9 +423,9 @@ export default function ProfilePage() {
 
             <div className="h-64 rounded-2xl overflow-hidden border border-border/40">
               <LocationPicker
-                lat={profile?.latitude || 36.75}
-                lng={profile?.longitude || 3.05}
-                onLocationSelect={() => {}}
+                latitude={profile?.latitude || 36.75}
+                longitude={profile?.longitude || 3.05}
+                onChange={() => {}}
               />
             </div>
           </GlassCard>
