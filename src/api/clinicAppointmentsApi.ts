@@ -176,30 +176,42 @@ export const clinicAppointmentsApi = {
     doctorId: string,
     payload: { startDate: string; endDate: string; roomId?: string; force?: boolean }
   ): Promise<{ created: number; slots: DoctorSlot[] }> => {
-    return api.post<unknown, { created: number; slots: DoctorSlot[] }>(
+    if (!doctorId || !doctorId.trim()) {
+      throw new Error("Please select a doctor first to generate schedule slots.");
+    }
+    const res = await api.post(
       `/appointment/v1/clinic/doctors/${doctorId}/slots/generate`,
       payload
     );
+    return res.data as { created: number; slots: DoctorSlot[] };
   },
 
   cancelDoctorSlotsDate: async (
     doctorId: string,
     payload: { date: string; reason?: string }
   ): Promise<{ cancelled: number }> => {
-    return api.post<unknown, { cancelled: number }>(
+    if (!doctorId || !doctorId.trim()) {
+      throw new Error("Please select a doctor first to cancel schedule slots.");
+    }
+    const res = await api.post(
       `/appointment/v1/clinic/doctors/${doctorId}/slots/cancel-date`,
       payload
     );
+    return res.data as { cancelled: number };
   },
 
   addQuickDoctorSlot: async (
     doctorId: string,
     payload: { date: string; startTime: string; endTime: string; roomId?: string; maxPatients?: number }
   ): Promise<DoctorSlot> => {
-    return api.post<unknown, DoctorSlot>(
+    if (!doctorId || !doctorId.trim()) {
+      throw new Error("Please select a doctor first to add a quick slot.");
+    }
+    const res = await api.post(
       `/appointment/v1/clinic/doctors/${doctorId}/slots/quick`,
       payload
     );
+    return res.data as DoctorSlot;
   },
 
   // Clinic Appointments list

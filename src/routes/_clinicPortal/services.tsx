@@ -161,8 +161,11 @@ export default function ServicesPage() {
     successMessage: t("services.imageDeleteSuccess", { defaultValue: "Service image deleted" }),
   });
 
+  const [newServiceImage, setNewServiceImage] = useState<File | null>(null);
+
   const openCreateModal = () => {
     setEditingService(null);
+    setNewServiceImage(null);
     reset({
       nameFr: "",
       nameAr: "",
@@ -177,6 +180,7 @@ export default function ServicesPage() {
 
   const openEditModal = (service: ClinicService) => {
     setEditingService(service);
+    setNewServiceImage(null);
     reset({
       nameFr: service.nameFr,
       nameAr: service.nameAr || "",
@@ -191,16 +195,42 @@ export default function ServicesPage() {
 
   const onSubmit = (data: ServiceFormData) => {
     if (editingService) {
-      updateMutation.mutate({ id: editingService.id, payload: data });
+      updateMutation.mutate(
+        { id: editingService.id, payload: data },
+        {
+          onSuccess: (updated) => {
+            if (newServiceImage && (updated?.id || editingService.id)) {
+              uploadImageMutation.mutate({
+                serviceId: updated?.id || editingService.id,
+                file: newServiceImage,
+              });
+              setNewServiceImage(null);
+            }
+          },
+        }
+      );
     } else {
-      createMutation.mutate({
-        nameFr: data.nameFr,
-        nameAr: data.nameAr,
-        descriptionFr: data.descriptionFr,
-        descriptionAr: data.descriptionAr,
-        durationMinutes: data.durationMinutes,
-        price: data.price,
-      });
+      createMutation.mutate(
+        {
+          nameFr: data.nameFr,
+          nameAr: data.nameAr,
+          descriptionFr: data.descriptionFr,
+          descriptionAr: data.descriptionAr,
+          durationMinutes: data.durationMinutes,
+          price: data.price,
+        },
+        {
+          onSuccess: (created) => {
+            if (newServiceImage && created?.id) {
+              uploadImageMutation.mutate({
+                serviceId: created.id,
+                file: newServiceImage,
+              });
+              setNewServiceImage(null);
+            }
+          },
+        }
+      );
     }
   };
 
@@ -647,9 +677,36 @@ export default function ServicesPage() {
             <textarea
               {...register("descriptionFr")}
               rows={2}
-              placeholder="وصف تفصيلي للخدمة والفحوصات المشمولة..."
+              placeholder="Detailed description of the care service and included procedures..."
               className="glass w-full rounded-xl px-3.5 py-2.5 text-sm outline-none focus:ring-2 focus:ring-primary-500/40"
             />
+          </div>
+
+          <div className="space-y-1.5">
+            <label className="text-sm font-medium flex items-center justify-between">
+              <span className="flex items-center gap-1.5">
+                <ImageIcon className="h-4 w-4 text-primary-500" />
+                {t("gallery.uploadButton", { defaultValue: "Service Photo / Image" })}
+              </span>
+              <span className="text-[10px] text-muted-foreground">Optional (JPEG, PNG, WebP)</span>
+            </label>
+            <label className="flex items-center justify-between gap-3 rounded-xl border border-dashed border-border/60 bg-accent/20 p-3 hover:border-primary-500/50 transition cursor-pointer">
+              <span className="text-xs text-foreground font-semibold truncate">
+                {newServiceImage ? newServiceImage.name : t("gallery.clickToBrowse", { defaultValue: "Click To Browse" })}
+              </span>
+              <input
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) setNewServiceImage(file);
+                }}
+              />
+              <span className="px-3 py-1 text-xs font-bold rounded-lg bg-primary-500 text-white shrink-0">
+                Browse
+              </span>
+            </label>
           </div>
 
           {editingService && (

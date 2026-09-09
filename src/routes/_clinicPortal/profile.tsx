@@ -41,6 +41,7 @@ import { RemoteImage } from "@/components/common/RemoteImage";
 import { FormModal } from "@/components/data/FormModal";
 import { ConfirmDialog } from "@/components/data/ConfirmDialog";
 import { LocationPicker } from "@/components/data/LocationPicker";
+import { DoctorScheduleHeatmap } from "@/components/schedule/DoctorScheduleHeatmap";
 import { Skeleton } from "@/components/glass/Skeleton";
 import { StatusBadge } from "@/components/data/StatusBadge";
 import { EmptyState } from "@/components/data/EmptyState";
@@ -54,6 +55,37 @@ const DAYS = [
   "Friday",
   "Saturday",
 ];
+
+export function parseGoogleMapsUrl(input: string): { latitude: number; longitude: number } | null {
+  if (!input || !input.trim()) return null;
+  const str = input.trim();
+
+  // @lat,lng
+  const atMatch = str.match(/@(-?\d+\.\d+),(-?\d+\.\d+)/);
+  if (atMatch) {
+    const lat = parseFloat(atMatch[1]);
+    const lng = parseFloat(atMatch[2]);
+    if (!isNaN(lat) && !isNaN(lng)) return { latitude: lat, longitude: lng };
+  }
+
+  // q=lat,lng or ll=lat,lng
+  const qMatch = str.match(/(?:q|ll|query|search)=(-?\d+\.\d+),(-?\d+\.\d+)/);
+  if (qMatch) {
+    const lat = parseFloat(qMatch[1]);
+    const lng = parseFloat(qMatch[2]);
+    if (!isNaN(lat) && !isNaN(lng)) return { latitude: lat, longitude: lng };
+  }
+
+  // direct lat, lng string
+  const directMatch = str.match(/(-?\d+\.\d+)\s*,\s*(-?\d+\.\d+)/);
+  if (directMatch) {
+    const lat = parseFloat(directMatch[1]);
+    const lng = parseFloat(directMatch[2]);
+    if (!isNaN(lat) && !isNaN(lng)) return { latitude: lat, longitude: lng };
+  }
+
+  return null;
+}
 
 const profileSchema = z.object({
   nameFr: z.string().min(2, "French name is required"),
@@ -118,11 +150,14 @@ export default function ProfilePage() {
     }
   }, [workingHours]);
 
+  const [gmapsUrl, setGmapsUrl] = useState("");
+
   const {
     register,
     handleSubmit,
     reset,
     setValue,
+    watch,
     formState: { errors },
   } = useForm<ProfileFormData>({
     resolver: zodResolver(profileSchema),
@@ -580,6 +615,28 @@ export default function ProfilePage() {
               />
             </div>
 
+            <div className="space-y-2 pt-2">
+              <label className="text-xs font-semibold text-foreground flex items-center justify-between">
+                <span>{t("profile.gmapsParserLabel", { defaultValue: "Extract Position from Google Maps Link / Coordinates" })}</span>
+                <span className="text-[10px] text-muted-foreground">e.g. https://maps.google.com/?q=36.75,3.05</span>
+              </label>
+              <input
+                type="text"
+                value={gmapsUrl}
+                onChange={(e) => {
+                  setGmapsUrl(e.target.value);
+                  const parsed = parseGoogleMapsUrl(e.target.value);
+                  if (parsed) {
+                    setValue("latitude", parsed.latitude);
+                    setValue("longitude", parsed.longitude);
+                    toast.success(t("profile.gmapsSuccess", { defaultValue: "Extracted GPS coordinates from link!" }));
+                  }
+                }}
+                placeholder="Paste Google Maps URL or coordinates (e.g. 36.7528, 3.0420)..."
+                className="glass w-full rounded-xl px-3.5 py-2 text-xs outline-none focus:ring-2 focus:ring-primary-500/40"
+              />
+            </div>
+
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-1.5">
                 <label className="text-sm font-medium">Latitude (Latitude)</label>
@@ -603,6 +660,22 @@ export default function ProfilePage() {
                 />
               </div>
             </div>
+
+            {/* Location Picker Map */}
+            <div className="pt-2">
+              <label className="text-xs font-bold text-foreground mb-1.5 block">
+                {t("profile.mapLocationTitle", { defaultValue: "Facility Interactive Map Location" })}
+              </label>
+              <LocationPicker
+                latitude={watch("latitude")}
+                longitude={watch("longitude")}
+                onChange={(lat, lng) => {
+                  setValue("latitude", Number(lat.toFixed(6)));
+                  setValue("longitude", Number(lng.toFixed(6)));
+                }}
+                height={260}
+              />
+            </div>
           </GlassCard>
 
           <div className="flex justify-end pt-2">
@@ -624,26 +697,29 @@ export default function ProfilePage() {
 
       {/* Schedule Tab */}
       {activeTab === "schedule" && (
-        <GlassCard className="p-6 space-y-6 border border-border/40">
-          <div className="flex items-center justify-between">
-            <div>
-              <h2 className="text-base font-semibold text-foreground flex items-center gap-2">
-                <Clock className="h-4.5 w-4.5 text-primary-500" /> {t("profile.hoursInfo", { defaultValue: "Weekly Working Schedule" })}
-              </h2>
-              <p className="text-xs text-muted-foreground mt-0.5">
-                تحديد Appointments وساعات عمل العيادة الرسمية للأسبوع
-              </p>
-            </div>
+        <div className="space-y-6">
+          <DoctorScheduleHeatmap slots={[]} />
 
-            <button
-              onClick={() => saveHoursMutation.mutate(hoursState)}
-              disabled={saveHoursMutation.isPending}
-              className="inline-flex items-center gap-2 rounded-xl bg-primary-500 px-4 py-2 text-xs font-semibold text-primary-foreground hover:opacity-90 disabled:opacity-50 cursor-pointer"
-            >
-              {saveHoursMutation.isPending ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Save className="h-3.5 w-3.5" />}
-              {t("common.save", { defaultValue: "Save Changes" })}
-            </button>
-          </div>
+          <GlassCard className="p-6 space-y-6 border border-border/40">
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="text-base font-semibold text-foreground flex items-center gap-2">
+                  <Clock className="h-4.5 w-4.5 text-primary-500" /> {t("profile.hoursInfo", { defaultValue: "Weekly Working Schedule" })}
+                </h2>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Set facility working hours & days of week
+                </p>
+              </div>
+
+              <button
+                onClick={() => saveHoursMutation.mutate(hoursState)}
+                disabled={saveHoursMutation.isPending}
+                className="inline-flex items-center gap-2 rounded-xl bg-primary-500 px-4 py-2 text-xs font-semibold text-primary-foreground hover:opacity-90 disabled:opacity-50 cursor-pointer"
+              >
+                {saveHoursMutation.isPending ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Save className="h-3.5 w-3.5" />}
+                {t("common.save", { defaultValue: "Save Changes" })}
+              </button>
+            </div>
 
           <div className="space-y-3">
             {DAYS.map((dayName, idx) => {
@@ -712,6 +788,7 @@ export default function ProfilePage() {
             })}
           </div>
         </GlassCard>
+      </div>
       )}
 
       {/* Documents Tab */}

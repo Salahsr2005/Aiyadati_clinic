@@ -35,12 +35,15 @@ export function validateUploadFile(file: File, type: UploadType): { valid: boole
 }
 
 export function buildUploadFormData(
-  fieldName: "image" | "document" | "logo",
+  fieldName: "image" | "document" | "logo" | string,
   file: File,
   extraFields?: Record<string, string>
 ): FormData {
   const formData = new FormData();
   formData.append(fieldName, file);
+  if (fieldName !== "file") {
+    formData.append("file", file);
+  }
   if (extraFields) {
     Object.entries(extraFields).forEach(([key, val]) => {
       if (val !== undefined && val !== null) {

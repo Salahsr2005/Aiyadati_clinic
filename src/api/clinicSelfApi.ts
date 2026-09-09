@@ -34,9 +34,36 @@ export interface ClinicDocument {
   createdAt?: string;
 }
 
+export const DAY_OF_WEEK_ENUMS = [
+  "SUNDAY",
+  "MONDAY",
+  "TUESDAY",
+  "WEDNESDAY",
+  "THURSDAY",
+  "FRIDAY",
+  "SATURDAY",
+] as const;
+
+export type DayOfWeekEnum = (typeof DAY_OF_WEEK_ENUMS)[number];
+
+export function toDayOfWeekEnum(day: number | string): DayOfWeekEnum {
+  if (typeof day === "number") {
+    return DAY_OF_WEEK_ENUMS[Math.abs(Math.floor(day)) % 7] || "SUNDAY";
+  }
+  const str = String(day).trim().toUpperCase();
+  if (DAY_OF_WEEK_ENUMS.includes(str as DayOfWeekEnum)) {
+    return str as DayOfWeekEnum;
+  }
+  const parsed = parseInt(str, 10);
+  if (!isNaN(parsed)) {
+    return DAY_OF_WEEK_ENUMS[Math.abs(parsed) % 7] || "SUNDAY";
+  }
+  return "SUNDAY";
+}
+
 export interface ClinicWorkingHour {
   id?: string;
-  dayOfWeek: number;
+  dayOfWeek: number | DayOfWeekEnum | string;
   openTime: string;
   closeTime: string;
   isOpen: boolean;
@@ -87,8 +114,18 @@ export const clinicSelfApi = {
   },
 
   updateProfile: async (formData: FormData): Promise<ClinicProfile> => {
-    const res = await api.patch('/clinic/v1/me/complete', formData);
-    return res.data as ClinicProfile;
+    try {
+      const res = await api.patch('/clinic/v1/me/complete', formData);
+      return res.data as ClinicProfile;
+    } catch (err: any) {
+      // Fallback if complete profile endpoint reports already completed
+      try {
+        const res = await api.patch('/clinic/v1/me/profile', formData);
+        return res.data as ClinicProfile;
+      } catch {
+        throw err;
+      }
+    }
   },
 
   getDocuments: async (): Promise<ClinicDocument[]> => {
@@ -111,7 +148,13 @@ export const clinicSelfApi = {
   },
 
   upsertWorkingHours: async (hours: ClinicWorkingHour[]): Promise<ClinicWorkingHour[]> => {
-    const res = await api.post('/clinic/v1/me/working-hours', { hours });
+    const formattedHours = hours.map((h) => ({
+      dayOfWeek: toDayOfWeekEnum(h.dayOfWeek),
+      openTime: h.openTime || "08:00",
+      closeTime: h.closeTime || "17:00",
+      isOpen: Boolean(h.isOpen),
+    }));
+    const res = await api.post('/clinic/v1/me/working-hours', { hours: formattedHours });
     return ensureArray<ClinicWorkingHour>(res.data);
   },
 

@@ -125,13 +125,23 @@ function formatPatientName(app: ClinicAppointmentRow): string {
   return "Patient";
 }
 
+function getDayIndex(day: number | string): number {
+  if (typeof day === "number") return day;
+  const str = String(day).trim().toUpperCase();
+  const enums = ["SUNDAY", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY"];
+  const idx = enums.indexOf(str);
+  if (idx !== -1) return idx;
+  const parsed = parseInt(str, 10);
+  return !isNaN(parsed) ? parsed : 0;
+}
+
 /** Helper: Calculate whether clinic is open right now based on working hours */
 function checkIsOpenNow(workingHours: ClinicWorkingHour[]): { isOpen: boolean; todayHours?: ClinicWorkingHour } {
   if (!workingHours || workingHours.length === 0) return { isOpen: false };
 
   const now = new Date();
   const currentDay = now.getDay(); // 0 = Sunday, 1 = Monday ... 6 = Saturday
-  const todayHours = workingHours.find((h) => Number(h.dayOfWeek) === currentDay);
+  const todayHours = workingHours.find((h) => getDayIndex(h.dayOfWeek) === currentDay);
 
   if (!todayHours || !todayHours.isOpen || !todayHours.openTime || !todayHours.closeTime) {
     return { isOpen: false, todayHours };
@@ -658,8 +668,9 @@ export default function DashboardPage() {
           ) : (
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
               {workingHours.map((wh) => {
-                const dayName = DAY_NAMES[wh.dayOfWeek] || `Day ${wh.dayOfWeek}`;
-                const isToday = new Date().getDay() === Number(wh.dayOfWeek);
+                const dayIdx = getDayIndex(wh.dayOfWeek);
+                const dayName = DAY_NAMES[dayIdx] || String(wh.dayOfWeek);
+                const isToday = new Date().getDay() === dayIdx;
 
                 return (
                   <div
