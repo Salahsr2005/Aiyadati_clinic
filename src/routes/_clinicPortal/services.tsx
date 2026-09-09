@@ -73,9 +73,9 @@ export default function ServicesPage() {
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("ALL");
   const [viewMode, setViewMode] = useState<ViewMode>("grid");
 
-  // Active sub-drawers
-  const [selectedImageService, setSelectedImageService] = useState<ClinicService | null>(null);
-  const [selectedDoctorService, setSelectedDoctorService] = useState<ClinicService | null>(null);
+  // Active sub-drawers (store IDs so query invalidations auto-sync UI state)
+  const [selectedImageId, setSelectedImageId] = useState<string | null>(null);
+  const [selectedDoctorId, setSelectedDoctorId] = useState<string | null>(null);
 
   const { data: rawServices, isLoading } = useQuery({
     queryKey: qk.clinicSelf.services(),
@@ -84,6 +84,15 @@ export default function ServicesPage() {
 
   const services: ClinicService[] = ensureArray<ClinicService>(rawServices);
   const { acceptedDoctors } = useClinicDoctors();
+
+  const selectedImageService = useMemo(
+    () => services.find((s) => s.id === selectedImageId) || null,
+    [services, selectedImageId]
+  );
+  const selectedDoctorService = useMemo(
+    () => services.find((s) => s.id === selectedDoctorId) || null,
+    [services, selectedDoctorId]
+  );
 
   const {
     register,
@@ -264,6 +273,8 @@ export default function ServicesPage() {
   }, [services]);
 
   const hasFilters = searchQuery || statusFilter !== "ALL";
+  const currencySuffix = t("common.dzd", { defaultValue: "DZD" });
+  const minsSuffix = t("common.minutes", { defaultValue: "mins" });
 
   return (
     <div className="space-y-6">
@@ -324,9 +335,9 @@ export default function ServicesPage() {
             </div>
             <div>
               <div className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-                {t("services.avgPrice", { defaultValue: "Avg Price (DZD)" })}
+                {t("services.avgPrice", { defaultValue: "Avg Price" })} ({currencySuffix})
               </div>
-              <div className="text-base font-bold">{stats.avgPrice.toLocaleString()} د.ج</div>
+              <div className="text-base font-bold">{stats.avgPrice.toLocaleString()} {currencySuffix}</div>
             </div>
           </div>
         </GlassCard>
@@ -338,9 +349,9 @@ export default function ServicesPage() {
             </div>
             <div>
               <div className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-                {t("services.avgDuration", { defaultValue: "Avg Duration (mins)" })}
+                {t("services.avgDuration", { defaultValue: "Avg Duration" })} ({minsSuffix})
               </div>
-              <div className="text-base font-bold">{stats.avgDuration} دقيقة</div>
+              <div className="text-base font-bold">{stats.avgDuration} {minsSuffix}</div>
             </div>
           </div>
         </GlassCard>
@@ -451,8 +462,8 @@ export default function ServicesPage() {
           title={hasFilters ? t("common.empty", { defaultValue: "No records found" }) : t("services.emptyTitle", { defaultValue: "No services configured" })}
           description={
             hasFilters
-              ? t("filters.clear", { defaultValue: "Clear All" })
-              : t("services.emptySub", { defaultValue: "Empty Sub" })
+              ? t("filters.clear", { defaultValue: "Clear All Filters" })
+              : t("services.emptySub", { defaultValue: "Add your clinic treatments and medical offerings to start accepting bookings" })
           }
           action={
             <button
@@ -500,12 +511,12 @@ export default function ServicesPage() {
                   <div className="flex flex-wrap items-center gap-2 mt-3.5">
                     <span className="inline-flex items-center gap-1 rounded-xl bg-primary-500/10 px-2.5 py-1 text-xs font-bold text-primary-500">
                       <Banknote className="h-3.5 w-3.5" />
-                      {service.price ? `${service.price.toLocaleString()} د.ج` : "مشمول"}
+                      {service.price ? `${service.price.toLocaleString()} ${currencySuffix}` : t("common.included", { defaultValue: "Included" })}
                     </span>
 
                     <span className="inline-flex items-center gap-1 rounded-xl bg-accent/40 px-2.5 py-1 text-xs font-semibold text-muted-foreground border border-border/40">
                       <Clock className="h-3.5 w-3.5 text-primary-500" />
-                      {service.durationMinutes || 30} دقيقة
+                      {service.durationMinutes || 30} {minsSuffix}
                     </span>
                   </div>
                 </div>
@@ -514,21 +525,21 @@ export default function ServicesPage() {
                 <div className="pt-3 border-t border-border/30 flex items-center justify-between">
                   <div className="flex items-center gap-1 text-xs text-muted-foreground font-medium">
                     <button
-                      onClick={() => setSelectedDoctorService(service)}
+                      onClick={() => setSelectedDoctorId(service.id)}
                       className="inline-flex items-center gap-1 hover:text-primary-500 transition cursor-pointer"
                       title={t("services.assignDoctors", { defaultValue: "Practicing Doctors for Service" })}
                     >
                       <UserCheck className="h-3.5 w-3.5 text-primary-500" />
-                      <span>{assignedCount} {t("doctors.title", { defaultValue: "Affiliated Medical Staff" })}</span>
+                      <span>{assignedCount} {t("doctors.title", { defaultValue: "Medical Staff" })}</span>
                     </button>
                     <span className="mx-1">·</span>
                     <button
-                      onClick={() => setSelectedImageService(service)}
+                      onClick={() => setSelectedImageId(service.id)}
                       className="inline-flex items-center gap-1 hover:text-primary-500 transition cursor-pointer"
-                      title={t("gallery.title", { defaultValue: "Clinic Facility Gallery" })}
+                      title={t("gallery.title", { defaultValue: "Facility Gallery" })}
                     >
                       <ImageIcon className="h-3.5 w-3.5 text-primary-500" />
-                      <span>{imagesCount} {t("gallery.totalImages", { defaultValue: "Total Images" })}</span>
+                      <span>{imagesCount} {t("gallery.totalImages", { defaultValue: "Images" })}</span>
                     </button>
                   </div>
 
@@ -577,25 +588,25 @@ export default function ServicesPage() {
                     </div>
                     <div className="text-[11px] text-muted-foreground flex items-center gap-3 mt-0.5">
                       <span className="font-semibold text-primary-500">
-                        {service.price ? `${service.price.toLocaleString()} د.ج` : "مشمول"}
+                        {service.price ? `${service.price.toLocaleString()} ${currencySuffix}` : t("common.included", { defaultValue: "Included" })}
                       </span>
                       <span>·</span>
-                      <span>{service.durationMinutes || 30} دقيقة</span>
+                      <span>{service.durationMinutes || 30} {minsSuffix}</span>
                       <span>·</span>
-                      <span>{assignedCount} طبيب مخصص</span>
+                      <span>{assignedCount} {t("services.assignedDoctorsCount", { defaultValue: "Assigned Doctor(s)" })}</span>
                     </div>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-2 self-end sm:self-center">
                   <button
-                    onClick={() => setSelectedDoctorService(service)}
+                    onClick={() => setSelectedDoctorId(service.id)}
                     className="px-2.5 py-1 rounded-xl text-xs font-bold bg-primary-500/10 text-primary-500 hover:bg-primary-500/20 transition cursor-pointer"
                   >
-                    {t("doctors.title", { defaultValue: "Affiliated Medical Staff" })} ({assignedCount})
+                    {t("doctors.title", { defaultValue: "Medical Staff" })} ({assignedCount})
                   </button>
                   <button
-                    onClick={() => setSelectedImageService(service)}
+                    onClick={() => setSelectedImageId(service.id)}
                     className="p-1.5 rounded-lg text-muted-foreground hover:bg-accent hover:text-foreground transition cursor-pointer"
                   >
                     <ImageIcon className="h-3.5 w-3.5" />
@@ -625,12 +636,12 @@ export default function ServicesPage() {
         open={modalOpen}
         onClose={() => setModalOpen(false)}
         title={editingService ? t("services.editTitle", { defaultValue: "Edit Care Service Details" }) : t("services.createTitle", { defaultValue: "Create New Care Service" })}
-        description={t("services.modalDesc", { defaultValue: "Modal Desc" })}
+        description={t("services.modalDesc", { defaultValue: "Configure service names, pricing, duration and assign staff" })}
       >
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1.5">
-              <label className="text-sm font-medium">{t("services.serviceName", { defaultValue: "Service / Treatment Name" })} (الفرنسية)*</label>
+              <label className="text-sm font-medium">{t("services.serviceName", { defaultValue: "Service / Treatment Name" })} (FR)*</label>
               <input
                 {...register("nameFr")}
                 placeholder="e.g. Consultation Générale"
@@ -640,7 +651,7 @@ export default function ServicesPage() {
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-sm font-medium">{t("services.serviceName", { defaultValue: "Service / Treatment Name" })} (العربية)</label>
+              <label className="text-sm font-medium">{t("services.serviceName", { defaultValue: "Service / Treatment Name" })} (AR)</label>
               <input
                 {...register("nameAr")}
                 placeholder="مثال: فحص عام"
@@ -652,7 +663,7 @@ export default function ServicesPage() {
 
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1.5">
-              <label className="text-sm font-medium">{t("services.servicePrice", { defaultValue: "Price (DZD)" })}</label>
+              <label className="text-sm font-medium">{t("services.servicePrice", { defaultValue: "Price" })} ({currencySuffix})</label>
               <input
                 type="number"
                 {...register("price")}
@@ -662,7 +673,7 @@ export default function ServicesPage() {
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-sm font-medium">{t("services.serviceDuration", { defaultValue: "Duration in Minutes" })}</label>
+              <label className="text-sm font-medium">{t("services.serviceDuration", { defaultValue: "Duration" })} ({minsSuffix})</label>
               <input
                 type="number"
                 {...register("durationMinutes")}
@@ -704,7 +715,7 @@ export default function ServicesPage() {
                 }}
               />
               <span className="px-3 py-1 text-xs font-bold rounded-lg bg-primary-500 text-white shrink-0">
-                Browse
+                {t("common.browse", { defaultValue: "Browse" })}
               </span>
             </label>
           </div>
@@ -745,9 +756,9 @@ export default function ServicesPage() {
       {/* 6. Doctor Assignment Drawer */}
       <Drawer
         open={!!selectedDoctorService}
-        onClose={() => setSelectedDoctorService(null)}
+        onClose={() => setSelectedDoctorId(null)}
         title={selectedDoctorService ? `${t("services.assignDoctors", { defaultValue: "Practicing Doctors for Service" })}: ${selectedDoctorService.nameFr}` : t("services.assignDoctors", { defaultValue: "Practicing Doctors for Service" })}
-        subtitle="تحديد وتعيين الطاقم الطبي المخول بتقديم هذه الخدمة"
+        subtitle={t("services.assignDoctorsSub", { defaultValue: "Assign licensed medical personnel authorized to perform this service" })}
       >
         {selectedDoctorService && (
           <div className="space-y-5">
@@ -758,7 +769,7 @@ export default function ServicesPage() {
 
               {acceptedDoctors.length === 0 ? (
                 <div className="p-4 rounded-2xl border border-border/40 text-center text-xs text-muted-foreground">
-                  {t("doctors.emptyAccepted", { defaultValue: "Empty Accepted" })}
+                  {t("doctors.emptyAccepted", { defaultValue: "No affiliated doctors found for this clinic." })}
                 </div>
               ) : (
                 <div className="space-y-2">
@@ -781,9 +792,9 @@ export default function ServicesPage() {
                             className="h-9 w-9 rounded-full object-cover border border-border/40"
                           />
                           <div>
-                            <div className="text-xs font-bold text-foreground">{t("doctors.doctorPrefix", { defaultValue: "Doctor Prefix" })} {name}</div>
+                            <div className="text-xs font-bold text-foreground">Dr. {name}</div>
                             <div className="text-[10px] text-muted-foreground">
-                              {d?.specialtyName || "تخصص طبي"}
+                              {d?.specialtyName || t("doctors.specialtyFallback", { defaultValue: "Medical Specialist" })}
                             </div>
                           </div>
                         </div>
@@ -800,7 +811,7 @@ export default function ServicesPage() {
                             className="px-3 py-1 rounded-xl text-xs font-bold bg-danger/15 text-danger hover:bg-danger/25 transition cursor-pointer inline-flex items-center gap-1"
                           >
                             {unassignDoctorMutation.isPending && <Loader2 className="h-3 w-3 animate-spin" />}
-                            Cancel التخصيص
+                            {t("common.unassign", { defaultValue: "Unassign" })}
                           </button>
                         ) : (
                           <button
@@ -814,7 +825,7 @@ export default function ServicesPage() {
                             className="px-3 py-1 rounded-xl text-xs font-bold bg-primary-500 px-3 py-1 text-primary-foreground hover:opacity-90 transition cursor-pointer inline-flex items-center gap-1"
                           >
                             {assignDoctorMutation.isPending && <Loader2 className="h-3 w-3 animate-spin" />}
-                            تخصيص
+                            {t("common.assign", { defaultValue: "Assign" })}
                           </button>
                         )}
                       </div>
@@ -830,9 +841,9 @@ export default function ServicesPage() {
       {/* 7. Image Management Drawer */}
       <Drawer
         open={!!selectedImageService}
-        onClose={() => setSelectedImageService(null)}
-        title={selectedImageService ? `${t("gallery.title", { defaultValue: "Clinic Facility Gallery" })}: ${selectedImageService.nameFr}` : t("gallery.title", { defaultValue: "Clinic Facility Gallery" })}
-        subtitle="رفع وإدارة التوثيق البصري للخدمة الطبية"
+        onClose={() => setSelectedImageId(null)}
+        title={selectedImageService ? `${t("gallery.title", { defaultValue: "Facility Gallery" })}: ${selectedImageService.nameFr}` : t("gallery.title", { defaultValue: "Facility Gallery" })}
+        subtitle={t("gallery.subtitle", { defaultValue: "Upload and manage visual documentation for this medical service" })}
       >
         {selectedImageService && (
           <div className="space-y-5">
@@ -869,7 +880,7 @@ export default function ServicesPage() {
 
               {(!selectedImageService.images || selectedImageService.images.length === 0) ? (
                 <div className="p-4 text-center text-xs text-muted-foreground rounded-2xl border border-border/40">
-                  {t("gallery.emptyTitle", { defaultValue: "Empty Title" })}
+                  {t("gallery.emptyTitle", { defaultValue: "No images uploaded for this service yet." })}
                 </div>
               ) : (
                 <div className="grid grid-cols-2 gap-3">
@@ -898,7 +909,7 @@ export default function ServicesPage() {
         onClose={() => setDeleteConfirmId(null)}
         onConfirm={() => { if (deleteConfirmId) deleteMutation.mutate(deleteConfirmId); }}
         title={t("services.deleteTitle", { defaultValue: "Delete Care Service" })}
-        description={t("services.deleteMessage", { defaultValue: 'Are you sure you want to permanently delete service "{{name}}"' })}
+        description={t("services.deleteMessage", { defaultValue: 'Are you sure you want to permanently delete service?' })}
         confirmText={t("common.delete", { defaultValue: "Delete" })}
         variant="danger"
         isLoading={deleteMutation.isPending}

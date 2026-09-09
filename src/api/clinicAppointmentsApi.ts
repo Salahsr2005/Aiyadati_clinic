@@ -161,6 +161,12 @@ async function resolveMissingGuestPatients(items: ClinicAppointmentRow[]): Promi
 }
 
 export const clinicAppointmentsApi = {
+  // All clinic slots
+  listSlots: async (params?: { date?: string; startDate?: string; endDate?: string }): Promise<DoctorSlot[]> => {
+    const raw = await api.get<unknown, unknown>(`/appointment/v1/clinic/slots`, { params });
+    return ensureArray<DoctorSlot>(raw);
+  },
+
   // Slots per doctor
   getDoctorSlots: async (
     doctorId: string,

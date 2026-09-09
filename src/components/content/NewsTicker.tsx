@@ -1,57 +1,57 @@
 import { useTranslation } from "react-i18next";
-import { Radio, ShieldAlert, Zap, Calendar, HeartPulse, Activity } from "lucide-react";
+import { Radio, ShieldAlert, Calendar, Sparkles, Activity } from "lucide-react";
 
 interface NewsTickerProps {
   pendingCount?: number;
   todayCount?: number;
   completedCount?: number;
+  customAnnouncement?: string;
 }
 
 export function NewsTicker({
   pendingCount = 0,
   todayCount = 0,
   completedCount = 0,
+  customAnnouncement,
 }: NewsTickerProps) {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const locale = i18n.language || "fr";
   const isRtl = locale.startsWith("ar");
 
   const tickerItems = [
     {
       id: "stat-today",
-      category: isRtl ? "مباشر" : "LIVE METRICS",
-      text: isRtl
-        ? `Appointments اليوم: ${todayCount} (مكتملة: ${completedCount})`
-        : `Today's Appointments: ${todayCount} (${completedCount} completed)`,
+      category: t("ticker.liveMetrics", { defaultValue: "LIVE METRICS" }),
+      text: t("ticker.todaySummary", {
+        defaultValue: "Today's Appointments: {{today}} ({{completed}} completed)",
+        today: todayCount,
+        completed: completedCount,
+      }),
       icon: Calendar,
     },
     ...(pendingCount > 0
       ? [
           {
             id: "stat-pending",
-            category: isRtl ? "تنبيه هام" : "ACTION REQ",
-            text: isRtl
-              ? `لديك ${pendingCount} Appointments جديدة بانتظار الConfirm السريع!`
-              : `You have ${pendingCount} pending appointments awaiting confirmation!`,
+            category: t("ticker.actionReq", { defaultValue: "ACTION REQ" }),
+            text: t("ticker.pendingWarning", {
+              defaultValue: "You have {{count}} pending appointment(s) awaiting confirmation",
+              count: pendingCount,
+            }),
             icon: ShieldAlert,
           },
         ]
       : []),
     {
-      id: "tip-quick",
-      category: isRtl ? "تلميح العيادة" : "CLINIC TIP",
-      text: isRtl
-        ? "يمكنك حجز المرضى الفوريين وإنشاء Créneaux سريعة بنقرة واحدة من لوحة التحكم."
-        : "Book walk-in patients and batch-generate slots directly from your cockpit.",
-      icon: Zap,
-    },
-    {
-      id: "news-health",
-      category: isRtl ? "تحديث طبي" : "HEALTH MATRIX",
-      text: isRtl
-        ? "تحديث بروتوكولات الوصفات الطبية الإلكترونية وConfirm الهوية الوطنية للمريض متوفر الآن."
-        : "Digital prescription verification & electronic health record sync is now active.",
-      icon: HeartPulse,
+      id: "welcome-announcement",
+      category: t("ticker.announcement", { defaultValue: "ANNOUNCEMENT" }),
+      text:
+        customAnnouncement ||
+        t("dashboard.welcomeAnnouncement", {
+          defaultValue:
+            "Welcome to Aiyadati Clinic Management Portal — Manage appointments, doctors, services, and practice performance in real time.",
+        }),
+      icon: Sparkles,
     },
   ];
 
@@ -68,7 +68,7 @@ export function NewsTicker({
           </span>
           <Radio className="h-3.5 w-3.5 animate-pulse text-white" />
           <span className="text-[11px] font-black uppercase tracking-wider text-white">
-            {isRtl ? "الأخبار المباشرة" : "LIVE TICKER"}
+            {t("ticker.title", { defaultValue: "LIVE TICKER" })}
           </span>
         </div>
 

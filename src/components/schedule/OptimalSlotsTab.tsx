@@ -140,40 +140,40 @@ export function OptimalSlotsTab({
             </div>
             <div>
               <h2 className="text-base font-bold text-foreground">
-                {isRtl ? "نظرة عامة على Appointments المنشأة" : "Bookable Slots Overview"}
+                {t("schedule.slotsOverviewTitle", { defaultValue: "Bookable Slots Overview" })}
               </h2>
               <p className="text-xs text-muted-foreground">
                 {dateMode === "single"
-                  ? `${isRtl ? "يوم" : "Single Date"}: ${singleDate}`
-                  : `${isRtl ? "الفترة" : "Range"}: ${dateRange.startDate} → ${dateRange.endDate}`}
+                  ? `${t("schedule.singleDate", { defaultValue: "Single Date" })}: ${singleDate}`
+                  : `${t("schedule.range", { defaultValue: "Range" })}: ${dateRange.startDate} → ${dateRange.endDate}`}
               </p>
             </div>
           </div>
 
           <button
             onClick={onGoToGenerate}
-            className="inline-flex items-center gap-1.5 rounded-xl bg-primary-500 px-4 py-2 text-xs font-bold text-primary-foreground shadow-md hover:bg-primary-600 transition"
+            className="inline-flex items-center gap-1.5 rounded-xl bg-primary-500 px-4 py-2 text-xs font-bold text-primary-foreground shadow-md hover:bg-primary-600 transition cursor-pointer"
           >
-            <Zap className="h-3.5 w-3.5" /> {isRtl ? "إنشاء Appointments جديدة" : "Generate Slots"}
+            <Zap className="h-3.5 w-3.5" /> {t("schedule.generateSlots", { defaultValue: "Generate Slots" })}
           </button>
         </div>
 
         {/* 4 Summary Stat Cards */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2 border-t border-border/30">
           <div className="rounded-2xl bg-card/60 p-3 border border-border/40 text-center">
-            <div className="text-xs text-muted-foreground font-semibold">{isRtl ? "إجمالي Appointments" : "Total Slots"}</div>
+            <div className="text-xs text-muted-foreground font-semibold">{t("schedule.totalSlots", { defaultValue: "Total Slots" })}</div>
             <div className="text-lg font-extrabold text-foreground font-mono mt-0.5">{totalCount}</div>
           </div>
           <div className="rounded-2xl bg-success/10 p-3 border border-success/20 text-center">
-            <div className="text-xs text-success font-semibold">{isRtl ? "شواغر متاحة" : "Available"}</div>
+            <div className="text-xs text-success font-semibold">{t("common.available", { defaultValue: "Available" })}</div>
             <div className="text-lg font-extrabold text-success font-mono mt-0.5">{availableCount}</div>
           </div>
           <div className="rounded-2xl bg-primary-500/10 p-3 border border-primary-500/20 text-center">
-            <div className="text-xs text-primary-500 font-semibold">{isRtl ? "محجوزة بالكامل" : "Booked / Full"}</div>
+            <div className="text-xs text-primary-500 font-semibold">{t("common.booked", { defaultValue: "Booked / Full" })}</div>
             <div className="text-lg font-extrabold text-primary-500 font-mono mt-0.5">{bookedCount}</div>
           </div>
           <div className="rounded-2xl bg-danger/10 p-3 border border-danger/20 text-center">
-            <div className="text-xs text-danger font-semibold">{isRtl ? "ملغاة" : "Cancelled"}</div>
+            <div className="text-xs text-danger font-semibold">{t("common.cancelled", { defaultValue: "Cancelled" })}</div>
             <div className="text-lg font-extrabold text-danger font-mono mt-0.5">{cancelledCount}</div>
           </div>
         </div>
@@ -188,24 +188,24 @@ export function OptimalSlotsTab({
             <button
               onClick={() => setDateMode("single")}
               className={cn(
-                "rounded-lg px-3 py-1.5 text-xs font-bold transition",
+                "rounded-lg px-3 py-1.5 text-xs font-bold transition cursor-pointer",
                 dateMode === "single"
                   ? "bg-primary-500 text-primary-foreground shadow-xs"
                   : "text-muted-foreground hover:text-foreground"
               )}
             >
-              {isRtl ? "يوم محدد" : "Single Day"}
+              {t("schedule.singleDay", { defaultValue: "Single Day" })}
             </button>
             <button
               onClick={() => setDateMode("range")}
               className={cn(
-                "rounded-lg px-3 py-1.5 text-xs font-bold transition",
+                "rounded-lg px-3 py-1.5 text-xs font-bold transition cursor-pointer",
                 dateMode === "range"
                   ? "bg-primary-500 text-primary-foreground shadow-xs"
                   : "text-muted-foreground hover:text-foreground"
               )}
             >
-              {isRtl ? "نطاق زمني" : "Date Range"}
+              {t("schedule.dateRange", { defaultValue: "Date Range" })}
             </button>
           </div>
 
@@ -231,17 +231,17 @@ export function OptimalSlotsTab({
           <Filter className="h-4 w-4 text-muted-foreground ms-1" />
           {(
             [
-              { id: "all", label: isRtl ? "الكل" : "All" },
-              { id: "available", label: isRtl ? "متاح" : "Available" },
-              { id: "full", label: isRtl ? "محجوز" : "Booked" },
-              { id: "cancelled", label: isRtl ? "ملغى" : "Cancelled" },
+              { id: "all", label: t("common.all", { defaultValue: "All" }) },
+              { id: "available", label: t("common.available", { defaultValue: "Available" }) },
+              { id: "full", label: t("common.booked", { defaultValue: "Booked" }) },
+              { id: "cancelled", label: t("common.cancelled", { defaultValue: "Cancelled" }) },
             ] as const
           ).map((f) => (
             <button
               key={f.id}
               onClick={() => setStatusFilter(f.id)}
               className={cn(
-                "rounded-xl px-3 py-1.5 text-xs font-bold transition",
+                "rounded-xl px-3 py-1.5 text-xs font-bold transition cursor-pointer",
                 statusFilter === f.id
                   ? "bg-foreground text-background shadow-xs"
                   : "glass text-muted-foreground hover:text-foreground"
@@ -264,18 +264,14 @@ export function OptimalSlotsTab({
         <GlassCard className="p-8 border border-border/40 shadow-md">
           <EmptyState
             icon={CalendarRange}
-            title={isRtl ? "لا توجد Appointments منشأة لهذه الفترة" : "No slots generated for this period"}
-            description={
-              isRtl
-                ? "يمكنك استخدام زر 'إنشاء Appointments جديدة' لإنشاء Appointments محجوزة للعيادة بنقرة واحدة."
-                : "Generate bookable slots for your clinic using the template generator."
-            }
+            title={t("schedule.noSlotsTitle", { defaultValue: "No slots generated for this period" })}
+            description={t("schedule.noSlotsSub", { defaultValue: "Generate bookable slots for your clinic using the template generator." })}
             action={
               <button
                 onClick={onGoToGenerate}
-                className="mt-2 inline-flex items-center gap-2 rounded-xl bg-primary-500 px-4 py-2 text-xs font-bold text-primary-foreground shadow-md hover:bg-primary-600 transition"
+                className="mt-2 inline-flex items-center gap-2 rounded-xl bg-primary-500 px-4 py-2 text-xs font-bold text-primary-foreground shadow-md hover:bg-primary-600 transition cursor-pointer"
               >
-                <Zap className="h-4 w-4" /> {isRtl ? "إنشاء Appointments الآن" : "Generate Slots Now"}
+                <Zap className="h-4 w-4" /> {t("schedule.generateSlotsNow", { defaultValue: "Generate Slots Now" })}
               </button>
             }
           />
