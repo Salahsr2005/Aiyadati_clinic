@@ -41,9 +41,6 @@ export function buildUploadFormData(
 ): FormData {
   const formData = new FormData();
   formData.append(fieldName, file);
-  if (fieldName !== "file") {
-    formData.append("file", file);
-  }
   if (extraFields) {
     Object.entries(extraFields).forEach(([key, val]) => {
       if (val !== undefined && val !== null) {

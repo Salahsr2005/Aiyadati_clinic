@@ -52,15 +52,11 @@ export const specialtyApi = {
     return res.data as SpecialtyRow;
   },
   create: async (payload: SpecialtyInput | FormData): Promise<SpecialtyRow> => {
-    const res = await api.post("/specialty/v1", payload, {
-      headers: payload instanceof FormData ? { "Content-Type": "multipart/form-data" } : undefined,
-    });
+    const res = await api.post("/specialty/v1", payload);
     return res.data as SpecialtyRow;
   },
   update: async (id: string, payload: Partial<SpecialtyInput> | FormData): Promise<SpecialtyRow> => {
-    const res = await api.patch(`/specialty/v1/${id}`, payload, {
-      headers: payload instanceof FormData ? { "Content-Type": "multipart/form-data" } : undefined,
-    });
+    const res = await api.patch(`/specialty/v1/${id}`, payload);
     return res.data as SpecialtyRow;
   },
   remove: async (id: string) => {

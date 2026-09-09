@@ -158,9 +158,7 @@ export const clinicsApi = {
     return res.data;
   },
   uploadGalleryImage: async (id: string, formData: FormData) => {
-    const res = await api.post(`/clinic/v1/${id}/gallery`, formData, {
-      headers: { "Content-Type": "multipart/form-data" },
-    });
+    const res = await api.post(`/clinic/v1/${id}/gallery`, formData);
     return res.data;
   },
   updateGalleryImage: async (clinicId: string, imageId: string, payload: Record<string, unknown>) => {
@@ -176,15 +174,11 @@ export const clinicsApi = {
     return res.data;
   },
   uploadLogo: async (id: string, formData: FormData) => {
-    const res = await api.post(`/clinic/v1/${id}/logo`, formData, {
-      headers: { "Content-Type": "multipart/form-data" },
-    });
+    const res = await api.post(`/clinic/v1/${id}/logo`, formData);
     return res.data;
   },
   uploadDocument: async (id: string, formData: FormData) => {
-    const res = await api.post(`/clinic/v1/${id}/documents`, formData, {
-      headers: { "Content-Type": "multipart/form-data" },
-    });
+    const res = await api.post(`/clinic/v1/${id}/documents`, formData);
     return res.data;
   },
   deleteDocument: async (clinicId: string, docId: string) => {

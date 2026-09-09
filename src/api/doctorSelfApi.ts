@@ -138,12 +138,7 @@ export const doctorSelfApi = {
 
   complete: (payload: FormData | Record<string, unknown>) =>
     api
-      .patch<DoctorRow>("/doctor/v1/me/complete", payload, {
-        headers:
-          typeof FormData !== "undefined" && payload instanceof FormData
-            ? { "Content-Type": "multipart/form-data" }
-            : undefined,
-      })
+      .patch<DoctorRow>("/doctor/v1/me/complete", payload)
       .then((r) => r.data),
 
   availability: {
@@ -205,9 +200,7 @@ export const doctorSelfApi = {
     },
     upload: (formData: FormData) =>
       api
-        .post<DoctorDocumentRow>("/doctor/v1/me/documents", formData, {
-          headers: { "Content-Type": "multipart/form-data" },
-        })
+        .post<DoctorDocumentRow>("/doctor/v1/me/documents", formData)
         .then((r) => r.data),
     remove: (id: string) => api.delete(`/doctor/v1/me/documents/${id}`).then((r) => r.data),
   },

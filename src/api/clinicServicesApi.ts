@@ -71,19 +71,26 @@ export const clinicServicesApi = {
   },
 
   create: async (payload: CreateServicePayload): Promise<ClinicService> => {
-    const body = {
+    const body: Record<string, any> = {
       nameFr: payload.nameFr,
-      nameAr: payload.nameAr || undefined,
-      descriptionFr: payload.descriptionFr || undefined,
-      descriptionAr: payload.descriptionAr || undefined,
-      sortOrder: payload.sortOrder || undefined,
     };
+    if (payload.nameAr) body.nameAr = payload.nameAr;
+    if (payload.descriptionFr) body.descriptionFr = payload.descriptionFr;
+    if (payload.descriptionAr) body.descriptionAr = payload.descriptionAr;
+    if (payload.sortOrder !== undefined) body.sortOrder = payload.sortOrder;
     const res = await api.post('/clinic-services/v1/me', body);
     return res.data as ClinicService;
   },
 
   update: async (id: string, payload: UpdateServicePayload): Promise<ClinicService> => {
-    const res = await api.patch(`/clinic-services/v1/me/${id}`, payload);
+    const body: Record<string, any> = {};
+    if (payload.nameFr !== undefined) body.nameFr = payload.nameFr;
+    if (payload.nameAr !== undefined) body.nameAr = payload.nameAr || undefined;
+    if (payload.descriptionFr !== undefined) body.descriptionFr = payload.descriptionFr;
+    if (payload.descriptionAr !== undefined) body.descriptionAr = payload.descriptionAr;
+    if (payload.sortOrder !== undefined) body.sortOrder = payload.sortOrder;
+    if (payload.isActive !== undefined) body.isActive = payload.isActive;
+    const res = await api.patch(`/clinic-services/v1/me/${id}`, body);
     return res.data as ClinicService;
   },
 

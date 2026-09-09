@@ -18,7 +18,11 @@ api.interceptors.request.use((config) => {
     config.headers = config.headers ?? {};
     (config.headers as Record<string, string>)["Authorization"] = `Bearer ${token}`;
   }
-  if (config.data instanceof FormData) {
+  if (config.data instanceof FormData && config.headers) {
+    if (typeof (config.headers as any).delete === "function") {
+      (config.headers as any).delete("Content-Type");
+      (config.headers as any).delete("content-type");
+    }
     delete (config.headers as Record<string, unknown>)["Content-Type"];
     delete (config.headers as Record<string, unknown>)["content-type"];
   }

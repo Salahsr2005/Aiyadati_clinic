@@ -114,15 +114,11 @@ export function adminResource<T = unknown>(resource: string) {
       return res.data as T;
     },
     create: async (payload: Partial<T> | FormData) => {
-      const res = await api.post(base, payload, {
-        headers: payload instanceof FormData ? { "Content-Type": "multipart/form-data" } : undefined,
-      });
+      const res = await api.post(base, payload);
       return res.data as T;
     },
     update: async (id: string, payload: Partial<T> | FormData) => {
-      const res = await api.patch(`${base}/${id}`, payload, {
-        headers: payload instanceof FormData ? { "Content-Type": "multipart/form-data" } : undefined,
-      });
+      const res = await api.patch(`${base}/${id}`, payload);
       return res.data as T;
     },
     remove: async (id: string) => {

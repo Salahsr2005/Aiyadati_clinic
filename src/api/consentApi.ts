@@ -97,8 +97,6 @@ export const doctorConsentApi = {
   /** Doctor attaches a report/prescription to the patient's record. */
   upload: (patientId: string, formData: FormData) =>
     api
-      .post<PatientDocumentRow>(`/consent/v1/doctor/patients/${patientId}/documents`, formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      })
+      .post<PatientDocumentRow>(`/consent/v1/doctor/patients/${patientId}/documents`, formData)
       .then((r) => r.data),
 };
