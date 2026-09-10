@@ -359,7 +359,7 @@ export const doctorSelfApi = {
 
       try {
         const res = await api.get("/appointment/v1/guest-patients/search", {
-          params: { q: term, search: term, email: term, phone: term },
+          params: { q: term },
         });
         const items = safeArray<GuestPatientRow>(res.data);
         items.forEach(addResult);

@@ -295,8 +295,10 @@ export const clinicAppointmentsApi = {
   },
 
   searchGuestPatients: async (query: string): Promise<GuestPatient[]> => {
+    const term = query.trim();
+    if (!term || term.length < 2) return [];
     const raw = await api.get<unknown, unknown>('/appointment/v1/guest-patients/search', {
-      params: { query },
+      params: { q: term },
     });
     return ensureArray<GuestPatient>(raw);
   },

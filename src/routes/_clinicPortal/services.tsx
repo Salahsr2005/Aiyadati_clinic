@@ -26,6 +26,8 @@ import {
   ChevronRight,
   Building2,
   Check,
+  Maximize2,
+  Eye,
 } from "lucide-react";
 import { buildUploadFormData, validateUploadFile } from "@/utils/uploadHelper";
 import { toast } from "sonner";
@@ -37,7 +39,7 @@ import {
 import { useClinicDoctors } from "@/hooks/useClinicDoctors";
 import { qk } from "@/lib/queryKeys";
 import { useEntityMutation } from "@/lib/mutations";
-import { ensureArray } from "@/lib/utils";
+import { ensureArray, openFileUrl, resolveFileUrl } from "@/lib/utils";
 import { GlassCard } from "@/components/glass/GlassCard";
 import { RemoteImage } from "@/components/common/RemoteImage";
 import { FormModal } from "@/components/data/FormModal";
@@ -484,9 +486,29 @@ export default function ServicesPage() {
             return (
               <GlassCard
                 key={service.id}
-                className="p-5 flex flex-col justify-between space-y-4 hover:bg-accent/40 transition cursor-pointer group border border-border/40"
+                className="p-5 flex flex-col justify-between space-y-4 hover:bg-accent/40 transition cursor-pointer group border border-border/40 overflow-hidden"
               >
                 <div>
+                  {service.images && service.images.length > 0 && (
+                    <div className="relative h-28 -mx-5 -mt-5 mb-3 overflow-hidden border-b border-border/40">
+                      <RemoteImage
+                        src={service.images[0].imageUrl}
+                        alt={service.nameFr}
+                        className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
+                      />
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          openFileUrl(service.images![0].imageUrl);
+                        }}
+                        className="absolute bottom-2 end-2 inline-flex items-center gap-1 rounded-lg bg-black/70 px-2 py-1 text-[10px] font-bold text-white backdrop-blur-xs hover:bg-black/90 transition"
+                      >
+                        <Eye className="h-3 w-3" />
+                        <span>{service.images.length} {t("gallery.totalImages", { defaultValue: "Photos" })}</span>
+                      </button>
+                    </div>
+                  )}
                   <div className="flex items-start justify-between gap-3">
                     <div>
                       <h3 className="text-sm font-bold text-foreground group-hover:text-primary-500 transition">
@@ -887,13 +909,24 @@ export default function ServicesPage() {
                   {selectedImageService.images.map((img) => (
                     <div key={img.id} className="relative group rounded-xl overflow-hidden aspect-video border border-border/40">
                       <RemoteImage src={img.imageUrl} alt="Service photo" className="h-full w-full object-cover" />
-                      <button
-                        onClick={() => deleteImageMutation.mutate({ serviceId: selectedImageService.id, imageId: img.id })}
-                        className="absolute top-1.5 end-1.5 p-1 rounded-lg bg-danger text-white opacity-0 group-hover:opacity-100 transition cursor-pointer"
-                        title={t("common.delete", { defaultValue: "Delete" })}
-                      >
-                        <Trash2 className="h-3.5 w-3.5" />
-                      </button>
+                      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center gap-2">
+                        <button
+                          type="button"
+                          onClick={() => openFileUrl(img.imageUrl)}
+                          className="p-1.5 rounded-lg bg-white/20 text-white hover:bg-white/40 transition cursor-pointer"
+                          title={t("common.view", { defaultValue: "View Image" })}
+                        >
+                          <Maximize2 className="h-3.5 w-3.5" />
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => deleteImageMutation.mutate({ serviceId: selectedImageService.id, imageId: img.id })}
+                          className="p-1.5 rounded-lg bg-danger/80 text-white hover:bg-danger transition cursor-pointer"
+                          title={t("common.delete", { defaultValue: "Delete" })}
+                        >
+                          <Trash2 className="h-3.5 w-3.5" />
+                        </button>
+                      </div>
                     </div>
                   ))}
                 </div>

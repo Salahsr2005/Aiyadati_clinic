@@ -19,6 +19,7 @@ import {
   X,
   Edit2,
   ExternalLink,
+  Eye,
 } from "lucide-react";
 
 import { buildUploadFormData, validateUploadFile } from "@/utils/uploadHelper";
@@ -33,7 +34,7 @@ import { clinicAppointmentsApi, type DoctorSlot } from "@/api/clinicAppointments
 import { useWilayas, useBaladyas } from "@/hooks/useWilayas";
 import { qk } from "@/lib/queryKeys";
 import { useEntityMutation } from "@/lib/mutations";
-import { ensureArray } from "@/lib/utils";
+import { ensureArray, openFileUrl } from "@/lib/utils";
 
 import { GlassCard } from "@/components/glass/GlassCard";
 import { RemoteImage } from "@/components/common/RemoteImage";
@@ -682,9 +683,23 @@ export default function ClinicProfilePage() {
                         </div>
                       </div>
                     </div>
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-2 sm:gap-3">
                       <StatusBadge value={doc.status || "APPROVED"} />
-                      <button onClick={() => setDeleteDocId(doc.id)} className="p-1.5 rounded-lg text-danger/70 hover:bg-danger/10 hover:text-danger transition cursor-pointer">
+                      <button
+                        type="button"
+                        onClick={() => openFileUrl(doc.fileUrl || doc.filePath || doc.accessUrl || doc.fileId)}
+                        className="inline-flex items-center gap-1.5 p-1.5 px-2.5 rounded-xl bg-primary-500/15 text-primary-500 hover:bg-primary-500/25 text-xs font-bold transition cursor-pointer"
+                        title={t("common.view", { defaultValue: "View Document" })}
+                      >
+                        <Eye className="h-3.5 w-3.5" />
+                        <span className="hidden sm:inline">{t("common.view", { defaultValue: "View" })}</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setDeleteDocId(doc.id)}
+                        className="p-1.5 rounded-xl text-danger/70 hover:bg-danger/10 hover:text-danger transition cursor-pointer"
+                        title={t("common.delete", { defaultValue: "Delete" })}
+                      >
                         <Trash2 className="h-4 w-4" />
                       </button>
                     </div>

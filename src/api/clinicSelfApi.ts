@@ -28,6 +28,9 @@ export interface ClinicDocument {
   id: string;
   name: string;
   fileUrl: string;
+  filePath?: string;
+  accessUrl?: string;
+  fileId?: string;
   type?: string;
   mimeType?: string;
   status?: string;

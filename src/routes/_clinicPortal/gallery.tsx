@@ -16,7 +16,7 @@ import {
 import { clinicSelfApi, type ClinicGalleryItem } from "@/api/clinicSelfApi";
 import { qk } from "@/lib/queryKeys";
 import { useEntityMutation } from "@/lib/mutations";
-import { ensureArray } from "@/lib/utils";
+import { ensureArray, resolveFileUrl } from "@/lib/utils";
 import { GlassCard } from "@/components/glass/GlassCard";
 import { RemoteImage } from "@/components/common/RemoteImage";
 import { FormModal } from "@/components/data/FormModal";
@@ -296,9 +296,8 @@ export default function GalleryPage() {
               <X className="h-6 w-6" />
             </button>
             <img
-              src={previewImage}
+              src={resolveFileUrl(previewImage)}
               alt="Facility preview"
-              crossOrigin="anonymous"
               className="max-h-[85vh] max-w-[85vw] rounded-2xl object-contain shadow-2xl border border-white/10"
             />
           </div>

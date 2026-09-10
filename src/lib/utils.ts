@@ -1,8 +1,44 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { API_BASE_URL } from "@/lib/api";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
+}
+
+export function resolveFileUrl(url?: string | null): string {
+  if (!url || typeof url !== "string") return "";
+
+  let resolved = url.trim();
+  if (!resolved) return "";
+
+  // Replace localhost or 127.0.0.1 host with API_BASE_URL
+  if (resolved.includes("localhost") || resolved.includes("127.0.0.1")) {
+    resolved = resolved.replace(/^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?/, API_BASE_URL);
+  }
+
+  // If already absolute HTTP(S) or blob or data URI
+  if (/^(https?:|data:|blob:)/i.test(resolved)) {
+    return resolved;
+  }
+
+  // If relative path starting with slash
+  if (resolved.startsWith("/")) {
+    return `${API_BASE_URL}${resolved}`;
+  }
+
+  // Otherwise relative path without leading slash
+  return `${API_BASE_URL}/${resolved}`;
+}
+
+export function openFileUrl(url?: string | null): void {
+  if (!url) return;
+  const fullUrl = resolveFileUrl(url);
+  if (!fullUrl) return;
+
+  if (typeof window !== "undefined") {
+    window.open(fullUrl, "_blank", "noopener,noreferrer");
+  }
 }
 
 export function ensureArray<T>(data: unknown): T[] {

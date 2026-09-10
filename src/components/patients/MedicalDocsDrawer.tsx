@@ -17,6 +17,7 @@ import { qk } from "@/lib/queryKeys";
 import { GlassCard } from "@/components/glass/GlassCard";
 import { Skeleton } from "@/components/glass/Skeleton";
 import { buildUploadFormData, validateUploadFile } from "@/utils/uploadHelper";
+import { resolveFileUrl } from "@/lib/utils";
 import { toast } from "sonner";
 
 interface MedicalDocsDrawerProps {
@@ -173,7 +174,7 @@ export function MedicalDocsDrawer({
 
                         {doc.accessUrl && (
                           <a
-                            href={doc.accessUrl}
+                            href={resolveFileUrl(doc.accessUrl)}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="inline-flex items-center gap-1.5 rounded-xl bg-primary-500/15 px-3 py-1.5 text-xs font-bold text-primary-500 hover:bg-primary-500/25 transition shrink-0"

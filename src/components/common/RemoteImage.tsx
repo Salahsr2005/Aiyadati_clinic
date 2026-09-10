@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ASSET_FALLBACKS } from '@/lib/assetFallbacks';
+import { resolveFileUrl } from '@/lib/utils';
 
 interface RemoteImageProps extends Omit<React.ImgHTMLAttributes<HTMLImageElement>, 'src'> {
   src?: string | null;
@@ -17,12 +18,12 @@ export function RemoteImage({
 }: RemoteImageProps) {
   const [errored, setErrored] = useState(false);
 
-  const displaySrc = errored || !src ? fallback : src;
+  const resolved = src ? resolveFileUrl(src) : null;
+  const displaySrc = errored || !resolved ? fallback : resolved;
 
   return (
     <img
       src={displaySrc ?? undefined}
-      crossOrigin="anonymous"
       referrerPolicy="no-referrer"
       onError={() => setErrored(true)}
       alt={alt}
