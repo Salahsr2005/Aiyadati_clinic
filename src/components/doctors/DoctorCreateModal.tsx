@@ -17,6 +17,7 @@ import {
   Camera,
 } from "lucide-react";
 import { FormModal } from "@/components/data/FormModal";
+import { Drawer } from "@/components/data/Drawer";
 import { clinicSelfApi } from "@/api/clinicSelfApi";
 import { specialtyApi, type SpecialtyRow } from "@/api/specialtyApi";
 import { useWilayas, useBaladyas } from "@/hooks/useWilayas";
@@ -151,20 +152,52 @@ export function DoctorCreateModal({ open, onClose }: DoctorCreateModalProps) {
   };
 
   return (
-    <FormModal
-      id="doctor-create-modal"
+    <Drawer
+      id="doctor-create-drawer"
       open={open}
       onClose={() => {
         removePhoto();
         onClose();
       }}
       title={t("doctors.createModalTitle", { defaultValue: "Register New Practice Doctor" })}
-      description={t("doctors.createModalSubtitle", {
+      subtitle={t("doctors.createModalSubtitle", {
         defaultValue:
           "Onboard a medical specialist directly to your clinic facility roster with instant affiliation.",
       })}
+      width="max-w-xl sm:max-w-2xl"
+      footer={
+        <div className="flex items-center justify-end gap-3">
+          <button
+            type="button"
+            onClick={onClose}
+            disabled={createDoctorMutation.isPending}
+            className="rounded-xl border border-border/70 px-4 py-2 text-xs font-semibold text-muted-foreground hover:bg-muted/80 transition cursor-pointer"
+          >
+            {t("common.cancel", { defaultValue: "Cancel" })}
+          </button>
+
+          <button
+            type="submit"
+            form="doctor-create-form"
+            disabled={createDoctorMutation.isPending}
+            className="inline-flex items-center gap-2 rounded-xl bg-primary-500 px-5 py-2 text-xs font-semibold text-primary-foreground shadow-md hover:opacity-90 transition cursor-pointer disabled:opacity-60"
+          >
+            {createDoctorMutation.isPending ? (
+              <>
+                <Loader2 className="h-4 w-4 animate-spin" />
+                <span>{t("doctors.submitting", { defaultValue: "Registering Doctor..." })}</span>
+              </>
+            ) : (
+              <>
+                <UserPlus className="h-4 w-4" />
+                <span>{t("doctors.submitCreate", { defaultValue: "Register & Affiliate Doctor" })}</span>
+              </>
+            )}
+          </button>
+        </div>
+      }
     >
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+      <form id="doctor-create-form" onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         {/* Photo Upload & Preview Header */}
         <div className="flex items-center gap-4 p-3.5 rounded-2xl bg-muted/30 border border-border/40">
           <div className="relative group shrink-0">
@@ -545,36 +578,7 @@ export function DoctorCreateModal({ open, onClose }: DoctorCreateModalProps) {
           </div>
         </div>
 
-        {/* Action Buttons */}
-        <div className="flex items-center justify-end gap-3 pt-4 border-t border-border/40">
-          <button
-            type="button"
-            onClick={onClose}
-            disabled={createDoctorMutation.isPending}
-            className="rounded-xl border border-border px-4 py-2.5 text-xs font-semibold text-muted-foreground hover:bg-muted/80 transition cursor-pointer"
-          >
-            {t("common.cancel", { defaultValue: "Cancel" })}
-          </button>
-
-          <button
-            type="submit"
-            disabled={createDoctorMutation.isPending}
-            className="inline-flex items-center gap-2 rounded-xl bg-primary-500 px-5 py-2.5 text-xs font-semibold text-primary-foreground shadow-md hover:opacity-90 transition cursor-pointer disabled:opacity-60"
-          >
-            {createDoctorMutation.isPending ? (
-              <>
-                <Loader2 className="h-4 w-4 animate-spin" />
-                <span>{t("doctors.submitting", { defaultValue: "Registering Doctor..." })}</span>
-              </>
-            ) : (
-              <>
-                <UserPlus className="h-4 w-4" />
-                <span>{t("doctors.submitCreate", { defaultValue: "Register & Affiliate Doctor" })}</span>
-              </>
-            )}
-          </button>
-        </div>
       </form>
-    </FormModal>
+    </Drawer>
   );
 }

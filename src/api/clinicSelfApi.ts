@@ -236,11 +236,14 @@ export const clinicSelfApi = {
   },
 
   createDoctor: async (payload: CreateClinicDoctorPayload | FormData): Promise<ClinicDoctor> => {
-    let body: FormData;
     if (payload instanceof FormData) {
-      body = payload;
-    } else {
-      body = new FormData();
+      const res = await api.post('/clinic/v1/me/doctors', payload);
+      return res.data as ClinicDoctor;
+    }
+
+    // If logo file is present, use multipart FormData
+    if (payload.logo) {
+      const body = new FormData();
       body.append("email", payload.email.trim().toLowerCase());
       body.append("firstNameFr", payload.firstNameFr.trim());
       body.append("firstNameAr", payload.firstNameAr.trim());
@@ -252,13 +255,45 @@ export const clinicSelfApi = {
       body.append("specialtyIds", JSON.stringify(payload.specialtyIds));
       if (payload.bioFr) body.append("bioFr", payload.bioFr.trim());
       if (payload.bioAr) body.append("bioAr", payload.bioAr.trim());
-      if (payload.yearsOfExp !== undefined) body.append("yearsOfExp", String(payload.yearsOfExp));
+      if (payload.yearsOfExp !== undefined && payload.yearsOfExp !== null && !isNaN(Number(payload.yearsOfExp))) {
+        body.append("yearsOfExp", String(Math.max(0, Math.floor(Number(payload.yearsOfExp)))));
+      }
       if (payload.practiceType) body.append("practiceType", payload.practiceType);
-      if (payload.latitude !== undefined) body.append("latitude", String(payload.latitude));
-      if (payload.longitude !== undefined) body.append("longitude", String(payload.longitude));
-      if (payload.logo) body.append("logo", payload.logo);
+      if (payload.latitude !== undefined && payload.latitude !== null) body.append("latitude", String(payload.latitude));
+      if (payload.longitude !== undefined && payload.longitude !== null) body.append("longitude", String(payload.longitude));
+      body.append("logo", payload.logo);
+
+      const res = await api.post('/clinic/v1/me/doctors', body);
+      return res.data as ClinicDoctor;
     }
-    const res = await api.post('/clinic/v1/me/doctors', body);
+
+    // Otherwise, send clean JSON payload (preserves native types like integer yearsOfExp)
+    const jsonBody: Record<string, unknown> = {
+      email: payload.email.trim().toLowerCase(),
+      firstNameFr: payload.firstNameFr.trim(),
+      firstNameAr: payload.firstNameAr.trim(),
+      lastNameFr: payload.lastNameFr.trim(),
+      lastNameAr: payload.lastNameAr.trim(),
+      phone: payload.phone.trim(),
+      wilayaId: payload.wilayaId,
+      specialtyIds: payload.specialtyIds,
+    };
+
+    if (payload.baladyaId) jsonBody.baladyaId = payload.baladyaId;
+    if (payload.bioFr?.trim()) jsonBody.bioFr = payload.bioFr.trim();
+    if (payload.bioAr?.trim()) jsonBody.bioAr = payload.bioAr.trim();
+    if (payload.yearsOfExp !== undefined && payload.yearsOfExp !== null && !isNaN(Number(payload.yearsOfExp))) {
+      jsonBody.yearsOfExp = Math.max(0, Math.floor(Number(payload.yearsOfExp)));
+    }
+    if (payload.practiceType) jsonBody.practiceType = payload.practiceType;
+    if (payload.latitude !== undefined && payload.latitude !== null && !isNaN(Number(payload.latitude))) {
+      jsonBody.latitude = Number(payload.latitude);
+    }
+    if (payload.longitude !== undefined && payload.longitude !== null && !isNaN(Number(payload.longitude))) {
+      jsonBody.longitude = Number(payload.longitude);
+    }
+
+    const res = await api.post('/clinic/v1/me/doctors', jsonBody);
     return res.data as ClinicDoctor;
   },
 
