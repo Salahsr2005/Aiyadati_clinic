@@ -150,7 +150,7 @@ export const clinicsApi = {
     return res.data;
   },
   setWorkingHours: async (id: string, payload: unknown) => {
-    const res = await api.put(`/clinic/v1/${id}/working-hours`, payload);
+    const res = await api.post(`/clinic/v1/${id}/working-hours`, payload);
     return res.data;
   },
   getGallery: async (id: string) => {

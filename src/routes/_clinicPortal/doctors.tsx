@@ -34,12 +34,14 @@ import { EmptyState } from "@/components/data/EmptyState";
 import { Skeleton } from "@/components/glass/Skeleton";
 import { StatusBadge } from "@/components/data/StatusBadge";
 import { DoctorDetailDrawer } from "@/components/doctors/DoctorDetailDrawer";
+import { DoctorCreateModal } from "@/components/doctors/DoctorCreateModal";
 
 type TabStatus = "ACCEPTED" | "PENDING" | "REJECTED";
 
 export default function DoctorsPage() {
   const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState<TabStatus>("ACCEPTED");
+  const [createModalOpen, setCreateModalOpen] = useState(false);
   const [inviteModalOpen, setInviteModalOpen] = useState(false);
   const [searchDoctorQuery, setSearchDoctorQuery] = useState("");
   const [selectedDoctorId, setSelectedDoctorId] = useState<string | null>(null);
@@ -143,13 +145,23 @@ export default function DoctorsPage() {
           </p>
         </div>
 
-        <button
-          onClick={() => setInviteModalOpen(true)}
-          className="inline-flex items-center gap-2 rounded-xl bg-primary-500 px-4 py-2.5 text-xs font-semibold text-primary-foreground shadow-xs transition hover:opacity-90 cursor-pointer self-start sm:self-auto"
-        >
-          <UserPlus className="h-4 w-4" />
-          {t("doctors.inviteButton", { defaultValue: "Invite Doctor" })}
-        </button>
+        <div className="flex items-center gap-2.5 self-start sm:self-auto">
+          <button
+            onClick={() => setInviteModalOpen(true)}
+            className="inline-flex items-center gap-2 rounded-xl border border-border/60 bg-background/80 px-3.5 py-2.5 text-xs font-semibold text-foreground hover:bg-accent hover:border-primary-500/40 shadow-xs transition cursor-pointer"
+          >
+            <Search className="h-3.5 w-3.5 text-primary-500" />
+            <span>{t("doctors.inviteButton", { defaultValue: "Invite Doctor" })}</span>
+          </button>
+
+          <button
+            onClick={() => setCreateModalOpen(true)}
+            className="inline-flex items-center gap-2 rounded-xl bg-primary-500 px-4 py-2.5 text-xs font-semibold text-primary-foreground shadow-sm hover:opacity-90 transition cursor-pointer"
+          >
+            <UserPlus className="h-4 w-4" />
+            <span>{t("doctors.createButton", { defaultValue: "Register New Doctor" })}</span>
+          </button>
+        </div>
       </div>
 
       {/* 2. Mini Statistics Secondary Strip */}
@@ -300,12 +312,20 @@ export default function DoctorsPage() {
           }
           action={
             activeTab === "ACCEPTED" && !listSearchQuery ? (
-              <button
-                onClick={() => setInviteModalOpen(true)}
-                className="inline-flex items-center gap-2 rounded-xl bg-primary-500 px-4 py-2 text-xs font-semibold text-primary-foreground hover:opacity-90 cursor-pointer"
-              >
-                <UserPlus className="h-4 w-4" /> {t("doctors.inviteButton", { defaultValue: "Invite Doctor" })}
-              </button>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setCreateModalOpen(true)}
+                  className="inline-flex items-center gap-2 rounded-xl bg-primary-500 px-4 py-2 text-xs font-semibold text-primary-foreground hover:opacity-90 shadow-sm cursor-pointer"
+                >
+                  <UserPlus className="h-4 w-4" /> {t("doctors.createButton", { defaultValue: "Register New Doctor" })}
+                </button>
+                <button
+                  onClick={() => setInviteModalOpen(true)}
+                  className="inline-flex items-center gap-2 rounded-xl border border-border/60 bg-background/80 px-3.5 py-2 text-xs font-semibold text-foreground hover:bg-accent cursor-pointer"
+                >
+                  <Search className="h-3.5 w-3.5 text-primary-500" /> {t("doctors.inviteButton", { defaultValue: "Invite Doctor" })}
+                </button>
+              </div>
             ) : undefined
           }
         />
@@ -317,6 +337,7 @@ export default function DoctorsPage() {
             const firstName = docAny?.firstNameFr || docAny?.firstNameAr || doc?.firstName || "";
             const lastName = docAny?.lastNameFr || docAny?.lastNameAr || doc?.lastName || "";
             const fullName = `${firstName} ${lastName}`.trim() || doc?.name || "Doctor";
+            const arabicName = docAny?.firstNameAr && docAny?.lastNameAr ? `${docAny.firstNameAr} ${docAny.lastNameAr}`.trim() : null;
             const specialtyName = Array.isArray(docAny?.specialties) && docAny.specialties.length > 0
               ? docAny.specialties[0]?.specialty?.nameFr || docAny.specialties[0]?.nameFr || docAny.specialties[0]?.nameAr
               : doc?.specialtyName || doc?.specialty?.nameFr || "General Practice";
@@ -338,9 +359,19 @@ export default function DoctorsPage() {
                         className="h-12 w-12 rounded-2xl object-cover border border-border/50 shadow-xs shrink-0"
                       />
                       <div className="min-w-0">
-                        <h3 className="text-sm font-bold text-foreground truncate group-hover:text-primary-500 transition">
-                          {t("doctors.doctorPrefix", { defaultValue: "Doctor Prefix" })} {fullName}
-                        </h3>
+                        <div className="flex items-center gap-1.5">
+                          <h3 className="text-sm font-bold text-foreground truncate group-hover:text-primary-500 transition">
+                            {t("doctors.doctorPrefix", { defaultValue: "Dr." })} {fullName}
+                          </h3>
+                          {docAny?.isVerified && (
+                            <ShieldCheck className="h-3.5 w-3.5 text-primary-500 shrink-0" title="Verified" />
+                          )}
+                        </div>
+                        {arabicName && arabicName !== fullName && (
+                          <p className="text-[11px] text-muted-foreground/80 font-medium truncate" dir="rtl">
+                            {arabicName}
+                          </p>
+                        )}
                         <p className="text-xs text-primary-500 font-semibold truncate mt-0.5">
                           {specialtyName}
                         </p>
@@ -350,7 +381,27 @@ export default function DoctorsPage() {
                     <StatusBadge value={affiliation.status} />
                   </div>
 
-                  <div className="mt-3.5 space-y-1.5 text-xs text-muted-foreground">
+                  <div className="mt-3.5 flex flex-wrap gap-1.5">
+                    {docAny?.practiceType && (
+                      <span className="inline-flex items-center gap-1 rounded-md bg-muted/60 px-2 py-0.5 text-[10px] font-medium text-muted-foreground border border-border/40">
+                        <Building2 className="h-3 w-3 text-primary-500" />
+                        {docAny.practiceType === "CLINIC_BASED"
+                          ? t("doctors.practiceClinicBased", { defaultValue: "Clinic Based" })
+                          : docAny.practiceType === "INDEPENDENT"
+                          ? t("doctors.practiceIndependent", { defaultValue: "Independent" })
+                          : t("doctors.practiceBoth", { defaultValue: "Hybrid" })}
+                      </span>
+                    )}
+
+                    {docAny?.yearsOfExp !== undefined && docAny?.yearsOfExp > 0 && (
+                      <span className="inline-flex items-center gap-1 rounded-md bg-muted/60 px-2 py-0.5 text-[10px] font-medium text-muted-foreground border border-border/40">
+                        <Award className="h-3 w-3 text-primary-500" />
+                        {docAny.yearsOfExp} {t("common.yrs", { defaultValue: "yrs" })}
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="mt-3 space-y-1.5 text-xs text-muted-foreground">
                     {doc?.phone && (
                       <div className="flex items-center gap-2">
                         <Phone className="h-3.5 w-3.5 text-primary-500 shrink-0" />
@@ -516,6 +567,12 @@ export default function DoctorsPage() {
           </div>
         </div>
       </FormModal>
+
+      {/* Register Doctor Modal */}
+      <DoctorCreateModal
+        open={createModalOpen}
+        onClose={() => setCreateModalOpen(false)}
+      />
 
       {/* Remove Affiliation Confirmation Dialog */}
       <ConfirmDialog

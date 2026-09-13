@@ -86,27 +86,72 @@ export interface ClinicDoctor {
   clinicId: string;
   status: 'PENDING' | 'ACCEPTED' | 'REJECTED';
   isActive: boolean;
+  invitedBy?: string;
   createdAt?: string;
   doctor?: {
     id: string;
     firstName?: string;
     lastName?: string;
+    firstNameFr?: string;
+    firstNameAr?: string;
+    lastNameFr?: string;
+    lastNameAr?: string;
     name?: string;
     email?: string;
     phone?: string;
     avatarUrl?: string;
     photoUrl?: string;
+    photoPath?: string;
     specialtyId?: string;
     specialtyName?: string;
+    specialties?: Array<{
+      id?: string;
+      nameFr?: string;
+      nameAr?: string;
+      specialty?: { id: string; nameFr: string; nameAr: string };
+    }>;
     specialty?: { id: string; nameFr: string; nameAr: string };
+    practiceType?: 'INDEPENDENT' | 'CLINIC_BASED' | 'BOTH';
+    yearsOfExp?: number;
+    bioFr?: string;
+    bioAr?: string;
+    wilayaId?: string;
+    baladyaId?: string;
+    wilaya?: { id: string; nameFr: string; nameAr: string };
+    baladya?: { id: string; nameFr: string; nameAr: string };
+    isVerified?: boolean;
   };
+}
+
+export interface CreateClinicDoctorPayload {
+  email: string;
+  firstNameFr: string;
+  firstNameAr: string;
+  lastNameFr: string;
+  lastNameAr: string;
+  phone: string;
+  wilayaId: string;
+  baladyaId?: string;
+  specialtyIds: string[];
+  bioFr?: string;
+  bioAr?: string;
+  yearsOfExp?: number;
+  practiceType?: 'INDEPENDENT' | 'CLINIC_BASED' | 'BOTH';
+  latitude?: number;
+  longitude?: number;
+  logo?: File | null;
 }
 
 export interface ClinicGalleryItem {
   id: string;
   imageUrl: string;
+  imagePath?: string;
+  filePath?: string;
+  captionFr?: string | null;
+  captionAr?: string | null;
   title?: string;
   sortOrder?: number;
+  isActive?: boolean;
   createdAt?: string;
 }
 
@@ -190,6 +235,33 @@ export const clinicSelfApi = {
     return ensureArray<ClinicDoctor>(res.data);
   },
 
+  createDoctor: async (payload: CreateClinicDoctorPayload | FormData): Promise<ClinicDoctor> => {
+    let body: FormData;
+    if (payload instanceof FormData) {
+      body = payload;
+    } else {
+      body = new FormData();
+      body.append("email", payload.email.trim().toLowerCase());
+      body.append("firstNameFr", payload.firstNameFr.trim());
+      body.append("firstNameAr", payload.firstNameAr.trim());
+      body.append("lastNameFr", payload.lastNameFr.trim());
+      body.append("lastNameAr", payload.lastNameAr.trim());
+      body.append("phone", payload.phone.trim());
+      body.append("wilayaId", payload.wilayaId);
+      if (payload.baladyaId) body.append("baladyaId", payload.baladyaId);
+      body.append("specialtyIds", JSON.stringify(payload.specialtyIds));
+      if (payload.bioFr) body.append("bioFr", payload.bioFr.trim());
+      if (payload.bioAr) body.append("bioAr", payload.bioAr.trim());
+      if (payload.yearsOfExp !== undefined) body.append("yearsOfExp", String(payload.yearsOfExp));
+      if (payload.practiceType) body.append("practiceType", payload.practiceType);
+      if (payload.latitude !== undefined) body.append("latitude", String(payload.latitude));
+      if (payload.longitude !== undefined) body.append("longitude", String(payload.longitude));
+      if (payload.logo) body.append("logo", payload.logo);
+    }
+    const res = await api.post('/clinic/v1/me/doctors', body);
+    return res.data as ClinicDoctor;
+  },
+
   inviteDoctor: async (doctorId: string): Promise<ClinicDoctor> => {
     const res = await api.post('/clinic/v1/me/doctors/invite', { doctorId });
     return res.data as ClinicDoctor;
@@ -219,8 +291,18 @@ export const clinicSelfApi = {
     return res.data as ClinicGalleryItem;
   },
 
-  updateGalleryImage: async (id: string, payload: { sortOrder?: number; title?: string }): Promise<ClinicGalleryItem> => {
-    const res = await api.patch(`/clinic/v1/me/gallery/${id}`, payload);
+  updateGalleryImage: async (
+    id: string,
+    payload: { captionFr?: string | null; captionAr?: string | null; sortOrder?: number; title?: string }
+  ): Promise<ClinicGalleryItem> => {
+    const body: Record<string, unknown> = {};
+    if (payload.captionFr !== undefined) body.captionFr = payload.captionFr;
+    if (payload.captionAr !== undefined) body.captionAr = payload.captionAr;
+    if (payload.sortOrder !== undefined) body.sortOrder = payload.sortOrder;
+    if (payload.title !== undefined && payload.captionFr === undefined) {
+      body.captionFr = payload.title;
+    }
+    const res = await api.patch(`/clinic/v1/me/gallery/${id}`, body);
     return res.data as ClinicGalleryItem;
   },
 

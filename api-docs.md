@@ -310,13 +310,17 @@ Same contract as self-service gallery, plus:
 | Method | Path | Auth | Body | 201? |
 |---|---|---|---|---|
 | GET | `/me/profile` | CLINIC | — | |
-| PATCH | `/me/complete` | CLINIC | multipart + JSON fields | |
+| PATCH | `/me/complete` | CLINIC | multipart `logo` + JSON fields | |
 | GET | `/me/documents` | CLINIC | — | |
 | POST | `/me/documents` | CLINIC | multipart `document` | ✅ |
+| DELETE | `/me/documents/:id` | CLINIC | — | |
 | GET | `/me/working-hours` | CLINIC | — | |
 | POST | `/me/working-hours` | CLINIC | `{ hours: [...] }` | |
 | GET | `/me/rooms` | CLINIC | — | |
 | POST | `/me/rooms` | CLINIC | `CreateRoomDTO` | ✅ |
+| PATCH | `/me/rooms/:roomId` | CLINIC | `UpdateRoomDTO` | |
+| DELETE | `/me/rooms/:roomId` | CLINIC | — | |
+| POST | `/me/doctors` | CLINIC | multipart `logo` + `CreateClinicDoctorDTO` | ✅ |
 | POST | `/me/doctors/invite` | CLINIC | `{ doctorId }` | |
 | GET | `/me/doctors` | CLINIC | — | |
 | POST | `/me/doctors/:id/accept` | CLINIC | — | |
@@ -324,7 +328,8 @@ Same contract as self-service gallery, plus:
 | DELETE | `/me/doctors/:id` | CLINIC | — | |
 | GET | `/me/gallery` | CLINIC | — | |
 | POST | `/me/gallery` | CLINIC | multipart `image` + captions | ✅ |
-| DELETE | `/me/documents/:id` | CLINIC | — | |
+| PATCH | `/me/gallery/:imageId` | CLINIC | `UpdateGalleryImageDTO` | |
+| DELETE | `/me/gallery/:imageId` | CLINIC | — | |
 | GET | `/` | SUPER_ADMIN, ADMIN | — (query filters) | |
 | GET | `/:id` | SUPER_ADMIN, ADMIN | — | |
 | POST | `/` | SUPER_ADMIN, ADMIN | `CreateClinicDTO` | ✅ |
