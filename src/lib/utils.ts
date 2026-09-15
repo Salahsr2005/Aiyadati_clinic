@@ -10,7 +10,7 @@ export function resolveFileUrl(url?: string | null): string {
   if (!url || typeof url !== "string") return "";
 
   let resolved = url.trim();
-  if (!resolved) return "";
+  if (!resolved || resolved === "null" || resolved === "undefined" || resolved === "[object Object]") return "";
 
   // Replace localhost or 127.0.0.1 host with API_BASE_URL
   if (resolved.includes("localhost") || resolved.includes("127.0.0.1")) {
@@ -20,6 +20,22 @@ export function resolveFileUrl(url?: string | null): string {
   // If already absolute HTTP(S) or blob or data URI
   if (/^(https?:|data:|blob:)/i.test(resolved)) {
     return resolved;
+  }
+
+  // If raw UUID file ID
+  if (/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(resolved)) {
+    return `${API_BASE_URL}/api/v1/files/public/${resolved}`;
+  }
+
+  // If path starting with files/public/ or /files/public/
+  if (resolved.startsWith("/files/public/") || resolved.startsWith("files/public/")) {
+    const clean = resolved.replace(/^\/?files\/public\//, "");
+    return `${API_BASE_URL}/api/v1/files/public/${clean}`;
+  }
+
+  // If relative path starting with /api/v1/
+  if (resolved.startsWith("/api/v1/")) {
+    return `${API_BASE_URL}${resolved}`;
   }
 
   // If relative path starting with slash

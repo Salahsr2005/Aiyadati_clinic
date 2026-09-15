@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ASSET_FALLBACKS } from '@/lib/assetFallbacks';
 import { resolveFileUrl } from '@/lib/utils';
 
@@ -18,6 +18,10 @@ export function RemoteImage({
 }: RemoteImageProps) {
   const [errored, setErrored] = useState(false);
 
+  useEffect(() => {
+    setErrored(false);
+  }, [src]);
+
   const resolved = src ? resolveFileUrl(src) : null;
   const displaySrc = errored || !resolved ? fallback : resolved;
 
@@ -25,7 +29,11 @@ export function RemoteImage({
     <img
       src={displaySrc ?? undefined}
       referrerPolicy="no-referrer"
-      onError={() => setErrored(true)}
+      onError={() => {
+        if (!errored) {
+          setErrored(true);
+        }
+      }}
       alt={alt}
       className={className}
       loading="lazy"
