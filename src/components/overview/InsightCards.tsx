@@ -1,11 +1,11 @@
 import { useMemo } from "react";
 import { AlertCircle, AlertTriangle, Lightbulb, TrendingUp } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { GlassCard } from "@/components/glass/GlassCard";
 import type { AppointmentRow } from "@/api/appointmentsApi";
 import type { DoctorRow } from "@/api/doctorsApi";
 import type { ClinicRow } from "@/api/clinicsApi";
 import type { UserRow } from "@/api/usersApi";
-import { fullDoctorName } from "@/api/appointmentsApi";
 
 export interface OperationalInsight {
   id: string;
@@ -27,6 +27,8 @@ export function InsightCards({
   clinics = [],
   users = [],
 }: InsightCardsProps) {
+  const { t } = useTranslation();
+
   const insights = useMemo(() => {
     const list: OperationalInsight[] = [];
 
@@ -37,7 +39,7 @@ export function InsightCards({
     appointments.forEach((appt) => {
       const specs = (appt.doctor as any)?.specialties ?? [];
       specs.forEach((s: any) => {
-        const name = s.specialty?.nameFr || "General";
+        const name = s.specialty?.nameFr || t("overview.insights.general", { defaultValue: "General" });
         specialtyMap[name] = (specialtyMap[name] || 0) + 1;
       });
     });
@@ -49,8 +51,12 @@ export function InsightCards({
       list.push({
         id: "insight-specialty-demand",
         type: "growth",
-        title: "High Demand Specialty Area",
-        description: `${topSpec} represents ${pct}% of all appointments this period, signaling an area for clinic acquisition.`,
+        title: t("overview.insights.highDemandSpecialty.title", { defaultValue: "High Demand Specialty Area" }),
+        description: t("overview.insights.highDemandSpecialty.desc", {
+          specialty: topSpec,
+          pct,
+          defaultValue: `${topSpec} represents ${pct}% of all appointments this period, signaling an area for clinic acquisition.`,
+        }),
       });
     }
 
@@ -62,8 +68,11 @@ export function InsightCards({
         list.push({
           id: "insight-cancellations",
           type: "warning",
-          title: "Elevated Cancellation Rate",
-          description: `Platform cancellations are at ${cancelPct}%. Consider reviewing slot confirmation timing or enabling SMS reminders.`,
+          title: t("overview.insights.cancellationRate.title", { defaultValue: "Elevated Cancellation Rate" }),
+          description: t("overview.insights.cancellationRate.desc", {
+            cancelPct,
+            defaultValue: `Platform cancellations are at ${cancelPct}%. Consider reviewing slot confirmation timing or enabling SMS reminders.`,
+          }),
         });
       }
     }
@@ -75,8 +84,12 @@ export function InsightCards({
       list.push({
         id: "insight-verifications",
         type: "alert",
-        title: "Registration Backlog Detected",
-        description: `There are ${unverifiedDoctors} doctors and ${unverifiedClinics} clinics awaiting administrative verification.`,
+        title: t("overview.insights.registrationBacklog.title", { defaultValue: "Registration Backlog Detected" }),
+        description: t("overview.insights.registrationBacklog.desc", {
+          doctors: unverifiedDoctors,
+          clinics: unverifiedClinics,
+          defaultValue: `There are ${unverifiedDoctors} doctors and ${unverifiedClinics} clinics awaiting administrative verification.`,
+        }),
       });
     }
 
@@ -86,8 +99,11 @@ export function InsightCards({
       list.push({
         id: "insight-trust",
         type: "warning",
-        title: "Suspicious No-Show Patterns",
-        description: `${noShowPatients.length} patients have accumulated 3+ no-shows. Trust tiers should be audited or accounts suspended.`,
+        title: t("overview.insights.noShowPatterns.title", { defaultValue: "Suspicious No-Show Patterns" }),
+        description: t("overview.insights.noShowPatterns.desc", {
+          count: noShowPatients.length,
+          defaultValue: `${noShowPatients.length} patients have accumulated 3+ no-shows. Trust tiers should be audited or accounts suspended.`,
+        }),
       });
     }
 
@@ -96,13 +112,15 @@ export function InsightCards({
       list.push({
         id: "insight-default",
         type: "info",
-        title: "System Performance Optimized",
-        description: "Platform operations running within normal baseline bounds. No anomalies or operational bottlenecks detected.",
+        title: t("overview.insights.systemOptimized.title", { defaultValue: "System Performance Optimized" }),
+        description: t("overview.insights.systemOptimized.desc", {
+          defaultValue: "Platform operations running within normal baseline bounds. No anomalies or operational bottlenecks detected.",
+        }),
       });
     }
 
     return list;
-  }, [appointments, doctors, clinics, users]);
+  }, [appointments, doctors, clinics, users, t]);
 
   const typeConfig = {
     growth: { icon: TrendingUp, color: "text-emerald-500 bg-emerald-500/10 border-emerald-500/20" },
@@ -118,8 +136,8 @@ export function InsightCards({
           <Lightbulb className="h-4 w-4" />
         </div>
         <div>
-          <div className="text-sm font-bold tracking-tight">Operational Insights</div>
-          <div className="text-[10px] text-muted-foreground font-semibold">AI-derived platform recommendation engine</div>
+          <div className="text-sm font-bold tracking-tight">{t("overview.insights.title", { defaultValue: "Operational Insights" })}</div>
+          <div className="text-[10px] text-muted-foreground font-semibold">{t("overview.insights.subtitle", { defaultValue: "AI-derived platform recommendation engine" })}</div>
         </div>
       </div>
 

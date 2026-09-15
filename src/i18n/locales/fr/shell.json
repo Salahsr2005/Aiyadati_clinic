@@ -99,5 +99,17 @@
     "toastWelcomeBack": "Bon retour",
     "errorNoToken": "Aucun jeton reçu",
     "errorSignInFailed": "Échec de la connexion"
+  },
+  "auth": {
+    "clinicPortal": "Portail Clinique",
+    "subtitle": "Gérez l'établissement, les médecins affiliés et les plannings",
+    "emailAddress": "Adresse e-mail",
+    "password": "Mot de passe",
+    "rememberMe": "Se souvenir de cet appareil",
+    "signIn": "Se connecter",
+    "signingIn": "Connexion en cours...",
+    "welcomeBack": "Bon retour !",
+    "loginFailed": "Échec de la connexion",
+    "sessionExpired": "Session expirée. Veuillez vous reconnecter."
   }
 }

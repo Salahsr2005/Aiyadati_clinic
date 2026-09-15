@@ -168,7 +168,7 @@ export function PatientAnalytics({
 
         <div className="h-56 flex items-center justify-center">
           {trustData.length === 0 ? (
-            <div className="text-xs text-muted-foreground">No trust data</div>
+            <div className="text-xs text-muted-foreground">{t("overview.patientAnalytics.noTrustData", { defaultValue: "No trust data" })}</div>
           ) : (
             <ResponsiveContainer width="100%" height="100%">
               <RadialBarChart innerRadius="25%" outerRadius="90%" data={trustData} startAngle={90} endAngle={-270}>

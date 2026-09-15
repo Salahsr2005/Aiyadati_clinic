@@ -1,0 +1,125 @@
+{
+  "overview": {
+    "insights": {
+      "title": "Operational Insights",
+      "subtitle": "AI-derived platform recommendation engine",
+      "highDemandSpecialty": {
+        "title": "High Demand Specialty Area",
+        "desc": "{{specialty}} represents {{pct}}% of all appointments this period, signaling an area for clinic acquisition."
+      },
+      "cancellationRate": {
+        "title": "Elevated Cancellation Rate",
+        "desc": "Platform cancellations are at {{cancelPct}}%. Consider reviewing slot confirmation timing or enabling SMS reminders."
+      },
+      "registrationBacklog": {
+        "title": "Registration Backlog Detected",
+        "desc": "There are {{doctors}} doctors and {{clinics}} clinics awaiting administrative verification."
+      },
+      "noShowPatterns": {
+        "title": "Suspicious No-Show Patterns",
+        "desc": "{{count}} patients have accumulated 3+ no-shows. Trust tiers should be audited or accounts suspended."
+      },
+      "systemOptimized": {
+        "title": "System Performance Optimized",
+        "desc": "Platform operations running within normal baseline bounds. No anomalies or operational bottlenecks detected."
+      },
+      "general": "General"
+    },
+    "activity": {
+      "title": "Live Activity Feed",
+      "subtitle": "Real-time system events",
+      "eventsCount": "{{count}} events",
+      "empty": "No recent activity detected.",
+      "appointmentCancelled": "Appointment Cancelled",
+      "appointmentBooked": "Appointment Booked",
+      "aPatient": "A Patient",
+      "scheduledDescription": "{{patient}} scheduled {{type}} with Dr. {{doctor}}",
+      "anAppointment": "an appointment"
+    },
+    "platformStatus": {
+      "activeDoctors": "Active Doctors",
+      "inProgress": "In-Progress",
+      "drVerifications": "Dr Verifications",
+      "clinicVerifies": "Clinic Verifies",
+      "completionRate": "Completion Rate"
+    },
+    "responseTime": {
+      "title": "Response Time Distribution",
+      "empty": "No response metrics available"
+    },
+    "specialtyMatrix": {
+      "title": "Specialty Booking Heatmap",
+      "empty": "No specialty metrics available",
+      "quiet": "Quiet",
+      "busy": "Busy"
+    },
+    "optimalBooking": {
+      "title": "Optimal Booking Time",
+      "completion": "Completion",
+      "cancellation": "Cancellation",
+      "completed": "Completed",
+      "noShows": "No-shows",
+      "avgResponse": "Avg response",
+      "quiet": "Quiet",
+      "busy": "Busy"
+    },
+    "cancellationMatrix": {
+      "title": "Cancellation & No-Show Matrix",
+      "cancelled": "Cancelled",
+      "noShow": "No-show",
+      "rate": "Rate",
+      "none": "None",
+      "critical": "Critical"
+    },
+    "dayHourHeatmap": {
+      "title": "Activity Heatmap",
+      "total": "Total",
+      "active": "Active",
+      "completed": "Completed",
+      "cancelled": "Cancelled",
+      "noShows": "No-shows",
+      "completion": "Completion",
+      "less": "Less",
+      "more": "More"
+    },
+    "appointmentAnalytics": {
+      "financialEfficiency": "Financial & Booking Efficiency",
+      "split": "Appointments Split",
+      "noBookings": "No bookings recorded",
+      "totalBookings": "Total Bookings"
+    },
+    "doctorAnalytics": {
+      "verificationStatus": "VERIFICATION STATUS",
+      "leaderboard": "Top Performers Leaderboard",
+      "rankingsSubtitle": "Rankings of doctors & clinics",
+      "topDoctors": "Top Doctors",
+      "noDoctorStats": "No doctor statistics",
+      "topClinics": "Top Clinics",
+      "noClinicStats": "No clinic statistics"
+    },
+    "patientAnalytics": {
+      "noTrustData": "No trust data"
+    },
+    "recentAppointments": {
+      "title": "Recent Appointment Activity",
+      "preview": "Appointment Preview",
+      "bookingStatus": "Booking Status",
+      "fee": "Consultation Fee",
+      "scheduledDate": "Scheduled Date",
+      "startTime": "Start Time",
+      "consultationType": "Consultation Type",
+      "paymentMethod": "Payment Method",
+      "notes": "Notes",
+      "cancellationReason": "Cancellation Reason"
+    },
+    "filters": {
+      "selectDatePeriod": "Select date period",
+      "filterByDoctor": "Filter by Doctor",
+      "specialtyArea": "Specialty Area",
+      "locationWilaya": "Location (Wilaya)"
+    },
+    "kpi": {
+      "vsLastPeriod": "vs last period"
+    }
+  }
+}

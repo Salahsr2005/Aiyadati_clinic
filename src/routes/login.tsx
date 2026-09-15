@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Eye, EyeOff, Loader2, Building2 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { authApi } from "@/api/authApi";
 import { useAuthStore } from "@/store/auth";
@@ -31,6 +32,7 @@ function extractTokenAndUser(res: any) {
 }
 
 export default function LoginPage() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const expired = searchParams.get("expired") === "true";
@@ -49,8 +51,8 @@ export default function LoginPage() {
   }, [hydrated, token, navigate]);
 
   useEffect(() => {
-    if (expired) toast.info("Your session expired. Please sign in again.");
-  }, [expired]);
+    if (expired) toast.info(t("auth.sessionExpired", { defaultValue: "Session expired. Please log in again." }));
+  }, [expired, t]);
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -65,10 +67,10 @@ export default function LoginPage() {
       }
 
       setSession(tok, usr ?? null, remember);
-      toast.success("Welcome back to your Clinic Portal");
+      toast.success(t("auth.welcomeBack", { defaultValue: "Welcome back!" }));
       navigate("/dashboard", { replace: true });
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Sign in failed");
+      toast.error(err instanceof Error ? err.message : t("auth.loginFailed", { defaultValue: "Sign in failed" }));
     } finally {
       setLoading(false);
     }
@@ -87,16 +89,16 @@ export default function LoginPage() {
       >
         <div className="flex flex-col items-center text-center">
           <img src={logo} alt="Iyadati Clinic" className="h-12 w-12 object-contain" />
-          <h1 className="mt-4 text-2xl font-semibold tracking-tight">Clinic Portal</h1>
+          <h1 className="mt-4 text-2xl font-semibold tracking-tight">{t("auth.clinicPortal", { defaultValue: "Clinic Portal" })}</h1>
           <p className="mt-1 flex items-center gap-1.5 text-sm text-muted-foreground">
             <Building2 className="h-3.5 w-3.5" />
-            Manage facility, affiliated doctors & schedule
+            {t("auth.subtitle", { defaultValue: "Manage facility, affiliated doctors & schedule" })}
           </p>
         </div>
 
         <form onSubmit={onSubmit} className="mt-8 space-y-4">
           <div className="space-y-1.5">
-            <label htmlFor="email" className="text-sm font-medium">Email address</label>
+            <label htmlFor="email" className="text-sm font-medium">{t("auth.emailAddress", { defaultValue: "Email address" })}</label>
             <input
               id="email"
               type="email"
@@ -109,7 +111,7 @@ export default function LoginPage() {
           </div>
 
           <div className="space-y-1.5">
-            <label htmlFor="password" className="text-sm font-medium">Password</label>
+            <label htmlFor="password" className="text-sm font-medium">{t("auth.password", { defaultValue: "Password" })}</label>
             <div className="relative">
               <input
                 id="password"
@@ -138,7 +140,7 @@ export default function LoginPage() {
               onChange={(e) => setRemember(e.target.checked)}
               className="h-4 w-4 rounded border-border text-primary-500 focus:ring-primary-500/40"
             />
-            Keep me signed in
+            {t("auth.rememberMe", { defaultValue: "Remember this device" })}
           </label>
 
           <button
@@ -147,7 +149,7 @@ export default function LoginPage() {
             className="flex w-full items-center justify-center gap-2 rounded-xl bg-primary-500 px-4 py-2.5 text-sm font-medium text-primary-foreground transition hover:opacity-90 disabled:opacity-60 cursor-pointer"
           >
             {loading && <Loader2 className="h-4 w-4 animate-spin" />}
-            Sign in to Clinic Portal
+            {t("auth.signIn", { defaultValue: "Sign in" })}
           </button>
         </form>
       </motion.div>

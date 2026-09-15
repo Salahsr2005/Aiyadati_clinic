@@ -13,6 +13,7 @@ import {
   History,
 } from "lucide-react";
 import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { useActivityStore } from "@/store/activity";
 import type { AppointmentRow } from "@/api/appointmentsApi";
 import { fullDoctorName, fullPatientName } from "@/api/appointmentsApi";
@@ -34,6 +35,7 @@ export interface ActivityTimelineProps {
 }
 
 export function ActivityTimeline({ appointments = [], maxEntries = 50 }: ActivityTimelineProps) {
+  const { t } = useTranslation();
   const localEntries = useActivityStore((s) => s.entries);
 
   const timelineItems = useMemo(() => {
@@ -48,8 +50,15 @@ export function ActivityTimeline({ appointments = [], maxEntries = 50 }: Activit
       list.push({
         id: `appt-${appt.id}`,
         timestamp: parseISO(appt.createdAt),
-        title: appt.status === "CANCELLED" ? "Appointment Cancelled" : "Appointment Booked",
-        description: `${patient || "A Patient"} scheduled ${appt.type || "an appointment"} with Dr. ${doctor || "Ahmed"}`,
+        title: appt.status === "CANCELLED" 
+          ? t("overview.activity.appointmentCancelled", { defaultValue: "Appointment Cancelled" }) 
+          : t("overview.activity.appointmentBooked", { defaultValue: "Appointment Booked" }),
+        description: t("overview.activity.scheduledDescription", {
+          patient: patient || t("overview.activity.aPatient", { defaultValue: "A Patient" }),
+          type: appt.type || t("overview.activity.anAppointment", { defaultValue: "an appointment" }),
+          doctor: doctor || "Ahmed",
+          defaultValue: `${patient || "A Patient"} scheduled ${appt.type || "an appointment"} with Dr. ${doctor || "Ahmed"}`,
+        }),
         type: "appointment",
         level: type,
         meta: appt.clinic?.nameFr ? `@ ${appt.clinic.nameFr}` : undefined,
@@ -77,7 +86,7 @@ export function ActivityTimeline({ appointments = [], maxEntries = 50 }: Activit
 
     // Sort descending by timestamp
     return list.sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime()).slice(0, maxEntries);
-  }, [appointments, localEntries, maxEntries]);
+  }, [appointments, localEntries, maxEntries, t]);
 
   const iconsMap = {
     appointment: Calendar,
@@ -104,12 +113,12 @@ export function ActivityTimeline({ appointments = [], maxEntries = 50 }: Activit
             <History className="h-4 w-4" />
           </div>
           <div>
-            <div className="text-sm font-bold tracking-tight">Live Activity Feed</div>
-            <div className="text-[10px] text-muted-foreground font-semibold">Real-time system events</div>
+            <div className="text-sm font-bold tracking-tight">{t("overview.activity.title", { defaultValue: "Live Activity Feed" })}</div>
+            <div className="text-[10px] text-muted-foreground font-semibold">{t("overview.activity.subtitle", { defaultValue: "Real-time system events" })}</div>
           </div>
         </div>
         <div className="text-[10px] uppercase font-bold text-muted-foreground tracking-widest">
-          {timelineItems.length} events
+          {t("overview.activity.eventsCount", { count: timelineItems.length, defaultValue: `${timelineItems.length} events` })}
         </div>
       </div>
 
@@ -117,7 +126,7 @@ export function ActivityTimeline({ appointments = [], maxEntries = 50 }: Activit
         {timelineItems.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-12 text-center text-muted-foreground gap-2">
             <Activity className="h-6 w-6 stroke-1.5 opacity-60" />
-            <div className="text-xs">No recent activity detected.</div>
+            <div className="text-xs">{t("overview.activity.empty", { defaultValue: "No recent activity detected." })}</div>
           </div>
         ) : (
           timelineItems.map((item, index) => {

@@ -99,5 +99,17 @@
     "toastWelcomeBack": "مرحبًا بعودتك",
     "errorNoToken": "لم يتم استلام رمز الدخول",
     "errorSignInFailed": "فشل تسجيل الدخول"
+  },
+  "auth": {
+    "clinicPortal": "بوابة العيادة",
+    "subtitle": "إدارة المنشأة والأطباء المنتسبين والمواعيد",
+    "emailAddress": "البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "rememberMe": "تذكر هذا الجهاز",
+    "signIn": "تسجيل الدخول",
+    "signingIn": "جاري تسجيل الدخول...",
+    "welcomeBack": "مرحباً بعودتك!",
+    "loginFailed": "فشل تسجيل الدخول",
+    "sessionExpired": "انتهت الجلسة. يرجى تسجيل الدخول مجدداً."
   }
 }

@@ -364,7 +364,7 @@ export default function DoctorsPage() {
                             {t("doctors.doctorPrefix", { defaultValue: "Dr." })} {fullName}
                           </h3>
                           {docAny?.isVerified && (
-                            <ShieldCheck className="h-3.5 w-3.5 text-primary-500 shrink-0" title="Verified" />
+                            <ShieldCheck className="h-3.5 w-3.5 text-primary-500 shrink-0" aria-label="Verified" />
                           )}
                         </div>
                         {arabicName && arabicName !== fullName && (

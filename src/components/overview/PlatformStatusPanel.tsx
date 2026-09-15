@@ -1,5 +1,5 @@
-import { motion } from "framer-motion";
-import { ShieldCheck, Stethoscope, Building2, CalendarCheck, CheckCircle2, Clock } from "lucide-react";
+import { ShieldCheck, Stethoscope, Building2, CheckCircle2, Clock } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { GlassCard } from "@/components/glass/GlassCard";
 
 export interface PlatformStatusPanelProps {
@@ -23,10 +23,12 @@ export function PlatformStatusPanel({
   completionRate = 0,
   cancelledToday = 0,
 }: PlatformStatusPanelProps) {
+  const { t } = useTranslation();
+
   const statusConfig = {
-    operational: { label: "System Operational", color: "var(--success)" },
-    degraded: { label: "Degraded Performance", color: "var(--warning)" },
-    maintenance: { label: "Maintenance Mode", color: "var(--danger)" },
+    operational: { label: t("shell.systemStatus.operational", { defaultValue: "System Operational" }), color: "var(--success)" },
+    degraded: { label: t("shell.systemStatus.degraded", { defaultValue: "Degraded Performance" }), color: "var(--warning)" },
+    maintenance: { label: t("shell.systemStatus.maintenance", { defaultValue: "Maintenance Mode" }), color: "var(--danger)" },
   };
 
   const currentStatus = statusConfig[systemStatus];
@@ -66,7 +68,7 @@ export function PlatformStatusPanel({
           <div className="flex items-center gap-2.5 px-3 py-1.5 rounded-2xl bg-background/30 ring-1 ring-border/20">
             <Stethoscope className="h-4 w-4 text-info" />
             <div>
-              <div className="text-[10px] text-muted-foreground font-semibold uppercase">Active Doctors</div>
+              <div className="text-[10px] text-muted-foreground font-semibold uppercase">{t("overview.platformStatus.activeDoctors", { defaultValue: "Active Doctors" })}</div>
               <div className="text-sm font-bold tabular-nums">{onlineDoctors}</div>
             </div>
           </div>
@@ -74,7 +76,7 @@ export function PlatformStatusPanel({
           <div className="flex items-center gap-2.5 px-3 py-1.5 rounded-2xl bg-background/30 ring-1 ring-border/20">
             <Clock className="h-4 w-4 text-warning" />
             <div>
-              <div className="text-[10px] text-muted-foreground font-semibold uppercase">In-Progress</div>
+              <div className="text-[10px] text-muted-foreground font-semibold uppercase">{t("overview.platformStatus.inProgress", { defaultValue: "In-Progress" })}</div>
               <div className="text-sm font-bold tabular-nums">{inProgressAppts}</div>
             </div>
           </div>
@@ -82,7 +84,7 @@ export function PlatformStatusPanel({
           <div className="flex items-center gap-2.5 px-3 py-1.5 rounded-2xl bg-background/30 ring-1 ring-border/20">
             <ShieldCheck className="h-4 w-4 text-primary-500" />
             <div>
-              <div className="text-[10px] text-muted-foreground font-semibold uppercase">Dr Verifications</div>
+              <div className="text-[10px] text-muted-foreground font-semibold uppercase">{t("overview.platformStatus.drVerifications", { defaultValue: "Dr Verifications" })}</div>
               <div className="text-sm font-bold tabular-nums text-primary-500">
                 {pendingDoctorVerifications}
               </div>
@@ -92,7 +94,7 @@ export function PlatformStatusPanel({
           <div className="flex items-center gap-2.5 px-3 py-1.5 rounded-2xl bg-background/30 ring-1 ring-border/20">
             <Building2 className="h-4 w-4 text-success" />
             <div>
-              <div className="text-[10px] text-muted-foreground font-semibold uppercase">Clinic Verifies</div>
+              <div className="text-[10px] text-muted-foreground font-semibold uppercase">{t("overview.platformStatus.clinicVerifies", { defaultValue: "Clinic Verifies" })}</div>
               <div className="text-sm font-bold tabular-nums text-success">
                 {pendingClinicVerifications}
               </div>
@@ -102,7 +104,7 @@ export function PlatformStatusPanel({
           <div className="flex items-center gap-2.5 px-3 py-1.5 rounded-2xl bg-background/30 ring-1 ring-border/20 col-span-2 sm:col-span-1">
             <CheckCircle2 className="h-4 w-4 text-emerald-500" />
             <div>
-              <div className="text-[10px] text-muted-foreground font-semibold uppercase">Completion Rate</div>
+              <div className="text-[10px] text-muted-foreground font-semibold uppercase">{t("overview.platformStatus.completionRate", { defaultValue: "Completion Rate" })}</div>
               <div className="text-sm font-bold tabular-nums">{completionRate}%</div>
             </div>
           </div>

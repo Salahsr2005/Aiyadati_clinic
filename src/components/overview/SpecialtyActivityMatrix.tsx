@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { Stethoscope, Info } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "framer-motion";
 import { GlassCard } from "@/components/glass/GlassCard";
 import type { AppointmentRow } from "@/api/appointmentsApi";
@@ -11,13 +12,12 @@ export interface SpecialtyActivityMatrixProps {
   loading?: boolean;
 }
 
-const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-
 export function SpecialtyActivityMatrix({
   appointments = [],
   doctors = [],
   loading = false,
 }: SpecialtyActivityMatrixProps) {
+  const { t } = useTranslation();
   const [hoveredCell, setHoveredCell] = useState<{
     specialtyName: string;
     dayIdx: number;
@@ -25,6 +25,16 @@ export function SpecialtyActivityMatrix({
     x: number;
     y: number;
   } | null>(null);
+
+  const DAYS = [
+    t("schedule.daysShort.sun", { defaultValue: "Sun" }),
+    t("schedule.daysShort.mon", { defaultValue: "Mon" }),
+    t("schedule.daysShort.tue", { defaultValue: "Tue" }),
+    t("schedule.daysShort.wed", { defaultValue: "Wed" }),
+    t("schedule.daysShort.thu", { defaultValue: "Thu" }),
+    t("schedule.daysShort.fri", { defaultValue: "Fri" }),
+    t("schedule.daysShort.sat", { defaultValue: "Sat" }),
+  ];
 
   // Compute specialty stats
   const { specialtyGrid, specialties, maxCount, totalCount } = useMemo(() => {
@@ -112,7 +122,7 @@ export function SpecialtyActivityMatrix({
               <Stethoscope className="h-4 w-4" />
             </div>
             <div>
-              <div className="text-sm font-bold tracking-tight">Specialty Booking Heatmap</div>
+              <div className="text-sm font-bold tracking-tight">{t("overview.specialtyMatrix.title", { defaultValue: "Specialty Booking Heatmap" })}</div>
               <div className="text-[10px] text-muted-foreground font-medium mt-0.5">
                 Weekdays scheduling distribution grouped by top clinical specialties
               </div>
@@ -126,7 +136,7 @@ export function SpecialtyActivityMatrix({
         {specialties.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-12 text-center">
             <Info className="h-8 w-8 text-muted-foreground/40 mb-2" />
-            <div className="text-xs font-bold text-muted-foreground">No specialty metrics available</div>
+            <div className="text-xs font-bold text-muted-foreground">{t("overview.specialtyMatrix.empty", { defaultValue: "No specialty metrics available" })}</div>
             <div className="text-[10px] text-muted-foreground/60 mt-0.5">
               Requires active appointments and doctor specialty assignments
             </div>
@@ -236,13 +246,13 @@ export function SpecialtyActivityMatrix({
         </span>
         {specialties.length > 0 && (
           <div className="flex items-center gap-1.5">
-            <span>Quiet</span>
+            <span>{t("overview.specialtyMatrix.quiet", { defaultValue: "Quiet" })}</span>
             <span className="h-2.5 w-2.5 rounded bg-muted opacity-40" />
             <span className="h-2.5 w-2.5 rounded bg-indigo-500/20" />
             <span className="h-2.5 w-2.5 rounded bg-indigo-500/50" />
             <span className="h-2.5 w-2.5 rounded bg-indigo-500/80" />
             <span className="h-2.5 w-2.5 rounded bg-indigo-500" />
-            <span>Busy</span>
+            <span>{t("overview.specialtyMatrix.busy", { defaultValue: "Busy" })}</span>
           </div>
         )}
       </div>

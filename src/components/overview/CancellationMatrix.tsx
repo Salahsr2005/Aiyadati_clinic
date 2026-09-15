@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { AlertTriangle, Info } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "framer-motion";
 import { GlassCard } from "@/components/glass/GlassCard";
 import type { AppointmentRow } from "@/api/appointmentsApi";
@@ -10,7 +11,6 @@ export interface CancellationMatrixProps {
   loading?: boolean;
 }
 
-const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const HOUR_LABELS = Array.from({ length: 24 }, (_, i) =>
   i === 0 ? "12a" : i < 12 ? `${i}a` : i === 12 ? "12p" : `${i - 12}p`,
 );
@@ -22,6 +22,7 @@ interface CellData {
 }
 
 export function CancellationMatrix({ appointments = [], loading = false }: CancellationMatrixProps) {
+  const { t } = useTranslation();
   const [hovered, setHovered] = useState<{
     dayIdx: number;
     hourIdx: number;
@@ -29,6 +30,16 @@ export function CancellationMatrix({ appointments = [], loading = false }: Cance
     x: number;
     y: number;
   } | null>(null);
+
+  const DAYS = [
+    t("schedule.daysShort.sun", { defaultValue: "Sun" }),
+    t("schedule.daysShort.mon", { defaultValue: "Mon" }),
+    t("schedule.daysShort.tue", { defaultValue: "Tue" }),
+    t("schedule.daysShort.wed", { defaultValue: "Wed" }),
+    t("schedule.daysShort.thu", { defaultValue: "Thu" }),
+    t("schedule.daysShort.fri", { defaultValue: "Fri" }),
+    t("schedule.daysShort.sat", { defaultValue: "Sat" }),
+  ];
 
   const { grid, maxBad, totalBad, totalAll } = useMemo(() => {
     const g: CellData[][] = Array.from({ length: 7 }, () =>
@@ -72,7 +83,7 @@ export function CancellationMatrix({ appointments = [], loading = false }: Cance
       }
     }
     return { day: DAYS[bestD], hour: HOUR_LABELS[bestH], count: bestV };
-  }, [grid]);
+  }, [grid, DAYS]);
 
   if (loading) {
     return (
@@ -95,7 +106,7 @@ export function CancellationMatrix({ appointments = [], loading = false }: Cance
             <AlertTriangle className="h-4 w-4" />
           </div>
           <div>
-            <div className="text-sm font-bold tracking-tight">Cancellation & No-Show Matrix</div>
+            <div className="text-sm font-bold tracking-tight">{t("overview.cancellationMatrix.title", { defaultValue: "Cancellation & No-Show Matrix" })}</div>
             <div className="text-[10px] text-muted-foreground font-medium mt-0.5">
               {totalBad} incidents across {totalAll} appointments ({rate}%)
             </div>
@@ -138,22 +149,24 @@ export function CancellationMatrix({ appointments = [], loading = false }: Cance
                     const intensity = maxBad > 0 ? bad / maxBad : 0;
                     const hasData = bad > 0;
                     const opacity = hasData ? 0.15 + intensity * 0.85 : 0.04;
+                    const bgStyle = hasData
+                      ? `rgba(239, 68, 68, ${opacity})`
+                      : "var(--muted)";
+                    const borderStyle = hasData
+                      ? `rgba(239, 68, 68, ${0.1 + intensity * 0.4})`
+                      : "transparent";
 
                     return (
                       <div
                         key={hourIdx}
-                        className="flex-1 h-7 rounded-[4px] transition-all duration-150 cursor-pointer"
-                        style={{
-                          background: hasData
-                            ? `rgba(239, 68, 68, ${opacity})`
-                            : "var(--muted)",
-                          border: hasData
-                            ? `1px solid rgba(239, 68, 68, ${0.08 + intensity * 0.35})`
-                            : "1px solid transparent",
-                        }}
+                        className={cn(
+                          "flex-1 h-7 rounded-sm transition-all duration-150 cursor-pointer relative",
+                          hasData && "hover:scale-110 hover:z-20",
+                        )}
+                        style={{ background: bgStyle, border: `1px solid ${borderStyle}` }}
                         onMouseEnter={(e) => {
                           const rect = e.currentTarget.getBoundingClientRect();
-                          const parent = e.currentTarget.closest(".relative")?.getBoundingClientRect();
+                          const parent = e.currentTarget.parentElement?.parentElement?.parentElement?.getBoundingClientRect();
                           setHovered({
                             dayIdx,
                             hourIdx,
@@ -195,15 +208,15 @@ export function CancellationMatrix({ appointments = [], loading = false }: Cance
                 {hovered.cell.total > 0 && (
                   <div className="mt-1.5 grid grid-cols-2 gap-x-3 gap-y-0.5 border-t border-border/40 pt-1.5">
                     <div>
-                      <div className="text-[9px] uppercase text-muted-foreground">Cancelled</div>
+                      <div className="text-[9px] uppercase text-muted-foreground">{t("overview.cancellationMatrix.cancelled", { defaultValue: "Cancelled" })}</div>
                       <div className="text-[11px] font-semibold tabular-nums text-red-500">{hovered.cell.cancelled}</div>
                     </div>
                     <div>
-                      <div className="text-[9px] uppercase text-muted-foreground">No-show</div>
+                      <div className="text-[9px] uppercase text-muted-foreground">{t("overview.cancellationMatrix.noShow", { defaultValue: "No-show" })}</div>
                       <div className="text-[11px] font-semibold tabular-nums text-amber-500">{hovered.cell.noShow}</div>
                     </div>
                     <div className="col-span-2">
-                      <div className="text-[9px] uppercase text-muted-foreground">Rate</div>
+                      <div className="text-[9px] uppercase text-muted-foreground">{t("overview.cancellationMatrix.rate", { defaultValue: "Rate" })}</div>
                       <div className="text-[11px] font-semibold tabular-nums">
                         {Math.round(((hovered.cell.cancelled + hovered.cell.noShow) / hovered.cell.total) * 100)}%
                         <span className="text-muted-foreground font-normal"> of {hovered.cell.total}</span>
@@ -225,13 +238,13 @@ export function CancellationMatrix({ appointments = [], loading = false }: Cance
           7 × 24 hourly resolution
         </span>
         <div className="flex items-center gap-1.5">
-          <span>None</span>
+          <span>{t("overview.cancellationMatrix.none", { defaultValue: "None" })}</span>
           <span className="h-2.5 w-2.5 rounded bg-muted opacity-40" />
           <span className="h-2.5 w-2.5 rounded bg-red-500/20" />
           <span className="h-2.5 w-2.5 rounded bg-red-500/50" />
           <span className="h-2.5 w-2.5 rounded bg-red-500/80" />
           <span className="h-2.5 w-2.5 rounded bg-red-500" />
-          <span>Critical</span>
+          <span>{t("overview.cancellationMatrix.critical", { defaultValue: "Critical" })}</span>
         </div>
       </div>
     </GlassCard>

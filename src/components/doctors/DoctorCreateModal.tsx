@@ -41,12 +41,12 @@ const doctorCreateSchema = z.object({
   baladyaId: z.string().optional(),
   specialtyIds: z.array(z.string()).min(1, "Select at least one medical specialty"),
   yearsOfExp: z.coerce.number().min(0).max(60).optional(),
-  practiceType: z.enum(["INDEPENDENT", "CLINIC_BASED", "BOTH"]).default("CLINIC_BASED"),
+  practiceType: z.enum(["INDEPENDENT", "CLINIC_BASED", "BOTH"]).optional().default("CLINIC_BASED"),
   bioFr: z.string().max(1000).optional(),
   bioAr: z.string().max(1000).optional(),
 });
 
-type DoctorCreateFormData = z.infer<typeof doctorCreateSchema>;
+type DoctorCreateFormData = z.input<typeof doctorCreateSchema>;
 
 interface DoctorCreateModalProps {
   open: boolean;

@@ -182,7 +182,7 @@ export function DoctorAnalytics({
         {/* 2. Verification status pipeline */}
         <div className="border-t border-border/40 pt-3">
           <div className="flex items-center justify-between text-[10px] font-bold text-muted-foreground mb-1">
-            <span>VERIFICATION STATUS</span>
+            <span>{t("overview.doctorAnalytics.verificationStatus", { defaultValue: "VERIFICATION STATUS" })}</span>
             <span>{verifyRatio}% VERIFIED</span>
           </div>
           <div className="h-2 w-full bg-muted/40 rounded-full overflow-hidden flex">
@@ -202,8 +202,8 @@ export function DoctorAnalytics({
           <div className="flex items-center gap-2">
             <Award className="h-4 w-4 text-info" />
             <div>
-              <div className="text-sm font-bold tracking-tight">Top Performers Leaderboard</div>
-              <div className="text-[10px] text-muted-foreground font-semibold">Rankings of doctors & clinics</div>
+              <div className="text-sm font-bold tracking-tight">{t("overview.doctorAnalytics.leaderboard", { defaultValue: "Top Performers Leaderboard" })}</div>
+              <div className="text-[10px] text-muted-foreground font-semibold">{t("overview.doctorAnalytics.rankingsSubtitle", { defaultValue: "Rankings of doctors & clinics" })}</div>
             </div>
           </div>
 
@@ -233,7 +233,7 @@ export function DoctorAnalytics({
             const isRating = topTab === "rating";
             return (
               <div>
-                <div className="mb-2 text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Top Doctors</div>
+                <div className="mb-2 text-[10px] font-bold text-muted-foreground uppercase tracking-wider">{t("overview.doctorAnalytics.topDoctors", { defaultValue: "Top Doctors" })}</div>
                 <div className="space-y-2">
                   {topDoctors.slice(0, 4).map((d, i) => (
                     <LeaderRow
@@ -246,7 +246,7 @@ export function DoctorAnalytics({
                     />
                   ))}
                   {topDoctors.length === 0 && (
-                    <div className="text-xs text-muted-foreground py-6 text-center">No doctor statistics</div>
+                    <div className="text-xs text-muted-foreground py-6 text-center">{t("overview.doctorAnalytics.noDoctorStats", { defaultValue: "No doctor statistics" })}</div>
                   )}
                 </div>
               </div>
@@ -258,7 +258,7 @@ export function DoctorAnalytics({
             const isRating = topTab === "rating";
             return (
               <div>
-                <div className="mb-2 text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Top Clinics</div>
+                <div className="mb-2 text-[10px] font-bold text-muted-foreground uppercase tracking-wider">{t("overview.doctorAnalytics.topClinics", { defaultValue: "Top Clinics" })}</div>
                 <div className="space-y-2">
                   {topClinics.slice(0, 4).map((c, i) => (
                     <LeaderRow
@@ -271,7 +271,7 @@ export function DoctorAnalytics({
                     />
                   ))}
                   {topClinics.length === 0 && (
-                    <div className="text-xs text-muted-foreground py-6 text-center">No clinic statistics</div>
+                    <div className="text-xs text-muted-foreground py-6 text-center">{t("overview.doctorAnalytics.noClinicStats", { defaultValue: "No clinic statistics" })}</div>
                   )}
                 </div>
               </div>

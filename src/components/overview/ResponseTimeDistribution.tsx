@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { Clock, Info } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip } from "recharts";
 import { GlassCard } from "@/components/glass/GlassCard";
 import type { AppointmentRow } from "@/api/appointmentsApi";
@@ -22,6 +23,8 @@ export function ResponseTimeDistribution({
   appointments = [],
   loading = false,
 }: ResponseTimeDistributionProps) {
+  const { t } = useTranslation();
+
   const { chartData, averageText, totalWithResponse } = useMemo(() => {
     const counts = Array(BRACKETS.length).fill(0);
     let totalMs = 0;
@@ -89,7 +92,7 @@ export function ResponseTimeDistribution({
               <Clock className="h-4 w-4" />
             </div>
             <div>
-              <div className="text-sm font-bold tracking-tight">Response Time Distribution</div>
+              <div className="text-sm font-bold tracking-tight">{t("overview.responseTime.title", { defaultValue: "Response Time Distribution" })}</div>
               <div className="text-[10px] text-muted-foreground font-medium mt-0.5">
                 Time difference between appointment creation and confirmation
               </div>
@@ -102,7 +105,7 @@ export function ResponseTimeDistribution({
         {chartData.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-8 text-center">
             <Info className="h-8 w-8 text-muted-foreground/40 mb-2" />
-            <div className="text-xs font-bold text-muted-foreground">No response metrics available</div>
+            <div className="text-xs font-bold text-muted-foreground">{t("overview.responseTime.empty", { defaultValue: "No response metrics available" })}</div>
             <div className="text-[10px] text-muted-foreground/60 mt-0.5">
               Requires appointments with valid confirmed timestamps
             </div>

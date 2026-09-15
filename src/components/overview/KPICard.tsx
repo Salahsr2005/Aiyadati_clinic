@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { ArrowUpRight, ArrowDownRight } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { GlassCard } from "@/components/glass/GlassCard";
 import { AreaChart, Area, ResponsiveContainer } from "recharts";
 import { useEffect, useState } from "react";
@@ -42,11 +43,13 @@ export function KPICard({
   tone = "primary",
   format,
   subLabel,
-  comparisonLabel = "vs last period",
+  comparisonLabel,
   actionText,
   onActionClick,
 }: KPICardProps) {
+  const { t } = useTranslation();
   const n = useCountUp(value);
+  const resolvedComparisonLabel = comparisonLabel ?? t("overview.kpi.vsLastPeriod", { defaultValue: "vs last period" });
   const data = (spark ?? []).map((v, i) => ({ i, v }));
   const toneColor: Record<string, string> = {
     primary: "var(--primary-500)",

@@ -115,7 +115,9 @@ export function RecentAppointmentsTable({
     <div className="space-y-3">
       <div className="flex items-center justify-between">
         <div>
-          <div className="text-sm font-bold tracking-tight">Recent Appointment Activity</div>
+          <div className="text-sm font-bold tracking-tight">
+            {t("overview.recentAppointments.title", { defaultValue: "Recent Appointment Activity" })}
+          </div>
           <div className="text-[10px] text-muted-foreground font-semibold">
             Latest appointment bookings and status updates
           </div>
@@ -147,7 +149,7 @@ export function RecentAppointmentsTable({
       <Drawer
         open={!!selectedAppt}
         onClose={() => setSelectedAppt(null)}
-        title="Appointment Preview"
+        title={t("overview.recentAppointments.preview", { defaultValue: "Appointment Preview" })}
         subtitle={selectedAppt ? `Ref ID: ${selectedAppt.id}` : undefined}
         width="max-w-md"
       >
@@ -156,13 +158,17 @@ export function RecentAppointmentsTable({
             {/* Status Header Banner */}
             <div className="flex items-center justify-between border-b border-border/40 pb-4">
               <div>
-                <div className="text-xs text-muted-foreground">Booking Status</div>
+                <div className="text-xs text-muted-foreground">
+                  {t("overview.recentAppointments.bookingStatus", { defaultValue: "Booking Status" })}
+                </div>
                 <div className="mt-1">
                   <StatusBadge value={selectedAppt.status || "PENDING"} />
                 </div>
               </div>
               <div className="text-end">
-                <div className="text-xs text-muted-foreground">Consultation Fee</div>
+                <div className="text-xs text-muted-foreground">
+                  {t("overview.recentAppointments.fee", { defaultValue: "Consultation Fee" })}
+                </div>
                 <div className="text-base font-extrabold text-primary-500 mt-0.5">
                   {formatDZD(selectedAppt.amount)}
                 </div>
@@ -227,32 +233,36 @@ export function RecentAppointmentsTable({
               </div>
               <div className="glass p-3.5 rounded-2xl space-y-3 text-xs text-muted-foreground">
                 <div className="flex justify-between">
-                  <span>Scheduled Date</span>
+                  <span>{t("overview.recentAppointments.scheduledDate", { defaultValue: "Scheduled Date" })}</span>
                   <span className="font-semibold text-foreground">
                     {selectedAppt.slot?.date ? new Date(selectedAppt.slot.date).toLocaleDateString() : "—"}
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span>Start Time</span>
+                  <span>{t("overview.recentAppointments.startTime", { defaultValue: "Start Time" })}</span>
                   <span className="font-semibold text-foreground">{selectedAppt.slot?.startTime}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>Consultation Type</span>
+                  <span>{t("overview.recentAppointments.consultationType", { defaultValue: "Consultation Type" })}</span>
                   <span className="font-semibold text-foreground">{selectedAppt.type}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>Payment Method</span>
+                  <span>{t("overview.recentAppointments.paymentMethod", { defaultValue: "Payment Method" })}</span>
                   <span className="font-semibold text-foreground">{selectedAppt.paymentMethod}</span>
                 </div>
                 {selectedAppt.notes && (
                   <div className="border-t border-border/40 pt-2.5 mt-2.5">
-                    <span className="font-bold text-[10px] uppercase text-muted-foreground block mb-1">Notes</span>
+                    <span className="font-bold text-[10px] uppercase text-muted-foreground block mb-1">
+                      {t("overview.recentAppointments.notes", { defaultValue: "Notes" })}
+                    </span>
                     <p className="text-[11px] text-foreground leading-relaxed italic">"{selectedAppt.notes}"</p>
                   </div>
                 )}
                 {selectedAppt.status === "CANCELLED" && (
                   <div className="border-t border-border/40 pt-2.5 mt-2.5 text-rose-500 bg-rose-500/5 p-2 rounded-xl border border-rose-500/10">
-                    <span className="font-bold text-[10px] uppercase block mb-1">Cancellation Reason</span>
+                    <span className="font-bold text-[10px] uppercase block mb-1">
+                      {t("overview.recentAppointments.cancellationReason", { defaultValue: "Cancellation Reason" })}
+                    </span>
                     <p className="text-[11px] leading-relaxed">
                       "{selectedAppt.cancelReason || "No cancellation reason specified."}"
                     </p>

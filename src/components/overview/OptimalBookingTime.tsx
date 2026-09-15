@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { Clock, Info, Sparkles } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "framer-motion";
 import { GlassCard } from "@/components/glass/GlassCard";
 import type { AppointmentRow } from "@/api/appointmentsApi";
@@ -10,7 +11,6 @@ export interface OptimalBookingTimeProps {
   loading?: boolean;
 }
 
-const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const HOURS = ["12am", "3am", "6am", "9am", "12pm", "3pm", "6pm", "9pm"];
 
 interface CellStats {
@@ -22,6 +22,7 @@ interface CellStats {
 }
 
 export function OptimalBookingTime({ appointments = [], loading = false }: OptimalBookingTimeProps) {
+  const { t } = useTranslation();
   const [hoveredCell, setHoveredCell] = useState<{
     dayIdx: number;
     hourIdx: number;
@@ -29,6 +30,16 @@ export function OptimalBookingTime({ appointments = [], loading = false }: Optim
     x: number;
     y: number;
   } | null>(null);
+
+  const DAYS = [
+    t("schedule.daysShort.sun", { defaultValue: "Sun" }),
+    t("schedule.daysShort.mon", { defaultValue: "Mon" }),
+    t("schedule.daysShort.tue", { defaultValue: "Tue" }),
+    t("schedule.daysShort.wed", { defaultValue: "Wed" }),
+    t("schedule.daysShort.thu", { defaultValue: "Thu" }),
+    t("schedule.daysShort.fri", { defaultValue: "Fri" }),
+    t("schedule.daysShort.sat", { defaultValue: "Sat" }),
+  ];
 
   // Compute 7x8 matrix with richer statistics per cell
   const { matrix, maxCount, totalBookings } = useMemo(() => {
@@ -111,7 +122,7 @@ export function OptimalBookingTime({ appointments = [], loading = false }: Optim
       time: HOURS[bestHour],
       count: bestCount,
     };
-  }, [matrix]);
+  }, [matrix, DAYS]);
 
   if (loading) {
     return (
@@ -134,7 +145,7 @@ export function OptimalBookingTime({ appointments = [], loading = false }: Optim
               <Clock className="h-4 w-4" />
             </div>
             <div>
-              <div className="text-sm font-bold tracking-tight">Optimal Booking Time</div>
+              <div className="text-sm font-bold tracking-tight">{t("overview.optimalBooking.title", { defaultValue: "Optimal Booking Time" })}</div>
               <div className="text-[10px] text-muted-foreground font-medium mt-0.5">
                 Hourly hotspot map showing when patients schedule appointments
               </div>
@@ -160,27 +171,28 @@ export function OptimalBookingTime({ appointments = [], loading = false }: Optim
               {HOURS.map((hr) => (
                 <div
                   key={hr}
-                  className="flex-1 text-center text-[10px] font-semibold text-muted-foreground/80 tracking-tight"
+                  className="flex-1 text-center text-[10px] font-bold text-muted-foreground/80 tracking-wider uppercase select-none"
                 >
                   {hr}
                 </div>
               ))}
             </div>
 
-            {/* Matrix Rows */}
+            {/* Matrix rows (Days) */}
             <div className="space-y-1.5">
               {DAYS.map((dayName, dayIdx) => (
                 <div key={dayName} className="flex items-center">
                   {/* Day Label (Y-Axis) */}
-                  <div className="w-10 text-[10px] font-bold text-muted-foreground/70 uppercase select-none">
+                  <div className="w-10 text-[10px] font-bold text-muted-foreground/80 select-none">
                     {dayName}
                   </div>
 
-                  {/* Hour Cells */}
+                  {/* 8 Hour cells */}
                   <div className="flex-1 flex gap-1.5">
                     {matrix[dayIdx].map((cellStats, hourIdx) => {
-                      const intensity = maxCount > 0 ? cellStats.count / maxCount : 0;
-                      const hasData = cellStats.count > 0;
+                      const count = cellStats.count;
+                      const intensity = maxCount > 0 ? count / maxCount : 0;
+                      const hasData = count > 0;
                       const opacity = hasData ? 0.15 + intensity * 0.85 : 0.04;
                       const bgStyle = hasData
                         ? `rgba(249, 115, 22, ${opacity})`
@@ -192,7 +204,10 @@ export function OptimalBookingTime({ appointments = [], loading = false }: Optim
                       return (
                         <div
                           key={hourIdx}
-                          className="flex-1 h-9 rounded-lg transition-all duration-200 cursor-pointer relative"
+                          className={cn(
+                            "flex-1 h-8 rounded-md transition-all duration-200 cursor-pointer relative",
+                            hasData && "hover:scale-105 hover:z-20",
+                          )}
                           style={{
                             background: bgStyle,
                             border: `1px solid ${borderStyle}`,
@@ -211,7 +226,7 @@ export function OptimalBookingTime({ appointments = [], loading = false }: Optim
                           onMouseLeave={() => setHoveredCell(null)}
                         >
                           {hasData && intensity > 0.7 && (
-                            <span className="absolute inset-0 m-auto h-1.5 w-1.5 rounded-full bg-orange-600 opacity-60 animate-pulse" />
+                            <span className="absolute inset-0 m-auto h-1.5 w-1.5 rounded-full bg-orange-500 opacity-60 animate-pulse" />
                           )}
                         </div>
                       );
@@ -223,7 +238,7 @@ export function OptimalBookingTime({ appointments = [], loading = false }: Optim
           </div>
         </div>
 
-        {/* Tooltip Overlay — upgraded with richer stats */}
+        {/* Tooltip Overlay */}
         <AnimatePresence>
           {hoveredCell && (
             <motion.div
@@ -231,12 +246,12 @@ export function OptimalBookingTime({ appointments = [], loading = false }: Optim
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 4, scale: 0.95 }}
               transition={{ duration: 0.1 }}
-              className="pointer-events-none absolute z-50 -translate-x-1/2 -translate-y-full"
+              className="pointer-events-none absolute z-30 -translate-x-1/2 -translate-y-full"
               style={{ left: hoveredCell.x, top: hoveredCell.y - 6 }}
             >
-              <div className="rounded-xl border border-border bg-popover/95 shadow-xl px-3 py-2.5 text-xs backdrop-blur-sm min-w-[170px]">
+              <div className="rounded-xl border border-border bg-popover/95 shadow-xl px-3 py-2 text-xs backdrop-blur-sm min-w-[160px]">
                 <div className="font-bold text-orange-600 dark:text-orange-400">
-                  {hoveredCell.stats.count === 0 ? "No bookings" : `${hoveredCell.stats.count} appointments`}
+                  {hoveredCell.stats.count === 0 ? "No bookings" : `${hoveredCell.stats.count} bookings`}
                 </div>
                 <div className="text-[10px] text-muted-foreground mt-0.5">
                   {DAYS[hoveredCell.dayIdx]}s between {HOURS[hoveredCell.hourIdx]} – {HOURS[(hoveredCell.hourIdx + 1) % 8]}
@@ -245,28 +260,28 @@ export function OptimalBookingTime({ appointments = [], loading = false }: Optim
                 {hoveredCell.stats.count > 0 && (
                   <div className="mt-2 grid grid-cols-2 gap-x-4 gap-y-1 border-t border-border/40 pt-2">
                     <TooltipStat
-                      label="Completion"
+                      label={t("overview.optimalBooking.completion", { defaultValue: "Completion" })}
                       value={`${Math.round((hoveredCell.stats.completed / hoveredCell.stats.count) * 100)}%`}
                       tone="success"
                     />
                     <TooltipStat
-                      label="Cancellation"
+                      label={t("overview.optimalBooking.cancellation", { defaultValue: "Cancellation" })}
                       value={`${Math.round(((hoveredCell.stats.cancelled + hoveredCell.stats.noShow) / hoveredCell.stats.count) * 100)}%`}
                       tone="danger"
                     />
                     <TooltipStat
-                      label="Completed"
+                      label={t("overview.optimalBooking.completed", { defaultValue: "Completed" })}
                       value={String(hoveredCell.stats.completed)}
                     />
                     <TooltipStat
-                      label="No-shows"
+                      label={t("overview.optimalBooking.noShows", { defaultValue: "No-shows" })}
                       value={String(hoveredCell.stats.noShow)}
                       tone="warning"
                     />
                     {hoveredCell.stats.avgResponseMin !== null && (
                       <div className="col-span-2 mt-0.5">
                         <TooltipStat
-                          label="Avg response"
+                          label={t("overview.optimalBooking.avgResponse", { defaultValue: "Avg response" })}
                           value={formatDuration(hoveredCell.stats.avgResponseMin)}
                           tone="primary"
                         />
@@ -288,13 +303,13 @@ export function OptimalBookingTime({ appointments = [], loading = false }: Optim
           Based on {totalBookings.toLocaleString()} booked appointments
         </span>
         <div className="flex items-center gap-1.5">
-          <span>Quiet</span>
+          <span>{t("overview.optimalBooking.quiet", { defaultValue: "Quiet" })}</span>
           <span className="h-2.5 w-2.5 rounded bg-muted opacity-40" />
           <span className="h-2.5 w-2.5 rounded bg-orange-500/20" />
           <span className="h-2.5 w-2.5 rounded bg-orange-500/50" />
           <span className="h-2.5 w-2.5 rounded bg-orange-500/80" />
           <span className="h-2.5 w-2.5 rounded bg-orange-500" />
-          <span>Busy</span>
+          <span>{t("overview.optimalBooking.busy", { defaultValue: "Busy" })}</span>
         </div>
       </div>
     </GlassCard>

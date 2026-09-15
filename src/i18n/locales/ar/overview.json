@@ -1,0 +1,125 @@
+{
+  "overview": {
+    "insights": {
+      "title": "رؤى تشغيلية",
+      "subtitle": "محرك توصيات المنصة المدعوم بالذكاء الاصطناعي",
+      "highDemandSpecialty": {
+        "title": "تخصص عالي الطلب",
+        "desc": "{{specialty}} يمثل {{pct}}% من جميع المواعيد لهذه الفترة، مما يشير إلى فرصة لجلب عيادات جديدة."
+      },
+      "cancellationRate": {
+        "title": "نسبة إلغاء مرتفعة",
+        "desc": "نسبة الإلغاء بلغت {{cancelPct}}%. يرجى مراجعة توقيت تأكيد المواعيد أو تفعيل التذكير عبر الرسائل القصيرة."
+      },
+      "registrationBacklog": {
+        "title": "تراكم في طلبات التسجيل",
+        "desc": "هناك {{doctors}} أطباء و {{clinics}} عيادات بانتظار التحقق الإداري."
+      },
+      "noShowPatterns": {
+        "title": "أنماط غياب غير معتادة",
+        "desc": "{{count}} مرضى لديهم 3 حالات غياب أو أكثر. يجب مراجعة مستويات الثقة أو تعليق الحسابات."
+      },
+      "systemOptimized": {
+        "title": "أداء النظام في المستوى الأمثل",
+        "desc": "عمليات المنصة تعمل ضمن الحدود الطبيعية. لا توجد أي مشاكل أو اختناقات تشغيلية."
+      },
+      "general": "عام"
+    },
+    "activity": {
+      "title": "سجل النشاط المباشر",
+      "subtitle": "أحداث النظام في الوقت الفعلي",
+      "eventsCount": "{{count}} أحداث",
+      "empty": "لم يتم رصد أي نشاط مؤخراً.",
+      "appointmentCancelled": "تم إلغاء الموعد",
+      "appointmentBooked": "تم حجز الموعد",
+      "aPatient": "مريض",
+      "scheduledDescription": "{{patient}} قام بجدولة {{type}} مع د. {{doctor}}",
+      "anAppointment": "موعد"
+    },
+    "platformStatus": {
+      "activeDoctors": "الأطباء النشطون",
+      "inProgress": "قيد التنفيذ",
+      "drVerifications": "توثيق الأطباء",
+      "clinicVerifies": "توثيق العيادات",
+      "completionRate": "معدل الإتمام"
+    },
+    "responseTime": {
+      "title": "توزيع وقت الاستجابة",
+      "empty": "لا تتوفر مقاييس الاستجابة"
+    },
+    "specialtyMatrix": {
+      "title": "خريطة الحجوزات حسب التخصص",
+      "empty": "لا تتوفر مقاييس للتخصصات",
+      "quiet": "هادئ",
+      "busy": "مزدحم"
+    },
+    "optimalBooking": {
+      "title": "أفضل أوقات الحجز",
+      "completion": "الإتمام",
+      "cancellation": "الإلغاء",
+      "completed": "المكتملة",
+      "noShows": "حالات الغياب",
+      "avgResponse": "متوسط الاستجابة",
+      "quiet": "هادئ",
+      "busy": "مزدحم"
+    },
+    "cancellationMatrix": {
+      "title": "مصفوفة الإلغاءات والغياب",
+      "cancelled": "ملغى",
+      "noShow": "غياب",
+      "rate": "النسبة",
+      "none": "لا يوجد",
+      "critical": "حرج"
+    },
+    "dayHourHeatmap": {
+      "title": "الخريطة الحرارية للنشاط",
+      "total": "الإجمالي",
+      "active": "النشطة",
+      "completed": "المكتملة",
+      "cancelled": "الملغاة",
+      "noShows": "حالات الغياب",
+      "completion": "الإتمام",
+      "less": "أقل",
+      "more": "أكثر"
+    },
+    "appointmentAnalytics": {
+      "financialEfficiency": "الكفاءة المالية والحجوزات",
+      "split": "توزيع المواعيد",
+      "noBookings": "لا توجد حجوزات مسجلة",
+      "totalBookings": "إجمالي الحجوزات"
+    },
+    "doctorAnalytics": {
+      "verificationStatus": "حالة التوثيق",
+      "leaderboard": "لوحة أفضل الأطباء والعيادات أداءً",
+      "rankingsSubtitle": "تصنيف الأطباء والعيادات",
+      "topDoctors": "أفضل الأطباء",
+      "noDoctorStats": "لا توجد إحصائيات للأطباء",
+      "topClinics": "أفضل العيادات",
+      "noClinicStats": "لا توجد إحصائيات للعيادات"
+    },
+    "patientAnalytics": {
+      "noTrustData": "لا توجد بيانات ثقة"
+    },
+    "recentAppointments": {
+      "title": "النشاط الأخير للمواعيد",
+      "preview": "معاينة الموعد",
+      "bookingStatus": "حالة الحجز",
+      "fee": "رسوم الفحص",
+      "scheduledDate": "التاريخ المحدد",
+      "startTime": "وقت البدء",
+      "consultationType": "نوع الاستشارة",
+      "paymentMethod": "طريقة الدفع",
+      "notes": "ملاحظات",
+      "cancellationReason": "سبب الإلغاء"
+    },
+    "filters": {
+      "selectDatePeriod": "اختر الفترة الزمنية",
+      "filterByDoctor": "تصفية حسب الطبيب",
+      "specialtyArea": "التخصص الطبي",
+      "locationWilaya": "الموقع (الولاية)"
+    },
+    "kpi": {
+      "vsLastPeriod": "مقارنة بالفترة السابقة"
+    }
+  }
+}

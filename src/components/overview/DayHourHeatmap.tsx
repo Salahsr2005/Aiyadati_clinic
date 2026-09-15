@@ -1,6 +1,7 @@
 import { useMemo, useState, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Clock, Sparkles, Info, TrendingUp, Calendar } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { GlassCard } from "@/components/glass/GlassCard";
 import { cn } from "@/lib/utils";
 
@@ -29,7 +30,6 @@ export interface DayHourHeatmapProps {
   getStatus?: (item: any) => string | undefined | null;
 }
 
-const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const HOURS_8 = ["12am", "3am", "6am", "9am", "12pm", "3pm", "6pm", "9pm"];
 const HOURS_24 = Array.from({ length: 24 }, (_, i) => {
   if (i === 0) return "12a";
@@ -54,7 +54,7 @@ interface CellStats {
 export function DayHourHeatmap({
   data,
   hourBlocks = 8,
-  title = "Activity Heatmap",
+  title,
   subtitle,
   tone = "orange",
   onCellClick,
@@ -64,6 +64,7 @@ export function DayHourHeatmap({
   getTime,
   getStatus,
 }: DayHourHeatmapProps) {
+  const { t } = useTranslation();
   const containerRef = useRef<HTMLDivElement>(null);
   const [hoveredCell, setHoveredCell] = useState<{
     dayIdx: number;
@@ -72,6 +73,18 @@ export function DayHourHeatmap({
     x: number;
     y: number;
   } | null>(null);
+
+  const DAYS = [
+    t("schedule.daysShort.sun", { defaultValue: "Sun" }),
+    t("schedule.daysShort.mon", { defaultValue: "Mon" }),
+    t("schedule.daysShort.tue", { defaultValue: "Tue" }),
+    t("schedule.daysShort.wed", { defaultValue: "Wed" }),
+    t("schedule.daysShort.thu", { defaultValue: "Thu" }),
+    t("schedule.daysShort.fri", { defaultValue: "Fri" }),
+    t("schedule.daysShort.sat", { defaultValue: "Sat" }),
+  ];
+
+  const resolvedTitle = title ?? t("overview.dayHourHeatmap.title", { defaultValue: "Activity Heatmap" });
 
   const [selectedPeriod, setSelectedPeriod] = useState<"7d" | "30d" | "90d" | "all">("all");
 
@@ -101,57 +114,91 @@ export function DayHourHeatmap({
       return d >= cutoff;
     });
 
-    return aggregateAppointmentsByDayHour(filtered, getDate, getTime, getStatus);
-  }, [rawData, getDate, getTime, getStatus, selectedPeriod, data]);
+    // Recompute DayHourDatum array from filtered items
+    const map = new Map<string, CellStats>();
+    filtered.forEach((item) => {
+      const dateStr = getDate(item);
+      const timeStr = getTime(item);
+      if (!dateStr || !timeStr) return;
 
-  // Build 7×cols grid
-  const { matrix, maxCount, totalBookings, peakCell } = useMemo(() => {
+      const day = new Date(dateStr).getDay();
+      const hour = parseInt(timeStr.split(":")[0], 10);
+      if (isNaN(hour)) return;
+
+      const key = `${day}-${hour}`;
+      const existing = map.get(key) || { count: 0, completed: 0, cancelled: 0, noShow: 0 };
+      existing.count++;
+
+      const status = (getStatus ? getStatus(item) : "")?.toUpperCase();
+      if (status === "COMPLETED") existing.completed++;
+      if (status === "CANCELLED") existing.cancelled++;
+      if (status === "NO_SHOW") existing.noShow++;
+
+      map.set(key, existing);
+    });
+
+    const result: DayHourDatum[] = [];
+    map.forEach((stats, key) => {
+      const [d, h] = key.split("-").map(Number);
+      result.push({ day: d, hour: h, ...stats });
+    });
+    return result;
+  }, [data, rawData, getDate, getTime, getStatus, selectedPeriod]);
+
+  // Aggregate into 7x(cols) matrix
+  const { matrix, maxCount, totalBookings, activeCells, peakCell } = useMemo(() => {
     const grid: CellStats[][] = Array.from({ length: 7 }, () =>
-      Array.from({ length: cols }, () => ({
-        count: 0, completed: 0, cancelled: 0, noShow: 0,
-      })),
+      Array.from({ length: cols }, () => ({ count: 0, completed: 0, cancelled: 0, noShow: 0 }))
     );
     let max = 0;
     let total = 0;
-    let peakD = 0, peakH = 0, peakC = 0;
+    let active = 0;
+    let peak = { day: 0, hour: 0, count: 0 };
 
-    for (const d of activeData) {
-      const dayIdx = d.day % 7;
-      const hourIdx = Math.floor(d.hour / blockSize) % cols;
-      const cell = grid[dayIdx][hourIdx];
-      cell.count += d.count;
-      cell.completed += d.completed ?? 0;
-      cell.cancelled += d.cancelled ?? 0;
-      cell.noShow += d.noShow ?? 0;
-      total += d.count;
-      if (cell.count > max) { max = cell.count; peakD = dayIdx; peakH = hourIdx; peakC = cell.count; }
+    activeData.forEach((d) => {
+      if (d.day >= 0 && d.day < 7 && d.hour >= 0 && d.hour < 24) {
+        const colIdx = Math.floor(d.hour / blockSize) % cols;
+        const cell = grid[d.day][colIdx];
+        cell.count += d.count;
+        cell.completed += d.completed || 0;
+        cell.cancelled += d.cancelled || 0;
+        cell.noShow += d.noShow || 0;
+        total += d.count;
+      }
+    });
+
+    for (let day = 0; day < 7; day++) {
+      for (let c = 0; c < cols; c++) {
+        const count = grid[day][c].count;
+        if (count > max) max = count;
+        if (count > 0) active++;
+        if (count > peak.count) {
+          peak = { day, hour: c, count };
+        }
+      }
     }
 
-    return { matrix: grid, maxCount: max, totalBookings: total, peakCell: { day: peakD, hour: peakH, count: peakC } };
+    return { matrix: grid, maxCount: max, totalBookings: total, activeCells: active, peakCell: peak };
   }, [activeData, cols, blockSize]);
 
   const toneColor = TONE_COLORS[tone];
 
-  // Summary stats
-  const activeCells = useMemo(() => {
-    let count = 0;
-    for (let d = 0; d < 7; d++)
-      for (let h = 0; h < cols; h++)
-        if (matrix[d][h].count > 0) count++;
-    return count;
-  }, [matrix, cols]);
-
-  const handleCellClick = useCallback((dayIdx: number, hourIdx: number) => {
-    if (!onCellClick) return;
-    onCellClick(dayIdx, hourIdx * blockSize, (hourIdx + 1) * blockSize);
-  }, [onCellClick, blockSize]);
+  const handleCellClick = useCallback(
+    (day: number, colIdx: number) => {
+      if (!onCellClick) return;
+      const hourStart = colIdx * blockSize;
+      const hourEnd = hourStart + blockSize;
+      onCellClick(day, hourStart, hourEnd);
+    },
+    [onCellClick, blockSize]
+  );
 
   return (
-    <GlassCard className={cn("p-5 border border-border/40 shadow-sm relative flex flex-col", className)}>
+    <GlassCard className={cn("p-5 border border-border/40 shadow-sm relative overflow-hidden flex flex-col justify-between", className)}>
       {/* Background glow */}
       <div
         className="absolute -end-24 -top-24 h-48 w-48 rounded-full blur-3xl pointer-events-none"
-        style={{ background: `rgba(${toneColor.rgb}, 0.05)` }}
+        style={{ background: `rgba(${toneColor.rgb}, 0.06)` }}
       />
 
       {/* Header */}
@@ -165,17 +212,15 @@ export function DayHourHeatmap({
               <Clock className="h-4 w-4" />
             </div>
             <div>
-              <div className="text-sm font-bold tracking-tight">{title}</div>
-              {subtitle && (
-                <div className="text-[10px] text-muted-foreground font-medium mt-0.5">{subtitle}</div>
-              )}
+              <div className="text-sm font-bold tracking-tight">{resolvedTitle}</div>
+              {subtitle && <div className="text-[10px] text-muted-foreground font-medium mt-0.5">{subtitle}</div>}
             </div>
           </div>
         </div>
 
-        {/* Period Selector Tabs */}
+        {/* Period Selector (if dynamic) */}
         {rawData && (
-          <div className="flex rounded-xl bg-muted/40 border border-border/40 p-1">
+          <div className="inline-flex items-center rounded-xl bg-muted/60 p-0.5 ring-1 ring-border/20">
             {(["7d", "30d", "90d", "all"] as const).map((p) => (
               <button
                 key={p}
@@ -197,12 +242,12 @@ export function DayHourHeatmap({
         <div className="flex flex-wrap items-center gap-2">
           <div className="inline-flex items-center gap-1.5 rounded-full border border-border/40 bg-background/60 px-2.5 py-1 text-[10px] font-bold tabular-nums">
             <Calendar className="h-3 w-3 opacity-60" />
-            <span className="text-muted-foreground">Total</span>
+            <span className="text-muted-foreground">{t("overview.dayHourHeatmap.total", { defaultValue: "Total" })}</span>
             <span className="text-foreground">{totalBookings.toLocaleString()}</span>
           </div>
           <div className="inline-flex items-center gap-1.5 rounded-full border border-border/40 bg-background/60 px-2.5 py-1 text-[10px] font-bold tabular-nums">
             <TrendingUp className="h-3 w-3 opacity-60" />
-            <span className="text-muted-foreground">Active</span>
+            <span className="text-muted-foreground">{t("overview.dayHourHeatmap.active", { defaultValue: "Active" })}</span>
             <span className="text-foreground">{activeCells}/{7 * cols}</span>
           </div>
           {peakCell.count > 0 && (
@@ -320,22 +365,22 @@ export function DayHourHeatmap({
                 {hoveredCell.stats.count > 0 && (hoveredCell.stats.completed > 0 || hoveredCell.stats.cancelled > 0) && (
                   <div className="mt-2 grid grid-cols-2 gap-x-4 gap-y-1 border-t border-border/40 pt-2">
                     <div>
-                      <div className="text-[9px] text-muted-foreground">Completed</div>
+                      <div className="text-[9px] text-muted-foreground">{t("overview.dayHourHeatmap.completed", { defaultValue: "Completed" })}</div>
                       <div className="font-bold text-success tabular-nums">{hoveredCell.stats.completed}</div>
                     </div>
                     <div>
-                      <div className="text-[9px] text-muted-foreground">Cancelled</div>
+                      <div className="text-[9px] text-muted-foreground">{t("overview.dayHourHeatmap.cancelled", { defaultValue: "Cancelled" })}</div>
                       <div className="font-bold text-danger tabular-nums">{hoveredCell.stats.cancelled}</div>
                     </div>
                     {hoveredCell.stats.noShow > 0 && (
                       <div>
-                        <div className="text-[9px] text-muted-foreground">No-shows</div>
+                        <div className="text-[9px] text-muted-foreground">{t("overview.dayHourHeatmap.noShows", { defaultValue: "No-shows" })}</div>
                         <div className="font-bold text-warning tabular-nums">{hoveredCell.stats.noShow}</div>
                       </div>
                     )}
                     {hoveredCell.stats.count > 0 && (
                       <div>
-                        <div className="text-[9px] text-muted-foreground">Completion</div>
+                        <div className="text-[9px] text-muted-foreground">{t("overview.dayHourHeatmap.completion", { defaultValue: "Completion" })}</div>
                         <div className="font-bold text-success tabular-nums">{Math.round((hoveredCell.stats.completed / hoveredCell.stats.count) * 100)}%</div>
                       </div>
                     )}
@@ -356,7 +401,7 @@ export function DayHourHeatmap({
           {onCellClick ? "Click a cell to filter" : `${7 * cols} day-hour slots`}
         </div>
         <div className="inline-flex items-center gap-1.5 text-[10px] text-muted-foreground font-medium">
-          <span>Less</span>
+          <span>{t("overview.dayHourHeatmap.less", { defaultValue: "Less" })}</span>
           {[0.04, 0.2, 0.4, 0.65, 0.9].map((op, i) => (
             <span
               key={i}
@@ -368,7 +413,7 @@ export function DayHourHeatmap({
               }}
             />
           ))}
-          <span>More</span>
+          <span>{t("overview.dayHourHeatmap.more", { defaultValue: "More" })}</span>
         </div>
       </div>
     </GlassCard>

@@ -99,5 +99,17 @@
     "toastWelcomeBack": "Welcome back",
     "errorNoToken": "No token returned",
     "errorSignInFailed": "Sign in failed"
+  },
+  "auth": {
+    "clinicPortal": "Clinic Portal",
+    "subtitle": "Manage facility, affiliated doctors & schedule",
+    "emailAddress": "Email address",
+    "password": "Password",
+    "rememberMe": "Remember this device",
+    "signIn": "Sign in",
+    "signingIn": "Signing in...",
+    "welcomeBack": "Welcome back!",
+    "loginFailed": "Sign in failed",
+    "sessionExpired": "Session expired. Please log in again."
   }
 }

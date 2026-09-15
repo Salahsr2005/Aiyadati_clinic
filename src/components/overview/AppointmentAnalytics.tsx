@@ -137,7 +137,7 @@ export function AppointmentAnalytics({
                 <TrendingUp className="h-4 w-4" />
               </div>
               <div>
-                <div>Financial & Booking Efficiency</div>
+                <div>{t("overview.appointmentAnalytics.financialEfficiency", { defaultValue: "Financial & Booking Efficiency" })}</div>
                 <div className="text-[10px] text-muted-foreground font-semibold mt-0.5">
                   Volume {fmtDZD(revenueSum)} · Avg {fmtDZD(Math.round(revenueAvg))} ·{" "}
                   <span className={revenueDelta >= 0 ? "text-emerald-500" : "text-rose-500"}>
@@ -153,8 +153,10 @@ export function AppointmentAnalytics({
               <button
                 key={r}
                 onClick={() => setRevRange(r)}
-                className={`rounded-full px-3 py-1 cursor-pointer transition-colors ${
-                  revRange === r ? "bg-primary-500 text-white font-semibold" : "text-foreground/70 hover:text-foreground"
+                className={`rounded-full px-3 py-1 font-semibold transition-all ${
+                  revRange === r
+                    ? "bg-primary-500 text-white shadow-sm"
+                    : "text-muted-foreground hover:text-foreground"
                 }`}
               >
                 {r.toUpperCase()}
@@ -163,81 +165,26 @@ export function AppointmentAnalytics({
           </div>
         </div>
 
-        <div className="h-72">
-          {composedRev.length === 0 ? (
-            <div className="grid h-full w-full place-items-center text-xs text-muted-foreground border border-dashed border-border/40 rounded-3xl">
-              No revenue series data available
-            </div>
-          ) : (
-            <ResponsiveContainer width="100%" height="100%">
-              <ComposedChart data={composedRev} margin={{ left: -10, right: 10, top: 10, bottom: 0 }}>
-                <defs>
-                  <linearGradient id="composed-rev-grad" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="var(--primary-500)" stopOpacity={0.25} />
-                    <stop offset="100%" stopColor="var(--primary-500)" stopOpacity={0} />
-                  </linearGradient>
-                </defs>
-                <CartesianGrid strokeDasharray="4 4" stroke="var(--border)" opacity={0.3} vertical={false} />
-                <XAxis
-                  dataKey="month"
-                  stroke="var(--muted-foreground)"
-                  fontSize={10}
-                  tickLine={false}
-                  axisLine={false}
-                  dy={10}
-                />
-                <YAxis
-                  yAxisId="left"
-                  stroke="var(--muted-foreground)"
-                  fontSize={10}
-                  tickFormatter={fmtNum}
-                  tickLine={false}
-                  axisLine={false}
-                  dx={-10}
-                />
-                <YAxis
-                  yAxisId="right"
-                  orientation="right"
-                  stroke="var(--muted-foreground)"
-                  fontSize={10}
-                  tickFormatter={fmtNum}
-                  tickLine={false}
-                  axisLine={false}
-                  dx={10}
-                />
-                <Tooltip content={<CustomChartTooltip />} cursor={{ fill: "var(--foreground)", opacity: 0.05 }} />
-                <Legend iconType="circle" iconSize={8} wrapperStyle={{ fontSize: 10, paddingTop: 15 }} />
-                <Area
-                  yAxisId="left"
-                  type="monotone"
-                  dataKey="amount"
-                  name="Revenue (DZD)"
-                  stroke="var(--primary-500)"
-                  strokeWidth={2}
-                  fill="url(#composed-rev-grad)"
-                  activeDot={{ r: 5, strokeWidth: 0, fill: "var(--primary-500)" }}
-                />
-                <Bar
-                  yAxisId="right"
-                  dataKey="count"
-                  name="Appointments"
-                  fill="var(--info)"
-                  radius={[4, 4, 0, 0]}
-                  opacity={0.3}
-                />
-                <Line
-                  yAxisId="left"
-                  type="monotone"
-                  dataKey="cumulative"
-                  name="Cumulative Rev"
-                  stroke="var(--warning)"
-                  strokeWidth={2}
-                  dot={false}
-                  activeDot={{ r: 4, strokeWidth: 0, fill: "var(--warning)" }}
-                />
-              </ComposedChart>
-            </ResponsiveContainer>
-          )}
+        <div className="h-64">
+          <ResponsiveContainer width="100%" height="100%">
+            <ComposedChart data={composedRev} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+              <defs>
+                <linearGradient id="revGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="var(--primary-500)" stopOpacity={0.35} />
+                  <stop offset="100%" stopColor="var(--primary-500)" stopOpacity={0} />
+                </linearGradient>
+              </defs>
+              <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" />
+              <XAxis dataKey="month" stroke="currentColor" className="text-[10px] text-muted-foreground" tickLine={false} />
+              <YAxis yAxisId="left" stroke="currentColor" className="text-[10px] text-muted-foreground" tickFormatter={fmtNum} tickLine={false} />
+              <YAxis yAxisId="right" orientation="right" stroke="currentColor" className="text-[10px] text-muted-foreground" tickFormatter={fmtNum} tickLine={false} />
+              <Tooltip content={<CustomChartTooltip />} />
+              <Legend wrapperStyle={{ fontSize: "11px", paddingTop: "8px" }} />
+              <Area yAxisId="left" type="monotone" dataKey="amount" fill="url(#revGrad)" stroke="var(--primary-500)" strokeWidth={2} name="Monthly DZD" />
+              <Bar yAxisId="right" dataKey="count" fill="rgba(16, 185, 129, 0.7)" radius={[4, 4, 0, 0]} name="Appointments" maxBarSize={28} />
+              <Line yAxisId="left" type="monotone" dataKey="cumulative" stroke="#f59e0b" strokeWidth={2} strokeDasharray="4 4" dot={false} name="Cumulative DZD" />
+            </ComposedChart>
+          </ResponsiveContainer>
         </div>
       </GlassCard>
 
@@ -249,7 +196,7 @@ export function AppointmentAnalytics({
               <Activity className="h-4 w-4" />
             </div>
             <div>
-              <div>Appointments Split</div>
+              <div>{t("overview.appointmentAnalytics.split", { defaultValue: "Appointments Split" })}</div>
               <div className="text-[10px] text-muted-foreground font-semibold mt-0.5">
                 Status breakdown of all platform appointments
               </div>
@@ -259,7 +206,7 @@ export function AppointmentAnalytics({
 
         <div className="relative h-52 flex items-center justify-center my-2">
           {apStatus.length === 0 ? (
-            <div className="text-xs text-muted-foreground">No bookings recorded</div>
+            <div className="text-xs text-muted-foreground">{t("overview.appointmentAnalytics.noBookings", { defaultValue: "No bookings recorded" })}</div>
           ) : (
             <>
               <ResponsiveContainer width="100%" height="100%">
@@ -283,7 +230,7 @@ export function AppointmentAnalytics({
               </ResponsiveContainer>
               <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
                 <div className="text-2xl font-bold tracking-tight tabular-nums text-foreground">{apStatusTotal.toLocaleString()}</div>
-                <div className="text-[8px] uppercase font-bold tracking-widest text-muted-foreground mt-0.5">Total Bookings</div>
+                <div className="text-[8px] uppercase font-bold tracking-widest text-muted-foreground mt-0.5">{t("overview.appointmentAnalytics.totalBookings", { defaultValue: "Total Bookings" })}</div>
               </div>
             </>
           )}

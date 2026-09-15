@@ -1,0 +1,125 @@
+{
+  "overview": {
+    "insights": {
+      "title": "Aperçus opérationnels",
+      "subtitle": "Moteur de recommandations basé sur l'IA",
+      "highDemandSpecialty": {
+        "title": "Spécialité à forte demande",
+        "desc": "{{specialty}} représente {{pct}}% de tous les rendez-vous cette période, indiquant une opportunité d'acquisition."
+      },
+      "cancellationRate": {
+        "title": "Taux d'annulation élevé",
+        "desc": "Les annulations sont à {{cancelPct}}%. Envisagez de revoir la confirmation des créneaux ou d'activer les rappels SMS."
+      },
+      "registrationBacklog": {
+        "title": "Retard de vérification détecté",
+        "desc": "Il y a {{doctors}} médecins et {{clinics}} cliniques en attente de vérification administrative."
+      },
+      "noShowPatterns": {
+        "title": "Modèles d'absences suspects",
+        "desc": "{{count}} patients ont accumulé 3 absences ou plus. Les niveaux de confiance doivent être audités."
+      },
+      "systemOptimized": {
+        "title": "Performances système optimales",
+        "desc": "Les opérations de la plateforme fonctionnent normalement. Aucune anomalie détectée."
+      },
+      "general": "Général"
+    },
+    "activity": {
+      "title": "Flux d'activité en direct",
+      "subtitle": "Événements système en temps réel",
+      "eventsCount": "{{count}} événements",
+      "empty": "Aucune activité récente détectée.",
+      "appointmentCancelled": "Rendez-vous annulé",
+      "appointmentBooked": "Rendez-vous réservé",
+      "aPatient": "Un patient",
+      "scheduledDescription": "{{patient}} a programmé {{type}} avec le Dr {{doctor}}",
+      "anAppointment": "un rendez-vous"
+    },
+    "platformStatus": {
+      "activeDoctors": "Médecins actifs",
+      "inProgress": "En cours",
+      "drVerifications": "Vérifications médecins",
+      "clinicVerifies": "Vérifications cliniques",
+      "completionRate": "Taux de complétion"
+    },
+    "responseTime": {
+      "title": "Distribution du temps de réponse",
+      "empty": "Aucune métrique de réponse disponible"
+    },
+    "specialtyMatrix": {
+      "title": "Carte d'activité par spécialité",
+      "empty": "Aucune métrique de spécialité disponible",
+      "quiet": "Calme",
+      "busy": "Chargé"
+    },
+    "optimalBooking": {
+      "title": "Périodes optimales de réservation",
+      "completion": "Complétion",
+      "cancellation": "Annulation",
+      "completed": "Terminés",
+      "noShows": "Absences",
+      "avgResponse": "Réponse moy.",
+      "quiet": "Calme",
+      "busy": "Chargé"
+    },
+    "cancellationMatrix": {
+      "title": "Matrice d'annulations et absences",
+      "cancelled": "Annulé",
+      "noShow": "Absence",
+      "rate": "Taux",
+      "none": "Aucun",
+      "critical": "Critique"
+    },
+    "dayHourHeatmap": {
+      "title": "Carte thermique d'activité",
+      "total": "Total",
+      "active": "Actifs",
+      "completed": "Terminés",
+      "cancelled": "Annulés",
+      "noShows": "Absences",
+      "completion": "Complétion",
+      "less": "Moins",
+      "more": "Plus"
+    },
+    "appointmentAnalytics": {
+      "financialEfficiency": "Efficacité financière et réservations",
+      "split": "Répartition des rendez-vous",
+      "noBookings": "Aucune réservation enregistrée",
+      "totalBookings": "Total réservations"
+    },
+    "doctorAnalytics": {
+      "verificationStatus": "STATUT DE VÉRIFICATION",
+      "leaderboard": "Classement des meilleures performances",
+      "rankingsSubtitle": "Classements des médecins et cliniques",
+      "topDoctors": "Meilleurs médecins",
+      "noDoctorStats": "Aucune statistique de médecin",
+      "topClinics": "Meilleures cliniques",
+      "noClinicStats": "Aucune statistique de clinique"
+    },
+    "patientAnalytics": {
+      "noTrustData": "Aucune donnée de confiance"
+    },
+    "recentAppointments": {
+      "title": "Activité récente des rendez-vous",
+      "preview": "Aperçu du rendez-vous",
+      "bookingStatus": "Statut de réservation",
+      "fee": "Tarif de consultation",
+      "scheduledDate": "Date prévue",
+      "startTime": "Heure de début",
+      "consultationType": "Type de consultation",
+      "paymentMethod": "Mode de paiement",
+      "notes": "Remarques",
+      "cancellationReason": "Motif d'annulation"
+    },
+    "filters": {
+      "selectDatePeriod": "Sélectionner la période",
+      "filterByDoctor": "Filtrer par médecin",
+      "specialtyArea": "Spécialité",
+      "locationWilaya": "Emplacement (Wilaya)"
+    },
+    "kpi": {
+      "vsLastPeriod": "vs période précédente"
+    }
+  }
+}

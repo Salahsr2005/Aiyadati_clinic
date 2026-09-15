@@ -79,7 +79,7 @@ export function DashboardFilterBar() {
             value={filters.datePreset}
             onChange={(v) => filters.setDatePreset((v as DatePreset) || "30d")}
             options={dateOptions}
-            placeholder="Select date period"
+            placeholder={t("overview.filters.selectDatePeriod", { defaultValue: "Select date period" })}
             className="min-w-[7rem]"
           />
         </div>
@@ -89,20 +89,18 @@ export function DashboardFilterBar() {
           value={filters.doctorId}
           onChange={(v) => filters.setDoctorId(v)}
           options={doctorOptions}
-          placeholder="Filter by Doctor"
+          placeholder={t("overview.filters.filterByDoctor", { defaultValue: "Filter by Doctor" })}
           searchable
           searchPlaceholder="Search doctors..."
           className="min-w-[9rem]"
         />
-
-
 
         {/* Specialty filter */}
         <SelectMenu
           value={filters.specialtyId}
           onChange={(v) => filters.setSpecialtyId(v)}
           options={specialtyOptions}
-          placeholder="Specialty Area"
+          placeholder={t("overview.filters.specialtyArea", { defaultValue: "Specialty Area" })}
           searchable
           searchPlaceholder="Search specialties..."
           className="min-w-[8.5rem]"
@@ -113,7 +111,7 @@ export function DashboardFilterBar() {
           value={filters.wilayaId}
           onChange={(v) => filters.setWilayaId(v)}
           options={wilayaOptions}
-          placeholder="Location (Wilaya)"
+          placeholder={t("overview.filters.locationWilaya", { defaultValue: "Location (Wilaya)" })}
           searchable
           searchPlaceholder="Search wilayas..."
           className="min-w-[8.5rem]"
@@ -126,7 +124,7 @@ export function DashboardFilterBar() {
           className="glass flex items-center gap-1 rounded-full px-3 py-1.5 text-xs text-rose-500 hover:bg-rose-500/10 hover:border-rose-500/20 cursor-pointer transition-colors"
         >
           <FilterX className="h-3.5 w-3.5" />
-          Clear filters
+          {t("shell.command.clearFilters", { defaultValue: "Clear filters" })}
         </button>
       )}
     </GlassCard>
