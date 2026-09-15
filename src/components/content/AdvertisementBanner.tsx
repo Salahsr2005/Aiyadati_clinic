@@ -4,6 +4,8 @@ import { useTranslation } from "react-i18next";
 import { ExternalLink, Sparkles } from "lucide-react";
 import { advertisementsApi, pickContent, type AdvertisementRow } from "@/api/contentApi";
 import { qk } from "@/lib/queryKeys";
+import { RemoteImage } from "@/components/common/RemoteImage";
+import { ASSET_FALLBACKS } from "@/lib/assetFallbacks";
 
 interface AdvertisementBannerProps {
   position?: "HOME_TOP" | "HOME_MIDDLE" | "HOME_BOTTOM" | "CUSTOM";

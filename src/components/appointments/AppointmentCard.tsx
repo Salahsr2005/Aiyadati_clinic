@@ -6,6 +6,7 @@ import { fullDoctorName, fullPatientName, getCancellationOrigin, type Appointmen
 import { useTranslation } from "react-i18next";
 import { useUIStore } from "@/store/ui";
 import { translateEnum } from "@/lib/enumLabel";
+import { RemoteImage } from "@/components/common/RemoteImage";
 
 const TYPE_ICON = {
   IN_PERSON: UserIcon,

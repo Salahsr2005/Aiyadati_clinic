@@ -11,6 +11,8 @@ import { canTransitionTo } from "@/lib/statusLifecycle";
 import { NoShowConfirmDialog } from "@/components/appointments/NoShowConfirmDialog";
 
 import { CopyReferenceButton } from "@/components/common/CopyReferenceButton";
+import { RemoteImage } from "@/components/common/RemoteImage";
+import { ASSET_FALLBACKS } from "@/lib/assetFallbacks";
 
 function Field({ label, value, icon }: { label: string; value?: React.ReactNode; icon?: React.ReactNode }) {
   return (

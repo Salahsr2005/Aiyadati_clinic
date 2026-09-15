@@ -18,6 +18,7 @@ type QueryOptions<TQueryFnData = any, TError = any, TData = TQueryFnData> = {
   enabled?: boolean;
   staleTime?: number;
   refetchInterval?: number;
+  retry?: number | boolean;
   select?: (data: TQueryFnData) => TData;
   initialData?: TData;
 };
@@ -54,6 +55,16 @@ function matchesKey(queryKey: QueryKey, targetKey: QueryKey): boolean {
   return true;
 }
 
+function isRetryableError(error: any): boolean {
+  if (!error) return false;
+  const status = error.response?.status || error.status;
+  // Do not retry 4xx client errors (e.g. 400 Bad Request, 401 Unauthorized, 403 Forbidden, 404 Not Found, 422 Unprocessable)
+  if (status && status >= 400 && status < 500) {
+    return false;
+  }
+  return true;
+}
+
 class QueryCacheEntry {
   key: QueryKey;
   keyHash: string;
@@ -61,6 +72,7 @@ class QueryCacheEntry {
   error: any = null;
   updatedAt: number = 0;
   promise: Promise<any> | null = null;
+  queryFn: (() => Promise<any>) | null = null;
   listeners: Set<() => void> = new Set();
 
   constructor(key: QueryKey) {
@@ -79,24 +91,39 @@ class QueryCacheEntry {
     this.listeners.forEach((fn) => fn());
   }
 
-  async fetch(queryFn: () => Promise<any>): Promise<any> {
+  async fetch(queryFn: () => Promise<any>, retryOption: number | boolean = 1): Promise<any> {
+    this.queryFn = queryFn;
     if (this.promise) return this.promise;
+
+    const maxRetries = typeof retryOption === "number" ? retryOption : retryOption ? 1 : 0;
     this.notify();
+
     this.promise = (async () => {
+      let attempt = 0;
       try {
-        const res = await queryFn();
-        this.data = res;
-        this.error = null;
-        this.updatedAt = Date.now();
-        return res;
-      } catch (err) {
-        this.error = err;
-        throw err;
+        while (true) {
+          try {
+            const res = await queryFn();
+            this.data = res;
+            this.error = null;
+            this.updatedAt = Date.now();
+            return res;
+          } catch (err) {
+            if (attempt < maxRetries && isRetryableError(err)) {
+              attempt++;
+              await new Promise((resolve) => setTimeout(resolve, 1000 * attempt));
+              continue;
+            }
+            this.error = err;
+            throw err;
+          }
+        }
       } finally {
         this.promise = null;
         this.notify();
       }
     })();
+
     return this.promise;
   }
 }
@@ -135,7 +162,11 @@ export class QueryClient {
     this.cache.forEach((entry) => {
       if (!targetKey || matchesKey(entry.key, targetKey)) {
         entry.updatedAt = 0;
-        entry.notify();
+        if (entry.listeners.size > 0 && entry.queryFn) {
+          promises.push(entry.fetch(entry.queryFn).catch(() => {}));
+        } else {
+          entry.notify();
+        }
       }
     });
     await Promise.all(promises);
@@ -180,7 +211,16 @@ export function useQuery<TQueryFnData = any, TError = any, TData = TQueryFnData>
   options: QueryOptions<TQueryFnData, TError, TData>
 ): QueryState<TData, TError> & { refetch: () => Promise<any> } {
   const client = useQueryClient();
-  const { queryKey, queryFn, enabled = true, select, initialData } = options;
+  const {
+    queryKey,
+    queryFn,
+    enabled = true,
+    staleTime,
+    refetchInterval,
+    retry = 1,
+    select,
+    initialData,
+  } = options;
   const entry = client.getEntry(queryKey);
 
   const [, setTick] = useState(0);
@@ -194,22 +234,40 @@ export function useQuery<TQueryFnData = any, TError = any, TData = TQueryFnData>
   const queryFnRef = useRef(queryFn);
   useEffect(() => {
     queryFnRef.current = queryFn;
-  }, [queryFn]);
+    entry.queryFn = queryFn;
+  }, [queryFn, entry]);
 
   const refetch = useCallback(() => {
-    return entry.fetch(queryFnRef.current);
-  }, [entry]);
+    return entry.fetch(queryFnRef.current, retry);
+  }, [entry, retry]);
 
   useEffect(() => {
-    if (enabled && entry.updatedAt === 0 && !entry.promise) {
-      entry.fetch(queryFnRef.current).catch(() => {});
+    if (!enabled) return;
+
+    const isStale =
+      entry.updatedAt === 0 ||
+      entry.data === undefined ||
+      (staleTime !== undefined ? Date.now() - entry.updatedAt >= staleTime : true);
+
+    if (isStale && !entry.promise) {
+      entry.fetch(queryFnRef.current, retry).catch(() => {});
     }
-  }, [enabled, entry, hashKey(queryKey)]);
+  }, [enabled, entry, hashKey(queryKey), staleTime, retry]);
+
+  useEffect(() => {
+    if (!enabled || !refetchInterval || refetchInterval <= 0) return;
+
+    const intervalId = setInterval(() => {
+      entry.fetch(queryFnRef.current, retry).catch(() => {});
+    }, refetchInterval);
+
+    return () => clearInterval(intervalId);
+  }, [enabled, refetchInterval, entry, retry]);
 
   const rawData = entry.data !== undefined ? entry.data : initialData;
   const data = select && rawData !== undefined ? select(rawData) : rawData;
   const isFetching = !!entry.promise;
-  const isLoading = (rawData === undefined) && isFetching;
+  const isLoading = rawData === undefined && isFetching;
   const isError = !!entry.error;
   const isSuccess = rawData !== undefined && !isError;
   const status: "pending" | "error" | "success" = isLoading

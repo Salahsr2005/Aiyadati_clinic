@@ -35,6 +35,8 @@ export const coinUrl = coin;
 
 export const ASSET_FALLBACKS = {
   clinicLogo: clinicPlaceholder,
+  clinicGallery: clinicPlaceholder,
+  advertisement: clinicPlaceholder,
   doctorPhoto: doctorPlaceholder,
   userAvatar: doctorPlaceholder,
   emptyState: noAppointment,

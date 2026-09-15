@@ -66,8 +66,13 @@ export const clinicServicesApi = {
   },
 
   getDetail: async (id: string): Promise<ClinicService> => {
-    const res = await api.get(`/clinic-services/v1/me/${id}`);
-    return res.data as ClinicService;
+    try {
+      const res = await api.get(`/clinic-services/v1/public/${id}`);
+      return res.data as ClinicService;
+    } catch {
+      const res = await api.get(`/clinic-services/v1/me/${id}`);
+      return res.data as ClinicService;
+    }
   },
 
   create: async (payload: CreateServicePayload): Promise<ClinicService> => {
