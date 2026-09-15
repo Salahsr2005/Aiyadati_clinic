@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { API_BASE_URL } from "@/lib/api";
+import { RemoteImage } from "@/components/common/RemoteImage";
+import { ASSET_FALLBACKS } from "@/lib/assetFallbacks";
 
 /**
  * Resolves a possibly-relative media path (photoUrl/logoUrl/…) returned by the
@@ -34,9 +36,9 @@ export function UserAvatar({
 
   if (resolved && !errored) {
     return (
-      <img
+      <RemoteImage
         src={resolved}
-        crossOrigin="anonymous"
+        fallback={ASSET_FALLBACKS.userAvatar}
         alt=""
         onError={() => setErrored(true)}
         className={cn(dim, "rounded-full object-cover ring-1 ring-border")}

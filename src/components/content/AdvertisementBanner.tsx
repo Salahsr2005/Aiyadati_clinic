@@ -111,9 +111,9 @@ export function AdvertisementBanner({
       onClick={handleClick}
       className={`group relative cursor-pointer overflow-hidden rounded-3xl border border-border/40 shadow-md transition-all duration-300 hover:shadow-xl aspect-[21/9] min-h-[190px] ${className || ""}`}
     >
-      <img
+      <RemoteImage
         src={adImageUrl}
-        crossOrigin="anonymous"
+        fallback={ASSET_FALLBACKS.clinicGallery}
         alt={adTitle}
         className="absolute inset-0 h-full w-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
       />

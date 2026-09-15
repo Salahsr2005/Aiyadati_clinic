@@ -30,10 +30,9 @@ export function AppointmentCard({ appt, onClick, hideDoctor }: { appt: Appointme
       {/* Top row: avatar + full doctor name given all horizontal space, status pill on new row */}
       <div className="flex items-start gap-3">
         {!hideDoctor && (
-          <img
-            src={appt.doctor?.photoUrl || doctorPlaceholder}
-            crossOrigin="anonymous"
-            onError={(e) => { (e.currentTarget as HTMLImageElement).src = doctorPlaceholder; }}
+          <RemoteImage
+            src={appt.doctor?.photoUrl}
+            fallback={doctorPlaceholder}
             alt=""
             className="h-11 w-11 shrink-0 rounded-full object-cover ring-1 ring-border"
           />

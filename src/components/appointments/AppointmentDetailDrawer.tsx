@@ -130,10 +130,9 @@ export function AppointmentDetailDrawer({
           {!hideDoctor && (
             <div className="glass flex items-center justify-between gap-3 rounded-2xl p-3">
               <div className="flex items-center gap-3">
-                <img
-                  src={appt.doctor?.photoUrl || doctorPlaceholder}
-                  crossOrigin="anonymous"
-                  onError={(e) => { (e.currentTarget as HTMLImageElement).src = doctorPlaceholder; }}
+                <RemoteImage
+                  src={appt.doctor?.photoUrl}
+                  fallback={doctorPlaceholder}
                   alt=""
                   className="h-12 w-12 rounded-full object-cover ring-1 ring-border"
                 />
@@ -206,7 +205,7 @@ export function AppointmentDetailDrawer({
             value={
               appt.clinic ? (
                 <div className="flex items-center gap-2">
-                  {appt.clinic.logoUrl && <img src={appt.clinic.logoUrl} crossOrigin="anonymous" alt="" className="h-8 w-8 rounded-lg object-cover" />}
+                  {appt.clinic.logoUrl && <RemoteImage src={appt.clinic.logoUrl} fallback={ASSET_FALLBACKS.clinicLogo} alt="" className="h-8 w-8 rounded-lg object-cover" />}
                   <span>{locale === "ar" ? appt.clinic.nameAr || appt.clinic.nameFr : appt.clinic.nameFr || appt.clinic.nameAr}</span>
                 </div>
               ) : (

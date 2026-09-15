@@ -116,7 +116,7 @@ export function Topbar() {
                     <img
                       src={l.flagUrl}
                       alt={l.alt}
-                      crossOrigin="anonymous"
+                      referrerPolicy="no-referrer"
                       className="h-3 w-4.5 rounded-[2px] object-cover border border-black/15 shadow-2xs shrink-0"
                     />
                     <span>{l.label}</span>
@@ -164,7 +164,7 @@ export function Topbar() {
                     <img
                       src={l.flagUrl}
                       alt={l.alt}
-                      crossOrigin="anonymous"
+                      referrerPolicy="no-referrer"
                       className="h-3 w-4.5 rounded-[2px] object-cover border border-black/15 shadow-2xs shrink-0"
                     />
                     <span>{l.label}</span>

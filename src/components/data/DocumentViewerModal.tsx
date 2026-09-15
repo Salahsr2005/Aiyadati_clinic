@@ -150,7 +150,7 @@ export function DocumentViewerModal({
               >
                 <img
                   src={url}
-                  crossOrigin="anonymous"
+                  referrerPolicy="no-referrer"
                   alt={title}
                   className="max-h-[70vh] max-w-full rounded-2xl object-contain shadow-2xl border border-white/5 select-none pointer-events-none"
                 />
