@@ -9,6 +9,8 @@ import type { AppointmentRow } from "@/api/appointmentsApi";
 import { fullDoctorName, fullPatientName } from "@/api/appointmentsApi";
 
 import { CopyReferenceButton } from "@/components/common/CopyReferenceButton";
+import { RemoteImage } from "@/components/common/RemoteImage";
+import { ASSET_FALLBACKS } from "@/lib/assetFallbacks";
 
 export interface RecentAppointmentsTableProps {
   appointments?: AppointmentRow[];
@@ -36,7 +38,12 @@ export function RecentAppointmentsTable({
         return (
           <div className="flex items-center gap-2.5">
             {row.patient?.avatarUrl ? (
-              <img src={row.patient.avatarUrl} alt="" className="h-7 w-7 rounded-full object-cover" />
+              <RemoteImage
+                src={row.patient.avatarUrl}
+                alt=""
+                fallback={ASSET_FALLBACKS.userAvatar}
+                className="h-7 w-7 rounded-full object-cover"
+              />
             ) : (
               <div className="grid h-7 w-7 place-items-center rounded-full bg-primary-500/10 text-primary-500 text-[10px] font-bold">
                 {name.slice(0, 2).toUpperCase()}

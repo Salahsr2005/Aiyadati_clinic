@@ -4,8 +4,8 @@ import { Drawer } from "@/components/data/Drawer";
 import { Skeleton } from "@/components/glass/Skeleton";
 import { StatusBadge } from "@/components/data/StatusBadge";
 import { clinicsApi, type ClinicRow, type WorkingHours } from "@/api/clinicsApi";
-import { resolveMediaUrl } from "@/components/users/UserAvatar";
-import { clinicPlaceholderUrl } from "@/lib/assetFallbacks";
+import { RemoteImage } from "@/components/common/RemoteImage";
+import { ASSET_FALLBACKS } from "@/lib/assetFallbacks";
 import { qk } from "@/lib/queryKeys";
 
 function formatWorkingHours(wh?: ClinicRow["workingHours"]): { day: string; label: string }[] {
@@ -72,12 +72,10 @@ export function ClinicDetailDrawer({
       ) : (
         <div className="space-y-5">
           <div className="flex items-center gap-3">
-            <img
-              src={resolveMediaUrl(clinic.logoUrl) ?? clinicPlaceholderUrl}
+            <RemoteImage
+              src={clinic.logoUrl}
               alt=""
-              onError={(e) => {
-                (e.currentTarget as HTMLImageElement).src = clinicPlaceholderUrl;
-              }}
+              fallback={ASSET_FALLBACKS.clinicLogo}
               className="h-16 w-16 shrink-0 rounded-2xl object-cover"
             />
             <div className="min-w-0">

@@ -53,6 +53,8 @@ import { ModernDatePickerModal } from "@/components/ui/ModernDatePickerModal";
 import { WalkInBookingModal } from "@/components/appointments/WalkInBookingModal";
 import { DoctorSelectorModal, type DoctorCardItem } from "@/components/doctors/DoctorSelectorModal";
 import { CopyReferenceButton } from "@/components/common/CopyReferenceButton";
+import { RemoteImage } from "@/components/common/RemoteImage";
+import { ASSET_FALLBACKS } from "@/lib/assetFallbacks";
 
 import findDoctorImg from "@/assets/home-quick-actions/find-doctor.png";
 
@@ -527,10 +529,10 @@ function AppointmentListRow({ app, onSelect }: { app: ClinicAppointmentRow; onSe
     >
       <div className="flex items-center gap-3.5 min-w-0">
         <div className="relative h-10 w-10 rounded-2xl overflow-hidden bg-primary-500/10 border border-border/40 shrink-0">
-          <img
+          <RemoteImage
             src={patient.avatarUrl}
             alt={patient.name}
-            onError={(e) => { (e.currentTarget as HTMLImageElement).src = findDoctorImg; }}
+            fallback={ASSET_FALLBACKS.userAvatar}
             className="h-full w-full object-cover"
           />
           {patient.isGuest && (
@@ -549,11 +551,11 @@ function AppointmentListRow({ app, onSelect }: { app: ClinicAppointmentRow; onSe
             )}
           </div>
           <div className="flex items-center gap-2 mt-0.5">
-            <img
+            <RemoteImage
               src={doctorPhoto}
               alt=""
+              fallback={ASSET_FALLBACKS.doctorPhoto}
               className="h-3.5 w-3.5 rounded-full object-cover border border-border/40 shrink-0"
-              onError={(e) => { (e.currentTarget as HTMLImageElement).src = findDoctorImg; }}
             />
             <p className="text-[11px] text-muted-foreground truncate">{doctorName}</p>
           </div>
@@ -643,10 +645,10 @@ function AppointmentGridCard({ app, onSelect }: { app: ClinicAppointmentRow; onS
       {/* Patient Section */}
       <div className="flex items-center gap-3">
         <div className="relative h-10 w-10 rounded-2xl overflow-hidden bg-primary-500/10 border border-border/40 shrink-0">
-          <img
+          <RemoteImage
             src={patient.avatarUrl}
             alt={patient.name}
-            onError={(e) => { (e.currentTarget as HTMLImageElement).src = findDoctorImg; }}
+            fallback={ASSET_FALLBACKS.userAvatar}
             className="h-full w-full object-cover"
           />
         </div>
@@ -667,10 +669,10 @@ function AppointmentGridCard({ app, onSelect }: { app: ClinicAppointmentRow; onS
 
       {/* Attending Doctor */}
       <div className="flex items-center gap-2 pt-2 border-t border-border/30">
-        <img
+        <RemoteImage
           src={doctorPhoto}
           alt={doctorName}
-          onError={(e) => { (e.currentTarget as HTMLImageElement).src = findDoctorImg; }}
+          fallback={ASSET_FALLBACKS.doctorPhoto}
           className="h-5 w-5 rounded-full object-cover border border-border/40 shrink-0"
         />
         <span className="text-[11px] font-bold text-foreground truncate">{doctorName}</span>
@@ -757,10 +759,10 @@ function KanbanCard({ app, onSelect }: { app: ClinicAppointmentRow; onSelect: (a
     >
       <div className="flex items-center gap-2">
         <div className="relative h-8 w-8 rounded-xl overflow-hidden bg-primary-500/10 border border-border/40 shrink-0">
-          <img
+          <RemoteImage
             src={patient.avatarUrl}
             alt={patient.name}
-            onError={(e) => { (e.currentTarget as HTMLImageElement).src = findDoctorImg; }}
+            fallback={ASSET_FALLBACKS.userAvatar}
             className="h-full w-full object-cover"
           />
         </div>
@@ -776,11 +778,11 @@ function KanbanCard({ app, onSelect }: { app: ClinicAppointmentRow; onSelect: (a
       </div>
 
       <div className="flex items-center gap-1.5 pt-1 border-t border-border/20">
-        <img
+        <RemoteImage
           src={doctorPhoto}
           alt=""
+          fallback={ASSET_FALLBACKS.doctorPhoto}
           className="h-3.5 w-3.5 rounded-full object-cover border border-border/40"
-          onError={(e) => { (e.currentTarget as HTMLImageElement).src = findDoctorImg; }}
         />
         <span className="text-[10px] font-semibold text-muted-foreground truncate">{doctorName}</span>
       </div>
@@ -927,10 +929,10 @@ function AppointmentDetailContent({
         </div>
         <div className="flex items-center gap-3.5">
           <div className="relative h-12 w-12 rounded-2xl overflow-hidden bg-primary-500/10 border border-border/40 shrink-0">
-            <img
+            <RemoteImage
               src={patient.avatarUrl}
               alt={patient.name}
-              onError={(e) => { (e.currentTarget as HTMLImageElement).src = findDoctorImg; }}
+              fallback={ASSET_FALLBACKS.userAvatar}
               className="h-full w-full object-cover"
             />
           </div>
@@ -983,11 +985,11 @@ function AppointmentDetailContent({
         </h4>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3.5">
-            <img
+            <RemoteImage
               src={doctorPhoto}
               alt={doctorName}
+              fallback={ASSET_FALLBACKS.doctorPhoto}
               className="h-11 w-11 rounded-2xl object-cover border border-border/40"
-              onError={(e) => { (e.currentTarget as HTMLImageElement).src = findDoctorImg; }}
             />
             <div>
               <h3 className="text-sm font-extrabold text-foreground">{doctorName}</h3>

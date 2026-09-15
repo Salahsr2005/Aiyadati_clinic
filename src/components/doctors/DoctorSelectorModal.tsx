@@ -150,12 +150,10 @@ export function DoctorSelectorModal({
                 >
                   <div className="flex items-center gap-3.5 min-w-0">
                     <div className="relative h-12 w-12 shrink-0 rounded-2xl overflow-hidden border border-border/40 bg-accent">
-                      <img
-                        src={doc.photoUrl || fallbackPhoto}
+                      <RemoteImage
+                        src={doc.photoUrl}
                         alt={doc.name}
-                        onError={(e) => {
-                          (e.currentTarget as HTMLImageElement).src = fallbackPhoto;
-                        }}
+                        fallback={fallbackPhoto}
                         className="h-full w-full object-cover"
                       />
                     </div>

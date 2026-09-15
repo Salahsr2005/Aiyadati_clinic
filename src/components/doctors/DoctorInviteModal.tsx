@@ -8,6 +8,8 @@ import { specialtyApi, type SpecialtyRow } from "@/api/specialtyApi";
 import { useEntityMutation } from "@/lib/mutations";
 import { qk } from "@/lib/queryKeys";
 import { ensureArray } from "@/lib/utils";
+import { RemoteImage } from "@/components/common/RemoteImage";
+import { ASSET_FALLBACKS } from "@/lib/assetFallbacks";
 
 interface DoctorInviteModalProps {
   open: boolean;
@@ -19,8 +21,6 @@ export function DoctorInviteModal({ open, onClose }: DoctorInviteModalProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [specialtyFilter, setSpecialtyFilter] = useState("");
-
-  const fallbackPhoto = "/assets/standard/doctor-placeholder.png";
 
   // Debounce search input (~350ms)
   useEffect(() => {
@@ -165,12 +165,10 @@ export function DoctorInviteModal({ open, onClose }: DoctorInviteModalProps) {
                 >
                   <div className="flex items-center gap-3.5 min-w-0">
                     <div className="relative h-12 w-12 shrink-0 rounded-2xl overflow-hidden border border-border/40 bg-accent">
-                      <img
-                        src={docAny.avatarUrl || docAny.photoUrl || fallbackPhoto}
+                      <RemoteImage
+                        src={docAny.avatarUrl || docAny.photoUrl}
                         alt={name}
-                        onError={(e) => {
-                          (e.currentTarget as HTMLImageElement).src = fallbackPhoto;
-                        }}
+                        fallback={ASSET_FALLBACKS.doctorPhoto}
                         className="h-full w-full object-cover"
                       />
                     </div>

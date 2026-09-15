@@ -1087,7 +1087,7 @@ function renderPopupHtml(
   return `
     <div style="min-width:240px;font-family:inherit;overflow:hidden;border-radius:16px;background:var(--popover);color:var(--popover-foreground);border:1px solid var(--border);box-shadow:0 20px 40px -12px rgba(10,26,60,.25)">
       <div style="position:relative">
-        <img src="${escapeHtml(img)}" crossorigin="anonymous" onerror="this.src='${escapeHtml(fallback)}'" style="width:100%;height:110px;object-fit:cover;display:block" />
+        <img src="${escapeHtml(img)}" referrerpolicy="no-referrer" onerror="this.src='${escapeHtml(fallback)}'" style="width:100%;height:110px;object-fit:cover;display:block" />
         <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 40%,rgba(0,0,0,0.6))"></div>
         ${
           props.badgeLabel

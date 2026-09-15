@@ -31,6 +31,8 @@ import { ModernTimePickerModal } from "@/components/ui/ModernTimePickerModal";
 import { DoctorSelectorModal, type DoctorCardItem } from "@/components/doctors/DoctorSelectorModal";
 import { Drawer } from "@/components/data/Drawer";
 import { ensureArray } from "@/lib/utils";
+import { RemoteImage } from "@/components/common/RemoteImage";
+import { ASSET_FALLBACKS } from "@/lib/assetFallbacks";
 import findDoctorImg from "@/assets/home-quick-actions/find-doctor.png";
 
 interface WalkInBookingModalProps {
@@ -378,11 +380,11 @@ export function WalkInBookingModal({ open, onClose }: WalkInBookingModalProps) {
                 className="flex items-center justify-between p-3.5 rounded-2xl bg-accent/40 border border-border/40 hover:border-primary-500/40 transition cursor-pointer"
               >
                 <div className="flex items-center gap-3.5">
-                  <img
-                    src={selectedDoctor.photoUrl || findDoctorImg}
+                  <RemoteImage
+                    src={selectedDoctor.photoUrl}
                     alt={selectedDoctor.name}
+                    fallback={ASSET_FALLBACKS.doctorPhoto}
                     className="h-12 w-12 rounded-2xl object-cover border border-border/40"
-                    onError={(e) => { (e.currentTarget as HTMLImageElement).src = findDoctorImg; }}
                   />
                   <div>
                     <h4 className="text-sm font-extrabold text-foreground">{selectedDoctor.name}</h4>
@@ -446,10 +448,10 @@ export function WalkInBookingModal({ open, onClose }: WalkInBookingModalProps) {
                 {selectedAppPatient ? (
                   <div className="flex items-center justify-between p-3.5 rounded-2xl border border-primary-500/40 bg-primary-500/10">
                     <div className="flex items-center gap-3 min-w-0">
-                      <img
-                        src={selectedAppPatient.avatarUrl || findDoctorImg}
+                      <RemoteImage
+                        src={selectedAppPatient.avatarUrl}
                         alt=""
-                        onError={(e) => { (e.currentTarget as HTMLImageElement).src = findDoctorImg; }}
+                        fallback={ASSET_FALLBACKS.userAvatar}
                         className="h-10 w-10 rounded-xl object-cover ring-1 ring-primary-500/30 shrink-0"
                       />
                       <div className="min-w-0">

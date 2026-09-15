@@ -8,6 +8,8 @@ import type { DoctorRow } from "@/api/doctorsApi";
 import type { ClinicRow } from "@/api/clinicsApi";
 import { pickLocaleField } from "@/lib/pickLocale";
 import { useUIStore } from "@/store/ui";
+import { RemoteImage } from "@/components/common/RemoteImage";
+import { ASSET_FALLBACKS } from "@/lib/assetFallbacks";
 
 const CHART_PALETTE = [
   "var(--primary-500)",
@@ -41,7 +43,12 @@ function LeaderRow({ name, photo, value, max, rank, suffix }: LeaderRowProps) {
         </div>
       )}
       {photo ? (
-        <img src={photo} alt="" className="h-8 w-8 rounded-full object-cover shrink-0" />
+        <RemoteImage
+          src={photo}
+          alt=""
+          fallback={ASSET_FALLBACKS.doctorPhoto}
+          className="h-8 w-8 rounded-full object-cover shrink-0"
+        />
       ) : (
         <div className="grid h-8 w-8 place-items-center rounded-full bg-primary-500 text-[10px] font-bold text-white shrink-0">
           {(name || "?").trim().slice(0, 2).toUpperCase()}
