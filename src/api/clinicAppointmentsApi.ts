@@ -160,6 +160,16 @@ async function resolveMissingGuestPatients(items: ClinicAppointmentRow[]): Promi
   });
 }
 
+function cleanPayload<T extends Record<string, any>>(obj: T): Partial<T> {
+  const clean: any = {};
+  for (const [k, v] of Object.entries(obj)) {
+    if (v !== undefined && v !== null && v !== "") {
+      clean[k] = v;
+    }
+  }
+  return clean;
+}
+
 export const clinicAppointmentsApi = {
   // All clinic slots
   listSlots: async (params?: { date?: string; startDate?: string; endDate?: string }): Promise<DoctorSlot[]> => {
@@ -180,14 +190,15 @@ export const clinicAppointmentsApi = {
 
   generateDoctorSlots: async (
     doctorId: string,
-    payload: { startDate: string; endDate: string; roomId?: string; force?: boolean }
+    payload: { startDate: string; endDate: string; roomId?: string; serviceId?: string; force?: boolean }
   ): Promise<{ created: number; slots: DoctorSlot[] }> => {
     if (!doctorId || !doctorId.trim()) {
       throw new Error("Please select a doctor first to generate schedule slots.");
     }
+    const clean = cleanPayload(payload);
     const res = await api.post(
       `/appointment/v1/clinic/doctors/${doctorId}/slots/generate`,
-      payload
+      clean
     );
     return res.data as { created: number; slots: DoctorSlot[] };
   },
@@ -199,9 +210,10 @@ export const clinicAppointmentsApi = {
     if (!doctorId || !doctorId.trim()) {
       throw new Error("Please select a doctor first to cancel schedule slots.");
     }
+    const clean = cleanPayload(payload);
     const res = await api.post(
       `/appointment/v1/clinic/doctors/${doctorId}/slots/cancel-date`,
-      payload
+      clean
     );
     return res.data as { cancelled: number };
   },
@@ -213,9 +225,10 @@ export const clinicAppointmentsApi = {
     if (!doctorId || !doctorId.trim()) {
       throw new Error("Please select a doctor first to add a quick slot.");
     }
+    const clean = cleanPayload(payload);
     const res = await api.post(
       `/appointment/v1/clinic/doctors/${doctorId}/slots/quick`,
-      payload
+      clean
     );
     return res.data as DoctorSlot;
   },

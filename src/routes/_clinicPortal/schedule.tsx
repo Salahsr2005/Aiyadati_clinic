@@ -206,8 +206,15 @@ export default function SchedulePage() {
 
   // Mutations
   const generateSlotsMutation = useEntityMutation({
-    mutationFn: (data: GenerateFormData) =>
-      clinicAppointmentsApi.generateDoctorSlots(activeDoctorId, data),
+    mutationFn: (data: GenerateFormData) => {
+      const payload = {
+        startDate: data.startDate,
+        endDate: data.endDate,
+        roomId: data.roomId && data.roomId.trim() ? data.roomId.trim() : undefined,
+        force: data.force,
+      };
+      return clinicAppointmentsApi.generateDoctorSlots(activeDoctorId, payload);
+    },
     invalidate: [qk.clinicSelf.all()],
     successMessage: t("schedule.batchSuccess", { defaultValue: "Slots successfully generated!" }),
     onSuccess: () => {
@@ -218,8 +225,16 @@ export default function SchedulePage() {
   });
 
   const quickSlotMutation = useEntityMutation({
-    mutationFn: (data: QuickSlotFormData) =>
-      clinicAppointmentsApi.addQuickDoctorSlot(activeDoctorId, data),
+    mutationFn: (data: QuickSlotFormData) => {
+      const payload = {
+        date: data.date,
+        startTime: data.startTime,
+        endTime: data.endTime,
+        roomId: data.roomId && data.roomId.trim() ? data.roomId.trim() : undefined,
+        maxPatients: data.maxPatients,
+      };
+      return clinicAppointmentsApi.addQuickDoctorSlot(activeDoctorId, payload);
+    },
     invalidate: [qk.clinicSelf.all()],
     successMessage: t("schedule.quickSuccess", { defaultValue: "Quick slot added successfully!" }),
     onSuccess: () => {
@@ -235,8 +250,13 @@ export default function SchedulePage() {
   });
 
   const cancelDateMutation = useEntityMutation({
-    mutationFn: (data: CancelDateFormData) =>
-      clinicAppointmentsApi.cancelDoctorSlotsDate(activeDoctorId, data),
+    mutationFn: (data: CancelDateFormData) => {
+      const payload = {
+        date: data.date,
+        reason: data.reason && data.reason.trim() ? data.reason.trim() : undefined,
+      };
+      return clinicAppointmentsApi.cancelDoctorSlotsDate(activeDoctorId, payload);
+    },
     invalidate: [qk.clinicSelf.all()],
     successMessage: t("schedule.cancelSuccess", { defaultValue: "Date slots cancelled successfully!" }),
     onSuccess: () => {
@@ -736,6 +756,13 @@ export default function SchedulePage() {
             selectedDate={selectedDate}
             onDateSelect={(d) => setSelectedDate(d)}
             isGenerating={generateSlotsMutation.isPending}
+            onQuickAddSlot={({ date, hour }) => {
+              const pad = (n: number) => String(n).padStart(2, "0");
+              quickSlotForm.setValue("date", date);
+              quickSlotForm.setValue("startTime", `${pad(hour)}:00`);
+              quickSlotForm.setValue("endTime", `${pad(hour)}:30`);
+              setQuickSlotModalOpen(true);
+            }}
             onGenerateSlots={({ date, startHour, endHour }) => {
               const pad = (n: number) => String(n).padStart(2, "0");
               if (activeDoctorId) {
@@ -747,6 +774,9 @@ export default function SchedulePage() {
                 }).then(() => {
                   queryClient.invalidateQueries({ queryKey: qk.clinicSelf.all() });
                   toast.success(t("schedule.quickSuccess", { defaultValue: "Quick slot added successfully!" }));
+                }).catch((err) => {
+                  const msg = err?.response?.data?.message || err?.message || "Failed to add slot";
+                  toast.error(typeof msg === "string" ? msg : JSON.stringify(msg));
                 });
               } else {
                 generateSlotsMutation.mutate({
