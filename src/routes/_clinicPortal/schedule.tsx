@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { useQuery } from "@/lib/queryClient";
+import { useQuery, useQueryClient } from "@/lib/queryClient";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -14,33 +14,45 @@ import {
   Loader2,
   Calendar as CalendarIcon,
   CalendarRange,
+  CalendarPlus,
   Filter,
   RotateCcw,
   CheckCircle2,
   AlertCircle,
   Users,
   ChevronRight,
+  ChevronLeft,
   Sparkles,
+  User,
+  Phone,
+  LayoutGrid,
+  CalendarDays,
+  Table as TableIcon,
+  Search,
+  Check,
+  Building,
+  RefreshCw,
 } from "lucide-react";
-import { format } from "date-fns";
+import { format, addDays, subDays, startOfWeek } from "date-fns";
+import { toast } from "sonner";
 import { clinicAppointmentsApi, type ClinicAppointmentRow, type DoctorSlot } from "@/api/clinicAppointmentsApi";
 import { clinicSelfApi, type ClinicRoom } from "@/api/clinicSelfApi";
 import { useClinicDoctors } from "@/hooks/useClinicDoctors";
 import { qk } from "@/lib/queryKeys";
 import { useEntityMutation } from "@/lib/mutations";
-import { ensureArray } from "@/lib/utils";
+import { ensureArray, cn } from "@/lib/utils";
 import { GlassCard } from "@/components/glass/GlassCard";
 import { RemoteImage } from "@/components/common/RemoteImage";
 import { FormModal } from "@/components/data/FormModal";
 import { EmptyState } from "@/components/data/EmptyState";
 import { Skeleton } from "@/components/glass/Skeleton";
+import { StatusBadge } from "@/components/data/StatusBadge";
 import { DoctorScheduleHeatmap } from "@/components/schedule/DoctorScheduleHeatmap";
 import { ScheduleVisualizer } from "@/components/schedule/ScheduleVisualizer";
-import { DateRangeInspector } from "@/components/schedule/DateRangeInspector";
-import { DayHourHeatmap } from "@/components/data/DayHourHeatmap";
+import { SlotGridInspector } from "@/components/schedule/SlotGridInspector";
 import { DoctorSelectorModal, type DoctorCardItem } from "@/components/doctors/DoctorSelectorModal";
 import { ModernDatePickerModal } from "@/components/ui/ModernDatePickerModal";
-import { KPICard } from "@/components/overview/KPICard";
+import { WalkInBookingModal } from "@/components/appointments/WalkInBookingModal";
 
 const generateSchema = z.object({
   startDate: z.string().min(1, "Start date is required"),
@@ -66,18 +78,30 @@ type GenerateFormData = z.infer<typeof generateSchema>;
 type QuickSlotFormData = z.infer<typeof quickSlotSchema>;
 type CancelDateFormData = z.infer<typeof cancelDateSchema>;
 
+type ViewMode = "timeline" | "weeklyMatrix" | "slotsTable";
+
 export default function SchedulePage() {
-  const { t } = useTranslation();
-  const { acceptedDoctors } = useClinicDoctors();
+  const { t, i18n } = useTranslation();
+  const isRtl = i18n.language === "ar";
+  const queryClient = useQueryClient();
+
+  const { acceptedDoctors, isLoading: isDoctorsLoading } = useClinicDoctors();
   const [selectedDoctorId, setSelectedDoctorId] = useState<string>("");
   const [selectedDate, setSelectedDate] = useState<string>(format(new Date(), "yyyy-MM-dd"));
-  const [rangeFilter, setRangeFilter] = useState<"all" | "available" | "full" | "cancelled">("all");
-  const [doctorSelectorOpen, setDoctorSelectorOpen] = useState(false);
+  const [activeView, setActiveView] = useState<ViewMode>("timeline");
 
-  // Modals
+  // Modals state
+  const [doctorSelectorOpen, setDoctorSelectorOpen] = useState(false);
   const [generateModalOpen, setGenerateModalOpen] = useState(false);
   const [quickSlotModalOpen, setQuickSlotModalOpen] = useState(false);
   const [cancelModalOpen, setCancelModalOpen] = useState(false);
+  const [walkInModalOpen, setWalkInModalOpen] = useState(false);
+  const [selectedSlotForDetail, setSelectedSlotForDetail] = useState<DoctorSlot | null>(null);
+
+  // Table Filters & Search
+  const [tableSearch, setTableSearch] = useState("");
+  const [statusFilter, setStatusFilter] = useState<"ALL" | "AVAILABLE" | "BOOKED" | "CANCELLED">("ALL");
+  const [roomFilter, setRoomFilter] = useState<string>("ALL");
 
   // Rooms
   const { data: rawRooms } = useQuery({
@@ -85,13 +109,7 @@ export default function SchedulePage() {
     queryFn: clinicSelfApi.getRooms,
   });
 
-  const { data: appointmentsData } = useQuery({
-    queryKey: qk.clinicSelf.appointments({ limit: 100 }),
-    queryFn: () => clinicAppointmentsApi.listAppointments({ limit: 100 }),
-  });
-
   const rooms: ClinicRoom[] = ensureArray<ClinicRoom>(rawRooms);
-  const appointments: ClinicAppointmentRow[] = ensureArray<ClinicAppointmentRow>(appointmentsData?.data);
 
   // Doctor Selector Card options
   const doctorCardItems: DoctorCardItem[] = useMemo(() =>
@@ -106,7 +124,7 @@ export default function SchedulePage() {
       return {
         id: doc.id,
         doctorId: doc.doctorId,
-        name: `${t("doctors.doctorPrefix", { defaultValue: "Doctor Prefix" })} ${name}`,
+        name: `${t("doctors.doctorPrefix", { defaultValue: "Dr." })} ${name}`,
         specialty: spec,
         photoUrl: d?.avatarUrl || d?.photoUrl,
         email: d?.email,
@@ -117,12 +135,12 @@ export default function SchedulePage() {
       };
     }), [acceptedDoctors, t]);
 
-  // Effective doctor ID
+  // Effective active doctor ID
   const activeDoctorId = selectedDoctorId || acceptedDoctors[0]?.doctorId || "";
   const selectedDoctorCard = doctorCardItems.find((d) => d.doctorId === activeDoctorId);
 
-  // Slots query for selected doctor
-  const { data: rawSlots, isLoading: isSlotsLoading } = useQuery({
+  // 1. Slots query for selected doctor & selected date
+  const { data: rawSlots, isLoading: isSlotsLoading, refetch: refetchSlots } = useQuery({
     queryKey: qk.clinicSelf.doctorSlots(activeDoctorId, { date: selectedDate }),
     queryFn: () =>
       activeDoctorId
@@ -133,12 +151,36 @@ export default function SchedulePage() {
 
   const slots: DoctorSlot[] = ensureArray<DoctorSlot>(rawSlots);
 
+  // 2. Appointments query for context/booked details
+  const { data: rawAppointments } = useQuery({
+    queryKey: qk.clinicSelf.appointments({ date: selectedDate, doctorId: activeDoctorId, limit: 100 }),
+    queryFn: () =>
+      clinicAppointmentsApi.listAppointments({
+        date: selectedDate,
+        doctorId: activeDoctorId || undefined,
+        limit: 100,
+      }),
+    enabled: !!activeDoctorId,
+  });
+
+  const appointments: ClinicAppointmentRow[] = ensureArray<ClinicAppointmentRow>(rawAppointments?.data);
+
+  // Map appointment details by slotId
+  const appointmentBySlotId = useMemo(() => {
+    const map = new Map<string, ClinicAppointmentRow>();
+    appointments.forEach((a) => {
+      if (a.slotId) map.set(a.slotId, a);
+    });
+    return map;
+  }, [appointments]);
+
   // Forms
   const generateForm = useForm<GenerateFormData>({
     resolver: zodResolver(generateSchema),
     defaultValues: {
-      startDate: format(new Date(), "yyyy-MM-dd"),
-      endDate: format(new Date(), "yyyy-MM-dd"),
+      startDate: selectedDate,
+      endDate: format(addDays(new Date(selectedDate), 6), "yyyy-MM-dd"),
+      roomId: "",
       force: false,
     },
   });
@@ -146,9 +188,10 @@ export default function SchedulePage() {
   const quickSlotForm = useForm<QuickSlotFormData>({
     resolver: zodResolver(quickSlotSchema),
     defaultValues: {
-      date: format(new Date(), "yyyy-MM-dd"),
+      date: selectedDate,
       startTime: "09:00",
       endTime: "09:30",
+      roomId: "",
       maxPatients: 1,
     },
   });
@@ -156,7 +199,7 @@ export default function SchedulePage() {
   const cancelDateForm = useForm<CancelDateFormData>({
     resolver: zodResolver(cancelDateSchema),
     defaultValues: {
-      date: format(new Date(), "yyyy-MM-dd"),
+      date: selectedDate,
       reason: "",
     },
   });
@@ -166,10 +209,11 @@ export default function SchedulePage() {
     mutationFn: (data: GenerateFormData) =>
       clinicAppointmentsApi.generateDoctorSlots(activeDoctorId, data),
     invalidate: [qk.clinicSelf.all()],
-    successMessage: t("schedule.batchSuccess", { defaultValue: "Batch Success" }),
+    successMessage: t("schedule.batchSuccess", { defaultValue: "Slots successfully generated!" }),
     onSuccess: () => {
       setGenerateModalOpen(false);
       generateForm.reset();
+      queryClient.invalidateQueries({ queryKey: qk.clinicSelf.all() });
     },
   });
 
@@ -177,10 +221,16 @@ export default function SchedulePage() {
     mutationFn: (data: QuickSlotFormData) =>
       clinicAppointmentsApi.addQuickDoctorSlot(activeDoctorId, data),
     invalidate: [qk.clinicSelf.all()],
-    successMessage: t("schedule.quickSuccess", { defaultValue: "Quick Success" }),
+    successMessage: t("schedule.quickSuccess", { defaultValue: "Quick slot added successfully!" }),
     onSuccess: () => {
       setQuickSlotModalOpen(false);
-      quickSlotForm.reset();
+      quickSlotForm.reset({
+        date: selectedDate,
+        startTime: "09:00",
+        endTime: "09:30",
+        maxPatients: 1,
+      });
+      queryClient.invalidateQueries({ queryKey: qk.clinicSelf.all() });
     },
   });
 
@@ -188,171 +238,684 @@ export default function SchedulePage() {
     mutationFn: (data: CancelDateFormData) =>
       clinicAppointmentsApi.cancelDoctorSlotsDate(activeDoctorId, data),
     invalidate: [qk.clinicSelf.all()],
-    successMessage: t("schedule.cancelSuccess", { defaultValue: "Cancel Success" }),
+    successMessage: t("schedule.cancelSuccess", { defaultValue: "Date slots cancelled successfully!" }),
     onSuccess: () => {
       setCancelModalOpen(false);
       cancelDateForm.reset();
+      queryClient.invalidateQueries({ queryKey: qk.clinicSelf.all() });
     },
   });
 
   // Stats calculation
   const stats = useMemo(() => {
     const total = slots.length;
-    const available = slots.filter((s) => String(s.status).toLowerCase() === "available").length;
-    const booked = slots.filter((s) => String(s.status).toLowerCase() === "booked" || String(s.status).toLowerCase() === "full").length;
-    const cancelled = slots.filter((s) => String(s.status).toLowerCase() === "cancelled").length;
-    return { total, available, booked, cancelled };
+    const available = slots.filter((s) => String(s.status || "").toLowerCase() === "available").length;
+    const booked = slots.filter((s) => {
+      const st = String(s.status || "").toLowerCase();
+      return st === "booked" || st === "full" || s.isBooked;
+    }).length;
+    const cancelled = slots.filter((s) => {
+      const st = String(s.status || "").toLowerCase();
+      return st === "cancelled" || s.isCancelled;
+    }).length;
+    const occupancyRate = total > 0 ? Math.round((booked / total) * 100) : 0;
+    return { total, available, booked, cancelled, occupancyRate };
   }, [slots]);
+
+  // Week Days strip for quick day selection
+  const weekDays = useMemo(() => {
+    const base = selectedDate ? new Date(selectedDate) : new Date();
+    const start = startOfWeek(base, { weekStartsOn: 0 }); // Sunday
+    return Array.from({ length: 7 }).map((_, i) => {
+      const d = addDays(start, i);
+      const dStr = format(d, "yyyy-MM-dd");
+      return {
+        dateStr: dStr,
+        dayName: format(d, "EEE"),
+        dayNum: format(d, "d"),
+        isToday: format(new Date(), "yyyy-MM-dd") === dStr,
+        isSelected: selectedDate === dStr,
+      };
+    });
+  }, [selectedDate]);
+
+  // Quick Date presets
+  const handlePreset = (preset: "today" | "tomorrow" | "thisWeek" | "nextWeek") => {
+    const today = new Date();
+    if (preset === "today") {
+      setSelectedDate(format(today, "yyyy-MM-dd"));
+    } else if (preset === "tomorrow") {
+      setSelectedDate(format(addDays(today, 1), "yyyy-MM-dd"));
+    } else if (preset === "thisWeek") {
+      setSelectedDate(format(today, "yyyy-MM-dd"));
+    } else if (preset === "nextWeek") {
+      setSelectedDate(format(addDays(today, 7), "yyyy-MM-dd"));
+    }
+  };
+
+  // Filtered slots for table view
+  const filteredTableSlots = useMemo(() => {
+    return slots.filter((s) => {
+      const status = String(s.status || "AVAILABLE").toUpperCase();
+      if (statusFilter !== "ALL") {
+        if (statusFilter === "AVAILABLE" && status !== "AVAILABLE") return false;
+        if (statusFilter === "BOOKED" && status !== "BOOKED" && status !== "FULL" && !s.isBooked) return false;
+        if (statusFilter === "CANCELLED" && status !== "CANCELLED" && !s.isCancelled) return false;
+      }
+      if (roomFilter !== "ALL") {
+        if (s.roomId !== roomFilter) return false;
+      }
+      if (tableSearch.trim()) {
+        const query = tableSearch.toLowerCase();
+        const timeStr = `${s.startTime}-${s.endTime}`.toLowerCase();
+        const roomName = (s.room?.name || "").toLowerCase();
+        const app = appointmentBySlotId.get(s.id);
+        const patientName = `${app?.patient?.name || app?.guestPatient?.firstName || ""}`.toLowerCase();
+        if (!timeStr.includes(query) && !roomName.includes(query) && !patientName.includes(query)) {
+          return false;
+        }
+      }
+      return true;
+    });
+  }, [slots, statusFilter, roomFilter, tableSearch, appointmentBySlotId]);
+
+  // Quick slot preset helper
+  const applyDurationPreset = (minutes: number) => {
+    const start = quickSlotForm.getValues("startTime") || "09:00";
+    const [h, m] = start.split(":").map(Number);
+    const totalM = (h || 0) * 60 + (m || 0) + minutes;
+    const endH = String(Math.floor(totalM / 60) % 24).padStart(2, "0");
+    const endM = String(totalM % 60).padStart(2, "0");
+    quickSlotForm.setValue("endTime", `${endH}:${endM}`);
+  };
 
   return (
     <div className="space-y-6">
-      {/* 1. Header Banner */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      {/* 1. Master Header & Quick Actions */}
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">
-            {t("schedule.title", { defaultValue: "Doctor Schedules & Slots" })}
-          </h1>
-          <p className="text-xs text-muted-foreground mt-0.5">
-            {t("schedule.subtitle", { defaultValue: "Configure bookable time slots, weekly hours, and break schedules" })}
+          <div className="flex items-center gap-2">
+            <h1 className="text-2xl font-black tracking-tight text-foreground">
+              {t("schedule.title", { defaultValue: "Doctor Schedules & Slots" })}
+            </h1>
+            <span className="inline-flex items-center gap-1 rounded-full bg-primary-500/10 px-2.5 py-0.5 text-xs font-bold text-primary-500">
+              <Sparkles className="h-3 w-3" />
+              {t("schedule.occupancyRate", { defaultValue: "Occupancy" })}: {stats.occupancyRate}%
+            </span>
+          </div>
+          <p className="text-xs text-muted-foreground mt-1">
+            {t("schedule.subtitle", {
+              defaultValue: "Configure bookable time slots, weekly hours, and consultation availability",
+            })}
           </p>
         </div>
 
+        {/* Top Control Action Buttons */}
         <div className="flex flex-wrap items-center gap-2">
           <button
-            onClick={() => setQuickSlotModalOpen(true)}
-            className="inline-flex items-center gap-1.5 rounded-xl bg-primary-500 px-3.5 py-2 text-xs font-semibold text-primary-foreground shadow-xs hover:opacity-90 transition cursor-pointer"
+            type="button"
+            onClick={() => {
+              quickSlotForm.setValue("date", selectedDate);
+              setQuickSlotModalOpen(true);
+            }}
+            className="inline-flex items-center gap-1.5 rounded-xl bg-primary-500 px-4 py-2.5 text-xs font-bold text-primary-foreground shadow-md hover:bg-primary-600 transition cursor-pointer"
           >
-            <Zap className="h-3.5 w-3.5" /> {t("schedule.quickSlotButton", { defaultValue: "Quick Slot Button" })}
+            <Zap className="h-3.5 w-3.5" />
+            {t("schedule.quickSlotButton", { defaultValue: "Quick Slot" })}
           </button>
 
           <button
-            onClick={() => setGenerateModalOpen(true)}
-            className="inline-flex items-center gap-1.5 rounded-xl glass border border-border/60 px-3.5 py-2 text-xs font-semibold text-foreground hover:bg-accent transition cursor-pointer"
+            type="button"
+            onClick={() => {
+              generateForm.setValue("startDate", selectedDate);
+              generateForm.setValue("endDate", format(addDays(new Date(selectedDate), 6), "yyyy-MM-dd"));
+              setGenerateModalOpen(true);
+            }}
+            className="inline-flex items-center gap-1.5 rounded-xl glass border border-border/60 px-4 py-2.5 text-xs font-bold text-foreground hover:bg-accent transition cursor-pointer"
           >
-            <CalendarRange className="h-3.5 w-3.5 text-primary-500" /> {t("schedule.batchGenerateButton", { defaultValue: "Batch Generate Slots" })}
+            <CalendarRange className="h-3.5 w-3.5 text-primary-500" />
+            {t("schedule.batchGenerateButton", { defaultValue: "Batch Generate Slots" })}
           </button>
 
           <button
-            onClick={() => setCancelModalOpen(true)}
-            className="inline-flex items-center gap-1.5 rounded-xl glass border border-border/60 px-3 py-2 text-xs font-semibold text-danger hover:bg-danger/10 transition cursor-pointer"
-            title={t("schedule.cancelSlot", { defaultValue: "Cancel Slot" })}
+            type="button"
+            onClick={() => {
+              cancelDateForm.setValue("date", selectedDate);
+              setCancelModalOpen(true);
+            }}
+            className="inline-flex items-center gap-1.5 rounded-xl glass border border-rose-500/30 px-3.5 py-2.5 text-xs font-bold text-rose-500 hover:bg-rose-500/10 transition cursor-pointer"
+            title={t("schedule.cancelSlot", { defaultValue: "Cancel Day Slots" })}
           >
             <Ban className="h-3.5 w-3.5" />
+            <span className="hidden sm:inline">{t("schedule.cancelSlot", { defaultValue: "Cancel Day" })}</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => {
+              refetchSlots();
+              toast.success("Schedule refreshed");
+            }}
+            className="inline-flex items-center gap-1 rounded-xl glass border border-border/40 p-2.5 text-xs font-bold text-muted-foreground hover:text-foreground transition cursor-pointer"
+            title="Refresh Schedule"
+          >
+            <RefreshCw className="h-3.5 w-3.5" />
           </button>
         </div>
       </div>
 
-      {/* 2. Main KPI Cards Grid */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <KPICard
-          label={t("schedule.totalSlots", { defaultValue: "Total Slots This Week" })}
-          value={stats.total}
-          subLabel={`${t("filters.date", { defaultValue: "Time Period" })}: ${selectedDate}`}
-          delta={stats.total}
-          tone="primary"
-        />
-        <KPICard
-          label={t("schedule.availableSlots", { defaultValue: "Available Slots" })}
-          value={stats.available}
-          subLabel="متاحة لحجز المرضى"
-          delta={stats.available}
-          tone="success"
-        />
-        <KPICard
-          label={t("schedule.bookedSlots", { defaultValue: "Booked Slots" })}
-          value={stats.booked}
-          subLabel="Appointments مؤكدة للمرضى"
-          delta={stats.booked}
-          tone="info"
-        />
-        <KPICard
-          label={t("status.CANCELLED", { defaultValue: "Cancelled" })}
-          value={stats.cancelled}
-          subLabel="فترات غير متاحة"
-          delta={stats.cancelled}
-          tone="warning"
-        />
-      </div>
+      {/* 2. Practitioner Hero & Quick Doctor Switcher Card */}
+      <GlassCard className="p-4 sm:p-5 border border-border/40 space-y-4">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          {/* Active Doctor Details */}
+          <div className="flex items-center gap-3.5">
+            <div className="relative h-14 w-14 shrink-0 rounded-2xl overflow-hidden border-2 border-primary-500/30 bg-muted/40 shadow-sm">
+              <RemoteImage
+                src={selectedDoctorCard?.photoUrl}
+                alt={selectedDoctorCard?.name || "Doctor"}
+                className="h-full w-full object-cover"
+                fallbackIcon={<Stethoscope className="h-7 w-7 text-primary-500 m-auto" />}
+              />
+              <span className="absolute bottom-0.5 right-0.5 h-3 w-3 rounded-full bg-emerald-500 ring-2 ring-background" />
+            </div>
 
-      {/* 3. Filter Bar (Aligned with Appointments Filter Bar) */}
-      <GlassCard className="p-4 space-y-3">
-        <div className="flex flex-wrap items-center gap-3">
-          <div className="flex items-center gap-2 text-xs font-bold text-muted-foreground">
-            <Filter className="h-4 w-4 text-primary-500" />
-            <span>{t("filters.open", { defaultValue: "Filter & Refine" })}</span>
+            <div className="space-y-0.5">
+              <div className="flex items-center gap-2">
+                <h2 className="text-base font-black text-foreground">
+                  {selectedDoctorCard?.name || t("doctors.selectorTitle", { defaultValue: "Select Practitioner Doctor" })}
+                </h2>
+                <span className="rounded-full bg-primary-500/10 px-2 py-0.5 text-[10px] font-extrabold text-primary-500">
+                  {selectedDoctorCard?.specialty || "Specialist"}
+                </span>
+              </div>
+              <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
+                {selectedDoctorCard?.phone && (
+                  <span className="flex items-center gap-1">
+                    <Phone className="h-3 w-3 text-muted-foreground/70" />
+                    {selectedDoctorCard.phone}
+                  </span>
+                )}
+                {selectedDoctorCard?.yearsOfExp && (
+                  <span className="font-semibold">
+                    {selectedDoctorCard.yearsOfExp} {t("doctors.yearsExp", { defaultValue: "yrs exp" })}
+                  </span>
+                )}
+              </div>
+            </div>
           </div>
 
-          {/* Doctor Selector */}
-          <button
-            onClick={() => setDoctorSelectorOpen(true)}
-            className="inline-flex items-center gap-2 glass rounded-xl px-3.5 py-2 text-xs font-semibold text-foreground hover:bg-accent transition cursor-pointer"
-          >
-            <Stethoscope className="h-3.5 w-3.5 text-primary-500" />
-            {selectedDoctorCard ? selectedDoctorCard.name : t("doctors.selectorTitle", { defaultValue: "Select Practitioner Doctor" })}
-            <ChevronRight className="h-3 w-3 text-muted-foreground rtl:rotate-180" />
-          </button>
+          {/* Switch Doctor Button & Quick Doctor Avatars */}
+          <div className="flex items-center gap-2 self-start md:self-auto">
+            <div className="hidden sm:flex items-center -space-x-2 rtl:space-x-reverse overflow-hidden">
+              {doctorCardItems.slice(0, 4).map((doc) => (
+                <button
+                  key={doc.doctorId}
+                  type="button"
+                  onClick={() => setSelectedDoctorId(doc.doctorId)}
+                  className={cn(
+                    "relative h-9 w-9 rounded-xl overflow-hidden border-2 transition cursor-pointer hover:scale-110 z-0",
+                    activeDoctorId === doc.doctorId
+                      ? "border-primary-500 ring-2 ring-primary-500/40 z-10 scale-105"
+                      : "border-background opacity-75 hover:opacity-100"
+                  )}
+                  title={doc.name}
+                >
+                  <RemoteImage
+                    src={doc.photoUrl}
+                    alt={doc.name}
+                    className="h-full w-full object-cover"
+                    fallbackIcon={<User className="h-4 w-4 m-auto text-muted-foreground" />}
+                  />
+                </button>
+              ))}
+            </div>
 
-          {/* Single Date Selector */}
-          <ModernDatePickerModal
-            mode="single"
-            value={selectedDate}
-            onSelect={(d) => setSelectedDate(d)}
-          />
-
-          {/* Filter Reset */}
-          {(selectedDoctorId || selectedDate !== format(new Date(), "yyyy-MM-dd")) && (
             <button
-              onClick={() => {
-                setSelectedDoctorId("");
-                setSelectedDate(format(new Date(), "yyyy-MM-dd"));
-              }}
-              className="inline-flex items-center gap-1 text-xs text-primary-500 font-bold hover:underline cursor-pointer ms-auto"
+              type="button"
+              onClick={() => setDoctorSelectorOpen(true)}
+              className="inline-flex items-center gap-1.5 rounded-xl glass border border-primary-500/30 bg-primary-500/5 px-3.5 py-2 text-xs font-bold text-primary-500 hover:bg-primary-500/10 transition cursor-pointer"
             >
-              <RotateCcw className="h-3 w-3" /> {t("filters.reset", { defaultValue: "Reset" })}
+              <Stethoscope className="h-3.5 w-3.5" />
+              <span>{t("doctors.selectorTitle", { defaultValue: "Change Doctor" })}</span>
+              <ChevronRight className="h-3.5 w-3.5 rtl:rotate-180" />
             </button>
-          )}
+          </div>
+        </div>
+
+        {/* 3. Interactive Date Navigation Strip */}
+        <div className="pt-3 border-t border-border/30 flex flex-col md:flex-row md:items-center justify-between gap-3">
+          {/* Quick Preset Pills & Date Picker */}
+          <div className="flex flex-wrap items-center gap-1.5">
+            <button
+              type="button"
+              onClick={() => handlePreset("today")}
+              className={cn(
+                "px-3 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer",
+                selectedDate === format(new Date(), "yyyy-MM-dd")
+                  ? "bg-primary-500 text-white shadow-xs"
+                  : "glass border border-border/40 text-muted-foreground hover:text-foreground"
+              )}
+            >
+              {t("schedule.inspector.presetToday", { defaultValue: "Today" })}
+            </button>
+
+            <button
+              type="button"
+              onClick={() => handlePreset("tomorrow")}
+              className={cn(
+                "px-3 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer",
+                selectedDate === format(addDays(new Date(), 1), "yyyy-MM-dd")
+                  ? "bg-primary-500 text-white shadow-xs"
+                  : "glass border border-border/40 text-muted-foreground hover:text-foreground"
+              )}
+            >
+              {t("schedule.inspector.presetTomorrow", { defaultValue: "Tomorrow" })}
+            </button>
+
+            {/* Prev / Next Day Step */}
+            <div className="flex items-center gap-1 bg-accent/30 rounded-xl p-0.5 border border-border/30">
+              <button
+                type="button"
+                onClick={() => setSelectedDate((prev) => format(subDays(new Date(prev), 1), "yyyy-MM-dd"))}
+                className="p-1 rounded-lg hover:bg-accent text-muted-foreground hover:text-foreground transition cursor-pointer"
+                title="Previous Day"
+              >
+                <ChevronLeft className="h-3.5 w-3.5 rtl:rotate-180" />
+              </button>
+
+              <ModernDatePickerModal
+                mode="single"
+                value={selectedDate}
+                onSelect={(d) => setSelectedDate(d)}
+              />
+
+              <button
+                type="button"
+                onClick={() => setSelectedDate((prev) => format(addDays(new Date(prev), 1), "yyyy-MM-dd"))}
+                className="p-1 rounded-lg hover:bg-accent text-muted-foreground hover:text-foreground transition cursor-pointer"
+                title="Next Day"
+              >
+                <ChevronRight className="h-3.5 w-3.5 rtl:rotate-180" />
+              </button>
+            </div>
+          </div>
+
+          {/* 7-Day Quick Strip */}
+          <div className="flex items-center gap-1.5 overflow-x-auto pb-1 custom-scrollbar">
+            {weekDays.map((d) => (
+              <button
+                key={d.dateStr}
+                type="button"
+                onClick={() => setSelectedDate(d.dateStr)}
+                className={cn(
+                  "flex flex-col items-center justify-center min-w-[48px] py-1.5 px-2 rounded-xl text-xs font-bold transition cursor-pointer border",
+                  d.isSelected
+                    ? "bg-primary-500 text-white border-primary-400 shadow-sm"
+                    : "border-border/30 bg-muted/20 text-muted-foreground hover:border-primary-500/40 hover:text-foreground"
+                )}
+              >
+                <span className="text-[10px] uppercase tracking-wider opacity-80">{d.dayName}</span>
+                <span className="text-sm font-black">{d.dayNum}</span>
+              </button>
+            ))}
+          </div>
         </div>
       </GlassCard>
 
-      {/* 4. Interactive Week-at-a-Glance Doctor Schedule Heatmap */}
+      {/* 4. Real-Time KPI Matrix */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+        <GlassCard className="p-4 border border-border/40 space-y-1">
+          <div className="flex items-center justify-between text-muted-foreground text-xs font-bold">
+            <span>{t("schedule.totalSlots", { defaultValue: "Total Slots" })}</span>
+            <CalendarDays className="h-4 w-4 text-primary-500" />
+          </div>
+          <div className="text-2xl font-black text-foreground">{stats.total}</div>
+          <p className="text-[11px] text-muted-foreground">
+            {selectedDate}
+          </p>
+        </GlassCard>
+
+        <GlassCard className="p-4 border border-emerald-500/20 bg-emerald-500/5 space-y-1">
+          <div className="flex items-center justify-between text-emerald-600 dark:text-emerald-400 text-xs font-bold">
+            <span>{t("schedule.availableSlots", { defaultValue: "Available Slots" })}</span>
+            <CheckCircle2 className="h-4 w-4 text-emerald-500" />
+          </div>
+          <div className="text-2xl font-black text-emerald-600 dark:text-emerald-400">{stats.available}</div>
+          <p className="text-[11px] text-emerald-600/70 dark:text-emerald-400/70">
+            {stats.total > 0 ? `${Math.round((stats.available / stats.total) * 100)}% available` : "0%"}
+          </p>
+        </GlassCard>
+
+        <GlassCard className="p-4 border border-amber-500/20 bg-amber-500/5 space-y-1">
+          <div className="flex items-center justify-between text-amber-600 dark:text-amber-400 text-xs font-bold">
+            <span>{t("schedule.bookedSlots", { defaultValue: "Booked Appointments" })}</span>
+            <Users className="h-4 w-4 text-amber-500" />
+          </div>
+          <div className="text-2xl font-black text-amber-600 dark:text-amber-400">{stats.booked}</div>
+          <p className="text-[11px] text-amber-600/70 dark:text-amber-400/70">
+            {stats.total > 0 ? `${stats.occupancyRate}% utilization` : "0%"}
+          </p>
+        </GlassCard>
+
+        <GlassCard className="p-4 border border-rose-500/20 bg-rose-500/5 space-y-1">
+          <div className="flex items-center justify-between text-rose-600 dark:text-rose-400 text-xs font-bold">
+            <span>{t("schedule.cancelledSlots", { defaultValue: "Cancelled Slots" })}</span>
+            <Ban className="h-4 w-4 text-rose-500" />
+          </div>
+          <div className="text-2xl font-black text-rose-600 dark:text-rose-400">{stats.cancelled}</div>
+          <p className="text-[11px] text-rose-600/70 dark:text-rose-400/70">
+            {stats.cancelled > 0 ? "Unavailable for booking" : "No cancelled slots"}
+          </p>
+        </GlassCard>
+      </div>
+
+      {/* 5. View Mode Switcher (Timeline vs Weekly Grid vs Roster Table) */}
+      <div className="flex flex-wrap items-center justify-between gap-3 pt-2">
+        <div className="flex items-center gap-1.5 p-1 rounded-2xl glass border border-border/40 bg-accent/20">
+          <button
+            type="button"
+            onClick={() => setActiveView("timeline")}
+            className={cn(
+              "inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold transition cursor-pointer",
+              activeView === "timeline"
+                ? "bg-primary-500 text-white shadow-xs"
+                : "text-muted-foreground hover:text-foreground"
+            )}
+          >
+            <Clock className="h-3.5 w-3.5" />
+            <span>{t("schedule.views.timeline", { defaultValue: "Day Timeline" })}</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setActiveView("weeklyMatrix")}
+            className={cn(
+              "inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold transition cursor-pointer",
+              activeView === "weeklyMatrix"
+                ? "bg-primary-500 text-white shadow-xs"
+                : "text-muted-foreground hover:text-foreground"
+            )}
+          >
+            <LayoutGrid className="h-3.5 w-3.5" />
+            <span>{t("schedule.views.weeklyMatrix", { defaultValue: "Weekly Grid" })}</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setActiveView("slotsTable")}
+            className={cn(
+              "inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold transition cursor-pointer",
+              activeView === "slotsTable"
+                ? "bg-primary-500 text-white shadow-xs"
+                : "text-muted-foreground hover:text-foreground"
+            )}
+          >
+            <TableIcon className="h-3.5 w-3.5" />
+            <span>{t("schedule.views.slotsTable", { defaultValue: "Slots Roster" })}</span>
+          </button>
+        </div>
+
+        {/* View Info */}
+        <div className="text-xs font-bold text-muted-foreground">
+          {activeView === "timeline" && (
+            <span>
+              {t("schedule.timeline.title", { defaultValue: "Consultation Timeline" })}: {selectedDate} ({slots.length} slots)
+            </span>
+          )}
+          {activeView === "weeklyMatrix" && (
+            <span>
+              {t("schedule.weekly.title", { defaultValue: "Weekly Availability Matrix" })}
+            </span>
+          )}
+          {activeView === "slotsTable" && (
+            <span>
+              {filteredTableSlots.length} {t("schedule.table.timeColumn", { defaultValue: "Slots" })}
+            </span>
+          )}
+        </div>
+      </div>
+
+      {/* 6. Active View Content */}
       {isSlotsLoading ? (
-        <Skeleton className="h-80 w-full rounded-3xl" />
+        <div className="space-y-4">
+          <Skeleton className="h-20 w-full rounded-3xl" />
+          <Skeleton className="h-80 w-full rounded-3xl" />
+        </div>
+      ) : activeView === "timeline" ? (
+        <div className="space-y-6">
+          {/* High-Fidelity Interactive Timeline Bar */}
+          <GlassCard className="p-5 border border-border/40">
+            <ScheduleVisualizer
+              slots={slots}
+              selectedDate={selectedDate}
+              doctorName={selectedDoctorCard?.name}
+              onSelectSlot={(slot) => setSelectedSlotForDetail(slot)}
+            />
+          </GlassCard>
+
+          {/* Period-grouped Card Inspector */}
+          <GlassCard className="p-5 border border-border/40 space-y-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-sm font-bold text-foreground">
+                  {t("schedule.timeline.title", { defaultValue: "Consultation Slots by Time Period" })}
+                </h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  {t("schedule.timeline.subtitle", { defaultValue: "Hourly progression of consultation slots for" })}{" "}
+                  <span className="font-semibold text-foreground">{selectedDate}</span>
+                </p>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => {
+                  quickSlotForm.setValue("date", selectedDate);
+                  setQuickSlotModalOpen(true);
+                }}
+                className="inline-flex items-center gap-1.5 rounded-xl glass border border-primary-500/30 px-3 py-1.5 text-xs font-bold text-primary-500 hover:bg-primary-500/10 transition cursor-pointer"
+              >
+                <Plus className="h-3.5 w-3.5" />
+                {t("schedule.quickSlotButton", { defaultValue: "Add Slot" })}
+              </button>
+            </div>
+
+            <SlotGridInspector
+              slots={slots}
+              isLoading={isSlotsLoading}
+              onSelectSlot={(slot) => setSelectedSlotForDetail(slot)}
+              onBookSlot={(slot) => {
+                setWalkInModalOpen(true);
+              }}
+            />
+          </GlassCard>
+        </div>
+      ) : activeView === "weeklyMatrix" ? (
+        <div className="space-y-4">
+          <DoctorScheduleHeatmap
+            slots={slots}
+            selectedDate={selectedDate}
+            onDateSelect={(d) => setSelectedDate(d)}
+            isGenerating={generateSlotsMutation.isPending}
+            onGenerateSlots={({ date, startHour, endHour }) => {
+              const pad = (n: number) => String(n).padStart(2, "0");
+              if (activeDoctorId) {
+                clinicAppointmentsApi.addQuickDoctorSlot(activeDoctorId, {
+                  date,
+                  startTime: `${pad(startHour)}:00`,
+                  endTime: `${pad(endHour)}:00`,
+                  maxPatients: 1,
+                }).then(() => {
+                  queryClient.invalidateQueries({ queryKey: qk.clinicSelf.all() });
+                  toast.success(t("schedule.quickSuccess", { defaultValue: "Quick slot added successfully!" }));
+                });
+              } else {
+                generateSlotsMutation.mutate({
+                  startDate: date,
+                  endDate: date,
+                });
+              }
+            }}
+          />
+        </div>
       ) : (
-        <DoctorScheduleHeatmap
-          slots={slots}
-          selectedDate={selectedDate}
-          onDateSelect={(d) => setSelectedDate(d)}
-          isGenerating={generateSlotsMutation.isPending}
-          onGenerateSlots={({ date, startHour, endHour }) => {
-            const pad = (n: number) => String(n).padStart(2, "0");
-            if (selectedDoctorId) {
-              clinicAppointmentsApi.addQuickDoctorSlot(selectedDoctorId, {
-                date,
-                startTime: `${pad(startHour)}:00`,
-                endTime: `${pad(endHour)}:00`,
-                maxPatients: 1,
-              }).then(() => {
-                generateSlotsMutation.reset();
-              });
-            } else {
-              generateSlotsMutation.mutate({
-                startDate: date,
-                endDate: date,
-              });
-            }
-          }}
-        />
+        /* Slots Management Table View */
+        <GlassCard className="p-5 border border-border/40 space-y-4">
+          {/* Table Search & Filters */}
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 pb-3 border-b border-border/30">
+            <div className="relative flex-1 max-w-sm">
+              <Search className="absolute left-3 rtl:left-auto rtl:right-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
+              <input
+                type="text"
+                value={tableSearch}
+                onChange={(e) => setTableSearch(e.target.value)}
+                placeholder={t("schedule.table.searchPlaceholder", { defaultValue: "Search by time, patient or room..." })}
+                className="glass w-full rounded-xl pl-9 rtl:pl-3 rtl:pr-9 pr-3 py-2 text-xs outline-none focus:ring-2 focus:ring-primary-500/40"
+              />
+            </div>
+
+            <div className="flex flex-wrap items-center gap-2">
+              {/* Status Filter Chips */}
+              <div className="flex items-center gap-1 bg-accent/20 rounded-xl p-1 border border-border/30">
+                {(["ALL", "AVAILABLE", "BOOKED", "CANCELLED"] as const).map((st) => (
+                  <button
+                    key={st}
+                    type="button"
+                    onClick={() => setStatusFilter(st)}
+                    className={cn(
+                      "px-2.5 py-1 rounded-lg text-[11px] font-bold transition cursor-pointer",
+                      statusFilter === st
+                        ? "bg-primary-500 text-white shadow-xs"
+                        : "text-muted-foreground hover:text-foreground"
+                    )}
+                  >
+                    {t(`schedule.filters.${st.toLowerCase()}`, { defaultValue: st })}
+                  </button>
+                ))}
+              </div>
+
+              {/* Room Filter Dropdown */}
+              <select
+                value={roomFilter}
+                onChange={(e) => setRoomFilter(e.target.value)}
+                className="glass rounded-xl px-3 py-1.5 text-xs font-bold outline-none focus:ring-2 focus:ring-primary-500/40 bg-background text-foreground"
+              >
+                <option value="ALL">{t("schedule.table.allRooms", { defaultValue: "All Rooms" })}</option>
+                {rooms.map((r) => (
+                  <option key={r.id} value={r.id}>
+                    {r.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          {/* Data Table */}
+          {filteredTableSlots.length === 0 ? (
+            <EmptyState
+              title={t("schedule.table.empty", { defaultValue: "No slots match the selected criteria" })}
+              description={t("schedule.inspector.emptyDescription", {
+                defaultValue: "Pick another range or generate slots for these dates.",
+              })}
+            />
+          ) : (
+            <div className="overflow-x-auto custom-scrollbar">
+              <table className="w-full text-xs text-start">
+                <thead>
+                  <tr className="border-b border-border/30 text-muted-foreground font-extrabold uppercase text-[10px] tracking-wider">
+                    <th className="py-3 px-3 text-start">{t("schedule.table.timeColumn", { defaultValue: "Time Slot" })}</th>
+                    <th className="py-3 px-3 text-start">{t("schedule.table.dateColumn", { defaultValue: "Date" })}</th>
+                    <th className="py-3 px-3 text-start">{t("schedule.table.roomColumn", { defaultValue: "Room" })}</th>
+                    <th className="py-3 px-3 text-start">{t("schedule.table.statusColumn", { defaultValue: "Status" })}</th>
+                    <th className="py-3 px-3 text-start">{t("schedule.table.patientColumn", { defaultValue: "Booked Patient" })}</th>
+                    <th className="py-3 px-3 text-start">{t("schedule.table.capacityColumn", { defaultValue: "Capacity" })}</th>
+                    <th className="py-3 px-3 text-end">{t("schedule.table.actionsColumn", { defaultValue: "Actions" })}</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-border/20 font-medium">
+                  {filteredTableSlots.map((slot) => {
+                    const app = appointmentBySlotId.get(slot.id);
+                    const patientName = app?.patient?.name || (app?.guestPatient ? `${app.guestPatient.firstName} ${app.guestPatient.lastName}` : null);
+                    const isAvailable = String(slot.status || "").toLowerCase() === "available";
+
+                    return (
+                      <tr
+                        key={slot.id}
+                        onClick={() => setSelectedSlotForDetail(slot)}
+                        className="hover:bg-accent/30 transition cursor-pointer group"
+                      >
+                        <td className="py-3 px-3 font-mono font-bold text-foreground">
+                          <span className="flex items-center gap-1.5">
+                            <Clock className="h-3.5 w-3.5 text-primary-500" />
+                            {slot.startTime?.slice(0, 5)} – {slot.endTime?.slice(0, 5)}
+                          </span>
+                        </td>
+                        <td className="py-3 px-3 text-muted-foreground font-mono">
+                          {slot.date?.slice(0, 10)}
+                        </td>
+                        <td className="py-3 px-3">
+                          {slot.room?.name ? (
+                            <span className="inline-flex items-center gap-1 rounded-md bg-accent px-2 py-0.5 text-[11px] font-bold text-foreground">
+                              <DoorOpen className="h-3 w-3 text-primary-500" />
+                              {slot.room.name}
+                            </span>
+                          ) : (
+                            <span className="text-muted-foreground text-[11px] italic">
+                              {t("schedule.timeline.unassignedRoom", { defaultValue: "General Room" })}
+                            </span>
+                          )}
+                        </td>
+                        <td className="py-3 px-3">
+                          <StatusBadge value={slot.status || "AVAILABLE"} />
+                        </td>
+                        <td className="py-3 px-3">
+                          {patientName ? (
+                            <div className="flex items-center gap-1.5">
+                              <User className="h-3.5 w-3.5 text-primary-500" />
+                              <span className="font-bold text-foreground">{patientName}</span>
+                              {app?.patientType === "GUEST" && (
+                                <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-warning/15 text-warning font-bold">
+                                  Guest
+                                </span>
+                              )}
+                            </div>
+                          ) : (
+                            <span className="text-muted-foreground/60 text-[11px]">—</span>
+                          )}
+                        </td>
+                        <td className="py-3 px-3 font-mono text-[11px]">
+                          {slot.currentPatients ?? 0} / {slot.maxPatients ?? 1}
+                        </td>
+                        <td className="py-3 px-3 text-end" onClick={(e) => e.stopPropagation()}>
+                          {isAvailable ? (
+                            <button
+                              type="button"
+                              onClick={() => setWalkInModalOpen(true)}
+                              className="inline-flex items-center gap-1 rounded-xl bg-primary-500 px-2.5 py-1 text-[11px] font-bold text-primary-foreground hover:opacity-90 transition cursor-pointer"
+                            >
+                              <CalendarPlus className="h-3 w-3" />
+                              {t("schedule.timeline.bookPatient", { defaultValue: "Book" })}
+                            </button>
+                          ) : (
+                            <button
+                              type="button"
+                              onClick={() => setSelectedSlotForDetail(slot)}
+                              className="inline-flex items-center gap-1 rounded-xl glass border border-border/40 px-2.5 py-1 text-[11px] font-bold text-muted-foreground hover:text-foreground transition cursor-pointer"
+                            >
+                              {t("schedule.timeline.viewBooking", { defaultValue: "Inspect" })}
+                            </button>
+                          )}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </GlassCard>
       )}
 
-      {/* 5. Schedule Slot Inspector Strip */}
-      <ScheduleVisualizer
-        slots={slots}
-        selectedDate={selectedDate}
-        doctorName={selectedDoctorCard?.name || t("doctors.doctorPrefix", { defaultValue: "Doctor Prefix" })}
-        onSelectSlot={() => {}}
-      />
-
-      {/* Doctor Selector Modal */}
+      {/* 7. Doctor Selector Modal */}
       <DoctorSelectorModal
         open={doctorSelectorOpen}
         onClose={() => setDoctorSelectorOpen(false)}
@@ -364,111 +927,149 @@ export default function SchedulePage() {
         selectedDoctorId={activeDoctorId}
       />
 
-      {/* Quick Slot Modal */}
+      {/* 8. Quick Slot Modal */}
       <FormModal
         id="quick-slot-modal"
         open={quickSlotModalOpen}
         onClose={() => setQuickSlotModalOpen(false)}
-        title={t("schedule.quickSlotButton", { defaultValue: "Quick Slot Button" })}
-        description={t("schedule.quickSlotDesc", { defaultValue: "Quick Slot Desc" })}
+        title={t("schedule.quickSlotButton", { defaultValue: "Add Quick Slot" })}
+        description={t("schedule.quickSlotDesc", { defaultValue: "Add an individual customized consultation slot for this practitioner." })}
       >
         <form onSubmit={quickSlotForm.handleSubmit((d) => quickSlotMutation.mutate(d))} className="space-y-4">
           <div className="space-y-1.5">
-            <label className="text-sm font-medium">{t("filters.date", { defaultValue: "Time Period" })}*</label>
+            <label className="text-xs font-bold text-muted-foreground">{t("filters.date", { defaultValue: "Date" })}*</label>
             <input
               type="date"
               {...quickSlotForm.register("date")}
-              className="glass w-full rounded-xl px-3.5 py-2.5 text-sm outline-none focus:ring-2 focus:ring-primary-500/40"
+              className="glass w-full rounded-xl px-3.5 py-2 text-sm outline-none focus:ring-2 focus:ring-primary-500/40 font-mono"
             />
           </div>
 
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1.5">
-              <label className="text-sm font-medium">{t("schedule.startTime", { defaultValue: "Start Time" })}*</label>
+              <label className="text-xs font-bold text-muted-foreground">{t("schedule.startTime", { defaultValue: "Start Time" })}*</label>
               <input
                 type="time"
                 {...quickSlotForm.register("startTime")}
-                className="glass w-full rounded-xl px-3.5 py-2.5 text-sm outline-none focus:ring-2 focus:ring-primary-500/40"
+                className="glass w-full rounded-xl px-3.5 py-2 text-sm outline-none focus:ring-2 focus:ring-primary-500/40 font-mono"
               />
             </div>
             <div className="space-y-1.5">
-              <label className="text-sm font-medium">{t("schedule.endTime", { defaultValue: "End Time" })}*</label>
+              <label className="text-xs font-bold text-muted-foreground">{t("schedule.endTime", { defaultValue: "End Time" })}*</label>
               <input
                 type="time"
                 {...quickSlotForm.register("endTime")}
-                className="glass w-full rounded-xl px-3.5 py-2.5 text-sm outline-none focus:ring-2 focus:ring-primary-500/40"
+                className="glass w-full rounded-xl px-3.5 py-2 text-sm outline-none focus:ring-2 focus:ring-primary-500/40 font-mono"
               />
             </div>
           </div>
 
-          <div className="space-y-1.5">
-            <label className="text-sm font-medium">{t("rooms.title", { defaultValue: "Consultation Rooms & Spaces" })} ({t("common.optional", { defaultValue: "Optional" })})</label>
-            <select
-              {...quickSlotForm.register("roomId")}
-              className="glass w-full rounded-xl px-3.5 py-2.5 text-sm outline-none focus:ring-2 focus:ring-primary-500/40 bg-background text-foreground"
-            >
-              <option value="">{t("rooms.generalPurpose", { defaultValue: "General Purpose / All Specialties" })}</option>
-              {rooms.map((r) => (
-                <option key={r.id} value={r.id}>
-                  {r.name}
-                </option>
+          {/* Duration Presets */}
+          <div className="space-y-1">
+            <span className="text-[11px] font-bold text-muted-foreground">Duration Presets:</span>
+            <div className="flex flex-wrap gap-1.5">
+              {[15, 20, 30, 45, 60].map((mins) => (
+                <button
+                  key={mins}
+                  type="button"
+                  onClick={() => applyDurationPreset(mins)}
+                  className="rounded-lg bg-accent/40 hover:bg-accent px-2.5 py-1 text-[11px] font-bold text-foreground transition cursor-pointer"
+                >
+                  +{mins}m
+                </button>
               ))}
-            </select>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-3">
+            <div className="space-y-1.5">
+              <label className="text-xs font-bold text-muted-foreground">
+                {t("rooms.title", { defaultValue: "Consultation Room" })}
+              </label>
+              <select
+                {...quickSlotForm.register("roomId")}
+                className="glass w-full rounded-xl px-3.5 py-2 text-sm outline-none focus:ring-2 focus:ring-primary-500/40 bg-background text-foreground"
+              >
+                <option value="">{t("rooms.generalPurpose", { defaultValue: "General Purpose" })}</option>
+                {rooms.map((r) => (
+                  <option key={r.id} value={r.id}>
+                    {r.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="text-xs font-bold text-muted-foreground">
+                {t("schedule.timeline.slotCapacity", { defaultValue: "Max Patients" })}*
+              </label>
+              <input
+                type="number"
+                min={1}
+                max={20}
+                {...quickSlotForm.register("maxPatients")}
+                className="glass w-full rounded-xl px-3.5 py-2 text-sm outline-none focus:ring-2 focus:ring-primary-500/40 font-mono"
+              />
+            </div>
           </div>
 
           <div className="pt-4 border-t border-border/40 flex justify-end gap-2">
             <button
               type="button"
               onClick={() => setQuickSlotModalOpen(false)}
-              className="rounded-xl px-4 py-2 text-xs font-semibold text-muted-foreground hover:bg-accent cursor-pointer"
+              className="rounded-xl px-4 py-2 text-xs font-bold text-muted-foreground hover:bg-accent cursor-pointer"
             >
               {t("common.cancel", { defaultValue: "Cancel" })}
             </button>
             <button
               type="submit"
               disabled={quickSlotMutation.isPending}
-              className="inline-flex items-center gap-2 rounded-xl bg-primary-500 px-4 py-2 text-xs font-semibold text-primary-foreground hover:opacity-90 disabled:opacity-50 cursor-pointer"
+              className="inline-flex items-center gap-2 rounded-xl bg-primary-500 px-4 py-2 text-xs font-bold text-primary-foreground hover:opacity-90 disabled:opacity-50 cursor-pointer shadow-md"
             >
               {quickSlotMutation.isPending && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
-              {t("common.create", { defaultValue: "Create New" })}
+              {t("common.create", { defaultValue: "Create Slot" })}
             </button>
           </div>
         </form>
       </FormModal>
 
-      {/* Batch Generate Slots Modal */}
+      {/* 9. Batch Generate Slots Modal */}
       <FormModal
         id="batch-generate-modal"
         open={generateModalOpen}
         onClose={() => setGenerateModalOpen(false)}
         title={t("schedule.batchModalTitle", { defaultValue: "Batch Generate Doctor Slots" })}
-        description={t("schedule.batchDesc", { defaultValue: "Batch Desc" })}
+        description={t("schedule.batchDesc", {
+          defaultValue: "Generate recurring consultation slots automatically based on practitioner working hours and room availability.",
+        })}
       >
         <form onSubmit={generateForm.handleSubmit((d) => generateSlotsMutation.mutate(d))} className="space-y-4">
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1.5">
-              <label className="text-sm font-medium">{t("schedule.startDate", { defaultValue: "Start Date" })}*</label>
+              <label className="text-xs font-bold text-muted-foreground">{t("schedule.startDate", { defaultValue: "Start Date" })}*</label>
               <input
                 type="date"
                 {...generateForm.register("startDate")}
-                className="glass w-full rounded-xl px-3.5 py-2.5 text-sm outline-none focus:ring-2 focus:ring-primary-500/40"
+                className="glass w-full rounded-xl px-3.5 py-2 text-sm outline-none focus:ring-2 focus:ring-primary-500/40 font-mono"
               />
             </div>
             <div className="space-y-1.5">
-              <label className="text-sm font-medium">{t("schedule.endDate", { defaultValue: "End Date" })}*</label>
+              <label className="text-xs font-bold text-muted-foreground">{t("schedule.endDate", { defaultValue: "End Date" })}*</label>
               <input
                 type="date"
                 {...generateForm.register("endDate")}
-                className="glass w-full rounded-xl px-3.5 py-2.5 text-sm outline-none focus:ring-2 focus:ring-primary-500/40"
+                className="glass w-full rounded-xl px-3.5 py-2 text-sm outline-none focus:ring-2 focus:ring-primary-500/40 font-mono"
               />
             </div>
           </div>
 
           <div className="space-y-1.5">
-            <label className="text-sm font-medium">{t("rooms.title", { defaultValue: "Consultation Rooms & Spaces" })} ({t("common.optional", { defaultValue: "Optional" })})</label>
+            <label className="text-xs font-bold text-muted-foreground">
+              {t("rooms.title", { defaultValue: "Consultation Room" })} ({t("common.optional", { defaultValue: "Optional" })})
+            </label>
             <select
               {...generateForm.register("roomId")}
-              className="glass w-full rounded-xl px-3.5 py-2.5 text-sm outline-none focus:ring-2 focus:ring-primary-500/40 bg-background text-foreground"
+              className="glass w-full rounded-xl px-3.5 py-2 text-sm outline-none focus:ring-2 focus:ring-primary-500/40 bg-background text-foreground"
             >
               <option value="">{t("rooms.generalPurpose", { defaultValue: "General Purpose / All Specialties" })}</option>
               {rooms.map((r) => (
@@ -479,27 +1080,30 @@ export default function SchedulePage() {
             </select>
           </div>
 
-          <label className="flex items-center gap-2 cursor-pointer pt-1">
+          <label className="flex items-center gap-2.5 cursor-pointer p-2.5 rounded-xl bg-accent/20 border border-border/30">
             <input
               type="checkbox"
               {...generateForm.register("force")}
               className="rounded text-primary-500 focus:ring-primary-500 h-4 w-4"
             />
-            <span className="text-xs font-bold text-foreground">{t("schedule.overwriteSlots", { defaultValue: "Overwrite Slots" })}</span>
+            <div className="text-xs">
+              <span className="font-bold text-foreground block">{t("schedule.overwriteSlots", { defaultValue: "Overwrite Unbooked Slots" })}</span>
+              <span className="text-muted-foreground text-[10px]">Safely regenerates slots while preserving already booked appointments.</span>
+            </div>
           </label>
 
           <div className="pt-4 border-t border-border/40 flex justify-end gap-2">
             <button
               type="button"
               onClick={() => setGenerateModalOpen(false)}
-              className="rounded-xl px-4 py-2 text-xs font-semibold text-muted-foreground hover:bg-accent cursor-pointer"
+              className="rounded-xl px-4 py-2 text-xs font-bold text-muted-foreground hover:bg-accent cursor-pointer"
             >
               {t("common.cancel", { defaultValue: "Cancel" })}
             </button>
             <button
               type="submit"
               disabled={generateSlotsMutation.isPending}
-              className="inline-flex items-center gap-2 rounded-xl bg-primary-500 px-4 py-2 text-xs font-semibold text-primary-foreground hover:opacity-90 disabled:opacity-50 cursor-pointer"
+              className="inline-flex items-center gap-2 rounded-xl bg-primary-500 px-4 py-2 text-xs font-bold text-primary-foreground hover:opacity-90 disabled:opacity-50 cursor-pointer shadow-md"
             >
               {generateSlotsMutation.isPending && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
               {t("schedule.batchGenerateButton", { defaultValue: "Batch Generate Slots" })}
@@ -508,54 +1112,157 @@ export default function SchedulePage() {
         </form>
       </FormModal>
 
-      {/* Cancel Slots Date Modal */}
+      {/* 10. Cancel Slots Date Modal */}
       <FormModal
         id="cancel-date-modal"
         open={cancelModalOpen}
         onClose={() => setCancelModalOpen(false)}
-        title={t("schedule.cancelSlotsTitle", { defaultValue: "Cancel Slots Title" })}
-        description={t("schedule.cancelSlotsDesc", { defaultValue: "Cancel Slots Desc" })}
+        title={t("schedule.cancelSlotsTitle", { defaultValue: "Cancel All Slots for Date" })}
+        description={t("schedule.cancelSlotsDesc", {
+          defaultValue: "Cancel all unbooked consultation slots for the selected doctor on this date.",
+        })}
       >
         <form onSubmit={cancelDateForm.handleSubmit((d) => cancelDateMutation.mutate(d))} className="space-y-4">
           <div className="space-y-1.5">
-            <label className="text-sm font-medium">{t("filters.date", { defaultValue: "Time Period" })}*</label>
+            <label className="text-xs font-bold text-muted-foreground">{t("filters.date", { defaultValue: "Date" })}*</label>
             <input
               type="date"
               {...cancelDateForm.register("date")}
-              className="glass w-full rounded-xl px-3.5 py-2.5 text-sm outline-none focus:ring-2 focus:ring-primary-500/40"
+              className="glass w-full rounded-xl px-3.5 py-2 text-sm outline-none focus:ring-2 focus:ring-primary-500/40 font-mono"
             />
           </div>
 
           <div className="space-y-1.5">
-            <label className="text-sm font-medium">{t("schedule.cancelReason", { defaultValue: "Cancel Reason" })}</label>
+            <label className="text-xs font-bold text-muted-foreground">{t("schedule.cancelReason", { defaultValue: "Cancellation Reason" })}</label>
             <input
               type="text"
               {...cancelDateForm.register("reason")}
-              placeholder={t("schedule.reasonPlaceholder", { defaultValue: "Reason Placeholder" })}
-              className="glass w-full rounded-xl px-3.5 py-2.5 text-sm outline-none focus:ring-2 focus:ring-primary-500/40"
+              placeholder={t("schedule.reasonPlaceholder", { defaultValue: "e.g. Doctor urgent leave / Room maintenance" })}
+              className="glass w-full rounded-xl px-3.5 py-2 text-sm outline-none focus:ring-2 focus:ring-primary-500/40"
             />
+          </div>
+
+          <div className="p-3 rounded-2xl bg-rose-500/10 border border-rose-500/20 text-xs text-rose-600 dark:text-rose-400 flex items-start gap-2">
+            <AlertCircle className="h-4 w-4 shrink-0 mt-0.5" />
+            <span>Unbooked slots for this date will be marked cancelled. Existing confirmed appointments must be managed separately.</span>
           </div>
 
           <div className="pt-4 border-t border-border/40 flex justify-end gap-2">
             <button
               type="button"
               onClick={() => setCancelModalOpen(false)}
-              className="rounded-xl px-4 py-2 text-xs font-semibold text-muted-foreground hover:bg-accent cursor-pointer"
+              className="rounded-xl px-4 py-2 text-xs font-bold text-muted-foreground hover:bg-accent cursor-pointer"
             >
               {t("common.cancel", { defaultValue: "Cancel" })}
             </button>
             <button
               type="submit"
               disabled={cancelDateMutation.isPending}
-              className="inline-flex items-center gap-2 rounded-xl bg-danger px-4 py-2 text-xs font-semibold text-white hover:opacity-90 disabled:opacity-50 cursor-pointer"
+              className="inline-flex items-center gap-2 rounded-xl bg-rose-500 px-4 py-2 text-xs font-bold text-white hover:opacity-90 disabled:opacity-50 cursor-pointer shadow-md"
             >
               {cancelDateMutation.isPending && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
-              {t("schedule.cancelSlot", { defaultValue: "Cancel Slot" })}
+              {t("schedule.cancelSlot", { defaultValue: "Confirm Date Cancellation" })}
             </button>
           </div>
         </form>
       </FormModal>
+
+      {/* 11. Slot Detail Inspector Modal */}
+      {selectedSlotForDetail && (
+        <FormModal
+          id="slot-detail-modal"
+          open={!!selectedSlotForDetail}
+          onClose={() => setSelectedSlotForDetail(null)}
+          title={`${t("schedule.timeline.title", { defaultValue: "Consultation Slot" })}: ${selectedSlotForDetail.startTime?.slice(0, 5)}–${selectedSlotForDetail.endTime?.slice(0, 5)}`}
+          description={`${selectedSlotForDetail.date?.slice(0, 10)} · ${selectedDoctorCard?.name || "Doctor"}`}
+        >
+          <div className="space-y-4">
+            <div className="grid grid-cols-2 gap-3 p-3.5 rounded-2xl bg-accent/20 border border-border/40 text-xs">
+              <div>
+                <span className="text-muted-foreground text-[11px] font-bold block">{t("schedule.table.statusColumn", { defaultValue: "Status" })}:</span>
+                <StatusBadge value={selectedSlotForDetail.status || "AVAILABLE"} />
+              </div>
+              <div>
+                <span className="text-muted-foreground text-[11px] font-bold block">{t("schedule.table.roomColumn", { defaultValue: "Room" })}:</span>
+                <span className="font-bold text-foreground">
+                  {selectedSlotForDetail.room?.name || t("schedule.timeline.unassignedRoom", { defaultValue: "General Purpose" })}
+                </span>
+              </div>
+              <div>
+                <span className="text-muted-foreground text-[11px] font-bold block">{t("schedule.table.capacityColumn", { defaultValue: "Capacity" })}:</span>
+                <span className="font-mono font-bold text-foreground">
+                  {selectedSlotForDetail.currentPatients ?? 0} / {selectedSlotForDetail.maxPatients ?? 1}
+                </span>
+              </div>
+              <div>
+                <span className="text-muted-foreground text-[11px] font-bold block">{t("schedule.table.dateColumn", { defaultValue: "Date" })}:</span>
+                <span className="font-mono font-bold text-foreground">{selectedSlotForDetail.date?.slice(0, 10)}</span>
+              </div>
+            </div>
+
+            {/* Booked Appointment Info if any */}
+            {appointmentBySlotId.has(selectedSlotForDetail.id) && (
+              <div className="p-3.5 rounded-2xl border border-border/40 bg-muted/20 space-y-2">
+                <span className="text-xs font-bold text-foreground flex items-center gap-1.5">
+                  <User className="h-4 w-4 text-primary-500" />
+                  {t("schedule.table.patientColumn", { defaultValue: "Booked Patient Details" })}
+                </span>
+                {(() => {
+                  const app = appointmentBySlotId.get(selectedSlotForDetail.id)!;
+                  const name = app.patient?.name || (app.guestPatient ? `${app.guestPatient.firstName} ${app.guestPatient.lastName}` : "Patient");
+                  const phone = app.patient?.phone || app.guestPatient?.phone;
+                  return (
+                    <div className="text-xs space-y-1">
+                      <div className="font-bold text-foreground">{name}</div>
+                      {phone && <div className="text-muted-foreground font-mono">{phone}</div>}
+                      <div className="flex items-center gap-2 pt-1">
+                        <StatusBadge value={app.status} />
+                        <span className="text-[10px] px-2 py-0.5 rounded-full bg-accent text-foreground font-bold">
+                          {app.patientType || "PATIENT"}
+                        </span>
+                      </div>
+                    </div>
+                  );
+                })()}
+              </div>
+            )}
+
+            <div className="pt-4 border-t border-border/40 flex justify-end gap-2">
+              <button
+                type="button"
+                onClick={() => setSelectedSlotForDetail(null)}
+                className="rounded-xl px-4 py-2 text-xs font-bold text-muted-foreground hover:bg-accent cursor-pointer"
+              >
+                {t("common.close", { defaultValue: "Close" })}
+              </button>
+              {String(selectedSlotForDetail.status || "").toLowerCase() === "available" && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSelectedSlotForDetail(null);
+                    setWalkInModalOpen(true);
+                  }}
+                  className="inline-flex items-center gap-1.5 rounded-xl bg-primary-500 px-4 py-2 text-xs font-bold text-white hover:opacity-90 transition cursor-pointer shadow-md"
+                >
+                  <CalendarPlus className="h-3.5 w-3.5" />
+                  {t("schedule.timeline.bookPatient", { defaultValue: "Book Walk-In" })}
+                </button>
+              )}
+            </div>
+          </div>
+        </FormModal>
+      )}
+
+      {/* 12. WalkInBookingModal Integration */}
+      {walkInModalOpen && (
+        <WalkInBookingModal
+          open={walkInModalOpen}
+          onClose={() => {
+            setWalkInModalOpen(false);
+            queryClient.invalidateQueries({ queryKey: qk.clinicSelf.all() });
+          }}
+        />
+      )}
     </div>
   );
 }
-
