@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ASSET_FALLBACKS } from '@/lib/assetFallbacks';
-import { resolveFileUrl } from '@/lib/utils';
+import { getCachedBlobUrl, loadBlobImage } from '@/lib/blobImageCache';
 
 interface RemoteImageProps extends Omit<React.ImgHTMLAttributes<HTMLImageElement>, 'src'> {
   src?: string | null;
@@ -16,22 +16,52 @@ export function RemoteImage({
   className,
   ...props
 }: RemoteImageProps) {
+  const cached = getCachedBlobUrl(src);
+  const [displaySrc, setDisplaySrc] = useState<string>(cached || fallback);
   const [errored, setErrored] = useState(false);
 
   useEffect(() => {
-    setErrored(false);
-  }, [src]);
+    let active = true;
 
-  const resolved = src ? resolveFileUrl(src) : null;
-  const displaySrc = errored || !resolved ? fallback : resolved;
+    if (!src) {
+      setDisplaySrc(fallback);
+      return;
+    }
+
+    const initial = getCachedBlobUrl(src);
+    if (initial) {
+      setDisplaySrc(initial);
+      return;
+    }
+
+    // Set fallback while loading remote blob
+    setDisplaySrc(fallback);
+    setErrored(false);
+
+    loadBlobImage(src).then((blobUrl) => {
+      if (!active) return;
+      if (blobUrl) {
+        setDisplaySrc(blobUrl);
+        setErrored(false);
+      } else {
+        setDisplaySrc(fallback);
+        setErrored(true);
+      }
+    });
+
+    return () => {
+      active = false;
+    };
+  }, [src, fallback]);
 
   return (
     <img
-      src={displaySrc ?? undefined}
+      src={displaySrc}
       referrerPolicy="no-referrer"
       onError={() => {
         if (!errored) {
           setErrored(true);
+          setDisplaySrc(fallback);
         }
       }}
       alt={alt}
