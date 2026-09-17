@@ -25,6 +25,39 @@
     "batchSuccess": "Slots successfully generated!",
     "quickSuccess": "Quick slot added successfully!",
     "cancelSuccess": "Date slots cancelled successfully!",
+    "tabs": {
+      "board": "All Doctors Board",
+      "template": "Weekly Template",
+      "generate": "Generate Slots",
+      "mySlots": "My Slots"
+    },
+    "board": {
+      "title": "Clinic Doctor Roster Board",
+      "subtitle": "Overview of every practitioner's schedule with real-time room conflict detection",
+      "roomConflicts": "room double-booking conflict(s) on this date",
+      "showAll": "Show all doctors",
+      "filterConflicted": "Show only conflicted",
+      "searchDoctor": "Find a doctor…",
+      "noMatch": "No doctors match this filter."
+    },
+    "template": {
+      "readOnlyTitle": "Practitioner Weekly Working Pattern (Read-Only)",
+      "readOnlyDesc": "This weekly availability template is set by {{name}}. To modify recurring consultation hours, the doctor updates it in their own Doctor Portal.",
+      "summaryHours": "{{hours}} hours per week scheduled"
+    },
+    "mySlots": {
+      "title": "Bookable Slots Overview",
+      "singleDay": "Single Day",
+      "range": "Date Range",
+      "empty": "No slots generated for this period",
+      "emptyDesc": "Generate bookable slots for this doctor using the template generator.",
+      "generateNow": "Generate Slots Now",
+      "totalSlots": "total slots",
+      "cancelDate": "Cancel Date Slots",
+      "morning": "Morning",
+      "afternoon": "Afternoon",
+      "evening": "Evening"
+    },
     "views": {
       "timeline": "Day Timeline",
       "weeklyMatrix": "Weekly Grid",

@@ -25,6 +25,39 @@
     "batchSuccess": "Créneaux générés avec succès !",
     "quickSuccess": "Créneau rapide ajouté avec succès !",
     "cancelSuccess": "Créneaux de la date annulés avec succès !",
+    "tabs": {
+      "board": "Tableau de Tous les Médecins",
+      "template": "Modèle Hebdomadaire",
+      "generate": "Générer des Créneaux",
+      "mySlots": "Mes Créneaux"
+    },
+    "board": {
+      "title": "Tableau des Médecins de la Clinique",
+      "subtitle": "Aperçu des plannings avec détection en temps réel des conflits de salles",
+      "roomConflicts": "conflit(s) de réservation simultanée de salle à cette date",
+      "showAll": "Afficher tous les médecins",
+      "filterConflicted": "Afficher uniquement les conflits",
+      "searchDoctor": "Rechercher un médecin…",
+      "noMatch": "Aucun médecin ne correspond à ce filtre."
+    },
+    "template": {
+      "readOnlyTitle": "Modèle de Travail Hebdomadaire (Lecture seule)",
+      "readOnlyDesc": "Ce modèle d'horaires récurrents est défini par {{name}}. Pour modifier ces heures, le médecin les met à jour dans son propre Espace Médecin.",
+      "summaryHours": "{{hours}} heures de travail prévues par semaine"
+    },
+    "mySlots": {
+      "title": "Aperçu des Créneaux Réservables",
+      "singleDay": "Jour Unique",
+      "range": "Plage de Dates",
+      "empty": "Aucun créneau généré pour cette période",
+      "emptyDesc": "Générez des créneaux pour ce médecin à l'aide du générateur d'horaires.",
+      "generateNow": "Générer les Créneaux Maintenant",
+      "totalSlots": "créneaux au total",
+      "cancelDate": "Annuler les Créneaux du Jour",
+      "morning": "Matin",
+      "afternoon": "Après-midi",
+      "evening": "Soir"
+    },
     "views": {
       "timeline": "Chronologie du Jour",
       "weeklyMatrix": "Grille Hebdomadaire",
