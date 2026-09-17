@@ -12,11 +12,9 @@ import {
   Stethoscope,
   DoorOpen,
   Loader2,
-  Calendar as CalendarIcon,
   CalendarRange,
   CalendarPlus,
   Filter,
-  RotateCcw,
   CheckCircle2,
   AlertCircle,
   AlertTriangle,
@@ -30,10 +28,7 @@ import {
   CalendarDays,
   Table as TableIcon,
   Search,
-  Check,
-  Building,
   RefreshCw,
-  Sliders,
   Grid,
 } from "lucide-react";
 import { format, addDays, subDays, startOfWeek } from "date-fns";
@@ -303,7 +298,7 @@ export default function SchedulePage() {
   // Week Days strip for quick day selection
   const weekDays = useMemo(() => {
     const base = selectedDate ? new Date(selectedDate) : new Date();
-    const start = startOfWeek(base, { weekStartsOn: 0 }); // Sunday
+    const start = startOfWeek(base, { weekStartsOn: 0 });
     return Array.from({ length: 7 }).map((_, i) => {
       const d = addDays(start, i);
       const dStr = format(d, "yyyy-MM-dd");
@@ -371,19 +366,29 @@ export default function SchedulePage() {
   const selectedGenRoomId = generateForm.watch("roomId");
   const selectedGenRoom = rooms.find((r) => r.id === selectedGenRoomId);
 
+  // Tab config with counts
+  const tabConfig = [
+    { id: "board" as MainTab, label: t("schedule.tabs.board", { defaultValue: "All Doctors Board" }), icon: Grid, count: doctorCardItems.length },
+    { id: "template" as MainTab, label: t("schedule.tabs.template", { defaultValue: "Weekly Template" }), icon: Clock },
+    { id: "generate" as MainTab, label: t("schedule.tabs.generate", { defaultValue: "Generate Slots" }), icon: Zap },
+    { id: "myslots" as MainTab, label: t("schedule.tabs.mySlots", { defaultValue: "My Slots" }), icon: CalendarDays, count: stats.available },
+  ];
+
   return (
-    <div className="space-y-6">
-      {/* 1. Master Header */}
+    <div className="space-y-6 pb-24 md:pb-8">
+      {/* 1. Page Header */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
             <h1 className="text-2xl font-black tracking-tight text-foreground">
               {t("schedule.title", { defaultValue: "Doctor Schedules & Slots" })}
             </h1>
-            <span className="inline-flex items-center gap-1 rounded-full bg-primary-500/10 px-2.5 py-0.5 text-xs font-bold text-primary-500">
-              <Sparkles className="h-3 w-3" />
-              {stats.occupancyRate}% {t("schedule.occupancyRate", { defaultValue: "Occupancy" })}
-            </span>
+            {activeTab !== "board" && stats.total > 0 && (
+              <span className="inline-flex items-center gap-1 rounded-full bg-primary-500/10 px-2.5 py-0.5 text-xs font-bold text-primary-500">
+                <Sparkles className="h-3 w-3" />
+                {stats.occupancyRate}% {t("schedule.occupancyRate", { defaultValue: "Occupancy" })}
+              </span>
+            )}
           </div>
           <p className="text-xs text-muted-foreground mt-1">
             {t("schedule.subtitle", {
@@ -392,61 +397,54 @@ export default function SchedulePage() {
           </p>
         </div>
 
-        {/* Top Control Action Buttons */}
-        <div className="flex flex-wrap items-center gap-2">
-          <button
-            type="button"
-            onClick={() => {
-              quickSlotForm.setValue("date", selectedDate);
-              setQuickSlotModalOpen(true);
-            }}
-            className="inline-flex items-center gap-1.5 rounded-xl bg-primary-500 px-4 py-2.5 text-xs font-bold text-primary-foreground shadow-md hover:bg-primary-600 transition cursor-pointer"
-          >
-            <Zap className="h-3.5 w-3.5" />
-            {t("schedule.quickSlotButton", { defaultValue: "Quick Slot" })}
-          </button>
-
-          <button
-            type="button"
-            onClick={() => {
-              generateForm.setValue("startDate", selectedDate);
-              generateForm.setValue("endDate", format(addDays(new Date(selectedDate), 6), "yyyy-MM-dd"));
-              setGenerateModalOpen(true);
-            }}
-            className="inline-flex items-center gap-1.5 rounded-xl glass border border-border/60 px-4 py-2.5 text-xs font-bold text-foreground hover:bg-accent transition cursor-pointer"
-          >
-            <CalendarRange className="h-3.5 w-3.5 text-primary-500" />
-            {t("schedule.batchGenerateButton", { defaultValue: "Batch Generate Slots" })}
-          </button>
-
-          <button
-            type="button"
-            onClick={() => {
-              cancelDateForm.setValue("date", selectedDate);
-              setCancelModalOpen(true);
-            }}
-            className="inline-flex items-center gap-1.5 rounded-xl glass border border-rose-500/30 px-3.5 py-2.5 text-xs font-bold text-rose-500 hover:bg-rose-500/10 transition cursor-pointer"
-            title={t("schedule.cancelSlot", { defaultValue: "Cancel Day Slots" })}
-          >
-            <Ban className="h-3.5 w-3.5" />
-            <span className="hidden sm:inline">{t("schedule.cancelSlot", { defaultValue: "Cancel Day" })}</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => {
-              refetchSlots();
-              toast.success("Schedule refreshed");
-            }}
-            className="inline-flex items-center gap-1 rounded-xl glass border border-border/40 p-2.5 text-xs font-bold text-muted-foreground hover:text-foreground transition cursor-pointer"
-            title="Refresh Schedule"
-          >
-            <RefreshCw className="h-3.5 w-3.5" />
-          </button>
-        </div>
+        {/* Refresh button */}
+        <button
+          type="button"
+          onClick={() => {
+            refetchSlots();
+            queryClient.invalidateQueries({ queryKey: qk.clinicSelf.all() });
+            toast.success("Schedule refreshed");
+          }}
+          className="inline-flex items-center gap-1.5 rounded-2xl glass border border-border/40 px-3.5 py-2 text-xs font-bold text-muted-foreground hover:text-foreground transition cursor-pointer self-start"
+        >
+          <RefreshCw className="h-3.5 w-3.5" /> {t("schedule.refresh", { defaultValue: "Refresh Schedule" })}
+        </button>
       </div>
 
-      {/* 2. Practitioner Hero Card (Shown on single-doctor tabs: template, generate, myslots) */}
+      {/* 2. Master 4-Tab Navigation Bar — GlassCard-wrapped pill grid (matches doctor portal) */}
+      <GlassCard className="p-2 border border-border/40 shadow-sm">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-1">
+          {tabConfig.map((tab) => {
+            const Icon = tab.icon;
+            return (
+              <button
+                key={tab.id}
+                type="button"
+                onClick={() => setActiveTab(tab.id)}
+                className={cn(
+                  "flex items-center justify-center gap-2 rounded-xl py-2.5 px-3 text-xs font-bold transition cursor-pointer",
+                  activeTab === tab.id
+                    ? "bg-primary-500 text-primary-foreground shadow-md"
+                    : "text-muted-foreground hover:bg-muted/40 hover:text-foreground",
+                )}
+              >
+                <Icon className="h-4 w-4" />
+                <span>{tab.label}</span>
+                {typeof tab.count === "number" && tab.count > 0 && (
+                  <span className={cn(
+                    "rounded-full px-1.5 py-0.5 text-[9px] font-extrabold min-w-[18px] text-center",
+                    activeTab === tab.id ? "bg-white/20 text-white" : "bg-foreground/10 text-foreground/60"
+                  )}>
+                    {tab.count}
+                  </span>
+                )}
+              </button>
+            );
+          })}
+        </div>
+      </GlassCard>
+
+      {/* 3. Practitioner Hero Card (Shown on single-doctor tabs: template, generate, myslots) */}
       {activeTab !== "board" && (
         <GlassCard className="p-4 sm:p-5 border border-border/40 space-y-4">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -514,65 +512,6 @@ export default function SchedulePage() {
         </GlassCard>
       )}
 
-      {/* 3. Master 4-Tab Navigation Bar */}
-      <div className="flex flex-wrap items-center gap-2 border-b border-border/40 pb-2">
-        <button
-          type="button"
-          onClick={() => setActiveTab("board")}
-          className={cn(
-            "inline-flex items-center gap-2 rounded-2xl px-4 py-2.5 text-xs font-bold transition cursor-pointer",
-            activeTab === "board"
-              ? "bg-primary-500 text-white shadow-md shadow-primary-500/25"
-              : "glass border border-border/40 text-muted-foreground hover:text-foreground hover:bg-accent/40"
-          )}
-        >
-          <Grid className="h-4 w-4" />
-          <span>{t("schedule.tabs.board", { defaultValue: "All Doctors Board" })}</span>
-        </button>
-
-        <button
-          type="button"
-          onClick={() => setActiveTab("template")}
-          className={cn(
-            "inline-flex items-center gap-2 rounded-2xl px-4 py-2.5 text-xs font-bold transition cursor-pointer",
-            activeTab === "template"
-              ? "bg-primary-500 text-white shadow-md shadow-primary-500/25"
-              : "glass border border-border/40 text-muted-foreground hover:text-foreground hover:bg-accent/40"
-          )}
-        >
-          <Clock className="h-4 w-4" />
-          <span>{t("schedule.tabs.template", { defaultValue: "Weekly Template" })}</span>
-        </button>
-
-        <button
-          type="button"
-          onClick={() => setActiveTab("generate")}
-          className={cn(
-            "inline-flex items-center gap-2 rounded-2xl px-4 py-2.5 text-xs font-bold transition cursor-pointer",
-            activeTab === "generate"
-              ? "bg-primary-500 text-white shadow-md shadow-primary-500/25"
-              : "glass border border-border/40 text-muted-foreground hover:text-foreground hover:bg-accent/40"
-          )}
-        >
-          <Zap className="h-4 w-4" />
-          <span>{t("schedule.tabs.generate", { defaultValue: "Generate Slots" })}</span>
-        </button>
-
-        <button
-          type="button"
-          onClick={() => setActiveTab("myslots")}
-          className={cn(
-            "inline-flex items-center gap-2 rounded-2xl px-4 py-2.5 text-xs font-bold transition cursor-pointer",
-            activeTab === "myslots"
-              ? "bg-primary-500 text-white shadow-md shadow-primary-500/25"
-              : "glass border border-border/40 text-muted-foreground hover:text-foreground hover:bg-accent/40"
-          )}
-        >
-          <CalendarDays className="h-4 w-4" />
-          <span>{t("schedule.tabs.mySlots", { defaultValue: "My Slots" })}</span>
-        </button>
-      </div>
-
       {/* 4. Tab 1: All Doctors Board */}
       {activeTab === "board" && (
         <div className="space-y-4">
@@ -620,6 +559,55 @@ export default function SchedulePage() {
       {/* 6. Tab 3: Generate Slots & Workspace */}
       {activeTab === "generate" && (
         <div className="space-y-6">
+          {/* Action Buttons — contextual to this tab */}
+          <div className="flex flex-wrap items-center gap-2">
+            <button
+              type="button"
+              onClick={() => {
+                quickSlotForm.setValue("date", selectedDate);
+                setQuickSlotModalOpen(true);
+              }}
+              className="inline-flex items-center gap-1.5 rounded-xl bg-primary-500 px-4 py-2.5 text-xs font-bold text-primary-foreground shadow-md hover:bg-primary-600 transition cursor-pointer"
+            >
+              <Zap className="h-3.5 w-3.5" />
+              {t("schedule.quickSlotButton", { defaultValue: "Quick Slot" })}
+            </button>
+
+            <button
+              type="button"
+              onClick={() => {
+                generateForm.setValue("startDate", selectedDate);
+                generateForm.setValue("endDate", format(addDays(new Date(selectedDate), 6), "yyyy-MM-dd"));
+                setGenerateModalOpen(true);
+              }}
+              className="inline-flex items-center gap-1.5 rounded-xl glass border border-border/60 px-4 py-2.5 text-xs font-bold text-foreground hover:bg-accent transition cursor-pointer"
+            >
+              <CalendarRange className="h-3.5 w-3.5 text-primary-500" />
+              {t("schedule.batchGenerateButton", { defaultValue: "Batch Generate Slots" })}
+            </button>
+
+            <button
+              type="button"
+              onClick={() => {
+                cancelDateForm.setValue("date", selectedDate);
+                setCancelModalOpen(true);
+              }}
+              className="inline-flex items-center gap-1.5 rounded-xl glass border border-rose-500/30 px-3.5 py-2.5 text-xs font-bold text-rose-500 hover:bg-rose-500/10 transition cursor-pointer"
+              title={t("schedule.cancelSlot", { defaultValue: "Cancel Day Slots" })}
+            >
+              <Ban className="h-3.5 w-3.5" />
+              <span className="hidden sm:inline">{t("schedule.cancelSlot", { defaultValue: "Cancel Day" })}</span>
+            </button>
+          </div>
+
+          {/* Week Timeline Visualizer — ported from doctor portal */}
+          <GlassCard className="p-5 border border-border/40">
+            <ScheduleVisualizer
+              doctorId={activeDoctorId}
+              onSelectSlot={(slot) => setSelectedSlotForDetail(slot)}
+            />
+          </GlassCard>
+
           {/* Date Navigation Strip */}
           <GlassCard className="p-4 border border-border/40 flex flex-col md:flex-row md:items-center justify-between gap-3">
             <div className="flex flex-wrap items-center gap-1.5">
@@ -841,19 +829,19 @@ export default function SchedulePage() {
                 onDateSelect={(d) => setSelectedDate(d)}
                 isGenerating={generateSlotsMutation.isPending}
                 onQuickAddSlot={({ date, hour }) => {
-                  const pad = (n: number) => String(n).padStart(2, "0");
+                  const padN = (n: number) => String(n).padStart(2, "0");
                   quickSlotForm.setValue("date", date);
-                  quickSlotForm.setValue("startTime", `${pad(hour)}:00`);
-                  quickSlotForm.setValue("endTime", `${pad(hour)}:30`);
+                  quickSlotForm.setValue("startTime", `${padN(hour)}:00`);
+                  quickSlotForm.setValue("endTime", `${padN(hour)}:30`);
                   setQuickSlotModalOpen(true);
                 }}
                 onGenerateSlots={({ date, startHour, endHour }) => {
-                  const pad = (n: number) => String(n).padStart(2, "0");
+                  const padN = (n: number) => String(n).padStart(2, "0");
                   if (activeDoctorId) {
                     clinicAppointmentsApi.addQuickDoctorSlot(activeDoctorId, {
                       date,
-                      startTime: `${pad(startHour)}:00`,
-                      endTime: `${pad(endHour)}:00`,
+                      startTime: `${padN(startHour)}:00`,
+                      endTime: `${padN(endHour)}:00`,
                       maxPatients: 1,
                     }).then(() => {
                       queryClient.invalidateQueries({ queryKey: qk.clinicSelf.all() });
@@ -1165,6 +1153,19 @@ export default function SchedulePage() {
         })}
       >
         <form onSubmit={generateForm.handleSubmit((d) => generateSlotsMutation.mutate(d))} className="space-y-4">
+          {/* Doctor info header */}
+          {selectedDoctorCard && (
+            <div className="flex items-center gap-3 p-3 rounded-2xl bg-accent/20 border border-border/40">
+              <div className="h-8 w-8 rounded-xl overflow-hidden border-2" style={{ borderColor: activeDoctorColor.hex }}>
+                <RemoteImage src={selectedDoctorCard.photoUrl} alt={selectedDoctorCard.name} className="h-full w-full object-cover" />
+              </div>
+              <div>
+                <div className="text-xs font-bold text-foreground">{selectedDoctorCard.name}</div>
+                <div className="text-[10px] text-muted-foreground">{selectedDoctorCard.specialty}</div>
+              </div>
+            </div>
+          )}
+
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1.5">
               <label className="text-xs font-bold text-muted-foreground">{t("schedule.startDate", { defaultValue: "Start Date" })}*</label>

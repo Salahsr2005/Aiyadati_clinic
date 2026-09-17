@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useQueries } from "@/lib/queryClient";
-import { CalendarDays, CalendarRange, Clock, Sun, Sunset, Moon, Zap, Filter, Ban } from "lucide-react";
+import { CalendarDays, CalendarRange, Clock, Sun, Sunset, Moon, Zap, Filter, Ban, DoorOpen, Users, Sparkles } from "lucide-react";
 import { format, addDays } from "date-fns";
 import { GlassCard } from "@/components/glass/GlassCard";
 import { StatusBadge } from "@/components/data/StatusBadge";
@@ -25,6 +25,7 @@ interface OptimalSlotsTabProps {
 export function OptimalSlotsTab({ doctorId, onGoToGenerate, onCancelDate }: OptimalSlotsTabProps) {
   const { t, i18n } = useTranslation();
   const color = getDoctorColor(doctorId);
+  const isRtl = i18n.language.startsWith("ar");
 
   const [dateMode, setDateMode] = useState<"single" | "range">("range");
   const [singleDate, setSingleDate] = useState(todayISO());
@@ -60,7 +61,12 @@ export function OptimalSlotsTab({ doctorId, onGoToGenerate, onCancelDate }: Opti
     targetDates.forEach((date, i) => {
       let items = (slotsQueries[i]?.data as DoctorSlot[]) ?? [];
       if (statusFilter !== "all") {
-        items = items.filter((s) => String(s.status || "").toLowerCase() === statusFilter);
+        items = items.filter((s) => {
+          const st = String(s.status || "").toLowerCase();
+          if (statusFilter === "full") return st === "full" || st === "booked" || s.isBooked;
+          if (statusFilter === "cancelled") return st === "cancelled" || s.isCancelled;
+          return st === statusFilter;
+        });
       }
       if (items.length > 0) map[date] = items;
     });
@@ -82,19 +88,24 @@ export function OptimalSlotsTab({ doctorId, onGoToGenerate, onCancelDate }: Opti
     return { totalCount: tot, availableCount: avail, bookedCount: book, cancelledCount: canc };
   }, [targetDates, slotsQueries]);
 
+  const occupancyRate = totalCount > 0 ? Math.round((bookedCount / totalCount) * 100) : 0;
   const sortedDates = useMemo(() => Object.keys(slotsByDate).sort(), [slotsByDate]);
 
   return (
     <div className="space-y-6">
-      <GlassCard className="p-5 border border-border/40 space-y-4">
+      {/* KPI Metrics Header */}
+      <GlassCard className="p-5 border border-border/40 shadow-xl space-y-4">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <div className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl" style={{ backgroundColor: `${color.hex}1f`, color: color.hex }}>
               <CalendarDays className="h-5 w-5" />
             </div>
             <div>
-              <h2 className="text-base font-bold text-foreground">
+              <h2 className="text-base font-bold text-foreground flex items-center gap-2">
                 {t("schedule.mySlots.title", { defaultValue: "Bookable Slots Overview" })}
+                <span className="inline-flex items-center gap-1 rounded-full bg-primary-500/10 px-2 py-0.5 text-[10px] font-bold text-primary-500">
+                  <Sparkles className="h-2.5 w-2.5" />{occupancyRate}%
+                </span>
               </h2>
               <p className="text-xs text-muted-foreground">
                 {dateMode === "single" ? singleDate : `${dateRange.startDate} → ${dateRange.endDate}`}
@@ -118,20 +129,21 @@ export function OptimalSlotsTab({ doctorId, onGoToGenerate, onCancelDate }: Opti
         </div>
       </GlassCard>
 
+      {/* Filter & Date Selection Bar */}
       <GlassCard className="p-4 border border-border/40 flex flex-wrap items-center justify-between gap-3">
         <div className="flex flex-wrap items-center gap-2">
           <div className="glass flex items-center gap-1 rounded-xl p-1 border border-border/40">
             <button
               type="button"
               onClick={() => setDateMode("single")}
-              className={cn("rounded-lg px-3 py-1.5 text-xs font-bold transition cursor-pointer", dateMode === "single" ? "bg-primary-500 text-white" : "text-muted-foreground")}
+              className={cn("rounded-lg px-3 py-1.5 text-xs font-bold transition cursor-pointer", dateMode === "single" ? "bg-primary-500 text-white shadow-xs" : "text-muted-foreground hover:text-foreground")}
             >
               {t("schedule.mySlots.singleDay", { defaultValue: "Single Day" })}
             </button>
             <button
               type="button"
               onClick={() => setDateMode("range")}
-              className={cn("rounded-lg px-3 py-1.5 text-xs font-bold transition cursor-pointer", dateMode === "range" ? "bg-primary-500 text-white" : "text-muted-foreground")}
+              className={cn("rounded-lg px-3 py-1.5 text-xs font-bold transition cursor-pointer", dateMode === "range" ? "bg-primary-500 text-white shadow-xs" : "text-muted-foreground hover:text-foreground")}
             >
               {t("schedule.mySlots.range", { defaultValue: "Date Range" })}
             </button>
@@ -154,7 +166,7 @@ export function OptimalSlotsTab({ doctorId, onGoToGenerate, onCancelDate }: Opti
               key={f}
               type="button"
               onClick={() => setStatusFilter(f)}
-              className={cn("rounded-xl px-3 py-1.5 text-xs font-bold transition cursor-pointer", statusFilter === f ? "bg-foreground text-background" : "glass text-muted-foreground")}
+              className={cn("rounded-xl px-3 py-1.5 text-xs font-bold transition cursor-pointer", statusFilter === f ? "bg-foreground text-background shadow-xs" : "glass text-muted-foreground hover:text-foreground")}
             >
               {t(`schedule.filters.${f}`, { defaultValue: f })}
             </button>
@@ -162,6 +174,7 @@ export function OptimalSlotsTab({ doctorId, onGoToGenerate, onCancelDate }: Opti
         </div>
       </GlassCard>
 
+      {/* Slot Cards by Date */}
       {isLoading ? (
         <div className="space-y-4">{Array.from({ length: 3 }).map((_, i) => <GlassCard key={i} className="p-5 h-40 animate-pulse rounded-2xl" />)}</div>
       ) : sortedDates.length === 0 ? (
@@ -199,7 +212,11 @@ export function OptimalSlotsTab({ doctorId, onGoToGenerate, onCancelDate }: Opti
                     </div>
                     <div>
                       <h3 className="text-sm font-bold text-foreground capitalize">{formattedDate}</h3>
-                      <p className="text-[11px] text-muted-foreground">{dateSlots.length} {t("schedule.mySlots.totalSlots", { defaultValue: "total slots" })}</p>
+                      <p className="text-[11px] text-muted-foreground">
+                        {dateSlots.length} {t("schedule.mySlots.totalSlots", { defaultValue: "total slots" })}
+                        {' · '}
+                        <span className="text-emerald-500 font-bold">{dateSlots.filter(s => String(s.status || '').toLowerCase() === 'available').length}</span> {isRtl ? 'متاح' : 'avail'}
+                      </p>
                     </div>
                   </div>
                   <button
@@ -211,9 +228,9 @@ export function OptimalSlotsTab({ doctorId, onGoToGenerate, onCancelDate }: Opti
                   </button>
                 </div>
                 <div className="space-y-4">
-                  {morning.length > 0 && <SlotGroup title={t("schedule.mySlots.morning", { defaultValue: "Morning" })} icon={<Sun className="h-4 w-4 text-amber-500" />} slots={morning} />}
-                  {afternoon.length > 0 && <SlotGroup title={t("schedule.mySlots.afternoon", { defaultValue: "Afternoon" })} icon={<Sunset className="h-4 w-4 text-orange-500" />} slots={afternoon} />}
-                  {evening.length > 0 && <SlotGroup title={t("schedule.mySlots.evening", { defaultValue: "Evening" })} icon={<Moon className="h-4 w-4 text-indigo-500" />} slots={evening} />}
+                  {morning.length > 0 && <SlotGroup title={t("schedule.mySlots.morning", { defaultValue: "Morning" })} icon={<Sun className="h-4 w-4 text-amber-500" />} slots={morning} color={color} />}
+                  {afternoon.length > 0 && <SlotGroup title={t("schedule.mySlots.afternoon", { defaultValue: "Afternoon" })} icon={<Sunset className="h-4 w-4 text-orange-500" />} slots={afternoon} color={color} />}
+                  {evening.length > 0 && <SlotGroup title={t("schedule.mySlots.evening", { defaultValue: "Evening" })} icon={<Moon className="h-4 w-4 text-indigo-500" />} slots={evening} color={color} />}
                 </div>
               </GlassCard>
             );
@@ -225,7 +242,7 @@ export function OptimalSlotsTab({ doctorId, onGoToGenerate, onCancelDate }: Opti
 }
 
 function Stat({ label, value, tone }: { label: string; value: number; tone?: "success" | "primary" | "danger" }) {
-  const toneClass = tone === "success" ? "bg-success/10 border-success/20 text-success" : tone === "primary" ? "bg-primary-500/10 border-primary-500/20 text-primary-500" : tone === "danger" ? "bg-danger/10 border-danger/20 text-danger" : "bg-card/60 border-border/40 text-foreground";
+  const toneClass = tone === "success" ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-600 dark:text-emerald-400" : tone === "primary" ? "bg-primary-500/10 border-primary-500/20 text-primary-500" : tone === "danger" ? "bg-danger/10 border-danger/20 text-danger" : "bg-card/60 border-border/40 text-foreground";
   return (
     <div className={cn("rounded-2xl p-3 border text-center", toneClass)}>
       <div className="text-xs font-semibold opacity-90">{label}</div>
@@ -234,7 +251,7 @@ function Stat({ label, value, tone }: { label: string; value: number; tone?: "su
   );
 }
 
-function SlotGroup({ title, icon, slots }: { title: string; icon: React.ReactNode; slots: DoctorSlot[] }) {
+function SlotGroup({ title, icon, slots, color }: { title: string; icon: React.ReactNode; slots: DoctorSlot[]; color: ReturnType<typeof getDoctorColor> }) {
   return (
     <div className="space-y-2">
       <div className="flex items-center gap-2 text-xs font-bold text-muted-foreground uppercase tracking-wider">{icon} {title} ({slots.length})</div>
@@ -247,20 +264,38 @@ function SlotGroup({ title, icon, slots }: { title: string; icon: React.ReactNod
             <div
               key={s.id}
               className={cn(
-                "flex flex-col justify-between rounded-2xl p-3.5 border transition",
-                isAvailable ? "border-success/30 bg-success/5" : isFull ? "border-primary-500/30 bg-primary-500/5" : "border-danger/30 bg-danger/5",
+                "group flex flex-col justify-between rounded-2xl p-3.5 border transition shadow-xs hover:shadow-md",
+                isAvailable ? "border-emerald-500/30 bg-emerald-500/5 hover:border-emerald-500/60" : isFull ? "border-amber-500/30 bg-amber-500/5 hover:border-amber-500/60" : "border-rose-500/30 bg-rose-500/5 hover:border-rose-500/60",
               )}
             >
-              <span className="font-mono text-xs font-bold text-foreground flex items-center gap-1">
-                <Clock className="h-3.5 w-3.5 text-primary-500" /> {s.startTime?.slice(0, 5)}–{s.endTime?.slice(0, 5)}
-              </span>
-              <div className="mt-2.5 flex items-center justify-between gap-2">
+              {/* Time + Status */}
+              <div className="flex items-center justify-between">
+                <span className="font-mono text-xs font-bold text-foreground flex items-center gap-1">
+                  <Clock className="h-3.5 w-3.5 text-primary-500" /> {s.startTime?.slice(0, 5)}–{s.endTime?.slice(0, 5)}
+                </span>
                 <StatusBadge value={s.status || "AVAILABLE"} />
-                {typeof s.maxPatients === "number" && (
-                  <span className="text-[11px] font-mono font-bold text-muted-foreground">{s.currentPatients ?? 0}/{s.maxPatients}</span>
+              </div>
+
+              {/* Room badge */}
+              {s.room?.name && (
+                <div className="mt-2 flex items-center gap-1 text-[10px] text-muted-foreground">
+                  <DoorOpen className="h-3 w-3" style={{ color: color.hex }} />
+                  <span className="truncate font-semibold">{s.room.name}</span>
+                </div>
+              )}
+
+              {/* Capacity */}
+              <div className="mt-2 flex items-center justify-between gap-2">
+                <div className="flex items-center gap-1 text-[11px] font-mono font-bold text-muted-foreground">
+                  <Users className="h-3 w-3" />
+                  {s.currentPatients ?? 0}/{s.maxPatients ?? 1}
+                </div>
+                {isAvailable && (s.currentPatients ?? 0) === 0 && (
+                  <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold">
+                    Open
+                  </span>
                 )}
               </div>
-              {s.room?.name && <div className="mt-1 text-[10px] text-muted-foreground truncate">{s.room.name}</div>}
             </div>
           );
         })}
