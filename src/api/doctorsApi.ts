@@ -100,7 +100,10 @@ export const doctorsApi = {
       params: cleanParams(params as unknown as Record<string, unknown>),
     });
     const meta = (res as unknown as { meta?: unknown }).meta;
-    return applyMeta(normalizeList<DoctorRow>(res.data, params.page ?? 1, params.limit ?? 20), meta);
+    return applyMeta(
+      normalizeList<DoctorRow>(res.data, params.page ?? 1, params.limit ?? 20),
+      meta,
+    );
   },
   getById: async (id: string): Promise<DoctorRow> => {
     const res = await api.get(`/doctor/v1/${id}`);
@@ -135,7 +138,17 @@ export const doctorsApi = {
     return res.data;
   },
   getAvailability: async (id: string) => {
-    const res = await api.get(`/doctor/v1/${id}/availability`);
-    return res.data;
+    try {
+      const res = await api.get(`/public/v1/doctors/${id}/availability`);
+      return res.data?.data || res.data || [];
+    } catch {
+      try {
+        const res = await api.get(`/doctor/v1/${id}/availability`);
+        return res.data?.data || res.data || [];
+      } catch {
+        const res = await api.get(`/clinic/v1/${id}/availability`).catch(() => ({ data: [] }));
+        return res.data?.data || res.data || [];
+      }
+    }
   },
 };

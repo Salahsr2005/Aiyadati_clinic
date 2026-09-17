@@ -22,9 +22,53 @@
     "startDate": "Start Date",
     "endDate": "End Date",
     "overwriteSlots": "Overwrite existing unbooked slots in this range",
+    "selectDoctorToManage": "Select Practitioner to View & Manage",
+    "viewAllDoctors": "Search directory",
     "batchSuccess": "Slots successfully generated!",
     "quickSuccess": "Quick slot added successfully!",
     "cancelSuccess": "Date slots cancelled successfully!",
+    "mode": {
+      "doctor": "Doctor Workspace",
+      "board": "All-Doctors Board"
+    },
+    "conflicts": {
+      "roomAlertTitle": "Room Double-Booking Alert for this Practitioner",
+      "badge": "conflict(s)"
+    },
+    "generator": {
+      "title": "Availability-Aware Slot Generator",
+      "subtitle": "Generate bookable consultation slots aligned with practitioner's weekly working schedule",
+      "activeDaysNotice": "Consultation slots will strictly generate on active working days:",
+      "noWorkingHoursWarning": "This doctor has not configured recurring working hours. Slots may not appear.",
+      "preview": "Generation Preview",
+      "totalDays": "Total Days",
+      "matchingDays": "Consultation Days",
+      "offDays": "Off / Skipped Days",
+      "roomLabel": "Assign Consultation Room (Optional)",
+      "roomHint": "Leave empty for general/unassigned room to prevent double-booking conflicts.",
+      "overwriteLabel": "Force overwrite existing unbooked slots",
+      "overwriteDesc": "Replaces any unbooked slots in this date range. Booked appointments are never deleted.",
+      "generateButton": "Generate Slots for Range",
+      "generating": "Generating Slots..."
+    },
+    "settings": {
+      "profileTitle": "Consultation Settings & Weekly Pattern",
+      "slotDuration": "Slot Duration",
+      "bufferTime": "Buffer Time",
+      "capacity": "Max Patients/Slot",
+      "weeklyHours": "Weekly Hours",
+      "activeDays": "Active Days",
+      "readOnlyNotice": "Working pattern configured in doctor's portal",
+      "closed": "Off"
+    },
+    "quickActions": {
+      "title": "Smart Slot Actions",
+      "next7Days": "Generate Next 7 Days",
+      "next30Days": "Generate 30 Days",
+      "customRange": "Custom Range...",
+      "addQuickSlot": "Add Quick Slot",
+      "cancelDay": "Cancel Day"
+    },
     "tabs": {
       "board": "All Doctors Board",
       "template": "Weekly Template",

@@ -22,9 +22,53 @@
     "startDate": "Date de début",
     "endDate": "Date de fin",
     "overwriteSlots": "Écraser les créneaux existants non réservés dans cette période",
+    "selectDoctorToManage": "Sélectionner un praticien à afficher et gérer",
+    "viewAllDoctors": "Rechercher dans l'annuaire",
     "batchSuccess": "Créneaux générés avec succès !",
     "quickSuccess": "Créneau rapide ajouté avec succès !",
     "cancelSuccess": "Créneaux de la date annulés avec succès !",
+    "mode": {
+      "doctor": "Espace Médecin",
+      "board": "Tableau Tous Médecins"
+    },
+    "conflicts": {
+      "roomAlertTitle": "Alerte de conflit de réservation de salle pour ce praticien",
+      "badge": "conflit(s)"
+    },
+    "generator": {
+      "title": "Générateur de créneaux selon disponibilités",
+      "subtitle": "Générez des créneaux de consultation alignés sur les horaires de travail du praticien",
+      "activeDaysNotice": "Les créneaux seront strictement générés sur les jours de travail actifs :",
+      "noWorkingHoursWarning": "Ce médecin n'a pas configuré d'horaires récurrents. Les créneaux risquent de ne pas apparaître.",
+      "preview": "Aperçu de la génération",
+      "totalDays": "Jours totaux",
+      "matchingDays": "Jours de consultation",
+      "offDays": "Jours chômés ignorés",
+      "roomLabel": "Attribuer une salle de consultation (Optionnel)",
+      "roomHint": "Laissez vide pour une salle générale afin d'éviter tout conflit de double réservation.",
+      "overwriteLabel": "Forcer l'écrasement des créneaux existants non réservés",
+      "overwriteDesc": "Remplace les créneaux non réservés sur cette période. Les réservations existantes ne sont jamais supprimées.",
+      "generateButton": "Générer les créneaux pour la période",
+      "generating": "Génération en cours..."
+    },
+    "settings": {
+      "profileTitle": "Paramètres de consultation et planning hebdomadaire",
+      "slotDuration": "Durée du créneau",
+      "bufferTime": "Temps tampon",
+      "capacity": "Patients max/créneau",
+      "weeklyHours": "Heures hebdo",
+      "activeDays": "Jours actifs",
+      "readOnlyNotice": "Horaires configurés depuis le portail médecin",
+      "closed": "Fermé"
+    },
+    "quickActions": {
+      "title": "Actions rapides intelligentes",
+      "next7Days": "Générer 7 prochains jours",
+      "next30Days": "Générer 30 jours",
+      "customRange": "Période personnalisée...",
+      "addQuickSlot": "Créneau rapide",
+      "cancelDay": "Annuler la journée"
+    },
     "tabs": {
       "board": "Tableau de Tous les Médecins",
       "template": "Modèle Hebdomadaire",
