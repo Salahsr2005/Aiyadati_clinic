@@ -34,7 +34,7 @@ export function InsightCards({
 
     // 1. Compute High Demand Specialty Insight
     const specialtyMap: Record<string, number> = {};
-    let totalAppointments = appointments.length;
+    const totalAppointments = appointments.length;
 
     appointments.forEach((appt) => {
       const specs = (appt.doctor as any)?.specialties ?? [];

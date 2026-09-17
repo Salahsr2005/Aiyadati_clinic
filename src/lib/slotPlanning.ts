@@ -32,7 +32,7 @@ export function addDaysISO(dateStr: string, days: number): string {
  */
 export function getDatesInRange(startDate: string, endDate: string): string[] {
   const dates: string[] = [];
-  let curr = parseISODate(startDate);
+  const curr = parseISODate(startDate);
   const end = parseISODate(endDate);
 
   while (curr <= end) {

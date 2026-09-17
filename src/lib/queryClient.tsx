@@ -293,7 +293,69 @@ export function useQueries<T extends Array<QueryOptions<any, any, any>>>({
 }: {
   queries: [...T];
 }) {
-  return queries.map((opt) => useQuery(opt));
+  const client = useQueryClient();
+  const [, setTick] = useState(0);
+  const forceUpdate = useCallback(() => setTick((t) => t + 1), []);
+
+  const queriesRef = useRef(queries);
+  queriesRef.current = queries;
+
+  const keyHashes = queries.map((q) => hashKey(q.queryKey)).join("|");
+
+  useEffect(() => {
+    const unsubscribes = queriesRef.current.map((opt) => {
+      const entry = client.getEntry(opt.queryKey);
+      return entry.subscribe(forceUpdate);
+    });
+    return () => {
+      unsubscribes.forEach((unsub) => unsub());
+    };
+  }, [client, forceUpdate, keyHashes]);
+
+  useEffect(() => {
+    queriesRef.current.forEach((opt) => {
+      const { queryKey, queryFn, enabled = true, staleTime, retry = 1 } = opt;
+      if (!enabled) return;
+      const entry = client.getEntry(queryKey);
+      entry.queryFn = queryFn;
+
+      const isStale =
+        entry.updatedAt === 0 ||
+        entry.data === undefined ||
+        (staleTime !== undefined ? Date.now() - entry.updatedAt >= staleTime : true);
+
+      if (isStale && !entry.promise) {
+        entry.fetch(queryFn, retry).catch(() => {});
+      }
+    });
+  }, [client, keyHashes]);
+
+  return queries.map((opt) => {
+    const { queryKey, select, initialData, retry = 1 } = opt;
+    const entry = client.getEntry(queryKey);
+    const rawData = entry.data !== undefined ? entry.data : initialData;
+    const data = select && rawData !== undefined ? select(rawData) : rawData;
+    const isFetching = !!entry.promise;
+    const isLoading = rawData === undefined && isFetching;
+    const isError = !!entry.error;
+    const isSuccess = rawData !== undefined && !isError;
+    const status: "pending" | "error" | "success" = isLoading
+      ? "pending"
+      : isError
+      ? "error"
+      : "success";
+
+    return {
+      data,
+      error: entry.error,
+      isLoading,
+      isFetching,
+      isError,
+      isSuccess,
+      status,
+      refetch: () => entry.fetch(opt.queryFn, retry),
+    };
+  });
 }
 
 export function useMutation<TData = any, TError = any, TVariables = void, TContext = unknown>(

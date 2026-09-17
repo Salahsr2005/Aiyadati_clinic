@@ -27,6 +27,17 @@ interface AppointmentDrawerProps {
 }
 
 export function AppointmentDrawer({ appointment, onClose }: AppointmentDrawerProps) {
+  // Status Mutation - must be called unconditionally before any early return
+  const updateStatusMutation = useEntityMutation({
+    mutationFn: (newStatus: string) => {
+      if (!appointment?.id) return Promise.reject(new Error("No appointment"));
+      return clinicAppointmentsApi.updateStatus(appointment.id, { status: newStatus });
+    },
+    invalidate: [qk.clinicSelf.all()],
+    successMessage: "Appointment status updated successfully",
+    onSuccess: () => onClose(),
+  });
+
   if (!appointment) return null;
 
   const patAny = appointment.patient as any;
@@ -49,15 +60,6 @@ export function AppointmentDrawer({ appointment, onClose }: AppointmentDrawerPro
   const doctorSpecialty = Array.isArray(docAny?.specialties) && docAny.specialties.length > 0
     ? docAny.specialties[0].nameFr || docAny.specialties[0].nameAr
     : appointment.doctor?.specialtyName || docAny?.specialty?.nameFr || "Specialist";
-
-  // Status Mutation
-  const updateStatusMutation = useEntityMutation({
-    mutationFn: (newStatus: string) =>
-      clinicAppointmentsApi.updateStatus(appointment.id, { status: newStatus }),
-    invalidate: [qk.clinicSelf.all()],
-    successMessage: "Appointment status updated successfully",
-    onSuccess: () => onClose(),
-  });
 
   return (
     <Drawer
