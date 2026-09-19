@@ -394,5 +394,35 @@
     "patientTypes": "توزيع المرضى (مسجلون مقابل زوار)",
     "reviewsWidget": "أحدث تقييمات المرضى",
     "pendingInvitesWidget": "دعوات الأطباء المعلّقة"
+  },
+  "appointments": {
+    "subtitle": "إدارة قائمة الانتظار وتأكيد الحجوزات ومتابعة كشوفات جميع الأطباء بالعيادة",
+    "drawerTitle": "حجز موعد مريض",
+    "drawerSubtitle": "جدولة كشوفات واستشارات مباشرة في العيادة أو عبر الهاتف",
+    "providerDoctor": "الطبيب المعالج",
+    "patientIdentification": "بيانات المريض",
+    "dateTimeSlot": "تاريخ وتوقيت الكشف",
+    "scheduleDetails": "الجدول والموقع",
+    "savePending": "حفظ كقيد الانتظار",
+    "bookAndConfirmNow": "حجز وتأكيد فوري",
+    "bookPendingTip": "حفظ الموعد معلقاً للمراجعة لاحقاً",
+    "statusUpdated": "تم تحديث حالة الموعد",
+    "confirmedSuccess": "تم تأكيد الموعد بنجاح!",
+    "bookAndConfirmedSuccess": "تم حجز وتأكيد الموعد فورياً بنجاح!",
+    "bookedPendingSuccess": "تم تسجيل الموعد في قائمة الانتظار.",
+    "bookedPendingNotice": "تم تسجيل الموعد (في انتظار التأكيد).",
+    "cancelTitle": "إلغاء الموعد",
+    "cancelDesc": "يمكنك توضيح سبب الإلغاء ليتم تسجيله في ملف المريض.",
+    "cancelWarning": "سيتم تمييز هذا الموعد كملغي، مع الحفاظ على سجل المريض بالكامل.",
+    "confirmCancelBtn": "تأكيد الإلغاء",
+    "noBookingsYet": "لا توجد أي مواعيد مسجلة حتى الآن. انقر على 'حجز موعد' لإضافة موعد جديد.",
+    "kpi": {
+      "today": "جدول اليوم",
+      "pending": "قيد الانتظار",
+      "confirmed": "المؤكدة",
+      "inProgress": "في الكشف",
+      "completed": "المكتملة",
+      "cancelled": "الملغاة"
+    }
   }
 }

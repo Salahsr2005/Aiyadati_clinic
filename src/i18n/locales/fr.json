@@ -394,5 +394,35 @@
     "patientTypes": "Répartition des Patients (Inscrits vs Sur Place)",
     "reviewsWidget": "Avis Patients Récents",
     "pendingInvitesWidget": "Invitations de Médecins en Attente"
+  },
+  "appointments": {
+    "subtitle": "Gérez la file d'attente, confirmez les réservations et traitez les consultations de tous les médecins",
+    "drawerTitle": "Réserver un rendez-vous patient",
+    "drawerSubtitle": "Planifiez des consultations sur place, par téléphone ou inscrites",
+    "providerDoctor": "Praticien traitant",
+    "patientIdentification": "Informations du patient",
+    "dateTimeSlot": "Date & Créneau de consultation",
+    "scheduleDetails": "Horaires & Localisation",
+    "savePending": "Enregistrer en attente",
+    "bookAndConfirmNow": "Réserver et confirmer maintenant",
+    "bookPendingTip": "Enregistrer comme en attente pour vérification",
+    "statusUpdated": "Statut du rendez-vous mis à jour",
+    "confirmedSuccess": "Rendez-vous confirmé !",
+    "bookAndConfirmedSuccess": "Rendez-vous réservé et CONFIRMÉ avec succès !",
+    "bookedPendingSuccess": "Rendez-vous réservé en statut EN ATTENTE.",
+    "bookedPendingNotice": "Rendez-vous réservé (En attente de confirmation).",
+    "cancelTitle": "Annuler le rendez-vous",
+    "cancelDesc": "Indiquez un motif d'annulation optionnel pour le dossier patient.",
+    "cancelWarning": "Ce rendez-vous sera marqué comme annulé. Le dossier patient est conservé.",
+    "confirmCancelBtn": "Confirmer l'annulation",
+    "noBookingsYet": "Aucun rendez-vous n'a encore été pris. Cliquez sur 'Réserver un rendez-vous' pour en ajouter un.",
+    "kpi": {
+      "today": "Agenda d'aujourd'hui",
+      "pending": "En attente",
+      "confirmed": "Confirmés",
+      "inProgress": "En consultation",
+      "completed": "Terminés",
+      "cancelled": "Annulés"
+    }
   }
 }

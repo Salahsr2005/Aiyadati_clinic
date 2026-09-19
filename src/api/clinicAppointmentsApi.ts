@@ -1,8 +1,8 @@
-import { api } from '@/lib/api';
-import { normalizeList } from '@/lib/adminApi';
-import { ensureArray } from '@/lib/utils';
-import { usersApi, type UserRow } from '@/api/usersApi';
-import type { Paginated } from '@/types/api';
+import { api } from "@/lib/api";
+import { normalizeList } from "@/lib/adminApi";
+import { ensureArray } from "@/lib/utils";
+import { usersApi, type UserRow } from "@/api/usersApi";
+import type { Paginated } from "@/types/api";
 
 export interface DoctorSlot {
   id: string;
@@ -18,7 +18,16 @@ export interface DoctorSlot {
   maxPatients?: number;
   currentPatients?: number;
   room?: { id: string; name: string };
-  doctor?: { id: string; name?: string; firstName?: string; lastName?: string; firstNameFr?: string; lastNameFr?: string; avatarUrl?: string; photoUrl?: string };
+  doctor?: {
+    id: string;
+    name?: string;
+    firstName?: string;
+    lastName?: string;
+    firstNameFr?: string;
+    lastNameFr?: string;
+    avatarUrl?: string;
+    photoUrl?: string;
+  };
 }
 
 export interface GuestPatient {
@@ -36,7 +45,8 @@ export interface GuestPatient {
 
 export type GuestPatientRow = GuestPatient;
 
-export type AppointmentStatus = 'PENDING' | 'CONFIRMED' | 'IN_PROGRESS' | 'COMPLETED' | 'CANCELLED' | 'NO_SHOW';
+export type AppointmentStatus =
+  "PENDING" | "CONFIRMED" | "IN_PROGRESS" | "COMPLETED" | "CANCELLED" | "NO_SHOW";
 
 export interface ClinicAppointmentRow {
   id: string;
@@ -47,9 +57,9 @@ export interface ClinicAppointmentRow {
   paymentStatus?: string;
   notes?: string;
   cancelReason?: string;
-  patientType?: 'REGISTERED' | 'GUEST';
+  patientType?: "REGISTERED" | "GUEST";
   createdBy?: string;
-  createdByType?: 'user' | 'doctor' | 'clinic';
+  createdByType?: "user" | "doctor" | "clinic";
   confirmedAt?: string;
   confirmedBy?: string;
   cancelledAt?: string;
@@ -84,7 +94,7 @@ export interface ClinicAppointmentRow {
   guestPatient?: GuestPatient;
   clinicId?: string;
   contactUserId?: string;
-  contactUser?: any;
+  contactUser?: Record<string, unknown>;
 }
 
 export interface ClinicAppointmentParams {
@@ -118,23 +128,35 @@ export interface BookAppointmentPayload {
 
 const guestPatientCache = new Map<string, GuestPatient>();
 
-async function resolveMissingGuestPatients(items: ClinicAppointmentRow[]): Promise<ClinicAppointmentRow[]> {
+async function resolveMissingGuestPatients(
+  items: ClinicAppointmentRow[],
+): Promise<ClinicAppointmentRow[]> {
   if (!items || items.length === 0) return items;
 
   const missingIds = Array.from(
     new Set(
       items
-        .filter((r) => r.guestPatientId && (!r.guestPatient || !r.guestPatient.firstName) && !guestPatientCache.has(r.guestPatientId!))
-        .map((r) => r.guestPatientId!)
-    )
+        .filter(
+          (r) =>
+            r.guestPatientId &&
+            (!r.guestPatient || !r.guestPatient.firstName) &&
+            !guestPatientCache.has(r.guestPatientId!),
+        )
+        .map((r) => r.guestPatientId!),
+    ),
   );
 
   if (missingIds.length > 0) {
     await Promise.allSettled(
       missingIds.map(async (gid) => {
         try {
-          const res = await api.get<unknown, any>(`/appointment/v1/guest-patients/${gid}`);
-          const raw = (res && typeof res === "object" && "data" in res) ? (res as any).data : res;
+          const res = await api.get<unknown, { data?: GuestPatient } | GuestPatient>(
+            `/appointment/v1/guest-patients/${gid}`,
+          );
+          const raw =
+            res && typeof res === "object" && "data" in res
+              ? (res as { data?: GuestPatient }).data
+              : (res as GuestPatient);
           const g = raw as GuestPatient;
           if (g && (g.id || g.firstName)) {
             guestPatientCache.set(gid, g);
@@ -142,7 +164,7 @@ async function resolveMissingGuestPatients(items: ClinicAppointmentRow[]): Promi
         } catch {
           // ignore
         }
-      })
+      }),
     );
   }
 
@@ -160,19 +182,23 @@ async function resolveMissingGuestPatients(items: ClinicAppointmentRow[]): Promi
   });
 }
 
-function cleanPayload<T extends Record<string, any>>(obj: T): Partial<T> {
-  const clean: any = {};
+function cleanPayload<T extends Record<string, unknown>>(obj: T): Partial<T> {
+  const clean: Record<string, unknown> = {};
   for (const [k, v] of Object.entries(obj)) {
     if (v !== undefined && v !== null && v !== "") {
       clean[k] = v;
     }
   }
-  return clean;
+  return clean as Partial<T>;
 }
 
 export const clinicAppointmentsApi = {
   // All clinic slots
-  listSlots: async (params?: { date?: string; startDate?: string; endDate?: string }): Promise<DoctorSlot[]> => {
+  listSlots: async (params?: {
+    date?: string;
+    startDate?: string;
+    endDate?: string;
+  }): Promise<DoctorSlot[]> => {
     const raw = await api.get<unknown, unknown>(`/appointment/v1/clinic/slots`, { params });
     return ensureArray<DoctorSlot>(raw);
   },
@@ -180,32 +206,38 @@ export const clinicAppointmentsApi = {
   // Slots per doctor
   getDoctorSlots: async (
     doctorId: string,
-    params?: { date?: string; startDate?: string; endDate?: string }
+    params?: { date?: string; startDate?: string; endDate?: string },
   ): Promise<DoctorSlot[]> => {
-    const raw = await api.get<unknown, unknown>(`/appointment/v1/clinic/doctors/${doctorId}/slots`, {
-      params,
-    });
+    const raw = await api.get<unknown, unknown>(
+      `/appointment/v1/clinic/doctors/${doctorId}/slots`,
+      {
+        params,
+      },
+    );
     return ensureArray<DoctorSlot>(raw);
   },
 
   generateDoctorSlots: async (
     doctorId: string,
-    payload: { startDate: string; endDate: string; roomId?: string; serviceId?: string; force?: boolean }
+    payload: {
+      startDate: string;
+      endDate: string;
+      roomId?: string;
+      serviceId?: string;
+      force?: boolean;
+    },
   ): Promise<{ created: number; slots: DoctorSlot[] }> => {
     if (!doctorId || !doctorId.trim()) {
       throw new Error("Please select a doctor first to generate schedule slots.");
     }
     const clean = cleanPayload(payload);
-    const res = await api.post(
-      `/appointment/v1/clinic/doctors/${doctorId}/slots/generate`,
-      clean
-    );
+    const res = await api.post(`/appointment/v1/clinic/doctors/${doctorId}/slots/generate`, clean);
     return res.data as { created: number; slots: DoctorSlot[] };
   },
 
   cancelDoctorSlotsDate: async (
     doctorId: string,
-    payload: { date: string; reason?: string }
+    payload: { date: string; reason?: string },
   ): Promise<{ cancelled: number }> => {
     if (!doctorId || !doctorId.trim()) {
       throw new Error("Please select a doctor first to cancel schedule slots.");
@@ -213,33 +245,36 @@ export const clinicAppointmentsApi = {
     const clean = cleanPayload(payload);
     const res = await api.post(
       `/appointment/v1/clinic/doctors/${doctorId}/slots/cancel-date`,
-      clean
+      clean,
     );
     return res.data as { cancelled: number };
   },
 
   addQuickDoctorSlot: async (
     doctorId: string,
-    payload: { date: string; startTime: string; endTime: string; roomId?: string; maxPatients?: number }
+    payload: {
+      date: string;
+      startTime: string;
+      endTime: string;
+      roomId?: string;
+      maxPatients?: number;
+    },
   ): Promise<DoctorSlot> => {
     if (!doctorId || !doctorId.trim()) {
       throw new Error("Please select a doctor first to add a quick slot.");
     }
     const clean = cleanPayload(payload);
-    const res = await api.post(
-      `/appointment/v1/clinic/doctors/${doctorId}/slots/quick`,
-      clean
-    );
+    const res = await api.post(`/appointment/v1/clinic/doctors/${doctorId}/slots/quick`, clean);
     return res.data as DoctorSlot;
   },
 
   // Clinic Appointments list
   listAppointments: async (
-    params?: ClinicAppointmentParams
+    params?: ClinicAppointmentParams,
   ): Promise<Paginated<ClinicAppointmentRow>> => {
     const page = params?.page ?? 1;
     const limit = params?.limit ?? 20;
-    const raw = await api.get<unknown, unknown>('/appointment/v1/clinic/appointments', {
+    const raw = await api.get<unknown, unknown>("/appointment/v1/clinic/appointments", {
       params: { ...params, page, limit },
     });
     const listResult = normalizeList<ClinicAppointmentRow>(raw, page, limit);
@@ -255,18 +290,32 @@ export const clinicAppointmentsApi = {
 
   // Book appointment on behalf of patient (with fallback for doctor-owned/unassigned slots)
   bookAppointment: async (payload: BookAppointmentPayload): Promise<ClinicAppointmentRow> => {
+    // Sanitize payload: strip paymentMethod as backend bookAppointmentSchema strictly disallows it
+    const { paymentMethod: _ignored, ...rest } = payload;
+    const sanitized = cleanPayload(rest);
     try {
-      return await api.post<unknown, ClinicAppointmentRow>('/appointment/v1/clinic/book', payload);
-    } catch (err: any) {
-      const msg = err?.response?.data?.message || err?.response?.data?.error || err?.message || '';
-      const strMsg = typeof msg === 'string' ? msg : JSON.stringify(msg);
+      return await api.post<unknown, ClinicAppointmentRow>(
+        "/appointment/v1/clinic/book",
+        sanitized,
+      );
+    } catch (err: unknown) {
+      const errorObj = err as {
+        response?: { data?: { message?: string; error?: string }; status?: number };
+        message?: string;
+      };
+      const msg =
+        errorObj?.response?.data?.message ||
+        errorObj?.response?.data?.error ||
+        errorObj?.message ||
+        "";
+      const strMsg = typeof msg === "string" ? msg : JSON.stringify(msg);
       if (
-        strMsg.includes('Slot does not belong') ||
-        strMsg.includes('not belong to your clinic') ||
-        err?.response?.status === 400
+        strMsg.includes("Slot does not belong") ||
+        strMsg.includes("not belong to your clinic") ||
+        errorObj?.response?.status === 400
       ) {
         try {
-          return await api.post<unknown, ClinicAppointmentRow>('/appointment/v1/book', payload);
+          return await api.post<unknown, ClinicAppointmentRow>("/appointment/v1/book", sanitized);
         } catch {
           throw err;
         }
@@ -278,23 +327,76 @@ export const clinicAppointmentsApi = {
   // Update appointment status
   updateStatus: async (
     id: string,
-    payload: { status: string; cancelReason?: string }
+    payload: { status: string; cancelReason?: string },
   ): Promise<ClinicAppointmentRow> => {
     return api.patch<unknown, ClinicAppointmentRow>(
       `/appointment/v1/clinic/appointments/${id}/status`,
-      payload
+      payload,
     );
   },
 
-  confirmAppointment: async (id: string, payload?: { notes?: string }): Promise<ClinicAppointmentRow> => {
-    return api.post<unknown, ClinicAppointmentRow>(`/appointment/v1/appointments/${id}/confirm`, payload);
+  confirmAppointment: async (
+    id: string,
+    payload?: { notes?: string },
+  ): Promise<ClinicAppointmentRow> => {
+    return api.post<unknown, ClinicAppointmentRow>(
+      `/appointment/v1/appointments/${id}/confirm`,
+      payload,
+    );
+  },
+
+  // Appointment statistics (by date or overall)
+  getStats: async (params?: {
+    date?: string;
+  }): Promise<{
+    pending: number;
+    confirmed: number;
+    in_progress: number;
+    completed: number;
+    cancelled: number;
+    no_show: number;
+    total: number;
+  }> => {
+    try {
+      const raw = await api.get<unknown, Record<string, unknown>>(
+        "/appointment/v1/clinic/appointments/stats",
+        { params },
+      );
+      const data =
+        raw && typeof raw === "object" && "data" in raw
+          ? (raw.data as Record<string, unknown>)
+          : raw;
+      return {
+        pending: Number(data?.pending || 0),
+        confirmed: Number(data?.confirmed || 0),
+        in_progress: Number(data?.in_progress || 0),
+        completed: Number(data?.completed || 0),
+        cancelled: Number(data?.cancelled || 0),
+        no_show: Number(data?.no_show || 0),
+        total: Number(data?.total || 0),
+      };
+    } catch {
+      return {
+        pending: 0,
+        confirmed: 0,
+        in_progress: 0,
+        completed: 0,
+        cancelled: 0,
+        no_show: 0,
+        total: 0,
+      };
+    }
   },
 
   // Guest Patients CRUD
-  listGuestPatients: async (params?: { page?: number; limit?: number; search?: string }): Promise<Paginated<GuestPatient>> => {
+  listGuestPatients: async (params?: {
+    page?: number;
+    limit?: number;
+    search?: string;
+  }): Promise<Paginated<GuestPatient>> => {
     const page = params?.page ?? 1;
     const limit = params?.limit ?? 20;
-    const raw = await api.get<unknown, unknown>('/appointment/v1/guest-patients', {
+    const raw = await api.get<unknown, unknown>("/appointment/v1/guest-patients", {
       params: { ...params, page, limit },
     });
     const listResult = normalizeList<GuestPatient>(raw, page, limit);
@@ -310,7 +412,7 @@ export const clinicAppointmentsApi = {
   searchGuestPatients: async (query: string): Promise<GuestPatient[]> => {
     const term = query.trim();
     if (!term || term.length < 2) return [];
-    const raw = await api.get<unknown, unknown>('/appointment/v1/guest-patients/search', {
+    const raw = await api.get<unknown, unknown>("/appointment/v1/guest-patients/search", {
       params: { q: term },
     });
     return ensureArray<GuestPatient>(raw);
@@ -321,9 +423,9 @@ export const clinicAppointmentsApi = {
     if (!term || term.length < 2) return [];
 
     const resultsMap = new Map<string, UserRow>();
-    const addResult = (u: any) => {
+    const addResult = (u: UserRow | null | undefined) => {
       if (!u) return;
-      const id = u.id || u.userId || u.patientId;
+      const id = u.id || (u as unknown as { userId?: string }).userId;
       if (!id) return;
       if (!resultsMap.has(id)) {
         resultsMap.set(id, u);
@@ -341,8 +443,13 @@ export const clinicAppointmentsApi = {
     // 2. Direct phone lookup if numeric
     if (/^[0-9+\s-]{4,}$/.test(term)) {
       try {
-        const res = await api.get<unknown, any>(`/user/v1/phone/${encodeURIComponent(term)}`);
-        const raw = (res && typeof res === "object" && "data" in res) ? (res as any).data : res;
+        const res = await api.get<unknown, { data?: UserRow } | UserRow>(
+          `/user/v1/phone/${encodeURIComponent(term)}`,
+        );
+        const raw =
+          res && typeof res === "object" && "data" in res
+            ? (res as { data?: UserRow }).data
+            : (res as UserRow);
         if (raw && (raw.id || raw.email)) addResult(raw);
       } catch {
         // Fallback
@@ -362,8 +469,10 @@ export const clinicAppointmentsApi = {
     return Array.from(resultsMap.values());
   },
 
-  createGuestPatient: async (payload: Omit<GuestPatient, 'id' | 'createdAt'>): Promise<GuestPatient> => {
-    return api.post<unknown, GuestPatient>('/appointment/v1/guest-patients', payload);
+  createGuestPatient: async (
+    payload: Omit<GuestPatient, "id" | "createdAt">,
+  ): Promise<GuestPatient> => {
+    return api.post<unknown, GuestPatient>("/appointment/v1/guest-patients", payload);
   },
 
   getGuestPatient: async (id: string): Promise<GuestPatient> => {

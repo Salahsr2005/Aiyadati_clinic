@@ -394,5 +394,35 @@
     "patientTypes": "Patient Breakdown (Registered vs Walk-In)",
     "reviewsWidget": "Recent Patient Reviews",
     "pendingInvitesWidget": "Pending Doctor Invitations"
+  },
+  "appointments": {
+    "subtitle": "Manage patient queues, confirm bookings, and process consultations across all doctors",
+    "drawerTitle": "Book Patient Appointment",
+    "drawerSubtitle": "Schedule walk-in, phone, or registered consultations",
+    "providerDoctor": "Attending Practitioner",
+    "patientIdentification": "Patient Information",
+    "dateTimeSlot": "Date & Consultation Slot",
+    "scheduleDetails": "Schedule & Location",
+    "savePending": "Save Pending",
+    "bookAndConfirmNow": "Book & Confirm Now",
+    "bookPendingTip": "Save as Pending for verification",
+    "statusUpdated": "Appointment status updated",
+    "confirmedSuccess": "Appointment confirmed!",
+    "bookAndConfirmedSuccess": "Appointment booked and CONFIRMED successfully!",
+    "bookedPendingSuccess": "Appointment reserved in PENDING status.",
+    "bookedPendingNotice": "Appointment reserved (Pending confirmation).",
+    "cancelTitle": "Cancel Appointment",
+    "cancelDesc": "Provide an optional cancellation reason for patient records.",
+    "cancelWarning": "This appointment will be marked as Cancelled. Patient records will be preserved.",
+    "confirmCancelBtn": "Confirm Cancellation",
+    "noBookingsYet": "No appointments have been booked yet. Click 'Book Appointment' to add one.",
+    "kpi": {
+      "today": "Today's Agenda",
+      "pending": "Pending",
+      "confirmed": "Confirmed",
+      "inProgress": "In Clinic",
+      "completed": "Completed",
+      "cancelled": "Cancelled"
+    }
   }
 }

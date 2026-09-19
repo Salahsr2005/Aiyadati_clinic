@@ -82,7 +82,11 @@ export function CreateAppointmentModal({ open, onClose }: CreateAppointmentModal
   const [isCreatingQuickSlot, setIsCreatingQuickSlot] = useState(false);
 
   /* Fetch available slots */
-  const { data: slots, isLoading: slotsLoading, refetch: refetchSlots } = useQuery({
+  const {
+    data: slots,
+    isLoading: slotsLoading,
+    refetch: refetchSlots,
+  } = useQuery({
     queryKey: qk.doctorSelf.slots(date),
     queryFn: () => doctorAppointmentsApi.slots.listByDate(date),
     enabled: open && !!date,
@@ -127,7 +131,7 @@ export function CreateAppointmentModal({ open, onClose }: CreateAppointmentModal
   if (!open) return null;
 
   const availableSlots = (slots || []).filter(
-    (s: SlotRow) => String(s.status).toLowerCase() === "available"
+    (s: SlotRow) => String(s.status).toLowerCase() === "available",
   );
 
   const handleCreateQuickSlot = async () => {
@@ -144,8 +148,9 @@ export function CreateAppointmentModal({ open, onClose }: CreateAppointmentModal
       await refetchSlots();
       setSelectedSlotId(newSlot.id);
       setShowQuickSlot(false);
-    } catch (err: any) {
-      toast.error(err?.message || "Failed to create quick slot");
+    } catch (err: unknown) {
+      const errorObj = err as { message?: string };
+      toast.error(errorObj?.message || "Failed to create quick slot");
     } finally {
       setIsCreatingQuickSlot(false);
     }
@@ -196,7 +201,6 @@ export function CreateAppointmentModal({ open, onClose }: CreateAppointmentModal
       const createdAppt = await doctorAppointmentsApi.book({
         slotId: selectedSlotId,
         type,
-        paymentMethod: patientSource === "guest" ? "ON_SITE" : paymentMethod,
         patientId,
         guestPatient,
         notes: notes.trim() || undefined,
@@ -216,16 +220,18 @@ export function CreateAppointmentModal({ open, onClose }: CreateAppointmentModal
               await doctorAppointmentsApi.confirm(createdAppt.id);
               toast.success("Appointment CONFIRMED!");
               void queryClient.invalidateQueries({ queryKey: qk.doctorSelf.appointmentsAll() });
-            } catch (err: any) {
-              toast.error(err?.message || "Failed to confirm appointment");
+            } catch (err: unknown) {
+              const errorObj = err as { message?: string };
+              toast.error(errorObj?.message || "Failed to confirm appointment");
             }
           },
         },
       });
 
       onClose();
-    } catch (err: any) {
-      toast.error(err?.message || "Failed to book appointment");
+    } catch (err: unknown) {
+      const errorObj = err as { message?: string };
+      toast.error(errorObj?.message || "Failed to book appointment");
     } finally {
       setIsSubmitting(false);
     }
@@ -244,8 +250,12 @@ export function CreateAppointmentModal({ open, onClose }: CreateAppointmentModal
               <UserCheck className="h-5 w-5" />
             </div>
             <div>
-              <h3 className="text-base font-bold text-foreground">Book Walk-In / Phone Appointment</h3>
-              <p className="text-xs text-muted-foreground">Reserve and confirm a consultation directly on your schedule</p>
+              <h3 className="text-base font-bold text-foreground">
+                Book Walk-In / Phone Appointment
+              </h3>
+              <p className="text-xs text-muted-foreground">
+                Reserve and confirm a consultation directly on your schedule
+              </p>
             </div>
           </div>
           <button
@@ -303,7 +313,9 @@ export function CreateAppointmentModal({ open, onClose }: CreateAppointmentModal
                         <div className="text-xs font-bold text-foreground">
                           {selectedAppPatient.firstName} {selectedAppPatient.lastName}
                         </div>
-                        <div className="text-[11px] text-muted-foreground font-mono">{selectedAppPatient.phone}</div>
+                        <div className="text-[11px] text-muted-foreground font-mono">
+                          {selectedAppPatient.phone}
+                        </div>
                       </div>
                     </div>
                     <button
@@ -325,7 +337,9 @@ export function CreateAppointmentModal({ open, onClose }: CreateAppointmentModal
                         onChange={(e) => setAppSearchQuery(e.target.value)}
                         className="w-full rounded-xl border border-border/40 bg-muted/20 ps-9 pe-3 py-2 text-xs font-semibold outline-none focus:border-primary-500"
                       />
-                      {isSearchingApp && <Loader2 className="absolute end-3 top-2.5 h-4 w-4 animate-spin text-primary-500" />}
+                      {isSearchingApp && (
+                        <Loader2 className="absolute end-3 top-2.5 h-4 w-4 animate-spin text-primary-500" />
+                      )}
                     </div>
 
                     {appSearchResults.length > 0 ? (
@@ -338,17 +352,27 @@ export function CreateAppointmentModal({ open, onClose }: CreateAppointmentModal
                             className="w-full flex items-center justify-between p-2 rounded-xl hover:bg-muted/30 text-start text-xs transition"
                           >
                             <div>
-                              <div className="font-bold text-foreground">{p.firstName} {p.lastName}</div>
-                              {p.email && <div className="text-[10px] text-muted-foreground">{p.email}</div>}
+                              <div className="font-bold text-foreground">
+                                {p.firstName} {p.lastName}
+                              </div>
+                              {p.email && (
+                                <div className="text-[10px] text-muted-foreground">{p.email}</div>
+                              )}
                             </div>
-                            <span className="text-muted-foreground font-mono">{p.phone || "—"}</span>
+                            <span className="text-muted-foreground font-mono">
+                              {p.phone || "—"}
+                            </span>
                           </button>
                         ))}
                       </div>
                     ) : appSearchQuery.trim().length > 0 && !isSearchingApp ? (
                       <div className="p-3 rounded-2xl bg-muted/20 border border-border/30 text-center text-xs text-muted-foreground">
-                        No registered patient matches &quot;<span className="font-bold text-foreground">{appSearchQuery}</span>&quot;.
-                        <div className="mt-1 text-[11px] text-primary-500 font-semibold cursor-pointer hover:underline" onClick={() => setPatientSource("guest")}>
+                        No registered patient matches &quot;
+                        <span className="font-bold text-foreground">{appSearchQuery}</span>&quot;.
+                        <div
+                          className="mt-1 text-[11px] text-primary-500 font-semibold cursor-pointer hover:underline"
+                          onClick={() => setPatientSource("guest")}
+                        >
                           Click here to create a Walk-In / Phone Guest Appointment instead.
                         </div>
                       </div>
@@ -371,7 +395,9 @@ export function CreateAppointmentModal({ open, onClose }: CreateAppointmentModal
                         <div className="text-xs font-bold text-foreground">
                           {selectedGuestPatient.firstName} {selectedGuestPatient.lastName}
                         </div>
-                        <div className="text-[11px] text-muted-foreground font-mono">{selectedGuestPatient.phone}</div>
+                        <div className="text-[11px] text-muted-foreground font-mono">
+                          {selectedGuestPatient.phone}
+                        </div>
                       </div>
                     </div>
                     <button
@@ -394,7 +420,9 @@ export function CreateAppointmentModal({ open, onClose }: CreateAppointmentModal
                         onChange={(e) => setGuestSearchQuery(e.target.value)}
                         className="w-full rounded-xl border border-border/40 bg-muted/20 ps-9 pe-3 py-2 text-xs font-semibold outline-none focus:border-primary-500"
                       />
-                      {isSearchingGuest && <Loader2 className="absolute end-3 top-2.5 h-4 w-4 animate-spin text-primary-500" />}
+                      {isSearchingGuest && (
+                        <Loader2 className="absolute end-3 top-2.5 h-4 w-4 animate-spin text-primary-500" />
+                      )}
                     </div>
 
                     {guestSearchResults.length > 0 && (
@@ -409,7 +437,9 @@ export function CreateAppointmentModal({ open, onClose }: CreateAppointmentModal
                             onClick={() => setSelectedGuestPatient(g)}
                             className="w-full flex items-center justify-between p-2 rounded-xl hover:bg-primary-500/10 text-start text-xs transition"
                           >
-                            <span className="font-bold text-foreground">{g.firstName} {g.lastName}</span>
+                            <span className="font-bold text-foreground">
+                              {g.firstName} {g.lastName}
+                            </span>
                             <span className="text-muted-foreground font-mono">{g.phone}</span>
                           </button>
                         ))}
@@ -426,7 +456,9 @@ export function CreateAppointmentModal({ open, onClose }: CreateAppointmentModal
                           type="text"
                           placeholder="First Name *"
                           value={guestForm.firstName}
-                          onChange={(e) => setGuestForm((f) => ({ ...f, firstName: e.target.value }))}
+                          onChange={(e) =>
+                            setGuestForm((f) => ({ ...f, firstName: e.target.value }))
+                          }
                           className="w-full rounded-xl border border-border/40 bg-background px-3 py-1.5 text-xs font-semibold outline-none focus:border-primary-500"
                         />
                       </div>
@@ -435,7 +467,9 @@ export function CreateAppointmentModal({ open, onClose }: CreateAppointmentModal
                           type="text"
                           placeholder="Last Name *"
                           value={guestForm.lastName}
-                          onChange={(e) => setGuestForm((f) => ({ ...f, lastName: e.target.value }))}
+                          onChange={(e) =>
+                            setGuestForm((f) => ({ ...f, lastName: e.target.value }))
+                          }
                           className="w-full rounded-xl border border-border/40 bg-background px-3 py-1.5 text-xs font-semibold outline-none focus:border-primary-500"
                         />
                       </div>
@@ -487,7 +521,9 @@ export function CreateAppointmentModal({ open, onClose }: CreateAppointmentModal
             {/* Quick Slot Creation Panel */}
             {showQuickSlot && (
               <div className="p-3 rounded-2xl border border-primary-500/30 bg-primary-500/10 space-y-3">
-                <div className="text-xs font-bold text-primary-500">Create an Ad-Hoc Slot for {date}:</div>
+                <div className="text-xs font-bold text-primary-500">
+                  Create an Ad-Hoc Slot for {date}:
+                </div>
                 <div className="flex flex-wrap items-center gap-2">
                   <ModernTimePickerModal
                     value={quickStartTime}
@@ -506,7 +542,11 @@ export function CreateAppointmentModal({ open, onClose }: CreateAppointmentModal
                     disabled={isCreatingQuickSlot}
                     className="ms-auto inline-flex items-center gap-1 rounded-xl bg-primary-500 px-3.5 py-2 text-xs font-bold text-primary-foreground hover:bg-primary-600 transition disabled:opacity-50"
                   >
-                    {isCreatingQuickSlot ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Plus className="h-3.5 w-3.5" />}
+                    {isCreatingQuickSlot ? (
+                      <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                    ) : (
+                      <Plus className="h-3.5 w-3.5" />
+                    )}
                     Create Slot
                   </button>
                 </div>
@@ -560,7 +600,7 @@ export function CreateAppointmentModal({ open, onClose }: CreateAppointmentModal
               </label>
               <select
                 value={type}
-                onChange={(e) => setType(e.target.value as any)}
+                onChange={(e) => setType(e.target.value as "IN_PERSON" | "VIDEO" | "HOME_VISIT")}
                 className="w-full rounded-xl border border-border/40 bg-muted/20 px-3 py-2 text-xs font-semibold outline-none focus:border-primary-500"
               >
                 <option value="IN_PERSON">In Person</option>
@@ -576,14 +616,16 @@ export function CreateAppointmentModal({ open, onClose }: CreateAppointmentModal
               <select
                 value={patientSource === "guest" ? "ON_SITE" : paymentMethod}
                 disabled={patientSource === "guest"}
-                onChange={(e) => setPaymentMethod(e.target.value as any)}
+                onChange={(e) => setPaymentMethod(e.target.value as "ON_SITE" | "CREDIT")}
                 className="w-full rounded-xl border border-border/40 bg-muted/20 px-3 py-2 text-xs font-semibold outline-none focus:border-primary-500 disabled:opacity-75"
               >
                 <option value="ON_SITE">On Site (Cash / Card)</option>
                 <option value="CREDIT">Platform Credit</option>
               </select>
               {patientSource === "guest" && (
-                <span className="text-[10px] text-muted-foreground block mt-0.5">Guest bookings are always forced to On Site.</span>
+                <span className="text-[10px] text-muted-foreground block mt-0.5">
+                  Guest bookings are always forced to On Site.
+                </span>
               )}
             </div>
 
@@ -612,7 +654,11 @@ export function CreateAppointmentModal({ open, onClose }: CreateAppointmentModal
               disabled={!selectedSlotId || isSubmitting}
               className="inline-flex items-center gap-1.5 rounded-xl bg-primary-500 px-5 py-2 text-xs font-bold text-primary-foreground shadow-md hover:bg-primary-600 transition disabled:opacity-50"
             >
-              {isSubmitting ? <Loader2 className="h-4 w-4 animate-spin" /> : <CheckCircle2 className="h-4 w-4" />}
+              {isSubmitting ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                <CheckCircle2 className="h-4 w-4" />
+              )}
               Reserve Appointment
             </button>
           </div>

@@ -7,16 +7,17 @@ import {
   User,
   Plus,
   Loader2,
-  CheckCircle2,
   Stethoscope,
-  Phone,
   Sparkles,
   UserPlus,
   Search,
   AlertCircle,
   CalendarRange,
-  X,
+  Sun,
+  Moon,
+  Zap,
 } from "lucide-react";
+import { format, addDays } from "date-fns";
 import { toast } from "sonner";
 import {
   clinicAppointmentsApi,
@@ -30,23 +31,32 @@ import { ModernDatePickerModal } from "@/components/ui/ModernDatePickerModal";
 import { ModernTimePickerModal } from "@/components/ui/ModernTimePickerModal";
 import { DoctorSelectorModal, type DoctorCardItem } from "@/components/doctors/DoctorSelectorModal";
 import { Drawer } from "@/components/data/Drawer";
-import { ensureArray } from "@/lib/utils";
+import { ensureArray, cn } from "@/lib/utils";
 import { RemoteImage } from "@/components/common/RemoteImage";
 import { ASSET_FALLBACKS } from "@/lib/assetFallbacks";
-import findDoctorImg from "@/assets/home-quick-actions/find-doctor.png";
+import { getDoctorColor } from "@/lib/doctorColor";
 
 interface WalkInBookingModalProps {
   open: boolean;
   onClose: () => void;
+  defaultDoctorId?: string;
+  defaultDate?: string;
+  onSuccess?: () => void;
 }
 
 function todayISO() {
-  return new Date().toISOString().slice(0, 10);
+  return format(new Date(), "yyyy-MM-dd");
 }
 
 type PatientSource = "guest" | "app";
 
-export function WalkInBookingModal({ open, onClose }: WalkInBookingModalProps) {
+export function WalkInBookingModal({
+  open,
+  onClose,
+  defaultDoctorId,
+  defaultDate,
+  onSuccess,
+}: WalkInBookingModalProps) {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
   const { acceptedDoctors } = useClinicDoctors();
@@ -76,10 +86,9 @@ export function WalkInBookingModal({ open, onClose }: WalkInBookingModalProps) {
   const [isSearchingApp, setIsSearchingApp] = useState(false);
 
   /* Slot & Booking State */
-  const [date, setDate] = useState(todayISO());
+  const [date, setDate] = useState(defaultDate || todayISO());
   const [selectedSlotId, setSelectedSlotId] = useState("");
   const [type, setType] = useState<"IN_PERSON" | "VIDEO" | "HOME_VISIT">("IN_PERSON");
-  const [paymentMethod, setPaymentMethod] = useState<"ON_SITE" | "CREDIT">("ON_SITE");
   const [notes, setNotes] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -90,40 +99,69 @@ export function WalkInBookingModal({ open, onClose }: WalkInBookingModalProps) {
   const [isCreatingQuickSlot, setIsCreatingQuickSlot] = useState(false);
 
   /* Map accepted doctors to DoctorCardItem format */
-  const doctorCardItems: DoctorCardItem[] = useMemo(() =>
-    acceptedDoctors.map((doc) => {
-      const d = doc.doctor as any;
-      const f = d?.firstNameFr || d?.firstNameAr || d?.firstName || "";
-      const l = d?.lastNameFr || d?.lastNameAr || d?.lastName || "";
-      const name = `${f} ${l}`.trim() || d?.name || "Doctor";
-      const spec = Array.isArray(d?.specialties) && d.specialties.length > 0
-        ? d.specialties[0].nameFr || d.specialties[0].nameAr
-        : d?.specialtyName || d?.specialty?.nameFr || "Specialist";
-      return {
-        id: doc.id,
-        doctorId: doc.doctorId,
-        name: `Dr. ${name}`,
-        specialty: spec,
-        photoUrl: d?.avatarUrl || d?.photoUrl,
-        email: d?.email,
-        phone: d?.phone,
-        yearsOfExp: d?.yearsOfExp,
-        status: doc.status,
-        raw: doc,
-      };
-    }), [acceptedDoctors]);
+  const doctorCardItems: DoctorCardItem[] = useMemo(
+    () =>
+      acceptedDoctors.map((doc) => {
+        const d = doc.doctor as Record<string, unknown> | null | undefined;
+        const f =
+          (d?.firstNameFr as string) ||
+          (d?.firstNameAr as string) ||
+          (d?.firstName as string) ||
+          "";
+        const l =
+          (d?.lastNameFr as string) || (d?.lastNameAr as string) || (d?.lastName as string) || "";
+        const name = `${f} ${l}`.trim() || (d?.name as string) || "Doctor";
+        const spec =
+          Array.isArray(d?.specialties) && d.specialties.length > 0
+            ? (d.specialties[0] as { nameFr?: string; nameAr?: string }).nameFr ||
+              (d.specialties[0] as { nameFr?: string; nameAr?: string }).nameAr
+            : (d?.specialtyName as string) ||
+              ((d?.specialty as { nameFr?: string })?.nameFr as string) ||
+              "Specialist";
+        return {
+          id: doc.id,
+          doctorId: doc.doctorId,
+          name: `Dr. ${name}`,
+          specialty: spec,
+          photoUrl: (d?.avatarUrl as string) || (d?.photoUrl as string),
+          email: d?.email as string,
+          phone: d?.phone as string,
+          yearsOfExp: d?.yearsOfExp as number,
+          status: doc.status,
+          raw: doc,
+        };
+      }),
+    [acceptedDoctors],
+  );
 
-  /* Auto-select first doctor */
+  /* Auto-select default or first doctor */
   useEffect(() => {
-    if (!selectedDoctor && doctorCardItems.length > 0) {
-      setSelectedDoctor(doctorCardItems[0]);
+    if (doctorCardItems.length > 0) {
+      if (defaultDoctorId) {
+        const match = doctorCardItems.find((d) => d.doctorId === defaultDoctorId);
+        if (match) {
+          setSelectedDoctor(match);
+          return;
+        }
+      }
+      setSelectedDoctor((prev) => prev || doctorCardItems[0]);
     }
-  }, [acceptedDoctors]);
+  }, [defaultDoctorId, doctorCardItems]);
+
+  useEffect(() => {
+    if (defaultDate) {
+      setDate(defaultDate);
+    }
+  }, [defaultDate]);
 
   const activeDoctorId = selectedDoctor?.doctorId || "";
 
   /* Fetch slots for selected doctor and date */
-  const { data: rawSlots, isLoading: isSlotsLoading, refetch: refetchSlots } = useQuery({
+  const {
+    data: rawSlots,
+    isLoading: isSlotsLoading,
+    refetch: refetchSlots,
+  } = useQuery({
     queryKey: qk.clinicSelf.doctorSlots(activeDoctorId, { date }),
     queryFn: () =>
       activeDoctorId
@@ -141,8 +179,19 @@ export function WalkInBookingModal({ open, onClose }: WalkInBookingModalProps) {
     if (s.status) return String(s.status).toLowerCase() === "booked";
     return !!s.isBooked;
   };
+
   const availableSlots = slots.filter(isSlotAvailable);
-  const bookedSlots = slots.filter(isSlotBooked);
+
+  // Split available slots by morning / afternoon
+  const morningSlots = availableSlots.filter((s) => {
+    const hour = parseInt(s.startTime?.split(":")[0] || "0", 10);
+    return hour < 12;
+  });
+
+  const afternoonSlots = availableSlots.filter((s) => {
+    const hour = parseInt(s.startTime?.split(":")[0] || "0", 10);
+    return hour >= 12;
+  });
 
   /* Debounced Guest Patient Search */
   useEffect(() => {
@@ -194,42 +243,62 @@ export function WalkInBookingModal({ open, onClose }: WalkInBookingModalProps) {
         startTime: quickStartTime,
         endTime: quickEndTime,
       });
-      toast.success(`Quick slot created for ${quickStartTime}–${quickEndTime}`);
+      toast.success(
+        t("schedule.quickSuccess", {
+          defaultValue: `Quick slot created for ${quickStartTime}–${quickEndTime}`,
+        }),
+      );
       void queryClient.invalidateQueries({ queryKey: qk.clinicSelf.all() });
       const refetched = await refetchSlots();
       if (createdSlot && createdSlot.id) {
         setSelectedSlotId(createdSlot.id);
       } else if (refetched.data && refetched.data.length > 0) {
-        const matching = refetched.data.find((s: any) => s.startTime === quickStartTime);
+        const matching = refetched.data.find((s) => s.startTime === quickStartTime);
         if (matching) setSelectedSlotId(matching.id);
       }
       setShowQuickSlot(false);
-    } catch (err: any) {
-      toast.error(err?.message || "Failed to create quick slot");
+    } catch (err: unknown) {
+      const e = err as { message?: string };
+      toast.error(e?.message || "Failed to create quick slot");
     } finally {
       setIsCreatingQuickSlot(false);
     }
   };
 
-  /* Submit booking */
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
+  /* Unified booking submit */
+  const handleBookingSubmit = async (confirmImmediately: boolean) => {
     if (!selectedDoctor) {
-      toast.error("Please select a doctor provider");
+      toast.error(
+        t("appointments.selectDoctorErr", { defaultValue: "Please select a provider doctor" }),
+      );
       return;
     }
     if (!selectedSlotId) {
-      toast.error("Please select a time slot");
+      toast.error(
+        t("appointments.selectSlotErr", { defaultValue: "Please select a consultation time slot" }),
+      );
       return;
     }
 
     let patientId: string | undefined;
-    let guestPatient: { firstName: string; lastName: string; phone: string; email?: string; dateOfBirth?: string; notes?: string } | undefined;
+    let guestPatient:
+      | {
+          firstName: string;
+          lastName: string;
+          phone: string;
+          email?: string;
+          dateOfBirth?: string;
+          notes?: string;
+        }
+      | undefined;
 
     if (patientSource === "app") {
       if (!selectedAppPatient) {
-        toast.error("Please search and select a registered app patient");
+        toast.error(
+          t("appointments.selectAppPatientErr", {
+            defaultValue: "Please search and select a registered app patient",
+          }),
+        );
         return;
       }
       patientId = selectedAppPatient.id;
@@ -244,11 +313,19 @@ export function WalkInBookingModal({ open, onClose }: WalkInBookingModalProps) {
         };
       } else {
         if (!guestFirstName.trim() || !guestLastName.trim() || !guestPhone.trim()) {
-          toast.error("First name, last name, and phone are required for a walk-in patient");
+          toast.error(
+            t("appointments.guestRequiredErr", {
+              defaultValue: "First name, last name, and phone are required for a walk-in patient",
+            }),
+          );
           return;
         }
         if (!/^\d{10,15}$/.test(guestPhone.trim())) {
-          toast.error("Phone number must be between 10 and 15 digits");
+          toast.error(
+            t("appointments.phoneDigitsErr", {
+              defaultValue: "Phone number must be between 10 and 15 digits",
+            }),
+          );
           return;
         }
         guestPatient = {
@@ -263,38 +340,53 @@ export function WalkInBookingModal({ open, onClose }: WalkInBookingModalProps) {
 
     setIsSubmitting(true);
     try {
+      // NOTE: paymentMethod is strictly omitted as the backend bookAppointmentSchema does not allow it
       const createdAppt = await clinicAppointmentsApi.bookAppointment({
         slotId: selectedSlotId,
         type,
-        paymentMethod: patientSource === "guest" ? "ON_SITE" : paymentMethod,
         patientId,
         guestPatient,
         notes: notes.trim() || undefined,
       });
 
+      if (confirmImmediately && createdAppt?.id) {
+        try {
+          await clinicAppointmentsApi.confirmAppointment(createdAppt.id);
+          toast.success(
+            t("appointments.bookAndConfirmedSuccess", {
+              defaultValue: "Appointment booked and CONFIRMED successfully!",
+            }),
+          );
+        } catch {
+          toast.success(
+            t("appointments.bookedPendingNotice", {
+              defaultValue: "Appointment reserved (Pending confirmation).",
+            }),
+          );
+        }
+      } else {
+        toast.success(
+          t("appointments.bookedPendingSuccess", {
+            defaultValue: "Appointment reserved in PENDING status.",
+          }),
+        );
+      }
+
       void queryClient.invalidateQueries({ queryKey: qk.clinicSelf.all() });
-
-      toast.success("Appointment reserved successfully!", {
-        description: "Appointment is currently PENDING.",
-        duration: 8000,
-        action: {
-          label: "Confirm Now",
-          onClick: async () => {
-            try {
-              await clinicAppointmentsApi.confirmAppointment(createdAppt.id);
-              toast.success("Appointment CONFIRMED!");
-              void queryClient.invalidateQueries({ queryKey: qk.clinicSelf.all() });
-            } catch (err: any) {
-              toast.error(err?.message || "Failed to confirm appointment");
-            }
-          },
-        },
-      });
-
+      if (onSuccess) onSuccess();
       resetForm();
       onClose();
-    } catch (err: any) {
-      toast.error(err?.message || "Failed to book appointment");
+    } catch (err: unknown) {
+      const e = err as {
+        message?: string;
+        response?: { data?: { message?: string; error?: string } };
+      };
+      const msg =
+        e?.response?.data?.message ||
+        e?.response?.data?.error ||
+        e?.message ||
+        "Failed to book appointment";
+      toast.error(typeof msg === "string" ? msg : JSON.stringify(msg));
     } finally {
       setIsSubmitting(false);
     }
@@ -312,7 +404,7 @@ export function WalkInBookingModal({ open, onClose }: WalkInBookingModalProps) {
     setGuestSearchQuery("");
     setAppSearchQuery("");
     setShowQuickSlot(false);
-    setDate(todayISO());
+    setDate(defaultDate || todayISO());
   };
 
   const selectedSlot = slots.find((s) => s.id === selectedSlotId);
@@ -323,122 +415,178 @@ export function WalkInBookingModal({ open, onClose }: WalkInBookingModalProps) {
         id="walk-in-booking-drawer"
         open={open}
         onClose={onClose}
-        title="Book Walk-In / Phone Appointment"
-        subtitle="Reserve and confirm a consultation on your schedule"
+        title={t("appointments.drawerTitle", { defaultValue: "Book Patient Appointment" })}
+        subtitle={t("appointments.drawerSubtitle", {
+          defaultValue: "Schedule walk-in, phone, or registered consultations",
+        })}
         width="max-w-2xl"
         footer={
-          <div className="flex items-center justify-between gap-3">
-            <div className="text-[11px] text-muted-foreground">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2">
+            <div className="text-[11px] text-muted-foreground truncate max-w-xs">
               {selectedDoctor && (
-                <span className="font-semibold text-foreground">{selectedDoctor.name}</span>
+                <span className="font-bold text-foreground">{selectedDoctor.name}</span>
               )}
               {selectedSlot && (
-                <span> · {date} at {selectedSlot.startTime?.slice(0, 5)}</span>
+                <span>
+                  {" "}
+                  · {date} at {selectedSlot.startTime?.slice(0, 5)}
+                </span>
               )}
             </div>
-            <div className="flex items-center gap-2">
+
+            <div className="flex items-center gap-2 self-end sm:self-auto">
               <button
                 type="button"
-                onClick={() => { resetForm(); onClose(); }}
-                className="rounded-xl border border-border/40 px-4 py-2 text-xs font-bold hover:bg-muted/20 transition cursor-pointer"
+                onClick={() => {
+                  resetForm();
+                  onClose();
+                }}
+                className="rounded-xl border border-border/40 px-3.5 py-2 text-xs font-bold text-muted-foreground hover:bg-muted/20 transition cursor-pointer"
               >
-                Cancel
+                {t("common.cancel", { defaultValue: "Cancel" })}
               </button>
+
+              {/* Secondary: Book as Pending */}
               <button
                 type="button"
-                onClick={handleSubmit as any}
+                onClick={() => handleBookingSubmit(false)}
                 disabled={!selectedSlotId || isSubmitting}
-                className="inline-flex items-center gap-1.5 rounded-xl bg-primary-500 px-5 py-2 text-xs font-bold text-primary-foreground shadow-md hover:bg-primary-600 transition disabled:opacity-50 cursor-pointer"
+                className="inline-flex items-center gap-1.5 rounded-xl border border-warning/40 bg-warning/10 px-3.5 py-2 text-xs font-bold text-warning hover:bg-warning/20 transition disabled:opacity-40 cursor-pointer"
+                title={t("appointments.bookPendingTip", {
+                  defaultValue: "Save as Pending for verification",
+                })}
               >
-                {isSubmitting ? <Loader2 className="h-4 w-4 animate-spin" /> : <CheckCircle2 className="h-4 w-4" />}
-                Reserve Appointment
+                <Clock className="h-3.5 w-3.5" />
+                <span>{t("appointments.savePending", { defaultValue: "Save Pending" })}</span>
+              </button>
+
+              {/* Primary: Book & Confirm Now */}
+              <button
+                type="button"
+                onClick={() => handleBookingSubmit(true)}
+                disabled={!selectedSlotId || isSubmitting}
+                className="inline-flex items-center gap-1.5 rounded-xl bg-primary-500 px-5 py-2 text-xs font-bold text-primary-foreground shadow-md hover:opacity-90 transition disabled:opacity-40 cursor-pointer"
+              >
+                {isSubmitting ? (
+                  <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                ) : (
+                  <Zap className="h-3.5 w-3.5" />
+                )}
+                <span>
+                  {t("appointments.bookAndConfirmNow", { defaultValue: "Book & Confirm Now" })}
+                </span>
               </button>
             </div>
           </div>
         }
       >
-        <form onSubmit={handleSubmit} className="space-y-6">
-          {/* ─── Section 1: Provider Doctor ─── */}
-          <section className="space-y-3">
+        <div className="space-y-6 pb-4">
+          {/* ─── Section 1: Provider Doctor Picker (Interactive Strip) ─── */}
+          <section className="space-y-2.5">
             <div className="flex items-center justify-between">
               <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider flex items-center gap-1.5">
                 <Stethoscope className="h-3.5 w-3.5 text-primary-500" />
-                1. Provider Doctor
+                1. {t("appointments.providerDoctor", { defaultValue: "Attending Practitioner" })}
               </label>
-              <button
-                type="button"
-                onClick={() => setDoctorModalOpen(true)}
-                className="text-xs font-bold text-primary-500 hover:underline cursor-pointer"
-              >
-                Change
-              </button>
+              {doctorCardItems.length > 4 && (
+                <button
+                  type="button"
+                  onClick={() => setDoctorModalOpen(true)}
+                  className="text-xs font-bold text-primary-500 hover:underline cursor-pointer"
+                >
+                  {t("schedule.viewAllDoctors", { defaultValue: "Search directory" })} (
+                  {doctorCardItems.length})
+                </button>
+              )}
             </div>
 
-            {selectedDoctor ? (
-              <div
-                onClick={() => setDoctorModalOpen(true)}
-                className="flex items-center justify-between p-3.5 rounded-2xl bg-accent/40 border border-border/40 hover:border-primary-500/40 transition cursor-pointer"
-              >
-                <div className="flex items-center gap-3.5">
-                  <RemoteImage
-                    src={selectedDoctor.photoUrl}
-                    alt={selectedDoctor.name}
-                    fallback={ASSET_FALLBACKS.doctorPhoto}
-                    className="h-12 w-12 rounded-2xl object-cover border border-border/40"
-                  />
-                  <div>
-                    <h4 className="text-sm font-extrabold text-foreground">{selectedDoctor.name}</h4>
-                    <p className="text-[11px] font-semibold text-primary-500">{selectedDoctor.specialty}</p>
-                    {selectedDoctor.yearsOfExp !== undefined && (
-                      <p className="text-[10px] text-muted-foreground mt-0.5">{selectedDoctor.yearsOfExp} years experience</p>
+            {/* Horizontal Doctor Cards Strip */}
+            <div className="flex items-center gap-2 overflow-x-auto pb-1.5 custom-scrollbar">
+              {doctorCardItems.map((doc) => {
+                const isSelected = selectedDoctor?.doctorId === doc.doctorId;
+                const dColor = getDoctorColor(doc.doctorId);
+                return (
+                  <button
+                    key={doc.doctorId}
+                    type="button"
+                    onClick={() => {
+                      setSelectedDoctor(doc);
+                      setSelectedSlotId("");
+                    }}
+                    className={cn(
+                      "flex items-center gap-2.5 rounded-2xl border p-2 text-start transition shrink-0 cursor-pointer",
+                      isSelected
+                        ? "border-primary-500 shadow-sm ring-2 ring-primary-500/20"
+                        : "border-border/40 bg-card/60 hover:bg-accent/40",
                     )}
-                  </div>
-                </div>
-                <span className="rounded-xl bg-primary-500/10 px-2.5 py-1 text-[10px] font-bold text-primary-500">
-                  Selected ✓
-                </span>
-              </div>
-            ) : (
-              <button
-                type="button"
-                onClick={() => setDoctorModalOpen(true)}
-                className="w-full p-4 rounded-2xl border-2 border-dashed border-border/60 text-sm font-semibold text-muted-foreground hover:border-primary-500 hover:text-primary-500 transition cursor-pointer"
-              >
-                + Select Provider Doctor
-              </button>
-            )}
+                    style={{
+                      backgroundColor: isSelected ? `${dColor.hex}15` : undefined,
+                      borderColor: isSelected ? dColor.hex : undefined,
+                    }}
+                  >
+                    <div
+                      className="h-9 w-9 rounded-xl overflow-hidden border-2 shrink-0 bg-muted/40"
+                      style={{ borderColor: dColor.hex }}
+                    >
+                      <RemoteImage
+                        src={doc.photoUrl}
+                        alt={doc.name}
+                        fallback={ASSET_FALLBACKS.doctorPhoto}
+                        className="h-full w-full object-cover"
+                      />
+                    </div>
+                    <div className="min-w-0 pr-2">
+                      <div className="text-xs font-extrabold text-foreground truncate max-w-[120px]">
+                        {doc.name}
+                      </div>
+                      <div className="text-[10px] text-muted-foreground truncate max-w-[120px]">
+                        {doc.specialty}
+                      </div>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
           </section>
 
           {/* ─── Section 2: Patient Identification ─── */}
           <section className="space-y-3 pt-4 border-t border-border/30">
-            <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider flex items-center gap-1.5">
-              <UserCheck className="h-3.5 w-3.5 text-primary-500" />
-              2. Patient Identification
-            </label>
+            <div className="flex items-center justify-between">
+              <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider flex items-center gap-1.5">
+                <UserCheck className="h-3.5 w-3.5 text-primary-500" />
+                2.{" "}
+                {t("appointments.patientIdentification", { defaultValue: "Patient Information" })}
+              </label>
+            </div>
 
             {/* Segmented Control */}
-            <div className="grid grid-cols-2 gap-2 p-1 rounded-2xl bg-muted/30 border border-border/30">
+            <div className="grid grid-cols-2 gap-1.5 p-1 rounded-2xl bg-muted/30 border border-border/30">
               <button
                 type="button"
                 onClick={() => setPatientSource("guest")}
-                className={`flex items-center justify-center gap-2 rounded-xl py-2.5 px-3 text-xs font-bold transition cursor-pointer ${
+                className={cn(
+                  "flex items-center justify-center gap-2 rounded-xl py-2 px-3 text-xs font-bold transition cursor-pointer",
                   patientSource === "guest"
                     ? "bg-primary-500 text-primary-foreground shadow-sm"
-                    : "text-muted-foreground hover:text-foreground"
-                }`}
+                    : "text-muted-foreground hover:text-foreground",
+                )}
               >
-                <UserPlus className="h-4 w-4" /> Walk-In / Phone (Guest)
+                <UserPlus className="h-3.5 w-3.5" />
+                <span>{t("patients.guestPatients", { defaultValue: "Walk-In / Guest" })}</span>
               </button>
+
               <button
                 type="button"
                 onClick={() => setPatientSource("app")}
-                className={`flex items-center justify-center gap-2 rounded-xl py-2.5 px-3 text-xs font-bold transition cursor-pointer ${
+                className={cn(
+                  "flex items-center justify-center gap-2 rounded-xl py-2 px-3 text-xs font-bold transition cursor-pointer",
                   patientSource === "app"
                     ? "bg-primary-500 text-primary-foreground shadow-sm"
-                    : "text-muted-foreground hover:text-foreground"
-                }`}
+                    : "text-muted-foreground hover:text-foreground",
+                )}
               >
-                <User className="h-4 w-4" /> Registered App Patient
+                <User className="h-3.5 w-3.5" />
+                <span>{t("patients.appRegistered", { defaultValue: "Registered Patient" })}</span>
               </button>
             </div>
 
@@ -460,12 +608,14 @@ export function WalkInBookingModal({ open, onClose }: WalkInBookingModalProps) {
                             {selectedAppPatient.firstName} {selectedAppPatient.lastName}
                           </span>
                           <span className="rounded-full bg-primary-500/20 px-2 py-0.5 text-[9px] font-bold text-primary-500 uppercase">
-                            Registered App Patient
+                            Registered
                           </span>
                         </div>
                         <div className="flex items-center gap-3 text-[11px] text-muted-foreground mt-0.5">
                           {selectedAppPatient.phone && <span>{selectedAppPatient.phone}</span>}
-                          {selectedAppPatient.email && <span className="truncate">{selectedAppPatient.email}</span>}
+                          {selectedAppPatient.email && (
+                            <span className="truncate">{selectedAppPatient.email}</span>
+                          )}
                         </div>
                       </div>
                     </div>
@@ -477,28 +627,27 @@ export function WalkInBookingModal({ open, onClose }: WalkInBookingModalProps) {
                       }}
                       className="text-xs text-primary-500 font-bold hover:underline cursor-pointer shrink-0 ms-2"
                     >
-                      Change
+                      {t("common.edit", { defaultValue: "Change" })}
                     </button>
                   </div>
                 ) : (
                   <div className="space-y-2">
                     <div className="relative">
-                      <Search className="absolute start-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                      <Search className="absolute start-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
                       <input
                         type="text"
-                        placeholder="Search registered app patient by name, phone (0550...), or email..."
+                        placeholder="Search registered patient by name, phone (0550...), or email..."
                         value={appSearchQuery}
                         onChange={(e) => setAppSearchQuery(e.target.value)}
-                        className="w-full ps-9 pe-8 py-2.5 rounded-xl border border-border/40 bg-background text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary-500/20"
+                        className="glass w-full ps-9 pe-8 py-2.5 rounded-xl border border-border/40 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary-500/20"
                       />
                       {isSearchingApp && (
-                        <Loader2 className="absolute end-3 top-1/2 -translate-y-1/2 h-4 w-4 text-primary-500 animate-spin" />
+                        <Loader2 className="absolute end-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-primary-500 animate-spin" />
                       )}
                     </div>
 
-                    {/* Results list */}
                     {appSearchResults.length > 0 && (
-                      <div className="rounded-xl border border-border/40 bg-background divide-y divide-border/20 max-h-52 overflow-y-auto shadow-lg">
+                      <div className="rounded-xl border border-border/40 bg-card divide-y divide-border/20 max-h-48 overflow-y-auto shadow-md">
                         {appSearchResults.map((user) => (
                           <div
                             key={user.id}
@@ -514,29 +663,23 @@ export function WalkInBookingModal({ open, onClose }: WalkInBookingModalProps) {
                                   {user.firstName || ""} {user.lastName || ""}
                                 </div>
                                 <div className="text-[10px] text-muted-foreground truncate">
-                                  {user.phone || user.email || "Registered Patient"}
+                                  {user.phone || user.email}
                                 </div>
                               </div>
                             </div>
-                            <span className="text-[11px] font-bold text-primary-500 bg-primary-500/10 px-2.5 py-1 rounded-lg hover:bg-primary-500 hover:text-white transition">
+                            <span className="text-[10px] font-bold text-primary-500 bg-primary-500/10 px-2.5 py-1 rounded-lg">
                               Select
                             </span>
                           </div>
                         ))}
                       </div>
                     )}
-
-                    {appSearchQuery.trim().length >= 2 && !isSearchingApp && appSearchResults.length === 0 && (
-                      <p className="text-xs text-muted-foreground text-center py-2">
-                        No registered app patients found matching "{appSearchQuery}". Try phone number or email, or switch to Walk-In / Guest.
-                      </p>
-                    )}
                   </div>
                 )}
               </div>
             )}
 
-            {/* Path B: Guest Patient Search-or-Create */}
+            {/* Path B: Guest Patient Form */}
             {patientSource === "guest" && (
               <div className="space-y-3 pt-1">
                 {selectedGuestPatient ? (
@@ -549,7 +692,9 @@ export function WalkInBookingModal({ open, onClose }: WalkInBookingModalProps) {
                         <div className="text-xs font-bold text-foreground">
                           {selectedGuestPatient.firstName} {selectedGuestPatient.lastName}
                         </div>
-                        <div className="text-[11px] text-muted-foreground font-mono">{selectedGuestPatient.phone}</div>
+                        <div className="text-[11px] text-muted-foreground font-mono">
+                          {selectedGuestPatient.phone}
+                        </div>
                       </div>
                     </div>
                     <button
@@ -557,28 +702,30 @@ export function WalkInBookingModal({ open, onClose }: WalkInBookingModalProps) {
                       onClick={() => setSelectedGuestPatient(null)}
                       className="text-xs text-primary-500 font-bold hover:underline cursor-pointer"
                     >
-                      Change
+                      {t("common.edit", { defaultValue: "Change" })}
                     </button>
                   </div>
                 ) : (
-                  <div className="space-y-3">
-                    {/* Search existing guest */}
+                  <div className="space-y-2.5">
+                    {/* Search existing guest query */}
                     <div className="relative">
-                      <Search className="absolute start-3 top-2.5 h-4 w-4 text-muted-foreground" />
+                      <Search className="absolute start-3 top-2.5 h-3.5 w-3.5 text-muted-foreground" />
                       <input
                         type="text"
-                        placeholder="Search existing guest by phone or name..."
+                        placeholder="Search existing guest patients by phone or name..."
                         value={guestSearchQuery}
                         onChange={(e) => setGuestSearchQuery(e.target.value)}
-                        className="w-full rounded-xl border border-border/40 bg-muted/20 ps-9 pe-3 py-2 text-xs font-semibold outline-none focus:border-primary-500"
+                        className="glass w-full rounded-xl ps-9 pe-3 py-2 text-xs font-medium outline-none focus:ring-2 focus:ring-primary-500/20"
                       />
-                      {isSearchingGuest && <Loader2 className="absolute end-3 top-2.5 h-4 w-4 animate-spin text-primary-500" />}
+                      {isSearchingGuest && (
+                        <Loader2 className="absolute end-3 top-2.5 h-3.5 w-3.5 animate-spin text-primary-500" />
+                      )}
                     </div>
 
                     {guestSearchResults.length > 0 && (
-                      <div className="max-h-32 overflow-y-auto space-y-1 rounded-2xl border border-primary-500/30 p-1.5 bg-card custom-scrollbar">
-                        <div className="text-[10px] font-bold text-primary-500 uppercase px-2 py-1">
-                          Existing Guest Matches — Click to Select:
+                      <div className="max-h-32 overflow-y-auto space-y-1 rounded-2xl border border-primary-500/30 p-1.5 bg-card">
+                        <div className="text-[9px] font-bold text-primary-500 uppercase px-2 py-0.5">
+                          Existing Guest Matches:
                         </div>
                         {guestSearchResults.map((g) => (
                           <button
@@ -587,41 +734,49 @@ export function WalkInBookingModal({ open, onClose }: WalkInBookingModalProps) {
                             onClick={() => setSelectedGuestPatient(g)}
                             className="w-full flex items-center justify-between p-2 rounded-xl hover:bg-primary-500/10 text-start text-xs transition cursor-pointer"
                           >
-                            <span className="font-bold text-foreground">{g.firstName} {g.lastName}</span>
+                            <span className="font-bold text-foreground">
+                              {g.firstName} {g.lastName}
+                            </span>
                             <span className="text-muted-foreground font-mono">{g.phone}</span>
                           </button>
                         ))}
                       </div>
                     )}
 
-                    {/* Quick Inline Guest Form */}
-                    <div className="p-3.5 rounded-2xl border border-border/30 bg-muted/10 space-y-3">
-                      <div className="text-[11px] font-bold text-muted-foreground uppercase">
-                        Or enter new walk-in details:
-                      </div>
+                    {/* Inline Quick Guest Inputs */}
+                    <div className="p-3 rounded-2xl border border-border/30 bg-muted/10 space-y-2.5">
                       <div className="grid grid-cols-2 gap-2">
                         <input
                           type="text"
                           placeholder="First Name *"
                           value={guestFirstName}
                           onChange={(e) => setGuestFirstName(e.target.value)}
-                          className="w-full rounded-xl border border-border/40 bg-background px-3 py-2 text-xs font-semibold outline-none focus:border-primary-500"
+                          className="glass w-full rounded-xl px-3 py-2 text-xs font-semibold outline-none focus:ring-2 focus:ring-primary-500/30"
                         />
                         <input
                           type="text"
                           placeholder="Last Name *"
                           value={guestLastName}
                           onChange={(e) => setGuestLastName(e.target.value)}
-                          className="w-full rounded-xl border border-border/40 bg-background px-3 py-2 text-xs font-semibold outline-none focus:border-primary-500"
+                          className="glass w-full rounded-xl px-3 py-2 text-xs font-semibold outline-none focus:ring-2 focus:ring-primary-500/30"
                         />
                       </div>
-                      <input
-                        type="tel"
-                        placeholder="Phone Number (10 digits) *"
-                        value={guestPhone}
-                        onChange={(e) => setGuestPhone(e.target.value)}
-                        className="w-full rounded-xl border border-border/40 bg-background px-3 py-2 text-xs font-semibold outline-none focus:border-primary-500 font-mono"
-                      />
+                      <div className="grid grid-cols-2 gap-2">
+                        <input
+                          type="tel"
+                          placeholder="Phone Number (10 digits) *"
+                          value={guestPhone}
+                          onChange={(e) => setGuestPhone(e.target.value)}
+                          className="glass w-full rounded-xl px-3 py-2 text-xs font-semibold outline-none focus:ring-2 focus:ring-primary-500/30 font-mono"
+                        />
+                        <input
+                          type="date"
+                          placeholder="Date of Birth"
+                          value={guestDob}
+                          onChange={(e) => setGuestDob(e.target.value)}
+                          className="glass w-full rounded-xl px-3 py-2 text-xs font-medium outline-none focus:ring-2 focus:ring-primary-500/30 font-mono text-muted-foreground"
+                        />
+                      </div>
                     </div>
                   </div>
                 )}
@@ -629,85 +784,63 @@ export function WalkInBookingModal({ open, onClose }: WalkInBookingModalProps) {
             )}
           </section>
 
-          {/* ─── Section 3: Date & Slot Picker with Schedule Visualization ─── */}
+          {/* ─── Section 3: Date & Slot Picker with Quick Date Chips ─── */}
           <section className="space-y-3 pt-4 border-t border-border/30">
             <div className="flex items-center justify-between">
               <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider flex items-center gap-1.5">
                 <CalendarRange className="h-3.5 w-3.5 text-primary-500" />
-                3. Date & Time Slot
+                3. {t("appointments.dateTimeSlot", { defaultValue: "Date & Consultation Slot" })}
               </label>
-              <div className="flex items-center gap-2">
+
+              <button
+                type="button"
+                onClick={() => setShowQuickSlot(!showQuickSlot)}
+                className="inline-flex items-center gap-1 text-[11px] font-bold text-primary-500 hover:underline cursor-pointer"
+              >
+                <Sparkles className="h-3 w-3" />
+                <span>{t("schedule.quickSlotButton", { defaultValue: "Instant Slot" })}</span>
+              </button>
+            </div>
+
+            {/* Quick Date Presets */}
+            <div className="flex items-center gap-1.5 overflow-x-auto pb-1 custom-scrollbar">
+              {[
+                { label: "Today", value: todayISO() },
+                { label: "Tomorrow", value: format(addDays(new Date(), 1), "yyyy-MM-dd") },
+                { label: "+2 Days", value: format(addDays(new Date(), 2), "yyyy-MM-dd") },
+              ].map((preset) => (
+                <button
+                  key={preset.label}
+                  type="button"
+                  onClick={() => {
+                    setDate(preset.value);
+                    setSelectedSlotId("");
+                  }}
+                  className={cn(
+                    "px-3 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer shrink-0",
+                    date === preset.value
+                      ? "bg-primary-500 text-primary-foreground shadow-sm"
+                      : "border border-border/40 text-muted-foreground hover:text-foreground",
+                  )}
+                >
+                  {preset.label}
+                </button>
+              ))}
+
+              <div className="shrink-0">
                 <ModernDatePickerModal
                   mode="single"
                   value={date}
-                  onSelect={(d) => { setDate(d); setSelectedSlotId(""); }}
-                  placeholder="Select Date"
+                  onSelect={(d) => {
+                    setDate(d);
+                    setSelectedSlotId("");
+                  }}
+                  placeholder="Other Date..."
                 />
-                <button
-                  type="button"
-                  onClick={() => setShowQuickSlot(!showQuickSlot)}
-                  className="inline-flex items-center gap-1 text-[11px] font-bold text-primary-500 hover:underline cursor-pointer"
-                >
-                  <Sparkles className="h-3 w-3" /> Instant Slot
-                </button>
               </div>
             </div>
 
-            {/* Schedule Timeline Visualization */}
-            {activeDoctorId && (
-              <div className="rounded-2xl bg-accent/30 border border-border/30 p-3 space-y-2">
-                <div className="flex items-center justify-between">
-                  <span className="text-[11px] font-bold text-foreground">
-                    Schedule for {date}
-                  </span>
-                  <span className="text-[10px] text-muted-foreground">
-                    {availableSlots.length} open · {bookedSlots.length} booked · {slots.length} total
-                  </span>
-                </div>
-
-                {/* Mini timeline bar */}
-                {slots.length > 0 && (
-                  <div className="flex gap-1 flex-wrap">
-                    {slots.map((slot) => {
-                      const isAvailable = isSlotAvailable(slot);
-                      const isBooked = isSlotBooked(slot);
-                      const isCancelled = String(slot.status).toLowerCase() === "cancelled" || !!slot.isCancelled;
-                      const isSelected = selectedSlotId === slot.id;
-
-                      return (
-                        <button
-                          key={slot.id}
-                          type="button"
-                          disabled={!isAvailable}
-                          onClick={() => isAvailable && setSelectedSlotId(slot.id)}
-                          title={`${slot.startTime}–${slot.endTime} ${isBooked ? "(Booked)" : isCancelled ? "(Cancelled)" : "(Available)"}`}
-                          className={`px-2.5 py-1.5 rounded-lg text-[10px] font-bold font-mono transition cursor-pointer disabled:cursor-not-allowed ${
-                            isSelected
-                              ? "bg-primary-500 text-primary-foreground ring-2 ring-primary-500/40 shadow-sm"
-                              : isAvailable
-                                ? "bg-success/15 text-success hover:bg-success/25 border border-success/30"
-                                : isBooked
-                                  ? "bg-danger/10 text-danger/60 border border-danger/20"
-                                  : "bg-muted/30 text-muted-foreground/40 border border-border/20 line-through"
-                          }`}
-                        >
-                          {slot.startTime?.slice(0, 5)}
-                        </button>
-                      );
-                    })}
-                  </div>
-                )}
-
-                {/* Legend */}
-                <div className="flex items-center gap-3 text-[9px] text-muted-foreground pt-1">
-                  <span className="flex items-center gap-1"><span className="h-2 w-2 rounded-full bg-success inline-block" /> Available</span>
-                  <span className="flex items-center gap-1"><span className="h-2 w-2 rounded-full bg-danger inline-block" /> Booked</span>
-                  <span className="flex items-center gap-1"><span className="h-2 w-2 rounded-full bg-primary-500 inline-block" /> Selected</span>
-                </div>
-              </div>
-            )}
-
-            {/* Slots Grid (available only) */}
+            {/* Available Time Slots grouped by Morning / Afternoon */}
             {isSlotsLoading ? (
               <div className="flex items-center justify-center py-6 text-xs text-muted-foreground">
                 <Loader2 className="h-4 w-4 animate-spin me-2" /> Loading slots…
@@ -715,64 +848,111 @@ export function WalkInBookingModal({ open, onClose }: WalkInBookingModalProps) {
             ) : availableSlots.length === 0 ? (
               <div className="rounded-2xl border border-warning/30 bg-warning/10 p-4 text-center text-xs text-warning flex flex-col items-center gap-2">
                 <div className="flex items-center gap-2 font-bold">
-                  <AlertCircle className="h-4 w-4" /> No available slots for {date}.
+                  <AlertCircle className="h-4 w-4" /> No bookable slots available for {date}.
                 </div>
+                <p className="text-[11px] text-muted-foreground">
+                  Create an instant slot on-the-fly for this patient:
+                </p>
                 <button
                   type="button"
                   onClick={() => setShowQuickSlot(true)}
-                  className="rounded-xl bg-primary-500 px-3.5 py-1.5 text-xs font-bold text-primary-foreground hover:bg-primary-600 transition cursor-pointer"
+                  className="rounded-xl bg-primary-500 px-3.5 py-1.5 text-xs font-bold text-primary-foreground hover:opacity-90 transition cursor-pointer"
                 >
-                  Create Instant Slot Now
+                  + Add Instant Consultation Slot
                 </button>
               </div>
             ) : (
-              <div className="grid grid-cols-4 sm:grid-cols-5 gap-2 max-h-40 overflow-y-auto custom-scrollbar pe-1">
-                {availableSlots.map((slot) => {
-                  const isSelected = selectedSlotId === slot.id;
-                  return (
-                    <button
-                      key={slot.id}
-                      type="button"
-                      onClick={() => setSelectedSlotId(slot.id)}
-                      className={`flex items-center justify-center gap-1.5 rounded-xl border p-2.5 text-xs font-bold font-mono transition cursor-pointer ${
-                        isSelected
-                          ? "border-primary-500 bg-primary-500/15 text-primary-500 shadow-xs"
-                          : "border-border/40 hover:bg-muted/20 text-foreground"
-                      }`}
-                    >
-                      <Clock className="h-3.5 w-3.5" />
-                      {slot.startTime?.slice(0, 5)}
-                    </button>
-                  );
-                })}
+              <div className="space-y-3">
+                {morningSlots.length > 0 && (
+                  <div className="space-y-1.5">
+                    <div className="text-[10px] font-bold text-muted-foreground uppercase flex items-center gap-1 px-1">
+                      <Sun className="h-3 w-3 text-amber-500" /> Morning ({morningSlots.length})
+                    </div>
+                    <div className="grid grid-cols-4 sm:grid-cols-5 gap-2 max-h-36 overflow-y-auto custom-scrollbar pe-1">
+                      {morningSlots.map((slot) => {
+                        const isSelected = selectedSlotId === slot.id;
+                        return (
+                          <button
+                            key={slot.id}
+                            type="button"
+                            onClick={() => setSelectedSlotId(slot.id)}
+                            className={cn(
+                              "flex items-center justify-center gap-1.5 rounded-xl border p-2 text-xs font-bold font-mono transition cursor-pointer",
+                              isSelected
+                                ? "border-primary-500 bg-primary-500 text-primary-foreground shadow-sm ring-2 ring-primary-500/20"
+                                : "border-border/40 hover:bg-muted/20 text-foreground bg-card",
+                            )}
+                          >
+                            <Clock className="h-3 w-3" />
+                            {slot.startTime?.slice(0, 5)}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+
+                {afternoonSlots.length > 0 && (
+                  <div className="space-y-1.5">
+                    <div className="text-[10px] font-bold text-muted-foreground uppercase flex items-center gap-1 px-1">
+                      <Moon className="h-3 w-3 text-indigo-500" /> Afternoon / Evening (
+                      {afternoonSlots.length})
+                    </div>
+                    <div className="grid grid-cols-4 sm:grid-cols-5 gap-2 max-h-36 overflow-y-auto custom-scrollbar pe-1">
+                      {afternoonSlots.map((slot) => {
+                        const isSelected = selectedSlotId === slot.id;
+                        return (
+                          <button
+                            key={slot.id}
+                            type="button"
+                            onClick={() => setSelectedSlotId(slot.id)}
+                            className={cn(
+                              "flex items-center justify-center gap-1.5 rounded-xl border p-2 text-xs font-bold font-mono transition cursor-pointer",
+                              isSelected
+                                ? "border-primary-500 bg-primary-500 text-primary-foreground shadow-sm ring-2 ring-primary-500/20"
+                                : "border-border/40 hover:bg-muted/20 text-foreground bg-card",
+                            )}
+                          >
+                            <Clock className="h-3 w-3" />
+                            {slot.startTime?.slice(0, 5)}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
               </div>
             )}
 
             {/* Quick Slot Creation Panel */}
             {showQuickSlot && (
-              <div className="p-3.5 rounded-2xl border border-primary-500/30 bg-primary-500/10 space-y-3 animate-in fade-in duration-150">
+              <div className="p-3.5 rounded-2xl border border-primary-500/30 bg-primary-500/10 space-y-2.5 animate-in fade-in duration-150">
                 <div className="text-xs font-bold text-primary-500 flex items-center gap-1">
-                  <Sparkles className="h-3.5 w-3.5" /> Create an Ad-Hoc Slot for {date}:
+                  <Sparkles className="h-3.5 w-3.5" /> Instant Slot for {date}:
                 </div>
                 <div className="flex flex-wrap items-center gap-2">
                   <ModernTimePickerModal
                     value={quickStartTime}
                     onChange={(t) => setQuickStartTime(t)}
-                    placeholder="Start time"
+                    placeholder="Start"
                   />
                   <span className="text-xs font-bold text-muted-foreground">to</span>
                   <ModernTimePickerModal
                     value={quickEndTime}
                     onChange={(t) => setQuickEndTime(t)}
-                    placeholder="End time"
+                    placeholder="End"
                   />
                   <button
                     type="button"
                     onClick={handleCreateQuickSlot}
                     disabled={isCreatingQuickSlot}
-                    className="ms-auto inline-flex items-center gap-1 rounded-xl bg-primary-500 px-3.5 py-2 text-xs font-bold text-primary-foreground hover:bg-primary-600 transition disabled:opacity-50 cursor-pointer"
+                    className="ms-auto inline-flex items-center gap-1 rounded-xl bg-primary-500 px-3.5 py-2 text-xs font-bold text-primary-foreground hover:opacity-90 transition disabled:opacity-50 cursor-pointer"
                   >
-                    {isCreatingQuickSlot ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Plus className="h-3.5 w-3.5" />}
+                    {isCreatingQuickSlot ? (
+                      <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                    ) : (
+                      <Plus className="h-3.5 w-3.5" />
+                    )}
                     Create Slot
                   </button>
                 </div>
@@ -780,52 +960,39 @@ export function WalkInBookingModal({ open, onClose }: WalkInBookingModalProps) {
             )}
           </section>
 
-          {/* ─── Section 4: Type & Payment ─── */}
-          <section className="grid grid-cols-2 gap-3 pt-4 border-t border-border/30">
-            <div>
-              <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider block mb-1.5">
-                Consultation Type
-              </label>
-              <select
-                value={type}
-                onChange={(e) => setType(e.target.value as any)}
-                className="w-full rounded-xl border border-border/40 bg-muted/20 px-3 py-2.5 text-xs font-semibold outline-none focus:border-primary-500"
-              >
-                <option value="IN_PERSON">In Person</option>
-                <option value="VIDEO">Video Consultation</option>
-                <option value="HOME_VISIT">Home Visit</option>
-              </select>
-            </div>
+          {/* ─── Section 4: Consultation Type & Notes ─── */}
+          <section className="space-y-3 pt-4 border-t border-border/30">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider block mb-1">
+                  Consultation Mode
+                </label>
+                <select
+                  value={type}
+                  onChange={(e) => setType(e.target.value as "IN_PERSON" | "VIDEO" | "HOME_VISIT")}
+                  className="glass w-full rounded-xl px-3 py-2 text-xs font-semibold outline-none focus:ring-2 focus:ring-primary-500/20 bg-background"
+                >
+                  <option value="IN_PERSON">In Person (Clinic Visit)</option>
+                  <option value="VIDEO">Teleconsultation (Video)</option>
+                  <option value="HOME_VISIT">Home Visit</option>
+                </select>
+              </div>
 
-            <div>
-              <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider block mb-1.5">
-                Payment Method
-              </label>
-              <select
-                value={patientSource === "guest" ? "ON_SITE" : paymentMethod}
-                disabled={patientSource === "guest"}
-                onChange={(e) => setPaymentMethod(e.target.value as any)}
-                className="w-full rounded-xl border border-border/40 bg-muted/20 px-3 py-2.5 text-xs font-semibold outline-none focus:border-primary-500 disabled:opacity-75"
-              >
-                <option value="ON_SITE">On Site (Cash / Card)</option>
-                <option value="CREDIT">Platform Credit</option>
-              </select>
-              {patientSource === "guest" && (
-                <span className="text-[10px] text-muted-foreground block mt-0.5">Guest bookings are always On Site.</span>
-              )}
-            </div>
-
-            <div className="col-span-2">
-              <input
-                type="text"
-                placeholder="Additional notes / symptoms (optional)"
-                value={notes}
-                onChange={(e) => setNotes(e.target.value)}
-                className="w-full rounded-xl border border-border/40 bg-muted/20 px-3 py-2.5 text-xs font-semibold outline-none focus:border-primary-500"
-              />
+              <div>
+                <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider block mb-1">
+                  Additional Notes
+                </label>
+                <input
+                  type="text"
+                  placeholder="Symptoms or reason for visit (optional)"
+                  value={notes}
+                  onChange={(e) => setNotes(e.target.value)}
+                  className="glass w-full rounded-xl px-3 py-2 text-xs font-medium outline-none focus:ring-2 focus:ring-primary-500/20"
+                />
+              </div>
             </div>
           </section>
-        </form>
+        </div>
       </Drawer>
 
       {/* Doctor Selector Modal */}
@@ -834,7 +1001,10 @@ export function WalkInBookingModal({ open, onClose }: WalkInBookingModalProps) {
         onClose={() => setDoctorModalOpen(false)}
         doctors={doctorCardItems}
         selectedDoctorId={selectedDoctor?.doctorId}
-        onSelectDoctor={(doc) => { setSelectedDoctor(doc); setSelectedSlotId(""); }}
+        onSelectDoctor={(doc) => {
+          setSelectedDoctor(doc);
+          setSelectedSlotId("");
+        }}
       />
     </>
   );

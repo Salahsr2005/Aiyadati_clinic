@@ -80,8 +80,7 @@ export const qk = {
     all: () => ["locations"] as const,
     wilayas: () => ["locations", "wilayas"] as const,
     wilaya: (id: string | number) => ["locations", "wilaya", String(id)] as const,
-    baladyat: (wilayaId: string | number) =>
-      ["locations", "baladyat", String(wilayaId)] as const,
+    baladyat: (wilayaId: string | number) => ["locations", "baladyat", String(wilayaId)] as const,
   },
   notifications: {
     all: () => ["notifications"] as const,
@@ -115,8 +114,10 @@ export const qk = {
     config: () => ["doctorSelf", "config"] as const,
     slots: (date: string) => ["doctorSelf", "slots", date] as const,
     slotsAll: () => ["doctorSelf", "slots"] as const,
-    analytics: (id: string, period?: string) => ["doctorSelf", "analytics", id, period ?? "last30days"] as const,
-    revenue: (id: string, period?: string) => ["doctorSelf", "revenue", id, period ?? "last30days"] as const,
+    analytics: (id: string, period?: string) =>
+      ["doctorSelf", "analytics", id, period ?? "last30days"] as const,
+    revenue: (id: string, period?: string) =>
+      ["doctorSelf", "revenue", id, period ?? "last30days"] as const,
     reviews: (id: string) => ["doctorSelf", "reviews", id] as const,
     reviewStats: (id: string) => ["doctorSelf", "reviewStats", id] as const,
   },
@@ -142,7 +143,9 @@ export const qk = {
     serviceDetail: (id: string) => ["clinicSelf", "services", id] as const,
     serviceDoctors: (id: string) => ["clinicSelf", "services", id, "doctors"] as const,
     appointments: (p?: Params) => ["clinicSelf", "appointments", stable(p)] as const,
-    doctorSlots: (doctorId: string, p?: Params) => ["clinicSelf", "slots", doctorId, stable(p)] as const,
+    appointmentStats: (date?: string) => ["clinicSelf", "appointmentStats", date] as const,
+    doctorSlots: (doctorId: string, p?: Params) =>
+      ["clinicSelf", "slots", doctorId, stable(p)] as const,
     guestPatients: (p?: Params) => ["clinicSelf", "guestPatients", stable(p)] as const,
     guestPatientDetail: (id: string) => ["clinicSelf", "guestPatients", id] as const,
     reviews: (p?: Params) => ["clinicSelf", "reviews", stable(p)] as const,
